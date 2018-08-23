@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cocos," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。 1.labelttf不是labelttf通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。 虽然Label上有一个方法setText">
+<meta name="keywords" content="cocos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos之使用ccb的一些坑">
+<meta property="og:url" content="http://yangguang1029.github.io/2017/01/12/cocos-ccb/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。 1.labelttf不是labelttf通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。 虽然Label上有一个方法setText">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.771Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos之使用ccb的一些坑">
+<meta name="twitter:description" content="cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。 1.labelttf不是labelttf通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。 虽然Label上有一个方法setText">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2017/01/12/cocos-ccb/"/>
+
+
+
+
+
+  <title>cocos之使用ccb的一些坑 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/12/cocos-ccb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cocos之使用ccb的一些坑</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-12T10:46:22+08:00">
+                2017-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。</p>
+<h4 id="1-labelttf不是labelttf"><a href="#1-labelttf不是labelttf" class="headerlink" title="1.labelttf不是labelttf"></a>1.labelttf不是labelttf</h4><p>通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。</p>
+<p>虽然Label上有一个方法setTextColor可以设置颜色，但如果使用，会发现最终显示的颜色与设定的颜色并不一致，它将你在ccb里给他设定的初始颜色做了混合，如果想要生效，那要么在ccb里设成白色，要么在代码中调setTextColor前，先调用setColor(cc.color.WHITE)</p>
+<p>同样，setFontSize是LabelTTF上的方法，代码中不能使用，办法是使用Label上的setSystemFontSize方法来代替。当然，最彻底的解决办法就是修改ccb的解析代码，它位于editor-support/cocosbuilder/ccLabelTTFLoader.h中</p>
+<h4 id="2-一个ccb中最好不要有多个动画"><a href="#2-一个ccb中最好不要有多个动画" class="headerlink" title="2.一个ccb中最好不要有多个动画"></a>2.一个ccb中最好不要有多个动画</h4><p>我们一般调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">animationManager.runAnimationsForSequenceNamedTweenDuration();</span><br></pre></td></tr></table></figure>
+<p>来播放动画，这个方法一上来就会把现有的动画都停止掉，所以如果一个界面有多个动画，最好不要放在同一个ccb里，否则一旦需要同时播放的时候，正在播放中的动画就会被停止</p>
+<h4 id="3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"><a href="#3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置" class="headerlink" title="3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"></a>3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置</h4><p>cc.BuilderReader.load方法第二个参数为owner，它用于寻找ccb中设定的属性和方法。owner最好不要重用，否则会出现各种奇怪的现象。例如我们需要加载一个子ccb时，可以新建一个node作为owner来使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var delegate = new cc.Node();	//用来做ower</span><br><span class="line">delegate.retain();</span><br><span class="line">delegate._finishAction = function()&#123;</span><br><span class="line">	node.removeFromParent();</span><br><span class="line">	delegate.release();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var node = cc.BuilderReader.load(name, delegate);</span><br><span class="line">//owner必须继承自node</span><br></pre></td></tr></table></figure>
+<p>另外回调必须在调用load之前绑定好,这里_finishAction就是绑定的回调，虽然回调的时机在初始化以后，但如果不先设置，那么在解析的时候找不到接口，会导致绑定不成功</p>
+<h4 id="4-不能在tableCellTouched中移除界面"><a href="#4-不能在tableCellTouched中移除界面" class="headerlink" title="4.不能在tableCellTouched中移除界面"></a>4.不能在tableCellTouched中移除界面</h4><p>这个与ccb没有关系，顺便提醒一下。我们经常有点击后关闭界面的需求，在别的情况下可能不会出什么问题，但如果在tableView的tableCellTouched回调中移除，会发生崩溃。因为在这个回调之后，touchEnd其实还没有结束，还会继续处理scroll上的一些代码，如果移除掉了根节点，导致内存被释放，那后续的代码就崩溃了</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cocos/" rel="tag"># cocos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/06/cocos-jsb/" rel="next" title="cocos之jsbinding">
+                <i class="fa fa-chevron-left"></i> cocos之jsbinding
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/18/cocos-some-ui/" rel="prev" title="cocos之部分ui控件的使用">
+                cocos之部分ui控件的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-labelttf不是labelttf"><span class="nav-number">1.</span> <span class="nav-text">1.labelttf不是labelttf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-一个ccb中最好不要有多个动画"><span class="nav-number">2.</span> <span class="nav-text">2.一个ccb中最好不要有多个动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"><span class="nav-number">3.</span> <span class="nav-text">3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-不能在tableCellTouched中移除界面"><span class="nav-number">4.</span> <span class="nav-text">4.不能在tableCellTouched中移除界面</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

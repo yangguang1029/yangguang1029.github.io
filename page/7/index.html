@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react-native,react,react native,cocos" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="杨光的笔记">
+<meta property="og:url" content="http://yangguang1029.github.io/page/7/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="杨光的笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/page/7/"/>
+
+
+
+
+
+  <title>杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/30/svn-commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/30/svn-commands/" itemprop="url">svn之使用命令行做分支管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-30T11:21:09+08:00">
+                2016-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>使用svn不论是做分支(branch)还是标签(tag)都是使用svn cp命令，他们本质上没有区别，但用途上可能不同，这完全取决于开发者，例如一般trunk是作为开发目录，branch是为了作并行开发，而tag是作为milestone管理。</p>
+<p>新建一个分支使用命令svn cp，他会增加一次提交</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn cp trunk-url tag-url -m &quot;testtag&quot;</span><br></pre></td></tr></table></figure>
+<p>然后就可以把这个分支co下来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn checkout tag-url</span><br></pre></td></tr></table></figure>
+<p>svn使用的是全局版本号，分支之间是共享版本号的。例如我们在trunk下做一次修改并提交后版本是1063，此时我们到tag目录下执行svn up，会显示版本号也到了1063，但并不会把更新拉取下来。要将trunk下的更新拉取过来，需要使用svn merge命令</p>
+<p>进入tag目录执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn merge trunk-url</span><br></pre></td></tr></table></figure>
+<p>就把trunk上的改动合并过来了，也可以使用-r参数指定将某两次提交之间的diff合并过来</p>
+<p>从trunk上提交，然后到tag下去merge也是一样。</p>
+<p>删除分支，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn rm tag-url -m &quot;remove tag&quot;</span><br></pre></td></tr></table></figure>
+<p>最后稍微解释下svn cp和svn merge两个命令</p>
+<h3 id="svn-cp"><a href="#svn-cp" class="headerlink" title="svn cp"></a>svn cp</h3><p>它的基本格式是：svn copy SRC DST,其中SRC和DST都可以是WC(working copy)或者URL</p>
+<ul>
+<li>WC-&gt;WC 这个只是对本地文件的拷贝后执行了svn add</li>
+<li>WC-&gt;URL 这个是拷贝后立即提交到了URL上，所以需要提供commit message</li>
+<li>URL-&gt;WC 这个将URL上拷贝到本地后执行了svn add，可以用这个命令带上-r版本号来找回被删除的文件</li>
+<li>URL-&gt;URL 这就是上面提到了创建分支了</li>
+</ul>
+<h3 id="svn-merge"><a href="#svn-merge" class="headerlink" title="svn merge"></a>svn merge</h3><p>作用是应用两组源文件的差别到工作副本路径，基本格式为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">svn merge sourceURL1[@N] sourceURL2[@M] [WCPATH]</span><br><span class="line"></span><br><span class="line">svn merge sourceWCPATH1@N sourceWCPATH2@M [WCPATH]</span><br><span class="line"></span><br><span class="line">svn merge [[-c M]... | [-r N:M]...] [SOURCE[@REV] [WCPATH]]</span><br></pre></td></tr></table></figure>
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">svn merge http://xxxx/a.json -r 1063:1064</span><br><span class="line">svn merge ../config/ -r 1063:1064</span><br></pre></td></tr></table></figure>
+<p>如果不指定初始和结束版本号，则默认为仓库起始和当前（HEAD）</p>
+<p>最近刚刚发现一个问题，初始仓库trunk，使用svn cp生成release仓库，然后在trunk上增加一行代码，svn merge到release上去，在release上删除，然后svn merge到trunk上去。此时这行代码处不会提示有冲突，而是默认添加上了这行。我不太确定是否我的用法不对，所以暂时先记录下这个情况。在分支间来回merge时，要小心合并，尽量避免频繁merge吧，毕竟每次merge会有很多冲突</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/28/cocos-jpgmaskpng2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/28/cocos-jpgmaskpng2/" itemprop="url">cocos之使用jpg+mask合成png实现方式（二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-28T17:47:08+08:00">
+                2016-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>第二种方式就是使用shader，这种方式的优点是不需要修改源代码，但性能上不如第一种方式。</p>
+<p>编写shader涉及到顶点着色器和片断着色器，前者使用sprite默认的即可。sprite使用哪个着色器，只要看一下CCSprite.cpp里这句就找到了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP, texture));</span><br></pre></td></tr></table></figure>
+<p>然后我们稍微改动一下片断着色器，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#ifdef GL_ES</span><br><span class="line">precision lowp float;</span><br><span class="line">#endif</span><br><span class="line">                                                          </span><br><span class="line">varying vec4 v_fragmentColor;</span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line">uniform sampler2D mask;</span><br><span class="line">                                                          </span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    gl_FragColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);</span><br><span class="line">    gl_FragColor.a = texture2D(mask, v_texCoord).a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们通过代码将mask作为一个Texture传进来，然后取它的每个像素的alpha值拿来用。</p>
+<p>使用代码为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GLProgram *gp = GLProgram::createWithFilenames(&quot;res/test.vert&quot;, &quot;res/test.frag&quot;);</span><br><span class="line">GLProgramState* gs = GLProgramState::create(gp);</span><br><span class="line"></span><br><span class="line">Image* img = new Image();</span><br><span class="line">img-&gt;initWithImageFile(&quot;res/zjz_pop_word_title_zhanji.png&quot;);</span><br><span class="line">Texture2D* t1 = new Texture2D();</span><br><span class="line">t1-&gt;initWithImage(img);</span><br><span class="line"></span><br><span class="line">gs-&gt;setUniformTexture(&quot;mask&quot;, t1);</span><br><span class="line"></span><br><span class="line">Sprite* s = Sprite::create(&quot;res/splash_tuyoo_m.jpg&quot;);</span><br><span class="line">s-&gt;setGLProgramState(gs);</span><br><span class="line">s-&gt;setPosition(480,320);</span><br><span class="line">this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
+<p>这里只需要小心一点不要把s-&gt;setGLProgramState(gs);写成s-&gt;setGLProgram(gp);就行，node上同时提供了这两个接口，但使用后者会创建一个新的GLProgramState，我们已经创建的gs也就失去了作用了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/28/cocos-jpgmaskpng/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/28/cocos-jpgmaskpng/" itemprop="url">cocos之使用jpg+mask合成png实现方式（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-28T16:11:09+08:00">
+                2016-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>第一种方式，在CCImage内读取图片数据后，合并起来使用。改写Image类，增加initWithJpgAndPng方法</p>
+<p>代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithJpgAndPng(const std::string&amp; jpgpath, const std::string&amp; pngpath) &#123;</span><br><span class="line">    bool ret = false;</span><br><span class="line">    unsigned char* jd = nullptr;</span><br><span class="line">    do&#123;</span><br><span class="line">        std::string jp = FileUtils::getInstance()-&gt;fullPathForFilename(jpgpath);</span><br><span class="line">        Data jpgdata = FileUtils::getInstance()-&gt;getDataFromFile(jp);</span><br><span class="line">        </span><br><span class="line">        unsigned char* jdata = jpgdata.getBytes();</span><br><span class="line">        ssize_t jsize = jpgdata.getSize();</span><br><span class="line">        </span><br><span class="line">        ret = initWithJpgData(jdata, jsize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int jwidth = _width;</span><br><span class="line">        int jheight = _height;</span><br><span class="line">        </span><br><span class="line">        ssize_t jlen = _dataLen;</span><br><span class="line">        jd = static_cast&lt;unsigned char*&gt;(malloc(jlen * sizeof(unsigned char)));</span><br><span class="line">        memcpy(jd, _data, jlen * sizeof(unsigned char));	//将jpg数据暂存起来</span><br><span class="line">        </span><br><span class="line">        std::string pp = FileUtils::getInstance()-&gt;fullPathForFilename(pngpath);</span><br><span class="line">        Data pngdata = FileUtils::getInstance()-&gt;getDataFromFile(pp);</span><br><span class="line">        unsigned char* pdata = pngdata.getBytes();</span><br><span class="line">        ssize_t psize = pngdata.getSize();</span><br><span class="line">        ret = initWithPngData(pdata, psize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pwidth = _width;</span><br><span class="line">        int pheight = _height;</span><br><span class="line">        if(pwidth != jwidth || pheight != jheight) &#123;</span><br><span class="line">            break;	//要求长宽必须严格相同</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pindex = 0;</span><br><span class="line">        int jindex = 0;</span><br><span class="line">        </span><br><span class="line">        for(int index = 0; index &lt; pwidth * pheight; index++) &#123;</span><br><span class="line">            unsigned char alpha =*(_data+(pindex+3));</span><br><span class="line">            </span><br><span class="line">            *(_data+pindex) = *(jd + jindex) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+1)) = *(jd + jindex+1) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+2)) = *(jd + jindex+2) * alpha / 255;</span><br><span class="line">            </span><br><span class="line">            pindex += 4;</span><br><span class="line">            jindex += 3;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;while(0);</span><br><span class="line">    </span><br><span class="line">    if(jd) &#123;</span><br><span class="line">        CC_SAFE_FREE(jd);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>tips:</p>
+<ol>
+<li>这里为了验证思路，找了个RBGA8888的png做mask图，如果使用的mask图不是该格式，则需要修改_renderFormat, _fileType等属性。</li>
+<li>因为cocos默认png图片是pre_multi_alpha的，所以我们在加入alpha数据时，需要同时将alpha乘到rgb上</li>
+</ol>
+<p>使用时代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Image* image = new Image();</span><br><span class="line">    image-&gt;initWithJpgAndPng(&quot;res/test1.jpg&quot;, &quot;res/test2.png&quot;);</span><br><span class="line">    </span><br><span class="line">    Texture2D* t = new Texture2D();</span><br><span class="line">    t-&gt;initWithImage(image);</span><br><span class="line">    Sprite* s = Sprite::createWithTexture(t);</span><br><span class="line">    s-&gt;setPosition(480,320);</span><br><span class="line">    this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/25/cocos-render/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/25/cocos-render/" itemprop="url">cocos3.x 渲染机制简述</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-25T15:49:25+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>cocos2dx-3.x对绘制部分进行了重构，将绘制从UI树的遍历中分离了出来。首先进行UI树的遍历给每个元素生成一个绘制命令。等遍历完之后，render开始执行栈中所有renderCommand。</p>
+<h3 id="遍历UI树"><a href="#遍历UI树" class="headerlink" title="遍历UI树"></a>遍历UI树</h3><p>遍历UI树很简单，就是调用每个Node的visit函数，这是个虚函数，除了部分类做了重写(目前源代码里只有三个类重写了，分别是CCAttachNode, CCBillBoard, CCSprite3D)，其余就沿用了Node的实现。通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::visit(Renderer* renderer, const Mat4 &amp;parentTransform, uint32_t parentFlags)</span><br></pre></td></tr></table></figure>
+<p>我们可以看到</p>
+<ol>
+<li>如果一个Node是不可见(_visible为false)，则不会生成渲染命令，因此隐藏的节点不会增加渲染负担，只会占用内存消耗。</li>
+<li>在遍历时，会对所有子节点以localZorder从小到大进行排序，如果localZorder相同，则以_orderOfArrival从小到大排序，这个子节点被添加的先后顺序。排序后先执行所有localZorder小于0的子节点的visit，再执行自己的draw，再执行所有localZorder大于0的子节点的visit。</li>
+</ol>
+<p>draw函数为虚函数，且Node内的实现为空，具体实现在各个子类中，它的作用就是生成RenderCommand</p>
+<h3 id="RenderCommand"><a href="#RenderCommand" class="headerlink" title="RenderCommand"></a>RenderCommand</h3><p>RenderCommand有以下类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">enum class Type</span><br><span class="line">    &#123;</span><br><span class="line">        /** Reserved type.*/</span><br><span class="line">        UNKNOWN_COMMAND,</span><br><span class="line">        /** Quad command, used for draw quad.*/</span><br><span class="line">        QUAD_COMMAND,</span><br><span class="line">        /**Custom command, used for calling callback for rendering.*/</span><br><span class="line">        CUSTOM_COMMAND,</span><br><span class="line">        /**Batch command, used for draw batches in texture atlas.*/</span><br><span class="line">        BATCH_COMMAND,</span><br><span class="line">        /**Group command, which can group command in a tree hierarchy.*/</span><br><span class="line">        GROUP_COMMAND,</span><br><span class="line">        /**Mesh command, used to draw 3D meshes.*/</span><br><span class="line">        MESH_COMMAND,</span><br><span class="line">        /**Primitive command, used to draw primitives such as lines, points and triangles.*/</span><br><span class="line">        PRIMITIVE_COMMAND,</span><br><span class="line">        /**Triangles command, used to draw triangles.*/</span><br><span class="line">        TRIANGLES_COMMAND</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>在CCRender.cpp的processRenderCommand函数里，有各个类型command的具体处理。例如 CUSTOM_COMMAND就是执行设定的回调函数</p>
+<p>通过这里可以了解cocos2dx-3.x的autoBatch机制，Sprite使用的是TrianglesCommand，在处理时，会先统一放在队列里，在遍历队列时，比较每个Command的materialID,如果相同则统一处理。决定materialID的有glProgram， _textureID，_blendType。此外不同globalZorder的精灵因为不在一批处理，所以不会自动autoBatch，不同父节点，不同localZOrder则不会影响，会自动autoBatch</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/25/cocos-addImageAsync/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/25/cocos-addImageAsync/" itemprop="url">cocos-addImageAsync解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-25T11:44:28+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当我们在cocos内需要做一些比较耗性能的事情时，我们可以一些很巧妙地方案，例如开启多线程，以及将任务分解到每一帧完成一部分。在TextureCache的addImageAsync方法里，就同时用到了这两种办法，把这部分源码看明白，对自己实现能有很大的帮助</p>
+<p>类TextureCache维护一个队列_asyncStructQueue，它存放需要执行的任务，这些任务将在异步线程执行，加载生成Image类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;AsyncStruct*&gt;* _asyncStructQueue;</span><br></pre></td></tr></table></figure>
+<p>一个双向队列_imageInfoQueue,他存放加载好的Image，这些加载好的图片资源就会每帧从队列中获取一个，用来生成纹理Texture2D，生成好的纹理就可以在游戏内直接使用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;ImageInfo*&gt;* _imageInfoQueue;</span><br></pre></td></tr></table></figure>
+<p>这两个队列都是先进先出的操作，我也不是很明白为什么要用deque，有知道的可以告诉我一下。然后这两个队列因为都需要在异步线程操作，所以操作时需要用锁锁住。</p>
+<p>使用一个_asyncRefCount来记录当前任务的数量，当往_asyncStructQueue添加一个任务asyncStruct时，计数+1，当一个纹理生成完成，销毁该任务asyncStruct，计数-1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int _asyncRefCount;</span><br></pre></td></tr></table></figure>
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>需要异步加载一个图片时，首先调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::addImageAsync(const std::string &amp;path, const std::function&lt;void(Texture2D*)&gt;&amp; callback)</span><br></pre></td></tr></table></figure>
+<p>首先判断一下这个path对应的texture是否已经在缓存里，如果在，则直接返回。否则如果_asyncStructQueue还未初始化，则执行初始化，然后生成一个AsyncStruct加入队列_asyncStructQueue中。</p>
+<h3 id="异步线程"><a href="#异步线程" class="headerlink" title="异步线程"></a>异步线程</h3><p>类TextureCache维护一个异步线程，这个线程在_asyncStructQueue初始化时开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::thread* _loadingThread;</span><br></pre></td></tr></table></figure>
+<p>在这个线程执行的函数是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::loadImage()</span><br></pre></td></tr></table></figure>
+<p>这个线程通过std::condition_variable _sleepCondition来唤醒和休眠，当有任务加入任务队列_asyncStructQueue时，唤醒线程执行loadImage函数，在这个函数里发现_asyncStructQueue被清空时，休眠这个线程。</p>
+<p>在执行loadImage时，会先看一下需要加载的图片是否已经在处理队列_imageInfoQueue中了。如果不在，则生成一个新的Image，执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image-&gt;initWithImageFileThreadSafe(filename)</span><br></pre></td></tr></table></figure>
+<p>如果initWithImageFileThreadSafe返回true，则表示这张图片资源加载成功了，用这个image生成一个imageInfo放到_imageInfoQueue里。</p>
+<h3 id="定时回调"><a href="#定时回调" class="headerlink" title="定时回调"></a>定时回调</h3><p>这个定时回调每帧都会被调用一次，它将上一步生成的image变成Texture2D。当_asyncRefCount从0变为1时，表示开始有任务需要完成，开启这个定时器，当_asyncRefCount变为0时表示任务全部完成，这个定时器会被关闭。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Director::getInstance()-&gt;getScheduler()-&gt;schedule(CC_SCHEDULE_SELECTOR(TextureCache::addImageAsyncCallBack), this, 0, false);</span><br></pre></td></tr></table></figure>
+<p>定时执行的函数就是addImageAsyncCallBack了，在这个函数里，通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">texture-&gt;initWithImage(image);</span><br></pre></td></tr></table></figure>
+<p>生成Texture2d，并存在缓存里，每次通过TextureCache加载纹理的时候，都会先看看是否已经存在缓存里了。<br>到这里，这个任务就完成了，执行下回调函数，然后把_asyncRefCount减一，搞定了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/24/cocos图片资源加密/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/24/cocos图片资源加密/" itemprop="url">cocos图片资源加密</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-24T18:30:23+08:00">
+                2016-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>无意中看到<a href="http://blog.csdn.net/liuhannan111/article/details/52472012" target="_blank" rel="noopener">hnliu’sblog</a>上的方案，看完思路后，自己也照着写了一个，虽然不复杂，但是也花了将近两个小时。</p>
+<p>python代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">ENCRYPTBYTE = random.randint(1,255)	#不能随机到0，否则等于没加密</span><br><span class="line">FIRSTBYTE = 0x12</span><br><span class="line">SECONDBYTE = 0X34</span><br><span class="line">THIRDBYTE = 0x56</span><br><span class="line"></span><br><span class="line">print(&quot;encrypt key is &quot; + str(ENCRYPTBYTE))</span><br><span class="line"></span><br><span class="line">def getNewFileName(path):</span><br><span class="line">	arr = os.path.split(path)</span><br><span class="line">	dirname = arr[0]</span><br><span class="line">	filename = arr[1]</span><br><span class="line">	nameArr = filename.split(&quot;.&quot;)</span><br><span class="line">	return os.path.join(dirname, nameArr[0]+&quot;-en.&quot; + nameArr[1])</span><br><span class="line"></span><br><span class="line">def encrypt(path):</span><br><span class="line">	rf = open(path, &quot;r&quot;)</span><br><span class="line">	newpath = getNewFileName(path)</span><br><span class="line"></span><br><span class="line">	wf = open(newpath, &quot;w&quot;)</span><br><span class="line"></span><br><span class="line">	bytes = bytearray(rf.read())</span><br><span class="line">	if bytes[0] == FIRSTBYTE and bytes[1] == SECONDBYTE and bytes[2] == THIRDBYTE:</span><br><span class="line">		print &quot;encrypted already, return&quot;</span><br><span class="line">	else:</span><br><span class="line">		index = 4</span><br><span class="line">		newarr = bytearray(len(bytes) + 4)</span><br><span class="line">		newarr[0]= FIRSTBYTE</span><br><span class="line">		newarr[1]= SECONDBYTE</span><br><span class="line">		newarr[2]= THIRDBYTE</span><br><span class="line">		newarr[3]= ENCRYPTBYTE</span><br><span class="line">		for byte in bytes:</span><br><span class="line">			newb = byte ^ ENCRYPTBYTE</span><br><span class="line">			newarr[index] = newb</span><br><span class="line">			index += 1</span><br><span class="line">		wf.write(newarr)</span><br><span class="line">		wf.close()</span><br><span class="line">	rf.close()</span><br><span class="line">	</span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">	encrypt(&quot;/Users/yangguang/project/test/test_cocosx/Resources/HelloWorld.png&quot;)</span><br></pre></td></tr></table></figure>
+<p>cocos端解析代码为把原来的initWithImageData改名为initWithImageDataInternal，然后重写initWithImageData方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithImageData(const unsigned char *data, ssize_t dataLen) &#123;</span><br><span class="line">    char first = *data;</span><br><span class="line">    char second = *(data+1);</span><br><span class="line">    char third = *(data+2);</span><br><span class="line">    if(first == 0x12 &amp;&amp; second == 0x34 &amp;&amp; third == 0x56) &#123;</span><br><span class="line">        char key = *(data+3);</span><br><span class="line">        unsigned char newarr[dataLen - 4];</span><br><span class="line">        ssize_t pos = 4;</span><br><span class="line">        while(pos &lt; dataLen) &#123;</span><br><span class="line">            char old = *(data+pos);</span><br><span class="line">            newarr[pos - 4] = old ^ key;</span><br><span class="line">            pos += 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return initWithImageDataInternal((const unsigned char*)(&amp;newarr) , dataLen - 4);</span><br><span class="line">    &#125;</span><br><span class="line">    return initWithImageDataInternal(data, dataLen);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>中间出了一个比较土的问题，就是python代码中newarr[index] = newb这句，用了newarr.append()，因为newarr初始化了大小，导致newarr前面全是0，数据都被添加到后面去了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/24/js-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/24/js-object/" itemprop="url">javaScript中的proto</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-24T10:45:21+08:00">
+                2016-11-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="proto"><a href="#proto" class="headerlink" title="__proto__"></a>__proto__</h3><p>js的原型链继承很简单，对任意一个object，都有__proto__属性，当获取这个对象的属性或者方法时，现在对象本身去查找，如果不存在，则往它的__proto__上查找，因为__proto__本身也是一个object，所以如果没找到，则往__proto__的__proto__上查找，跟沿着一条链条走一样，直到找到返回，或者__proto__为null或undefined找到了尽头。</p>
+<p>原型链不可能无止尽的延伸，所以js中有一个默认的object，它的__proto__就是undefined，除非我们强制打断原型链，否则最终都会查找到这个object上，它是长这个样子的,可以看到它是没有__proto__属性的</p>
+<p><img src="js-object/42F976BA-0D05-4C76-ABBD-BA28C1627E46.png" alt="image"></p>
+<p>我们可以对一个object的__proto__属性随意赋值，但如果赋成null或者undefined，则它的__proto__属性变成了undefined，如果赋成基础数据类型，并不会改变其__proto__属性</p>
+<h3 id="proto-来源"><a href="#proto-来源" class="headerlink" title="__proto__来源"></a>__proto__来源</h3><p>如果我们没对object的__proto__赋值，则它的__proto__来源于使用Object.create方法调用时传给他的参数，虽然构造一个object有好几种写法，例如</p>
+<pre><code>var a = {}
+var b = new f();
+var c = Object.create(proto)
+</code></pre><p>但它们实际上都是执行了Object.create，例如var a = {}和var a = Object.create(Object.prototype)是一模一样的，而var b = new f()则基本可以认为等同于var b = Object.create(f.prototype)。所以上面例子里，a的__proto__是Object.prototype, b的__proto__是f.prototype, c的__proto__是proto</p>
+<h3 id="function的prototype"><a href="#function的prototype" class="headerlink" title="function的prototype"></a>function的prototype</h3><p>我们经常通过function来构造一个object,这种情况使用了该function的prototype来作为Object.create的参数，如果我们没有给function指定一个prototype，则它默认的prototype是这样的</p>
+<p><img src="js-object/08078187-DE71-479F-93B2-5E40B8C12934.png" alt="img"></p>
+<p>可以看到，function默认的prototype有一个属性constructor指向函数自己，它的__proto__就是我们前面提到的原型链尽头的那个object（真该给他取个什么名字才好），当然我们可以给function指定一个prototype，而不使用它默认的，那就是我们在js中实现继承的办法。</p>
+<p>function本身也是一个对象，所以上图里f也有__proto__属性，它的__proto__就是Function.prototype。Function是javascript解释器提供的实现，就不用再去追究它的prototype是什么了。</p>
+<h3 id="使用原型链实现继承"><a href="#使用原型链实现继承" class="headerlink" title="使用原型链实现继承"></a>使用原型链实现继承</h3><p>知道原型链是什么东西之后，就可以开始实现继承了。ES6开始有了class和extends关键字，就可以不用手动实现继承，但在ES6之前，我们需要自己来实现，例如</p>
+<pre><code>var base = {
+    prop1:1,
+    prop2:{
+        a:1
+    },
+    func:function(){
+        console.log(&quot;in base...&quot;);
+    }
+}
+
+function Derived(){
+
+}
+
+Derived.prototype = base;
+Derived.prototype.constructor = Derived;
+
+var d1 = new Derived();
+var d2 = new Derived();
+
+d1.func();
+d2.func();
+
+console.log(d1.prop2.a);
+d1.prop2.a = 2;
+console.log(d2.prop2.a);
+</code></pre><p>上面代码里，d1,d2是子类Derived的实例，它们继承了base里的属性和方法，所以可以直接调用d1.func()，也可以直接获取和设置d1.prop2.a的值，但也很容易发现问题，就是我们修改了d1.prop2.a的值，结果d2.prop2.a的值也改变了。prototype上的属性和方法，对于子类的实例是公共的，这是需要注意，容易出问题的地方。</p>
+<p>这里顺便牵扯到一个问题，我们都知道object的constructor属性指向它的构造函数，所以在设定prototype时，必须再将prototype.constructor指向构造函数。就是上面代码里的</p>
+<pre><code>Derived.prototype.constructor = Derived;
+</code></pre><p>如果没有注释掉的那句，则d1.constructor就不是Derived，而是变成了function Object(){[native code]}了</p>
+<p>因为ES6之前没有原生的继承机制，很多地方都使用了John Resig的一种<a href="https://johnresig.com/blog/simple-javascript-inheritance/" target="_blank" rel="noopener">简单实现方式</a>，使用25行代码实现了extends功能。</p>
+<h3 id="缩短原型链"><a href="#缩短原型链" class="headerlink" title="缩短原型链"></a>缩短原型链</h3><p>如果原型链过长，可能会带来性能问题。所以需要注意的是尽量不要去扩展内置类型的原型。直接获取属性和for in函数都会查询原型链，如果想避免查询原型链，可以使用hasOwnProperty方法来判断</p>
+<p>使用var a = Object.create(null) 代替 var a = {}的区别，前者明确将__proto__设置为null，查找属性时就不会再往原型链上查找了，后者__proto__其实是Object.prototype</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/18/js对象与继承2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/18/js对象与继承2/" itemprop="url">js对象与继承(二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-18T16:33:43+08:00">
+                2016-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="类继承与原型继承"><a href="#类继承与原型继承" class="headerlink" title="类继承与原型继承"></a>类继承与原型继承</h3><p>先分别举个例子吧，首先是原型继承</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var proto = &#123;&quot;a&quot;:1,&quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f1 = function()&#123;&#125;</span><br><span class="line">var f2 = function()&#123;&#125;</span><br><span class="line">f1.prototype = proto</span><br><span class="line">f2.prototype = proto</span><br><span class="line">var t1 = new f1()</span><br><span class="line">var t2 = new f2()</span><br></pre></td></tr></table></figure>
+<p>其次是类继承</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var proto = function()&#123;</span><br><span class="line">		this.a = 1;</span><br><span class="line">		this.b = &#123;&quot;c&quot;:2&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">var f1 = function()&#123;&#125;</span><br><span class="line">var f2 = function()&#123;&#125;</span><br><span class="line">f1.prototype = new proto()</span><br><span class="line">f2.prototype = new proto()</span><br><span class="line">var t1 = new f1()</span><br><span class="line">var t2 = new f2()</span><br></pre></td></tr></table></figure>
+<p>它们的区别就在于，类继承先定义了一个基类proto，在继承时，子类构造函数的prototype是根据这个基类new出来的一个对象。</p>
+<p>这两种方式各有优劣:</p>
+<p>正如上一篇说到的，如果执行代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t1.b.c = 12</span><br><span class="line">console.log(t2.b.c)</span><br></pre></td></tr></table></figure>
+<p>对于原型继承，因为proto被改变了，所以t2.b.c也变成了12，而对于类继承则不会有问题，这对于不够熟悉js的人来说绝对是个坑。</p>
+<p>不过原型继承实现起来比类继承要更灵活，因为不需要做抽象基类的工作，但如果随意地使用原型继承，例如用作prototype的对象是一个非常庞大复杂的对象，那显然会产生问题。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/18/js对象与继承/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/18/js对象与继承/" itemprop="url">js对象与继承(一)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-18T11:24:32+08:00">
+                2016-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>大家都知道在js中创建一个对象的一种很基本的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function f()&#123;</span><br><span class="line">	this.a = 1;</span><br><span class="line">&#125;</span><br><span class="line">var test = new f();</span><br></pre></td></tr></table></figure>
+<p>当执行new的时候，系统实际做的事情分了几步</p>
+<ol>
+<li>var obj = Object.create(f.prototype)</li>
+<li>var result = f.call(obj)</li>
+<li>result &amp;&amp; typeof result === ‘object’ ? return result : return obj</li>
+</ol>
+<p>用语言描述就是，首先用f.prototype构造一个Object，这里命名为obj，然后将obj作为参数this去调用构造函数f，返回值为result，如果result是一个对象，则返回它，也就意味着test = result，否则 test = obj。</p>
+<p>然后再看prototype是什么东西吧，举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var p = &#123;&quot;a&quot;:1, &quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f = function()&#123;this.d = 3&#125;</span><br><span class="line">f.prototype = p</span><br><span class="line">var t = new f()</span><br><span class="line">console.log(t.d)</span><br><span class="line">console.log(t.a)</span><br></pre></td></tr></table></figure>
+<p>这里p是一个对象，f是一个构造函数，将f的prototype设为p，当使用f构造出一个对象t出来时，t会有一个属性__proto__,它就指向了p</p>
+<p>当我们获取t.d时，t是有d属性的，这个没问题<br>当我们获取t.a时，t没有a属性，此时会沿着它的原型链往上查找，也就是查找它的__proto__，也就是p，p是有a属性的，所以将a的值返回。我们可以使用Object类上的一个方法hasOwnProperty来判断一个属性或方法是对象本身的，还是原型链上的。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(t.hasOwnProperty(&quot;a&quot;))	//false</span><br><span class="line">console.log(t.hasOwnProperty(&quot;d&quot;))	//true</span><br></pre></td></tr></table></figure>
+<p>上面说的是取值，赋值的时候就稍微复杂些，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.a = 11;</span><br><span class="line">t.b.c = 12</span><br></pre></td></tr></table></figure>
+<p>执行第一句话，也就是对于基础数据类型，在chrome控制台上可以看到t的属性列表里出现了a并且值为11，而p的a仍然是1不变。也就是对原型上的基础数据类型赋值，不会影响原型，而是自身多了一个这样的属性。但使用hasOwnProperty看，仍然为false，这应该是js的一些不完善的地方吧。</p>
+<p>执行第二句话，可以看到p的b变成了{“c”:12}，也就是修改原型链上的非基础数据类型，会改变原型链本身。这也是javascript中使用类继承比使用原型继承更好的原因之一。下篇再分别讲这两种继承方式</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/17/svnignore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/17/svnignore/" itemprop="url">svn忽略文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-17T11:28:59+08:00">
+                2016-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在svn项目中，对于不需要加入版本管理的文件，可以使用svn propedit svn:ignore来进行设置</p>
+<p>在执行这句之前，需要先设置好SVN_EDITOR环境变量，例如在~/.bash_profile内添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export SVN_EDITOR=emacs</span><br></pre></td></tr></table></figure>
+<p>然后执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn propedit svn:ignore .</span><br></pre></td></tr></table></figure>
+<p>这里的.表示对当前目录进行设置，此时会打开你指定的编辑器界面，在里面写上你需要忽略的文件名或者正则表达式即可.<br>但这句命令，只会影响你指定的路径的子文件及文件夹，而不会递归影响到更深层次。例如在编辑界面填上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dir1</span><br><span class="line">dir2/dir21/dir211</span><br></pre></td></tr></table></figure>
+<p>这里dir1会被忽略，而dir211不会，如果需要忽略dir211，要么在当前目录下执行svn propedit svn:ignore dir2/dir21 要么切换到dir2/dir21目录下执行svn propedit svn:ignore . 然后填写的内容都是dir211</p>
+<p>在网上看到一个解释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Each and every directory in Subversion can be thought of its own</span><br><span class="line">module, so there&apos;s no real way for Subversion to know that</span><br><span class="line">foo/bar/barfoo is a directory in module /foo/bar, or a another</span><br><span class="line">separate module module.</span><br><span class="line"></span><br><span class="line">That means there&apos;s no way for Subversion to know how to handle</span><br><span class="line">properties that can affect an entire directory tree. Plus, it would be</span><br><span class="line">difficult to know exactly what parent directory is affecting a child</span><br><span class="line">directory.</span><br></pre></td></tr></table></figure>
+<p>最后提醒一下，只有还没有被加入版本管理的文件会被忽略，如果文件已经加入了版本管理，那设置了忽略也没用。其次，设置了忽略的文件，仍然可以被添加进版本管理中。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

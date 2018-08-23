@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近我一直在考虑是否要移除项目中的redux使用，要做这个决定，首先是要搞明白redux的目的是什么，然后看看使用redux有哪些利弊。网上最适合了解redux的是redux中文文档。 假设我们只有一个界面，那肯定不需要redux了，直接对this.state操作就行了，但如果有两个界面A和B，在A界面的操作需要改变B界面，在B界面的操作需要改变A界面，那么要么它们互相暴露接口，要么让它们把sta">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之手动实现一个Redux">
+<meta property="og:url" content="http://yangguang1029.github.io/2018/02/27/rn-manual-redux/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="最近我一直在考虑是否要移除项目中的redux使用，要做这个决定，首先是要搞明白redux的目的是什么，然后看看使用redux有哪些利弊。网上最适合了解redux的是redux中文文档。 假设我们只有一个界面，那肯定不需要redux了，直接对this.state操作就行了，但如果有两个界面A和B，在A界面的操作需要改变B界面，在B界面的操作需要改变A界面，那么要么它们互相暴露接口，要么让它们把sta">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative之手动实现一个Redux">
+<meta name="twitter:description" content="最近我一直在考虑是否要移除项目中的redux使用，要做这个决定，首先是要搞明白redux的目的是什么，然后看看使用redux有哪些利弊。网上最适合了解redux的是redux中文文档。 假设我们只有一个界面，那肯定不需要redux了，直接对this.state操作就行了，但如果有两个界面A和B，在A界面的操作需要改变B界面，在B界面的操作需要改变A界面，那么要么它们互相暴露接口，要么让它们把sta">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2018/02/27/rn-manual-redux/"/>
+
+
+
+
+
+  <title>ReactNative之手动实现一个Redux | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/02/27/rn-manual-redux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative之手动实现一个Redux</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-27T19:15:36+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近我一直在考虑是否要移除项目中的redux使用，要做这个决定，首先是要搞明白redux的目的是什么，然后看看使用redux有哪些利弊。网上最适合了解redux的是<a href="http://www.redux.org.cn/" target="_blank" rel="noopener">redux中文文档</a>。</p>
+<p>假设我们只有一个界面，那肯定不需要redux了，直接对this.state操作就行了，但如果有两个界面A和B，在A界面的操作需要改变B界面，在B界面的操作需要改变A界面，那么要么它们互相暴露接口，要么让它们把state放到共同的父组件里然后通过props传递下去，这样已经很复杂了，一旦有更多页面，它们之间互相影响，那就是一场噩梦了。要解决这个问题，就需要把数据和UI分离，所有界面渲染所需要的state，都存在一个大仓库里，这就是redux里的store。每个界面从仓库里取自己需要的state来进行渲染，当A界面的操作需要修改B界面时，它直接去修改仓库里B界面需要的数据，然后通知一下B界面刷新。在redux里是通过dispatch一个action来通知store修改数据的，如何修改则在reducer里实现，当reducer修改好数据后，会通知绑定了相关数据的界面执行setState进行界面刷新，这是通过react-redux提供的connect函数实现的。这就是redux做的所有事情，就仅此而已，我们可以很容易的自己实现，只需要实现一个数据中心，提供修改数据的接口，然后给页面提供监听即可。</p>
+<p>为了避免描述不够清晰，以一个实际场景为例的话，我们有一些好友列表数据，那么我们实现一个FriendManager类，这个FriendManager做成全局单例对象，每个页面都可以调用它的接口。现在我们有个好友列表界面A，进入这个界面时还没有数据，我们需要显示loading界面，很简单，A界面直接来一个</p>
+<pre><code>this.state = {isLoading:true, friends:[]}
+</code></pre><p>就行了，不用像使用redux时考虑哪些state放到store里管理，哪些自己管理。</p>
+<p>然后调用接口去像服务器请求数据，例如</p>
+<pre><code>FriendManager.requestData();
+</code></pre><p>为了收到数据后能够刷新界面，我们需要注册监听事件，例如</p>
+<pre><code>NotificationCenter.addListener(UPDATE_FRIEND, this._updateFriend);
+</code></pre><p>数据回来了，存储在FriendManager内，然后触发监听通知A界面</p>
+<pre><code>NotificationCenter.trigger(UPDATE_FRIEND, data);
+</code></pre><p>在A界面的回调函数里</p>
+<pre><code>_updateFriend(data){
+    this.setState({isLoading:false, friends:data})
+}
+</code></pre><p>搞定，页面刷新了。现在我们有个好友详情界面B，在这个界面删除好友，这需要改变界面A，很简单，FriendManager提供一个接口</p>
+<pre><code>FriendManager.removeFriend=function(friendID){
+    this._friends.splice(...);
+    NotificationCenter.trigger(UPDATE_FRIEND, this._friends);
+}
+</code></pre><p>B界面调用这个接口，A界面就收到通知进行刷新了，不管AB界面隔得多遥远，也不管有多少个界面会互相影响，他们没有任何耦合。</p>
+<p>redux基于这个核心目的做了一些优化，例如使用action来代替直接调用FriendManager内的方法，这样可以更加清晰明了，开发者很明确要做一件什么事情。但抽象成action是有代价的，开发者需要理解action的概念，然后需要实现很多生成action的方法。像redux三大原则（单一数据源，state只读，reducer为纯函数），再加上middleware, sagas，immutable.js等等，很多人就晕头转向了，这就是我认为的使用redux的弊端吧，我们的项目一开始就引入了redux，但搭了个框架后，大家都不用，又要写action，又要写reducer，还要去connect，就算写了，也不考虑immutable原则。所以还是看项目的实际情况吧，如果确实不是很复杂的场景，例如上面举的好友列表数据管理方案，其实自己实现倒更直观。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/26/rn-android-communicate/" rel="next" title="ReactNative之js与native通信流程（Android篇）">
+                <i class="fa fa-chevron-left"></i> ReactNative之js与native通信流程（Android篇）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/28/rn-props-children/" rel="prev" title="ReactNative之props.children">
+                ReactNative之props.children <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

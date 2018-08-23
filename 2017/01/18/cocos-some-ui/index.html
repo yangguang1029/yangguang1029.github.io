@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cocos," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。 scale9Sprite jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto">
+<meta name="keywords" content="cocos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos之部分ui控件的使用">
+<meta property="og:url" content="http://yangguang1029.github.io/2017/01/18/cocos-some-ui/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。 scale9Sprite jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.773Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos之部分ui控件的使用">
+<meta name="twitter:description" content="现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。 scale9Sprite jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2017/01/18/cocos-some-ui/"/>
+
+
+
+
+
+  <title>cocos之部分ui控件的使用 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/18/cocos-some-ui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cocos之部分ui控件的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-18T16:11:42+08:00">
+                2017-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。</p>
+<h3 id="scale9Sprite"><a href="#scale9Sprite" class="headerlink" title="scale9Sprite"></a>scale9Sprite</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/cocos/ui/UIScale9Sprite.cpp内</li>
+<li>scale9的实现原理是将纹理根据设定的区域，生成9个sprite，然后batch渲染</li>
+<li>它可以跟sprite一样通过setSpriteFrame来切换纹理，但切换之后需要重新执行setPreferredSize。否则显示不正确</li>
+</ul>
+<p>用的比较多的接口有:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame);</span><br><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame, const Rect&amp; capInsets);</span><br><span class="line">create(const std::string&amp; file);</span><br><span class="line"></span><br><span class="line">//实际显示大小</span><br><span class="line">setPreferredSize(const Size&amp; preferedSize)</span><br><span class="line">//设定缩放区域</span><br><span class="line">setCapInsets(const Rect&amp; capInsets)</span><br></pre></td></tr></table></figure>
+<h3 id="EditBox"><a href="#EditBox" class="headerlink" title="EditBox"></a>EditBox</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/cocos/ui/UIEditBox/UIEditBox.cpp内</li>
+<li>只需要注意它的各个状态的sprite都是scale9即可</li>
+</ul>
+<p>使用较多的接口有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create(const Size&amp; size, Scale9Sprite* normalSprite, Scale9Sprite* pressedSprite = nullptr, Scale9Sprite* disabledSprite = nullptr);</span><br><span class="line"></span><br><span class="line">setFontSize(int fontSize);</span><br><span class="line">setFontColor(const Color3B&amp; color);</span><br><span class="line">setPlaceHolder(const char* pText);	//提示字符串</span><br><span class="line"></span><br><span class="line">getString();	//在C++接口是getText，注意名称不一样</span><br></pre></td></tr></table></figure>
+<h3 id="Controlbutton"><a href="#Controlbutton" class="headerlink" title="Controlbutton"></a>Controlbutton</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCControlExtension/CCControlButton.cpp内</li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create(cocos2d::ui::Scale9Sprite* sprite)</span><br><span class="line">create(const std::string&amp; title, const std::string&amp; fontName, float fontSize)</span><br><span class="line"></span><br><span class="line">setPreferredSize(const Size&amp; size)</span><br><span class="line">setBackgroundSpriteForState(ui::Scale9Sprite* sprite, State state)</span><br><span class="line">setEnabled(bool enabled)</span><br><span class="line"></span><br><span class="line">//绑定事件</span><br><span class="line">button.addTargetWithActionForControlEvents(this, this._onClickSend, cc.CONTROL_EVENT_TOUCH_UP_INSIDE);</span><br></pre></td></tr></table></figure>
+<h3 id="scrollView"><a href="#scrollView" class="headerlink" title="scrollView"></a>scrollView</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCScrollView.cpp内</li>
+<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内</li>
+<li>scrollView本身的大小是viewSize。它内部有一个container，当我们执行addChild时，实际上是被加到了这个container里，它的大小比viewSize要大，所以才可以滚动，设置它的大小是setContentSize。这是与其他node的setContentSize方法不一样的地方，需要注意。</li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create()</span><br><span class="line">create(Size size, Node* container/* = nullptr*/)</span><br><span class="line"></span><br><span class="line">setContainer(Node * pContainer)</span><br><span class="line">addChild(Node * child, int zOrder, int tag)</span><br><span class="line"></span><br><span class="line">setDelegate()</span><br><span class="line">setDirection(Direction eDirection)</span><br><span class="line"></span><br><span class="line">setContentSize(const Size &amp; size)</span><br><span class="line">setViewSize(Size size)</span><br><span class="line">setContentOffset(Vec2 offset, bool animated/* = false*/)</span><br><span class="line"></span><br><span class="line">//回调</span><br><span class="line">scrollViewDidScroll(ScrollView* view)</span><br></pre></td></tr></table></figure>
+<h3 id="tableView"><a href="#tableView" class="headerlink" title="tableView"></a>tableView</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCTableView.cpp内</li>
+<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内,在这里也额外定义了一个create方法，而没有放在上面的jsbinding里</li>
+<li>js-bindings/bindings/script/extension/jsb_ext_create_apis.js定义了新的构造函数cc.TableView.prototype._ctor = function(dataSouurce, size, container)，所以可以直接new</li>
+<li>在jsbinding的init函数里，以及create函数里，都会自动调用一次reloadData，所以在js层代码中，新建一个tableView是不需要手动调用reloadData的，而C++代码则需要。 </li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setDirection(Direction eDirection)</span><br><span class="line">setVerticalFillOrder(VerticalFillOrder fillOrder)</span><br><span class="line">reloadData()</span><br><span class="line"></span><br><span class="line">//回调就不写了，基本上都会知道</span><br></pre></td></tr></table></figure>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>像checkbox,ControlSlider等用的不多的，可以临时去查一下。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cocos/" rel="tag"># cocos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/12/cocos-ccb/" rel="next" title="cocos之使用ccb的一些坑">
+                <i class="fa fa-chevron-left"></i> cocos之使用ccb的一些坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/04/cocos-transitionScene/" rel="prev" title="cocos之Scene的切换">
+                cocos之Scene的切换 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#scale9Sprite"><span class="nav-number">1.</span> <span class="nav-text">scale9Sprite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EditBox"><span class="nav-number">2.</span> <span class="nav-text">EditBox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controlbutton"><span class="nav-number">3.</span> <span class="nav-text">Controlbutton</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollView"><span class="nav-number">4.</span> <span class="nav-text">scrollView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tableView"><span class="nav-number">5.</span> <span class="nav-text">tableView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它"><span class="nav-number">6.</span> <span class="nav-text">其它</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

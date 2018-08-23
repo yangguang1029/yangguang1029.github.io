@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看官方文档 一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。 初始化let Nav = StackNavigato">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之react-navigation使用">
+<meta property="og:url" content="http://yangguang1029.github.io/2017/12/19/rn-navigation/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看官方文档 一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。 初始化let Nav = StackNavigato">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative之react-navigation使用">
+<meta name="twitter:description" content="react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看官方文档 一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。 初始化let Nav = StackNavigato">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2017/12/19/rn-navigation/"/>
+
+
+
+
+
+  <title>ReactNative之react-navigation使用 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/19/rn-navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative之react-navigation使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-19T20:18:36+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看<a href="https://reactnavigation.org/" target="_blank" rel="noopener">官方文档</a></p>
+<p>一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><pre><code>let Nav = StackNavigator(RouterConfigs, StackNavigatorConfig)
+</code></pre><p><strong>RouteConfigs</strong>是一个Object，用于注册所有可以跳转的界面。如果需要跳转的界面比较多，可以写一个脚本来生成，每个key-value形式为</p>
+<pre><code>screen1: {
+    screen:MyComponent,
+    path:xxx,
+    navigationOptions:({navigation})=&gt;({
+        title:xxx
+    })
+}
+</code></pre><p>screen对应Component类的名称，navigationOptions是一个回调函数，它会在每次界面被push时调用。它的参数是</p>
+<pre><code>{navigation:xxx, navigationOptions:xxx, screenProps:xxx}
+</code></pre><p>我们可以从这个参数中解构出navigation，获取很多有用的信息，比如传入的参数navigation.state.params等等。然后返回一个Object，这个返回的Object被称为Screen Navigation Options，它用来设置一些UI属性，比如当前界面标题文字，标题栏样式等。</p>
+<p><strong>StackNavigatorConfig</strong>是一个Object,它可以指定初始显示哪个界面，可以指定整个StackNavigator通用的样式等。例如我们希望所有的界面都不需要显示标题栏，那么在这里设置headerMode为none即可。</p>
+<h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><p>每个在RouteConfigs里注册了的screen都是一个Component类，它的props都会自动多了一个navigation属性，也就是</p>
+<pre><code>this.props.navigation
+</code></pre><p>通过它可以进行界面跳转，回跳，获取参数等操作。</p>
+<ul>
+<li>navigate 这是一个function，通过它来进行界面跳转。 形式为 navigate(routeName, params, action)，也就是push一个在RouteConfigs里key为routeName的界面，传递参数为params。 每次navigate一个界面都是新生成界面然后push，不会重用stack里已有界面。</li>
+<li>state 这是一个object, 它的内容为{routeName:xxx, key:xxx, params:{xxx}} 这里routeName就是当前界面在RouteConfigs里注册时的用的key（也就是示例中的screen1）, key则是系统自动生成的一个属性，这个key在使用goBack()函数指定跳回到某个界面时需要用到。params则是跳转时传入的参数，所以我们使用this.props.navigation.state.params来获取传入的参数。</li>
+<li>setParams 这是一个function，使用它改变传入的参数</li>
+<li>goBack 这是一个function，通过它返回到之前的界面，如果不带参数，则默认为退出当前界面回到上一层，如果参数为null，官方文档说<code>go back anywhere, without specifying what is getting closed</code>,看起来有点奇怪，不明白go back anywhere是不是任意跳转，但通过demo测试发现和不带参数表现是一样的。如果传入参数，则表示从传入参数代表的界面网上跳转一层，<strong>注意这个参数不是RouteConfigs里的key（即screen1），而是上面state里的那个key(即this.props.navigation.state.key)</strong>，因为只能获取当前界面的this.props.navigation.state.key，所以在A界面回跳需要B界面的key时，需要把B界面的key存起来或者传递给A。</li>
+<li>dispatch 这是一个function，用来发布一个action，这个接口用的不多，属于比较深入的用法，具体查看官方文档。</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>上面代码里生成的Nav本身是一个Component，所以不要把它想复杂了，就当做一个普通的Component来使用就可以了。</p>
+<p>如果把Nav传给AppRegistry.registerComponent来作为起始Component。那很简单，在RouteConfigs里注册的各个界面里使用this.props.navigation进行操作就可以了。</p>
+<p>如果作为一个普通Component使用，它的父容器内其它component想要进行navigator跳转，则通过它的ref来进行操作。例如</p>
+<pre><code>render(){
+    return &lt;View&gt;
+        &lt;Button onPress={()=&gt;{
+            this._ref &amp;&amp; this._ref.dispatch(
+                  NavigationActions.navigate({ routeName: someRouteName })
+            );
+        }}/&gt;
+        &lt;Nav ref={(c)=&gt;this._ref=c}/&gt;
+    &lt;/View&gt;
+}
+</code></pre><p>其它例如TabNavigator，DrawerNavigator的使用，大体和StackNavigator类似。其它高端的操作例如自定义Navigator,自定义Route等都参考官方文档。</p>
+<h3 id="回跳多个界面的解决方案"><a href="#回跳多个界面的解决方案" class="headerlink" title="回跳多个界面的解决方案"></a>回跳多个界面的解决方案</h3><p>老版本的navigator可以通过routes列表获取当前的界面栈，也有popToRoute(),popToTop()这样的接口可以直接跳转。而react-navigation则没有界面栈的信息，只能通过goBack()传入一个key来指定跳转，这个key还只能获取到当前所在界面的，没法获取其他界面的key。如果要回跳多个界面，一个解决方案就是在需要回跳的目标界面获取key，通过props一路传递下来，然后在跳转界面使用。例如</p>
+<pre><code>//A.js
+toB(){
+    let key = this.props.navigation.state.key;
+    this.props.navigation.navigate(&quot;B&quot;, {returnKey:key});    
+}
+//B.js
+toC(){
+    this.props.navigation.navigate(&quot;C&quot;, 
+    {returnKey：this.props.navigation.state.params.returnKey});
+}
+//C.js
+back(){
+    this.props.navigation.goBack(this.props.navigation.state.params.returnKey)
+}
+</code></pre><p>这里从A传入key，在C界面跳转，注意并不是跳转到A界面，而是从A界面离开，调到A之前的一个界面。如果不通过传递的话，也可以把key存成全局变量，这样可以比较简单的实现回跳多个界面。还有一种hack的手段，就是获取navigation的ref，然后操作它的私有成员属性或者方法，来获取到调用栈信息进行跳转，最好还是避免使用这种方法吧。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/16/rn-layoutanimation/" rel="next" title="ReactNative之使用LayoutAnimation创建动画">
+                <i class="fa fa-chevron-left"></i> ReactNative之使用LayoutAnimation创建动画
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/21/rn-pureComponent/" rel="prev" title="ReactNative之PureComponent">
+                ReactNative之PureComponent <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#跳转"><span class="nav-number">2.</span> <span class="nav-text">跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回跳多个界面的解决方案"><span class="nav-number">4.</span> <span class="nav-text">回跳多个界面的解决方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

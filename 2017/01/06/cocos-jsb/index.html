@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cocos," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看官网。 如果能尽量看明白jsbindin">
+<meta name="keywords" content="cocos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos之jsbinding">
+<meta property="og:url" content="http://yangguang1029.github.io/2017/01/06/cocos-jsb/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看官网。 如果能尽量看明白jsbindin">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.772Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos之jsbinding">
+<meta name="twitter:description" content="jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看官网。 如果能尽量看明白jsbindin">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2017/01/06/cocos-jsb/"/>
+
+
+
+
+
+  <title>cocos之jsbinding | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/06/cocos-jsb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cocos之jsbinding</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-06T10:31:04+08:00">
+                2017-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/JSAPI_User_Guide" target="_blank" rel="noopener">官网</a>。</p>
+<p>如果能尽量看明白jsbinding的相关代码，在碰到问题时可以更快的解决，比如很常见的invalid native object报错，通过看代码可以知道它是找不到与js对象绑定的c++对象，比如js代码报错说某个方法是undefined时，我们可以去jsbinding的实现代码里查看一下这个方法是否封装进去了，比如一些类或者方法和属性在c++层和js层的名称不一样等等。</p>
+<h4 id="js调用C-代码"><a href="#js调用C-代码" class="headerlink" title="js调用C++代码"></a>js调用C++代码</h4><p>我们在AppDelegate.cpp里可以看到很多cocos的注册函数，通过这些函数，将c++类注册到js的环境中，然后就可以在js代码里构造这个类的实例，调用它的方法。我们基本上照抄就可以实现一个，代码就不贴了</p>
+<ul>
+<li>jsb_myclass_class-&gt;name 这个name就是在js代码中用来执行new时候的类名称</li>
+<li>JS_SetProperty(cx, proto, “__is_ref”, JS::FalseHandleValue); 根据C++类是否继承自Ref，设为True或者False</li>
+<li>注册属性(静态属性和成员属性)和方法(静态方法和成员方法)，按照类似的格式去实现即可</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">static JSPropertySpec properties[] = &#123;</span><br><span class="line">       JS_PSGS(&quot;myProp&quot;, _js_get_myProp, _js_set_myProp, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_PS_END</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   static JSFunctionSpec funcs[] = &#123;</span><br><span class="line">       JS_FN(&quot;func&quot;, js_MyClass_func, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_FS_END</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们在js代码中执行new MyClass时，就会调用C++层的 js_MyClass_constructor函数，在这里会新建一个c++对象，并新建一个js对象，然后建立映射关系，之后在互相调用的时候，才可以找得到彼此</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_constructor(JSContext *cx, uint32_t argc, jsval *vp)</span><br><span class="line">&#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    bool ok = true;</span><br><span class="line">    MyClass* cobj = new (std::nothrow) MyClass();</span><br><span class="line">    </span><br><span class="line">    js_type_class_t *typeClass = js_get_type_from_native&lt;MyClass&gt;(cobj);  //从_js_global_type_map里获取，是在下面jsb_register_class的时候存进去的</span><br><span class="line">    </span><br><span class="line">    // link the native object with the javascript object</span><br><span class="line">    </span><br><span class="line">    JS::RootedObject proto(cx, typeClass-&gt;proto.ref());</span><br><span class="line">    JS::RootedObject parent(cx, typeClass-&gt;parentProto.ref());</span><br><span class="line">    JS::RootedObject jsObj(cx, JS_NewObject(cx, typeClass-&gt;jsclass, proto, parent));</span><br><span class="line">    js_proxy_t* newproxy = jsb_new_proxy(cobj, jsObj);</span><br><span class="line">    JS::AddNamedObjectRoot(cx, &amp;newproxy-&gt;obj, &quot;MyClass&quot;);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    args.rval().set(OBJECT_TO_JSVAL(jsObj));</span><br><span class="line">    if (JS_HasProperty(cx, jsObj, &quot;_ctor&quot;, &amp;ok) &amp;&amp; ok)</span><br><span class="line">        ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jsObj), &quot;_ctor&quot;, args);</span><br><span class="line">   //如果js层实现了_ctor方法，则调用它</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后看一个简单的绑定C++函数到js中的实现。在这里我们看到了很眼熟的”invalid native object”。我们首先获取到js中的this，然后通过映射找到c++中的对象，然后调用方法即可。如果绑定静态方法，因为不需要实例，所以非常简单，直接执行即可。获取当前的js对象，并以此获取绑定的c++对象，这些代码能看懂并使用就足够了。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_func(JSContext *cx, uint32_t argc, jsval *vp) &#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    JS::RootedObject jsobj(cx, args.thisv().toObjectOrNull());</span><br><span class="line">    js_proxy_t *proxy = jsb_get_js_proxy(jsobj);</span><br><span class="line">    MyClass* cobj = (MyClass *)(proxy ? proxy-&gt;ptr : NULL);</span><br><span class="line">    JSB_PRECONDITION2( cobj, cx, false, &quot;Invalid Native Object&quot;);</span><br><span class="line">    </span><br><span class="line">    if (cobj) &#123;</span><br><span class="line">        cobj-&gt;func();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        JS_ReportError(cx, &quot;Error: SocketIO instance is invalid.&quot;);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="C-调用js"><a href="#C-调用js" class="headerlink" title="C++调用js"></a>C++调用js</h4><p>前面代码能差不多明白的话，c++调用js的其实也很好写，这里贴一段例子代码，它就不再是从cocos引擎内拷贝的，而是我自己写的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void MyClass::calljs() &#123;</span><br><span class="line">    JSContext *cx = ScriptingCore::getInstance()-&gt;getGlobalContext();</span><br><span class="line">    </span><br><span class="line">    js_proxy_t *proxy = jsb_get_native_proxy(this);</span><br><span class="line">    JSObject* jso = proxy-&gt;_jsobj;</span><br><span class="line">    </span><br><span class="line">    std::string param = &quot;test111&quot;;</span><br><span class="line">    jsval jsparam = std_string_to_jsval(cx, param);</span><br><span class="line">    JS::RootedValue retval(cx);</span><br><span class="line">    std::string ret = &quot;&quot;;</span><br><span class="line">    std::string funcName = &quot;calljs&quot;;</span><br><span class="line">    </span><br><span class="line">    bool success = ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jso), funcName.c_str(), 1, &amp;jsparam, &amp;retval);</span><br><span class="line">    if(success) &#123;</span><br><span class="line">        if(retval.isString()) &#123;</span><br><span class="line">           jsval_to_std_string(cx, retval, &amp;ret);</span><br><span class="line">            CCLOG(&quot;return....%s &quot; , ret.c_str());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        CCLOG(&quot;excute failed ...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在C++代码中调用这个函数，它会调用绑定的对象在js中的calljs函数，并可以传递参数和接受返回值。</p>
+<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>cocos封装了很多辅助函数，例如类型转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jsval_to_std_string</span><br><span class="line">std_string_to_jsval</span><br><span class="line">OBJECT_TO_JSVAL</span><br><span class="line">ccpoint_to_jsval</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p>一般来说是够用了，需要的时候，多去引擎内部找找就可以了</p>
+<p>另外，除了关注js-binding相关的代码外，cocos引擎在js层也有很多封装代码，位于js-bindings/bindings/script文件夹内。例如我们看tableView的jsbinding，它的构造方法是接受0个参数，但实际上我们可以这么写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var tableView = new cc.TableView(this, tsize);</span><br></pre></td></tr></table></figure>
+<p>原因就是在jsb_ext_create_apis.js内有这么一段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cc.TableView.prototype._ctor = function(dataSouurce, size, container) &#123;</span><br><span class="line">    container == undefined ? this._init(dataSouurce, size) : this._init(dataSouurce, size, container);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>它在js层实现了_ctor方法，而我们前面说到，在jsbinding的constructor函数里，如果发现js对象有_ctor方法，则会调用它，所以这个方法被调用，它执行了_init方法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cocos/" rel="tag"># cocos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/21/new-cocos/" rel="next" title="一个简单的联网棋牌游戏开发流程">
+                <i class="fa fa-chevron-left"></i> 一个简单的联网棋牌游戏开发流程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/12/cocos-ccb/" rel="prev" title="cocos之使用ccb的一些坑">
+                cocos之使用ccb的一些坑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#js调用C-代码"><span class="nav-number">1.</span> <span class="nav-text">js调用C++代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-调用js"><span class="nav-number">2.</span> <span class="nav-text">C++调用js</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tips"><span class="nav-number"></span> <span class="nav-text">tips</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

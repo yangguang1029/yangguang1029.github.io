@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react-native,react,react native,cocos" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="杨光的笔记">
+<meta property="og:url" content="http://yangguang1029.github.io/page/2/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="杨光的笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/page/2/"/>
+
+
+
+
+
+  <title>杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/02/26/rn-android-communicate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/26/rn-android-communicate/" itemprop="url">ReactNative之js与native通信流程（Android篇）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-26T20:18:36+08:00">
+                2018-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这篇文章简要介绍一下android平台，js和java互相调用时，经过的流程。</p>
+<h3 id="js调用java"><a href="#js调用java" class="headerlink" title="js调用java"></a>js调用java</h3><p>要从js端调用java代码，需要把java端能被调用的接口，在js代码中进行注册。这个实现在react-native/Libraries/BatchedBridge/NativeModules.js文件中。</p>
+<p>看NativeModules.js内的代码里有：</p>
+<pre><code>let NativeModules : {[moduleName: string]: Object} = {};
+if (global.nativeModuleProxy) {
+    NativeModules = global.nativeModuleProxy;
+} else {
+    const info = genModule(config, moduleID);
+    NativeModules[info.name] = info.module;
+}
+</code></pre><p>这里把代码简化了一下，这段代码其实是说明了两种情况，当加载离线bundle时，genModule是从ReactCommon/cxxreact/JSCNativeModules.cpp里调进来的，否则是从ReactAndroid/src/main/jni/react/jni/ProxyExecutor.cpp里把__fbBatchedBridgeConfig传进来然后解析的。具体的细节不用深究。总之java端有哪些接口可供调用，模块名函数名等信息传到js层，然后经过一层封装，实际调用了MessageQueue里的enqueueNativeCall方法。</p>
+<p>在enqueueNativeCall方法里我们可以看到一个细节，就是js对原生的调用是被存储在队列里的，每5毫秒把这些请求集中交给原生处理并清空一次队列。从js开始进入原生代码的入口是</p>
+<pre><code>global.nativeFlushQueueImmediate(queue);
+</code></pre><p>这个方法定义在ReactCommon/cxxreact/JSCExecutor.cpp中。它的实现是</p>
+<pre><code>m_delegate-&gt;callNativeModules(*this, folly::parseJson(queueStr), false);
+</code></pre><p>这个m_delegate如果一路跟踪的话，就会发现是一个JsToNativeBridge类实例，这个类定义在ReactCommon/cxxreact/NativeToJsBridge.cpp中。JsToNativeBridge的callNativeModules方法实现为</p>
+<pre><code>m_registry-&gt;callNativeMethod(call.moduleId, call.methodId, std::move(call.arguments), call.callId);
+</code></pre><p>进入ModuleRegistry类的callNativeMethod方法中，发现执行的是NativeModule类的invoke方法，而继承自NativeModule类的有两个：一个是ReactCommon/cxxreact/CxxNativeModule.h，我们用它实现了js与C++的直接通信，这个以后有空再写。另一个是ReactAndroid/src/main/jni/react/jni/JavaModuleWrapper.h里的JavaNativeModule。JavaNativeModule的invoke方法通过JNI调用了java方法。</p>
+<pre><code>static auto invokeMethod = wrapper_-&gt;getClass()-&gt;getMethod&lt;void(jint, ReadableNativeArray::javaobject)&gt;(&quot;invoke&quot;);
+</code></pre><p>然后我们去寻找JavaNativeModule类在java层对应的什么类。回到前面跟踪的路线，JsToNativeBridge的实例来自于NativeToJsBridge类的构造函数，而NativeToJsBridge的实例来自于Instance.cpp的initializeBridge方法，然后跟踪到CatalystInstanceImpl.cpp里的initializeBridge方法，这是个JNI方法，java层传过来的javaModules就是在这个函数里，被封装成了JavaNativeModule类。我们找到ReactAndroid/src/main/java/com/facebook/react/bridge/CatalystInstanceImpl.java里的initializeBridge方法，就知道C++中的JavaNativeModule对应了java中的JavaModuleWrapper类，这样最终我们就调用了JavaModuleWrapper类里的invoke方法。</p>
+<h3 id="java调用js"><a href="#java调用js" class="headerlink" title="java调用js"></a>java调用js</h3><p>源代码中有一个很好的从java调用js的例子，就是ReactRootView里的代码</p>
+<pre><code>String jsAppModuleName = getJSModuleName();
+catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, appParams);
+</code></pre><p>从CatalystInstanceImpl.java的getJSModule方法里我们能看出，所有java能调用的js接口，都是继承自JavaScriptModule类，我们可以在项目中搜一下，就能默认有哪些类可以调用了，例如我们最常用的DeviceEventManagerModule。在JavaScriptModuleRegistry类中通过动态代理创建JavaScriptModule，这块我不太了解，所以只能跳过去了。实际我们调用的是JavaScriptModuleInvocationHandler类的invoke方法，它调用了CatalystInstanceImpl.java内的callFunction方法。然后通过PendingJSCall类的call方法，调用了</p>
+<pre><code>catalystInstance.jniCallJSFunction(mModule, mMethod, arguments);
+</code></pre><p>这是一个JNI方法，于是进入到了ReactAndroid/src/main/jni/react/jni/CatalystInstanceImpl.cpp内，然后来到ReactCommon/cxxreact/Instance.cpp的callJSFunction方法，然后是NativeToJsBridge的callFunction方法，再来到JSCExecutor的callFunction方法，在这里找到MessageQueue.js里的callFunctionReturnFlushedQueue方法调用。看messageQueue.js的__callFunction方法里，实现是</p>
+<pre><code>const moduleMethods = this.getCallableModule(module);
+</code></pre><p>哪些模块能够被调用，来自于MessageQueue类的registerLazyCallableModule，在Libraries文件夹内搜一下，就能找到Libraries/Core/InitializeCore.js。到这里就顿时清楚了，这些类在Java层中以继承自JavaScriptModule的interface形式记录下来，在js层中具体实现，然后按照上述流程最终执行js代码。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/02/25/rn-reconciliation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/25/rn-reconciliation/" itemprop="url">ReactNative之VirtualDomTree的diff原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-25T19:15:36+08:00">
+                2018-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以前在解决一次flatlist没有局部刷新的问题时，写了一篇<a href="http://guangy.coding.me/2018/01/06/rn-flatlist-keyExtractor/" target="_blank" rel="noopener">博客</a>里面提到了官方的一篇文档叫做<a href="https://reactjs.org/docs/reconciliation.html" target="_blank" rel="noopener">reconciliation</a>。前阵子有人问我react的virtualDomTree的diff算法是怎么实现的，有没做什么优化点。我知道是这篇文章里的内容，但当时却说不清楚，这让我觉得我对这篇文章其实理解的并不够，所以把它再看一遍，然后把自己的理解记录下来，但这并不是翻译，完全是按照我自己的理解来写的，并不会非常严谨，但应该不会有误，如果有不同看法欢迎讨论。</p>
+<p>正常来说，Dom树的diff算法复杂度是O(n^3)，如果页面很复杂时，性能就非常低了，比如有1000个节点的树，需要比较一亿次。React进行优化后，实际的复杂度降低到了O(n)，它基于两个原则：</p>
+<ol>
+<li>两个节点类型不同的话，以其为根节点的树也完全不同</li>
+<li>通过节点的key属性，可以定位新旧Dom树上对应的节点，来判定是否需要rerender</li>
+</ol>
+<p>首先看如何比较，假定我们已经确定了要比较的节点</p>
+<ol>
+<li>如果节点类型不同，比如原来是Image，现在是View。那么以这个节点为根节点的整个Dom树都需要新建。它本身的属性，以及所有的子节点都没有比较的必要了。</li>
+<li>如果节点类型相同，那么就比较它的属性，只有那些发生了变化的属性会被记录下来，然后进行更新，没有发生变化的属性也就保持不变。然后循环遍历它的所有子孙节点进行比较。</li>
+</ol>
+<p>需要注意一下，一旦一个节点比较有了diff，也就是变得dirty，那么它本身以及所有的子孙节点，都会变成dirty。diff会生成，但是否触发re-render取决于具体实现。不要误认为只要有diff必然会导致re-render，或者只要没触发re-render就没有diff。</p>
+<p>然后就是我们怎么确定某个节点在新旧Dom树上如何对应的，假设下面这种场景</p>
+<pre><code>//old
+&lt;View&gt;
+    &lt;Text&gt;1&lt;/Text&gt;
+    &lt;Text&gt;2&lt;/Text&gt;
+&lt;/view&gt;
+//new1
+&lt;View&gt;
+    &lt;Text&gt;1&lt;/Text&gt;
+    &lt;Text&gt;2&lt;/Text&gt;
+    &lt;Text&gt;3&lt;/Text&gt;
+&lt;/view&gt;
+//new2
+&lt;View&gt;
+    &lt;Text&gt;3&lt;/Text&gt;
+    &lt;Text&gt;1&lt;/Text&gt;
+    &lt;Text&gt;2&lt;/Text&gt;
+&lt;/view&gt;
+</code></pre><p>old指老的Dom树，new1在它的末尾插入了一个新的子节点，根据上面的原则，根节点View和Text1,Text2都没有变化，只是新增了Text3而已。但new2就不一样了，它在起始插入了一个Text3，这就导致Text1变成了Text3，Text2变成了Text1，然后新加了一个Text2，这显然是不太合适的，明明只增加了一个子节点，但三个都重绘了。例子中Text是一个很简单的组件，实际上它可以是一个非常复杂的根节点，那样的话可能就导致一整个Dom树的变动了。</p>
+<p>解决这个问题的方案就是给Component添加了key属性。一个节点的所有子节点拥有一个唯一的key，注意这个唯一并不是全局的唯一，只需要跟它的兄弟节点区分开来就行。加上key之后再看上面的例子</p>
+<pre><code>//old
+&lt;View&gt;
+    &lt;Text key=&quot;1&quot;&gt;1&lt;/Text&gt;
+    &lt;Text key=&quot;2&quot;&gt;2&lt;/Text&gt;
+&lt;/view&gt;
+//new2
+&lt;View&gt;
+    &lt;Text key=&quot;3&quot;&gt;3&lt;/Text&gt;
+    &lt;Text key=&quot;1&quot;&gt;1&lt;/Text&gt;
+    &lt;Text key=&quot;2&quot;&gt;2&lt;/Text&gt;
+&lt;/view&gt;
+</code></pre><p>现在在进行diff时就知道了，key为1和2的Text节点内容没有变化，不会生成diff，只需要增加Text3就可以了。</p>
+<p>文档里提到在项目开发中key的设置不要太过随意，例如直接使用index，如果这样，当子控件顺序发生变化时，可能就产生了额外的diff。我在使用flatlist时，keyExtractor直接使用index，导致在数组起始插入一个数据时，整个flatlist全部进行了刷新，而不是局部刷新，就是这个原因。</p>
+<p>最后有两个结论：</p>
+<ol>
+<li>如果没有必要，不要轻易改变一个节点的类型。也就是说显示效果没变，却改变节点类型。这在实际情况中很少发生。</li>
+<li>使用一个稳定和唯一的key来让组件和它的兄弟组件区分，不使用或者不合理的使用可能造成性能问题。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/02/06/rn-split-bundle-ios/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/rn-split-bundle-ios/" itemprop="url">ReactNative之ios平台bundle拆分实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T20:15:36+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天把放在github上的bundle拆分demo实现了ios版本，运行没问题后代码提交了上去，<a href="https://github.com/yangguang1029/ReactNativeSplit" target="_blank" rel="noopener">demo地址</a>。因为之前没接触过ReactNative的ios端源代码，所以实现的过程其实就是把ios端的运行流程大概看了一遍。</p>
+<p>如果不追究太多细节的话，整个流程就是AppDelegate.m里创建RCTRootView，在RCTRootView的init函数里，创建RCTBridge，然后在RCTCxxBridge的start方法里加载bundle并执行，加载完后回到RCTRootView的runApplication回调函数里，调用js方法AppRegistry.runApplication进入了js代码的入口。</p>
+<p>android和ios端的bundle拆分和分步加载方案原理是一样的，原来的实现是创建一个View，然后加载bundle，加载好了展示界面。我们把步骤稍微改一下，先加载common.bundle创建好js context并存起来，然后当需要展示界面时，创建view，并用已有的js context来加载业务bundle。为了能自由指定Bundle加载的时机，我们需要把加载bundle的接口抽离暴露出来。</p>
+<p>ios和android端流程上基本一样，只是类名字不同。android平台创建js context的类是ReactInstanceManager，而ios平台是RCTBridge，android平台的view是ReactRootView，而ios平台是RCTRootView等等。从代码量上看，android端稍微复杂一些。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/12/rn-mix-navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/rn-mix-navigation/" itemprop="url">ReactNative之混合Navigation跳转问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-12T20:18:36+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先把界面列出来</p>
+<pre><code>class Tab1 extends Component{
+    render(){
+        return &lt;View&gt;&lt;Text&gt;tab1&lt;/Text&gt;
+                &lt;Button title=&quot;totab2&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;tab2&quot;)}
+                }/&gt;
+                &lt;Button title=&quot;toscene2&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;scene2&quot;)}
+                }/&gt;
+    }
+}
+class Tab2 extends Component{
+    render(){
+        return &lt;View&gt;&lt;Text&gt;tab2&lt;/Text&gt;
+                &lt;Button title=&quot;totab1&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;tab1&quot;)}
+                }/&gt;
+                &lt;Button title=&quot;toscene2&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;scene2&quot;)}
+                }/&gt;
+    }
+}
+const TabNav = TabNavigator({
+    tab1：{screen:Tab1,}
+    tab2：{screen:Tab2,}
+}})
+class Scene2 extends Component{
+    render(){
+        return &lt;View&gt;&lt;Text&gt;scene2&lt;/Text&gt;
+                &lt;Button title=&quot;toscene1&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;scene1&quot;)}
+                }/&gt;
+    }
+}
+const StackNav=StackNavigator({
+    scene1:{screen:TabNav},
+    scene2:{screen:Scene2}
+})
+</code></pre><p>这是最简单的情况，一个StackNavigator内的界面是TabNavigator，在Tab1和Tab2里，不论是进行TabNavigator还是StackNavigator内的跳转，都直接使用this.props.navigation.navigate即可。在注册生成TabNavigator和StackNavigator时给每个界面都注册了一个唯一的key，根据这个key可以在任意界面间跳转，例如在scene2界面，除了可以跳回scene1外，也可以指定跳回tab1或者tab2。</p>
+<p>如果TabNavigator被包装在一个普通Component内，情况就稍微复杂一些，例如</p>
+<pre><code>class TabContainer extends Component{
+    render(){
+        return &lt;View style={{flex:1}}&gt;
+            &lt;Text style={{margin:20}}&gt;tabContainer&lt;/Text&gt;
+            &lt;TabNav /&gt;
+        &lt;/View&gt;
+    }
+}
+const StackNav=StackNavigator({
+    scene1:{screen:TabContainer},
+    scene2:{screen:Scene2}
+})
+</code></pre><p>直接运行的话就会发现,在Tab1和Tab2界面之间的跳转没问题，但没法跳转到scene2了，解决方案是将\<tabnav>替换成</tabnav></p>
+<pre><code>&lt;TabNav navigation={this.props.navigation}/&gt;
+</code></pre><p>然后添加一行</p>
+<pre><code>TabContainer.router = TabNav.router;
+</code></pre><p>就和上面行为一样了，可以在各个界面自由跳转。上面这句话通过给TabContainer增加一个router属性，将一个普通Component变成一个navigator，所以就能跳转了。</p>
+<p>还有一种办法是通过给TabNav设置screenProps的办法把this.props.navigation传到Tab1和Tab2里面去，代码就是</p>
+<pre><code>&lt;TabNav screenProps={{navigation:this.props.navigation}}/&gt;
+</code></pre><p>在Tab1和Tab2里跳转到Scene2就可以</p>
+<pre><code>this.props.screenProps.navigation.navigate(&quot;scene2&quot;)
+</code></pre><p>使用这个方案，在Scene2界面只能往StackNavigator的界面跳，不能像第一种方案一样直接跳到tab1或者tab2，所以不够灵活，推荐使用前一种方案。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/06/rn-flatlist-keyExtractor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/rn-flatlist-keyExtractor/" itemprop="url">ReactNative之一次FlatList无法局部刷新的bug修复</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-06T19:15:36+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天发现项目中一个奇怪的问题，在使用FlatList时，每个单元行Component明明实现了shouldComponentUpdate,但是当增加一行时，还是所有的单元行都重新render了，最后找到了原因。代码中FlatList实现的keyExtractor非常简单，因为每个单元行数据的key要求是唯一的，所以直接使用了index返回</p>
+<pre><code>  _keyExtractor(item, index){
+    return &quot;&quot;+index;
+}
+</code></pre><p>然后在增加数据时，又是把数据插到了数组的最前面</p>
+<pre><code>let data = this.state.data;
+this.setState({data:[{num:key,key}].concat(data)})
+</code></pre><p>这样就出问题了，对FlatList内的每个单元行组件CellRenderer来说，它的props包括keyExtractor给出的key和data给出的数据，假设原来数据是[0,1,2,3]，那么FlatList内的组件就包括</p>
+<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=0 /&gt;
+&lt;CellRenderer key=&quot;1&quot;, num=1 /&gt;
+&lt;CellRenderer key=&quot;2&quot;, num=2 /&gt;
+&lt;CellRenderer key=&quot;3&quot;, num=3 /&gt;
+</code></pre><p>在数组最前面加上一个数据101后，FlatList内的组件就变成了</p>
+<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=101 /&gt;
+&lt;CellRenderer key=&quot;1&quot;, num=0 /&gt;
+&lt;CellRenderer key=&quot;2&quot;, num=1 /&gt;
+&lt;CellRenderer key=&quot;3&quot;, num=2 /&gt;
+&lt;CellRenderer key=&quot;4&quot;, num=3 /&gt;
+</code></pre><p>我们在单元行组件里的shouldComponentUpdate实现是：</p>
+<pre><code>shouldComponentUpdate(nextProps){
+    return this.props.num !== nextProps.num;
+}
+</code></pre><p>所以很显然已有的4个CellRenderer因为num变化，就全部刷新了。</p>
+<p>找到原因后，要解决就很简单了</p>
+<pre><code>_keyExtractor(item, index){
+    return item.num;;
+}
+</code></pre><p>所以结论就是：<strong>keyExtractor应该根据实际情况根据item数据来设置，不要贪图简单直接使用index</strong></p>
+<p>最后做了下验证，keyExtractor使用index时，将数据加在数组最后，而不是插在最前，那么没问题，不会全部刷新，因为前面CellRenderer的props都没有变化。但实际项目中不要贪图省事，之所以FlatList提供这个接口让开发者去实现，就肯定有这个需要，随便返回一个index可能就把自己给坑了。</p>
+<p>关于re-render的原理，官方有一篇文章叫<a href="https://reactjs.org/docs/reconciliation.html" target="_blank" rel="noopener">reconciliation</a>讲的很清楚，看完就更容易理解这个问题的本质了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/27/rn-ts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/27/rn-ts/" itemprop="url">ReactNative之在项目中使用TypeScript</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-27T20:18:36+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近在网上找到个开源的控件，但是源代码是用TypeScript实现的，放到项目里无法直接使用，于是google了一下怎么在ReactNative项目内使用TypeScript，然后找到了一个很简单的解决方案，试了一下没有问题。</p>
+<p>首先安装react-native-typescript-transformer模块</p>
+<pre><code>yarn add --dev react-native-typescript-transformer typescript
+</code></pre><p>然后在项目的根目录下创建一个文件 rn-cli.config.js</p>
+<pre><code>module.exports = {  
+      getTransformModulePath() {
+        return require.resolve(&apos;react-native-typescript-transformer&apos;)
+      },
+      getSourceExts() {
+        return [&apos;ts&apos;, &apos;tsx&apos;];
+      }
+}
+</code></pre><p>在项目根目录下创建一个文件tsconfig.json</p>
+<pre><code>{
+      &quot;compilerOptions&quot;: {
+        &quot;target&quot;: &quot;es2015&quot;,
+        &quot;module&quot;: &quot;es2015&quot;,
+        &quot;jsx&quot;: &quot;react-native&quot;,
+        &quot;moduleResolution&quot;: &quot;node&quot;,
+        &quot;allowSyntheticDefaultImports&quot;: true
+      }
+}
+</code></pre><p>然后就可以放心在项目里写TypeScript代码了，例如项目中ts目录下有test.ts文件，我们在import这个文件时，就像import一个js文件就可以了</p>
+<pre><code>import &apos;./ts/test&apos;
+</code></pre><p>这些以ts,tsx为后缀的TypeScript代码文件会被转换成js文件，我们实际import的是转换后的js文件。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/26/rn-improve-listview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/26/rn-improve-listview/" itemprop="url">ReactNative之listView优化方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-26T20:18:36+08:00">
+                2017-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。</p>
+<h3 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h3><p>ListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDistance属性指定初始时单元格数量，可以加快初始化的速度。其次通过dataSource的rowHasChanged接口可以减少单元行re-render的次数。</p>
+<h3 id="FlatList"><a href="#FlatList" class="headerlink" title="FlatList"></a>FlatList</h3><p>这是官方推出的解决方案，FlatList的思路是减少渲染的单元行数量，它在render时进行计算，只渲染屏幕中和缓冲区内的单元行，其余地方使用空白代替，这样不论FlatList有多少内容，实际渲染的单元行数量基本保持不变。因为有的单元行并没有渲染，当快速滑动到这个区域时，渲染是异步的，此时就会看到白屏，然后才开始显示内容。</p>
+<p>使用FlatList时也有一些优化方案，首先是单元行组件如果使用PureComponent可以大大减少render的数量。其次实现props.getItemLayout接口可以避免临时测量每个单元行的尺寸，大大提高性能，如果能明确每个单元行的尺寸就一定要实现此接口。</p>
+<p>initialNumToRender属性默认为10，它设定初始时渲染的单元行数量，这些单元行会常驻内存不被销毁，目的是为了scrollToTop时没有白屏。</p>
+<p>maxToRenderPerBatch属性默认为10，它设定了在计算渲染单元行数量时每次处理的行数，这个数值如果太大可能导致渲染的单元行较多，占用内存以及增加白屏时间，如果太小了则会增加setState的次数</p>
+<p>windowSize属性指定了屏幕外的区域渲染多少个屏幕单元(visible length)，默认是21，它也会影响初始渲染的单元行数量。假如一个android设备高度为640，减去20像素的状态栏，一个屏幕单元是620，会额外渲染20个。这个数字如果比较大，则同时渲染的单元格数量会比较多，也增加了初始化的时间，如果比较小，则会增加出现白屏的几率。</p>
+<h3 id="SGListView"><a href="#SGListView" class="headerlink" title="SGListView"></a>SGListView</h3><p><a href="https://github.com/sghiassy/react-native-sglistview" target="_blank" rel="noopener">SGListView</a>的原理是通过onChangeVisibleRows接口，当单元行滑动到屏幕外时将渲染内容变成一个空白View，当滑动到屏幕内时变回实际内容。这样因为屏幕外的单元行都是空白view，所以优化了内存占用。 <a href="https://github.com/39otrebla/react-native-enhanced-listview" target="_blank" rel="noopener">enhancedListView</a>也是类似的思路，但实现有点简陋。这个解决方案也会有白屏问题，实际上只要单元行的内容变掉，重新要渲染时，因为渲染是异步的，就都会有白屏问题。</p>
+<h3 id="LargeList"><a href="#LargeList" class="headerlink" title="LargeList"></a>LargeList</h3><p><a href="https://github.com/bolan9999/react-native-largelist" target="_blank" rel="noopener">LargeList</a>的想法是在js层实现了单元行复用。首先它和FlatList一样有白屏问题，因为渲染是异步的，在js层实现单元行复用，要求一个View渲染某些内容到真正展示出来，这段时间里屏幕就是白的。其次复用的作用是减少了创建单元行的消耗，这个消耗在整个ListView的性能消耗里并不占大头。最后使用ref持有Component引用并进行操作实际上不是RN推荐的一种处理方式，在复杂场景下很可能出问题。所以我不是很推荐使用它，实测也有不少bug。</p>
+<h3 id="RealRecyclerView"><a href="#RealRecyclerView" class="headerlink" title="RealRecyclerView"></a>RealRecyclerView</h3><p><a href="https://github.com/droidwolf/react-native-RealRecyclerView" target="_blank" rel="noopener">RealRecyclerView</a>是封装了Android的原生控件RecyclerView，通过接口绑定同步原生view和js组件的内容。自己封装原生组件可能是难度最大的一种方案，因为有很多坑需要填，而且Android和iOS平台下风格也会不一致。但如果弄好了，就是真正实现了单元行复用的方案。像一些大厂的技术团队比如去哪儿就封装了自己的原生listView。 github上还有一个<a href="https://github.com/asciiman/react-native-native-listview" target="_blank" rel="noopener">react-native-native-listview</a>是同时封装了Android和iOS平台，可供参考。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/21/rn-pureComponent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/21/rn-pureComponent/" itemprop="url">ReactNative之PureComponent</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-21T18:18:36+08:00">
+                2017-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先把官方文档对于PureComponent的介绍搬过来，如果看明白了，就可以直接结束本文了：）</p>
+<blockquote>
+<p>React.PureComponent is similar to React.Component. The difference between them is that React.Component doesn’t implement shouldComponentUpdate(), but React.PureComponent implements it with a shallow prop and state comparison.</p>
+<p>If your React component’s render() function renders the same result given the same props and state, you can use React.PureComponent for a performance boost in some cases.</p>
+<p>React.PureComponent’s shouldComponentUpdate() only shallowly compares the objects. If these contain complex data structures, it may produce false-negatives for deeper differences. Only extend PureComponent when you expect to have simple props and state, or use forceUpdate() when you know deep data structures have changed. Or, consider using immutable objects to facilitate fast comparisons of nested data.</p>
+<p>Furthermore, React.PureComponent’s shouldComponentUpdate() skips prop updates for the whole component subtree. Make sure all the children components are also “pure”.</p>
+</blockquote>
+<p>PureComponent和Component的唯一区别就是shouldComponentUpdate方法</p>
+<pre><code>//Component
+shouldComponentUpdate(nextProps, nextState){
+    return true;
+}
+//PureComponent
+shouldComponentUpdate(nextProps, nextState){
+    return this.props !== nextProps || this.state !== nextState;
+}
+</code></pre><p>当props或者state发生了变化时shouldComponentUpdate会被调用，如果返回true则触发re-render，否则不会。 这里说的发生了变化，不一定是指内容或者引用发生了改变，只要调用了this.setState就认为是发生了变化，而只要父组件触发了re-render，就认为props发生了变化。</p>
+<p>Component采用的默认实现是直接返回true，意味着只要props或者state发生了变化就会re-render。<br>PureComponent则是进行了一次浅比较(shallow comparison)，只有当props和state之一在引用上发生了变化，才会re-render。</p>
+<p>PureComponent相比Component减少了re-render的可能性，所以一定程度上可以优化性能。一个很明显的例子就是在使用flatList的时候。假设flatList当前渲染了第0-200个单元行，滑动后需要渲染第0-201个单元行，这是通过flatList的setState来刷新的，因为父组件flatList触发了re-render，所有的子元素也就是单元行组件，都会触发shouldComponentUpdate。如果单元行组件继承自Component，那么第0-200个单元行都会触发re-render，总共201次render。但如果继承自PureComponent，那么只会触发第201个单元行的render，总共只有1次render。这可以通过写一个小demo进行验证。</p>
+<p>PureComponent虽然可以减少re-render，但也有坑，那就是它在shouldComponentUpdate里进行的是浅比较，也就意味着如果props和state是一个复杂对象的引用，那么它的内容变了但是引用本身没变，此时可能需要触发re-render却没有触发。</p>
+<p>PureComponent适合用于props和state比较简单的组件，否则的话应该使用Component并重写componentShouldUpdate方法，既能减少re-render，又能避免错过re-render。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/19/rn-navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/19/rn-navigation/" itemprop="url">ReactNative之react-navigation使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-19T20:18:36+08:00">
+                2017-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看<a href="https://reactnavigation.org/" target="_blank" rel="noopener">官方文档</a></p>
+<p>一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><pre><code>let Nav = StackNavigator(RouterConfigs, StackNavigatorConfig)
+</code></pre><p><strong>RouteConfigs</strong>是一个Object，用于注册所有可以跳转的界面。如果需要跳转的界面比较多，可以写一个脚本来生成，每个key-value形式为</p>
+<pre><code>screen1: {
+    screen:MyComponent,
+    path:xxx,
+    navigationOptions:({navigation})=&gt;({
+        title:xxx
+    })
+}
+</code></pre><p>screen对应Component类的名称，navigationOptions是一个回调函数，它会在每次界面被push时调用。它的参数是</p>
+<pre><code>{navigation:xxx, navigationOptions:xxx, screenProps:xxx}
+</code></pre><p>我们可以从这个参数中解构出navigation，获取很多有用的信息，比如传入的参数navigation.state.params等等。然后返回一个Object，这个返回的Object被称为Screen Navigation Options，它用来设置一些UI属性，比如当前界面标题文字，标题栏样式等。</p>
+<p><strong>StackNavigatorConfig</strong>是一个Object,它可以指定初始显示哪个界面，可以指定整个StackNavigator通用的样式等。例如我们希望所有的界面都不需要显示标题栏，那么在这里设置headerMode为none即可。</p>
+<h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><p>每个在RouteConfigs里注册了的screen都是一个Component类，它的props都会自动多了一个navigation属性，也就是</p>
+<pre><code>this.props.navigation
+</code></pre><p>通过它可以进行界面跳转，回跳，获取参数等操作。</p>
+<ul>
+<li>navigate 这是一个function，通过它来进行界面跳转。 形式为 navigate(routeName, params, action)，也就是push一个在RouteConfigs里key为routeName的界面，传递参数为params。 每次navigate一个界面都是新生成界面然后push，不会重用stack里已有界面。</li>
+<li>state 这是一个object, 它的内容为{routeName:xxx, key:xxx, params:{xxx}} 这里routeName就是当前界面在RouteConfigs里注册时的用的key（也就是示例中的screen1）, key则是系统自动生成的一个属性，这个key在使用goBack()函数指定跳回到某个界面时需要用到。params则是跳转时传入的参数，所以我们使用this.props.navigation.state.params来获取传入的参数。</li>
+<li>setParams 这是一个function，使用它改变传入的参数</li>
+<li>goBack 这是一个function，通过它返回到之前的界面，如果不带参数，则默认为退出当前界面回到上一层，如果参数为null，官方文档说<code>go back anywhere, without specifying what is getting closed</code>,看起来有点奇怪，不明白go back anywhere是不是任意跳转，但通过demo测试发现和不带参数表现是一样的。如果传入参数，则表示从传入参数代表的界面网上跳转一层，<strong>注意这个参数不是RouteConfigs里的key（即screen1），而是上面state里的那个key(即this.props.navigation.state.key)</strong>，因为只能获取当前界面的this.props.navigation.state.key，所以在A界面回跳需要B界面的key时，需要把B界面的key存起来或者传递给A。</li>
+<li>dispatch 这是一个function，用来发布一个action，这个接口用的不多，属于比较深入的用法，具体查看官方文档。</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>上面代码里生成的Nav本身是一个Component，所以不要把它想复杂了，就当做一个普通的Component来使用就可以了。</p>
+<p>如果把Nav传给AppRegistry.registerComponent来作为起始Component。那很简单，在RouteConfigs里注册的各个界面里使用this.props.navigation进行操作就可以了。</p>
+<p>如果作为一个普通Component使用，它的父容器内其它component想要进行navigator跳转，则通过它的ref来进行操作。例如</p>
+<pre><code>render(){
+    return &lt;View&gt;
+        &lt;Button onPress={()=&gt;{
+            this._ref &amp;&amp; this._ref.dispatch(
+                  NavigationActions.navigate({ routeName: someRouteName })
+            );
+        }}/&gt;
+        &lt;Nav ref={(c)=&gt;this._ref=c}/&gt;
+    &lt;/View&gt;
+}
+</code></pre><p>其它例如TabNavigator，DrawerNavigator的使用，大体和StackNavigator类似。其它高端的操作例如自定义Navigator,自定义Route等都参考官方文档。</p>
+<h3 id="回跳多个界面的解决方案"><a href="#回跳多个界面的解决方案" class="headerlink" title="回跳多个界面的解决方案"></a>回跳多个界面的解决方案</h3><p>老版本的navigator可以通过routes列表获取当前的界面栈，也有popToRoute(),popToTop()这样的接口可以直接跳转。而react-navigation则没有界面栈的信息，只能通过goBack()传入一个key来指定跳转，这个key还只能获取到当前所在界面的，没法获取其他界面的key。如果要回跳多个界面，一个解决方案就是在需要回跳的目标界面获取key，通过props一路传递下来，然后在跳转界面使用。例如</p>
+<pre><code>//A.js
+toB(){
+    let key = this.props.navigation.state.key;
+    this.props.navigation.navigate(&quot;B&quot;, {returnKey:key});    
+}
+//B.js
+toC(){
+    this.props.navigation.navigate(&quot;C&quot;, 
+    {returnKey：this.props.navigation.state.params.returnKey});
+}
+//C.js
+back(){
+    this.props.navigation.goBack(this.props.navigation.state.params.returnKey)
+}
+</code></pre><p>这里从A传入key，在C界面跳转，注意并不是跳转到A界面，而是从A界面离开，调到A之前的一个界面。如果不通过传递的话，也可以把key存成全局变量，这样可以比较简单的实现回跳多个界面。还有一种hack的手段，就是获取navigation的ref，然后操作它的私有成员属性或者方法，来获取到调用栈信息进行跳转，最好还是避免使用这种方法吧。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/16/rn-layoutanimation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/16/rn-layoutanimation/" itemprop="url">ReactNative之使用LayoutAnimation创建动画</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-16T20:18:36+08:00">
+                2017-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>LayoutAnimation是官方提供的一个实现动画的API，但官方文档比较简单，结合查看源代码和demo试验，总结了一下如何使用。</p>
+<p>最开始重点强调一下，android平台要使用的话，必须加上这段代码才行，否则像我一样用android设备调试，写了半天发现都不起作用。</p>
+<pre><code>var UIManager = require(&apos;UIManager&apos;);
+UIManager.setLayoutAnimationEnabledExperimental &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental(true);
+</code></pre><p>使用LayoutAnimation实现动画其实很简单，就是在setState之前调用LayoutAnimation.configureNext，然后在下次渲染时就根据新的state产生动画了，所以先写一个最简单的例子</p>
+<pre><code>class TestLayoutAnimation extends Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {left:100,top:100,width:100,height:100,isVisible:true}
+    }    
+    render(){
+        return &lt;View&gt;
+            &lt;Button title=&quot;click&quot; onPress={this._onClick.bind(this)}/&gt;
+            {
+            this.state.isVisible ? 
+            &lt;View style={{position:"absolute", left:this.state.left, top:this.state.top,
+					width:this.state.width, height:this.state.height, backgroundColor:"red",
+				}}/&gt;
+             : null
+            }
+        &lt;/View&gt;
+    }
+    _onClick(){
+        LayoutAnimation.configureNext({
+            duration:500,
+            update:{
+                type:LayoutAnimation.Types.spring
+            }
+        });
+        this.setState({left:this.state.left+50,top:this.state.top+50,
+        width:this.state.width+50,height:this.state.height+50});
+    }
+}
+</code></pre><p>运行这个简单的demo就可以看到动画效果，就是由LayoutAnimation.configureNext产生的，我们可以通过看源代码知道这个API的使用规则。LayoutAnimation.js位于react-native\Libraries\LayoutAnimation\文件夹内，Java代码位于react-native\ReactAndroid\src\main\java\com\facebook\react\uimanager\layoutanimation文件夹内</p>
+<p>configureNext方法接受的参数是一个Config对象，这个对象的规则是</p>
+<pre><code>type Config = {
+      duration: number,
+      create?: Anim,
+      update?: Anim,
+      delete?: Anim,
+};
+</code></pre><p>duration参数是必须的，指定这个动画的执行时间。 create,update,delete三个参数是Anim类型，都是可选参数。</p>
+<ul>
+<li>create指定了一个View从不可见变成可见状态时执行的动画效果，这里的不可见，包括width,height为0，或者像demo通过this.state.isVisible控制了不渲染，不包括透明度为0的情况。如果没有create参数，那view出现时是没有动画效果的</li>
+<li>update参数指定了View在可见状态时因为state变化产生的动画效果</li>
+<li>delete和create相反，当一个View变为不可见时，指定其动画效果。</li>
+</ul>
+<p>所以如果一个View在执行动画前是不可见的状态，则必须配置create参数，否则配置update参数就可以。如果消失时需要动画，则配置delete参数。</p>
+<p>我们看Anim的格式要求</p>
+<pre><code>const animType = PropTypes.shape({
+      duration: PropTypes.number,
+      delay: PropTypes.number,
+      springDamping: PropTypes.number,
+      initialVelocity: PropTypes.number,
+      type: PropTypes.oneOf(Object.keys(Types)).isRequired,
+      property: PropTypes.oneOf(
+        // Only applies to create/delete
+        Object.keys(Properties),
+      ),
+});
+</code></pre><p>其中type参数是一定需要的，而property参数则只在create和delete时需要。简单点的话，就只看type和property参数</p>
+<ul>
+<li>type参数必须是LayoutAnimation.Types这个Enum中的值，可取的值有spring, linear, easeInEaseOut, easeIn, easeOut, keyboard 它们的具体效果可以自行通过demo测试</li>
+<li>property必须是LayoutAnimation.Properties这个Enum中的值，可取的值只有两个opacity, scaleXY。不看源代码大概也能推测出它的意义就是View在出现或者消失时，是按scale还是opacity的效果来。</li>
+</ul>
+<p>了解这些之后我们就可以实现改变View的尺寸，坐标的动画了，但<strong>对透明度，Transform的变动不会有动画效果</strong>。</p>
+<p>LayoutAnimation提供了一个接口Create方法，可以生成configureNext方法需要的参数Config</p>
+<pre><code>function create(duration: number, type, creationProp): Config {
+      return {
+           duration,
+        create: {type,property: creationProp,},
+        update: {type,},
+        delete: {type,property: creationProp,},
+      };
+}
+</code></pre><p>使用这个方法可以生成了一个比较简单的config，它把create,update,delete都实现了，属性只有type和property。</p>
+<p>此外LayoutAnimation还提供了3个写好的动画效果可以直接使用，它们是LayoutAnimation.easeInEaseOut, LayoutAnimation.linear, LayoutAnimation.spring,看源代码就很容易明白，它们其实就是写好了代码实现的configureNext方法，所以使用起来就是在setState之前直接调用即可</p>
+<pre><code>LayoutAnimation.easeInEaseOut();
+LayoutAnimation.linear();
+LayoutAnimation.spring();
+</code></pre><p>LayoutAnimation的底层实现是在native层，所以不会被js线程卡顿影响，比较适合做一些简单的动画，使用起来也很简单,但不太适合用来做组合动画。configureNext的第二个参数可以传入一个回调，通过这个回调函数可以开始新的动画，但只在ios平台才有效，如果需要实现复杂的动画，应该使用Animated类。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

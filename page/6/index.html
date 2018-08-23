@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react-native,react,react native,cocos" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="杨光的笔记">
+<meta property="og:url" content="http://yangguang1029.github.io/page/6/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="杨光的笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/page/6/"/>
+
+
+
+
+
+  <title>杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/02/04/cocos-transitionScene/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/02/04/cocos-transitionScene/" itemprop="url">cocos之Scene的切换</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-04T15:44:35+08:00">
+                2017-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>场景切换，牵涉到的是老scene善后处理和新scene的初始化，如果对各个函数调用的先后顺序不明的话，可能就会出问题(例如注册监听和取消监听，一般都写在onEnter和onExit方法内)</p>
+<p>涉及到scene切换的方法，都在director内,常用的为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void Director::runWithScene(Scene *scene)</span><br><span class="line">void Director::replaceScene(Scene *scene)</span><br></pre></td></tr></table></figure>
+<p>Director内通过_scenesStack， _runningScene，_nextScene进行管理。每帧都会调用drawScene方法，这个方法里，有一段代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/* to avoid flickr, nextScene MUST be here: after tick and before draw.</span><br><span class="line">    */</span><br><span class="line">   if (_nextScene)</span><br><span class="line">   &#123;</span><br><span class="line">       setNextScene();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这里还有一些注释，说明了切换scene的操作，在老scene的事件都处理完了之后，渲染新scene之前。这里setNextScene就是执行了切换scene的逻辑。</p>
+<p>scene的切换分为有渐变和没有渐变两种情况</p>
+<ul>
+<li>没有渐变的时候，切换的回调会直接调用,具体可以看源代码。顺序为</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_runningScene-&gt;onExitTransitionDidStart();</span><br><span class="line">_runningScene-&gt;onExit();</span><br><span class="line">//此时_runningScene已经指向了新scene</span><br><span class="line">_runningScene-&gt;onEnter();</span><br><span class="line">_runningScene-&gt;onEnterTransitionDidFinish();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>有渐变的情况其实也简单，渐变的效果是通过TransitionScene类来实现的，它将新scene存为_inScene, 需要被替换掉的老scene存为_outScene，然后它的draw函数会同时渲染这两个scene。为了将逻辑与视觉效果相符，新旧scene的执行回调也发生了变化，老scene的onExit延迟到新scene进场完毕后才调用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_outScene-&gt;onExitTransitionDidStart();</span><br><span class="line">_inScene-&gt;onEnter();</span><br><span class="line"></span><br><span class="line">_outScene-&gt;onExit();</span><br><span class="line">_inScene-&gt;onEnterTransitionDidFinish();</span><br></pre></td></tr></table></figure>
+<p>关于TransitionScene的一些细节:</p>
+<ul>
+<li>TransitionScene的各个子类,都只是实现了进场动画，并没有哪个实现有离场动画</li>
+<li>TransitionScene的finish回调中会执行director-&gt;replaceScene(_inScene);设置真正的新scene。Director::setNextScene方法里，runningIsTransition只有在这时候才可能为true,否则如果老scene是个TransitionScene，意味着进场动画还没有结束，node的_running为true,此时不运行进行切换的,强制切换会触发assert。</li>
+<li>不要妄想使用连环Transition，原因和上面一样，进场动画还没执行完就切换scene，例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TransitionFade* fade = TransitionFade::create(2, scene, Color3B::GREEN);</span><br><span class="line">TransitionFade* fade1 = TransitionFade::create(2, fade, Color3B::GREEN);</span><br><span class="line">TransitionFade* fade2 = TransitionFade::create(2, fade1, Color3B::GREEN);</span><br><span class="line">Director::getInstance()-&gt;replaceScene(fade2);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/18/cocos-some-ui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/18/cocos-some-ui/" itemprop="url">cocos之部分ui控件的使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-18T16:11:42+08:00">
+                2017-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。</p>
+<h3 id="scale9Sprite"><a href="#scale9Sprite" class="headerlink" title="scale9Sprite"></a>scale9Sprite</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/cocos/ui/UIScale9Sprite.cpp内</li>
+<li>scale9的实现原理是将纹理根据设定的区域，生成9个sprite，然后batch渲染</li>
+<li>它可以跟sprite一样通过setSpriteFrame来切换纹理，但切换之后需要重新执行setPreferredSize。否则显示不正确</li>
+</ul>
+<p>用的比较多的接口有:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame);</span><br><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame, const Rect&amp; capInsets);</span><br><span class="line">create(const std::string&amp; file);</span><br><span class="line"></span><br><span class="line">//实际显示大小</span><br><span class="line">setPreferredSize(const Size&amp; preferedSize)</span><br><span class="line">//设定缩放区域</span><br><span class="line">setCapInsets(const Rect&amp; capInsets)</span><br></pre></td></tr></table></figure>
+<h3 id="EditBox"><a href="#EditBox" class="headerlink" title="EditBox"></a>EditBox</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/cocos/ui/UIEditBox/UIEditBox.cpp内</li>
+<li>只需要注意它的各个状态的sprite都是scale9即可</li>
+</ul>
+<p>使用较多的接口有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create(const Size&amp; size, Scale9Sprite* normalSprite, Scale9Sprite* pressedSprite = nullptr, Scale9Sprite* disabledSprite = nullptr);</span><br><span class="line"></span><br><span class="line">setFontSize(int fontSize);</span><br><span class="line">setFontColor(const Color3B&amp; color);</span><br><span class="line">setPlaceHolder(const char* pText);	//提示字符串</span><br><span class="line"></span><br><span class="line">getString();	//在C++接口是getText，注意名称不一样</span><br></pre></td></tr></table></figure>
+<h3 id="Controlbutton"><a href="#Controlbutton" class="headerlink" title="Controlbutton"></a>Controlbutton</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCControlExtension/CCControlButton.cpp内</li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create(cocos2d::ui::Scale9Sprite* sprite)</span><br><span class="line">create(const std::string&amp; title, const std::string&amp; fontName, float fontSize)</span><br><span class="line"></span><br><span class="line">setPreferredSize(const Size&amp; size)</span><br><span class="line">setBackgroundSpriteForState(ui::Scale9Sprite* sprite, State state)</span><br><span class="line">setEnabled(bool enabled)</span><br><span class="line"></span><br><span class="line">//绑定事件</span><br><span class="line">button.addTargetWithActionForControlEvents(this, this._onClickSend, cc.CONTROL_EVENT_TOUCH_UP_INSIDE);</span><br></pre></td></tr></table></figure>
+<h3 id="scrollView"><a href="#scrollView" class="headerlink" title="scrollView"></a>scrollView</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCScrollView.cpp内</li>
+<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内</li>
+<li>scrollView本身的大小是viewSize。它内部有一个container，当我们执行addChild时，实际上是被加到了这个container里，它的大小比viewSize要大，所以才可以滚动，设置它的大小是setContentSize。这是与其他node的setContentSize方法不一样的地方，需要注意。</li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create()</span><br><span class="line">create(Size size, Node* container/* = nullptr*/)</span><br><span class="line"></span><br><span class="line">setContainer(Node * pContainer)</span><br><span class="line">addChild(Node * child, int zOrder, int tag)</span><br><span class="line"></span><br><span class="line">setDelegate()</span><br><span class="line">setDirection(Direction eDirection)</span><br><span class="line"></span><br><span class="line">setContentSize(const Size &amp; size)</span><br><span class="line">setViewSize(Size size)</span><br><span class="line">setContentOffset(Vec2 offset, bool animated/* = false*/)</span><br><span class="line"></span><br><span class="line">//回调</span><br><span class="line">scrollViewDidScroll(ScrollView* view)</span><br></pre></td></tr></table></figure>
+<h3 id="tableView"><a href="#tableView" class="headerlink" title="tableView"></a>tableView</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCTableView.cpp内</li>
+<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内,在这里也额外定义了一个create方法，而没有放在上面的jsbinding里</li>
+<li>js-bindings/bindings/script/extension/jsb_ext_create_apis.js定义了新的构造函数cc.TableView.prototype._ctor = function(dataSouurce, size, container)，所以可以直接new</li>
+<li>在jsbinding的init函数里，以及create函数里，都会自动调用一次reloadData，所以在js层代码中，新建一个tableView是不需要手动调用reloadData的，而C++代码则需要。 </li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setDirection(Direction eDirection)</span><br><span class="line">setVerticalFillOrder(VerticalFillOrder fillOrder)</span><br><span class="line">reloadData()</span><br><span class="line"></span><br><span class="line">//回调就不写了，基本上都会知道</span><br></pre></td></tr></table></figure>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>像checkbox,ControlSlider等用的不多的，可以临时去查一下。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/12/cocos-ccb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/12/cocos-ccb/" itemprop="url">cocos之使用ccb的一些坑</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-12T10:46:22+08:00">
+                2017-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。</p>
+<h4 id="1-labelttf不是labelttf"><a href="#1-labelttf不是labelttf" class="headerlink" title="1.labelttf不是labelttf"></a>1.labelttf不是labelttf</h4><p>通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。</p>
+<p>虽然Label上有一个方法setTextColor可以设置颜色，但如果使用，会发现最终显示的颜色与设定的颜色并不一致，它将你在ccb里给他设定的初始颜色做了混合，如果想要生效，那要么在ccb里设成白色，要么在代码中调setTextColor前，先调用setColor(cc.color.WHITE)</p>
+<p>同样，setFontSize是LabelTTF上的方法，代码中不能使用，办法是使用Label上的setSystemFontSize方法来代替。当然，最彻底的解决办法就是修改ccb的解析代码，它位于editor-support/cocosbuilder/ccLabelTTFLoader.h中</p>
+<h4 id="2-一个ccb中最好不要有多个动画"><a href="#2-一个ccb中最好不要有多个动画" class="headerlink" title="2.一个ccb中最好不要有多个动画"></a>2.一个ccb中最好不要有多个动画</h4><p>我们一般调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">animationManager.runAnimationsForSequenceNamedTweenDuration();</span><br></pre></td></tr></table></figure>
+<p>来播放动画，这个方法一上来就会把现有的动画都停止掉，所以如果一个界面有多个动画，最好不要放在同一个ccb里，否则一旦需要同时播放的时候，正在播放中的动画就会被停止</p>
+<h4 id="3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"><a href="#3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置" class="headerlink" title="3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"></a>3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置</h4><p>cc.BuilderReader.load方法第二个参数为owner，它用于寻找ccb中设定的属性和方法。owner最好不要重用，否则会出现各种奇怪的现象。例如我们需要加载一个子ccb时，可以新建一个node作为owner来使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var delegate = new cc.Node();	//用来做ower</span><br><span class="line">delegate.retain();</span><br><span class="line">delegate._finishAction = function()&#123;</span><br><span class="line">	node.removeFromParent();</span><br><span class="line">	delegate.release();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var node = cc.BuilderReader.load(name, delegate);</span><br><span class="line">//owner必须继承自node</span><br></pre></td></tr></table></figure>
+<p>另外回调必须在调用load之前绑定好,这里_finishAction就是绑定的回调，虽然回调的时机在初始化以后，但如果不先设置，那么在解析的时候找不到接口，会导致绑定不成功</p>
+<h4 id="4-不能在tableCellTouched中移除界面"><a href="#4-不能在tableCellTouched中移除界面" class="headerlink" title="4.不能在tableCellTouched中移除界面"></a>4.不能在tableCellTouched中移除界面</h4><p>这个与ccb没有关系，顺便提醒一下。我们经常有点击后关闭界面的需求，在别的情况下可能不会出什么问题，但如果在tableView的tableCellTouched回调中移除，会发生崩溃。因为在这个回调之后，touchEnd其实还没有结束，还会继续处理scroll上的一些代码，如果移除掉了根节点，导致内存被释放，那后续的代码就崩溃了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/06/cocos-jsb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/06/cocos-jsb/" itemprop="url">cocos之jsbinding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-06T10:31:04+08:00">
+                2017-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/JSAPI_User_Guide" target="_blank" rel="noopener">官网</a>。</p>
+<p>如果能尽量看明白jsbinding的相关代码，在碰到问题时可以更快的解决，比如很常见的invalid native object报错，通过看代码可以知道它是找不到与js对象绑定的c++对象，比如js代码报错说某个方法是undefined时，我们可以去jsbinding的实现代码里查看一下这个方法是否封装进去了，比如一些类或者方法和属性在c++层和js层的名称不一样等等。</p>
+<h4 id="js调用C-代码"><a href="#js调用C-代码" class="headerlink" title="js调用C++代码"></a>js调用C++代码</h4><p>我们在AppDelegate.cpp里可以看到很多cocos的注册函数，通过这些函数，将c++类注册到js的环境中，然后就可以在js代码里构造这个类的实例，调用它的方法。我们基本上照抄就可以实现一个，代码就不贴了</p>
+<ul>
+<li>jsb_myclass_class-&gt;name 这个name就是在js代码中用来执行new时候的类名称</li>
+<li>JS_SetProperty(cx, proto, “__is_ref”, JS::FalseHandleValue); 根据C++类是否继承自Ref，设为True或者False</li>
+<li>注册属性(静态属性和成员属性)和方法(静态方法和成员方法)，按照类似的格式去实现即可</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">static JSPropertySpec properties[] = &#123;</span><br><span class="line">       JS_PSGS(&quot;myProp&quot;, _js_get_myProp, _js_set_myProp, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_PS_END</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   static JSFunctionSpec funcs[] = &#123;</span><br><span class="line">       JS_FN(&quot;func&quot;, js_MyClass_func, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_FS_END</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们在js代码中执行new MyClass时，就会调用C++层的 js_MyClass_constructor函数，在这里会新建一个c++对象，并新建一个js对象，然后建立映射关系，之后在互相调用的时候，才可以找得到彼此</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_constructor(JSContext *cx, uint32_t argc, jsval *vp)</span><br><span class="line">&#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    bool ok = true;</span><br><span class="line">    MyClass* cobj = new (std::nothrow) MyClass();</span><br><span class="line">    </span><br><span class="line">    js_type_class_t *typeClass = js_get_type_from_native&lt;MyClass&gt;(cobj);  //从_js_global_type_map里获取，是在下面jsb_register_class的时候存进去的</span><br><span class="line">    </span><br><span class="line">    // link the native object with the javascript object</span><br><span class="line">    </span><br><span class="line">    JS::RootedObject proto(cx, typeClass-&gt;proto.ref());</span><br><span class="line">    JS::RootedObject parent(cx, typeClass-&gt;parentProto.ref());</span><br><span class="line">    JS::RootedObject jsObj(cx, JS_NewObject(cx, typeClass-&gt;jsclass, proto, parent));</span><br><span class="line">    js_proxy_t* newproxy = jsb_new_proxy(cobj, jsObj);</span><br><span class="line">    JS::AddNamedObjectRoot(cx, &amp;newproxy-&gt;obj, &quot;MyClass&quot;);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    args.rval().set(OBJECT_TO_JSVAL(jsObj));</span><br><span class="line">    if (JS_HasProperty(cx, jsObj, &quot;_ctor&quot;, &amp;ok) &amp;&amp; ok)</span><br><span class="line">        ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jsObj), &quot;_ctor&quot;, args);</span><br><span class="line">   //如果js层实现了_ctor方法，则调用它</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后看一个简单的绑定C++函数到js中的实现。在这里我们看到了很眼熟的”invalid native object”。我们首先获取到js中的this，然后通过映射找到c++中的对象，然后调用方法即可。如果绑定静态方法，因为不需要实例，所以非常简单，直接执行即可。获取当前的js对象，并以此获取绑定的c++对象，这些代码能看懂并使用就足够了。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_func(JSContext *cx, uint32_t argc, jsval *vp) &#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    JS::RootedObject jsobj(cx, args.thisv().toObjectOrNull());</span><br><span class="line">    js_proxy_t *proxy = jsb_get_js_proxy(jsobj);</span><br><span class="line">    MyClass* cobj = (MyClass *)(proxy ? proxy-&gt;ptr : NULL);</span><br><span class="line">    JSB_PRECONDITION2( cobj, cx, false, &quot;Invalid Native Object&quot;);</span><br><span class="line">    </span><br><span class="line">    if (cobj) &#123;</span><br><span class="line">        cobj-&gt;func();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        JS_ReportError(cx, &quot;Error: SocketIO instance is invalid.&quot;);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="C-调用js"><a href="#C-调用js" class="headerlink" title="C++调用js"></a>C++调用js</h4><p>前面代码能差不多明白的话，c++调用js的其实也很好写，这里贴一段例子代码，它就不再是从cocos引擎内拷贝的，而是我自己写的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void MyClass::calljs() &#123;</span><br><span class="line">    JSContext *cx = ScriptingCore::getInstance()-&gt;getGlobalContext();</span><br><span class="line">    </span><br><span class="line">    js_proxy_t *proxy = jsb_get_native_proxy(this);</span><br><span class="line">    JSObject* jso = proxy-&gt;_jsobj;</span><br><span class="line">    </span><br><span class="line">    std::string param = &quot;test111&quot;;</span><br><span class="line">    jsval jsparam = std_string_to_jsval(cx, param);</span><br><span class="line">    JS::RootedValue retval(cx);</span><br><span class="line">    std::string ret = &quot;&quot;;</span><br><span class="line">    std::string funcName = &quot;calljs&quot;;</span><br><span class="line">    </span><br><span class="line">    bool success = ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jso), funcName.c_str(), 1, &amp;jsparam, &amp;retval);</span><br><span class="line">    if(success) &#123;</span><br><span class="line">        if(retval.isString()) &#123;</span><br><span class="line">           jsval_to_std_string(cx, retval, &amp;ret);</span><br><span class="line">            CCLOG(&quot;return....%s &quot; , ret.c_str());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        CCLOG(&quot;excute failed ...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在C++代码中调用这个函数，它会调用绑定的对象在js中的calljs函数，并可以传递参数和接受返回值。</p>
+<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>cocos封装了很多辅助函数，例如类型转换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jsval_to_std_string</span><br><span class="line">std_string_to_jsval</span><br><span class="line">OBJECT_TO_JSVAL</span><br><span class="line">ccpoint_to_jsval</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p>一般来说是够用了，需要的时候，多去引擎内部找找就可以了</p>
+<p>另外，除了关注js-binding相关的代码外，cocos引擎在js层也有很多封装代码，位于js-bindings/bindings/script文件夹内。例如我们看tableView的jsbinding，它的构造方法是接受0个参数，但实际上我们可以这么写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var tableView = new cc.TableView(this, tsize);</span><br></pre></td></tr></table></figure>
+<p>原因就是在jsb_ext_create_apis.js内有这么一段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cc.TableView.prototype._ctor = function(dataSouurce, size, container) &#123;</span><br><span class="line">    container == undefined ? this._init(dataSouurce, size) : this._init(dataSouurce, size, container);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>它在js层实现了_ctor方法，而我们前面说到，在jsbinding的constructor函数里，如果发现js对象有_ctor方法，则会调用它，所以这个方法被调用，它执行了_init方法。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/21/new-cocos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/21/new-cocos/" itemprop="url">一个简单的联网棋牌游戏开发流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-21T16:15:36+08:00">
+                2016-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近负责一款新的牌类游戏的前端开发任务。这个项目从零开始到开发完成，稍微总结一下，棋牌类游戏属于比较简单的，项目使用MVC架构，一开始就可以规划好各个模块，我是划分成了</p>
+<ul>
+<li>model    MVC中的model</li>
+<li>controller 兼具MVC中的controller和view</li>
+<li>net    负责收和发网络消息</li>
+<li>util    独立功能，例如constants, global, enum等</li>
+<li>test    测试模块</li>
+</ul>
+<h3 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h3><p>controller兼具MVC中的controller和view的功能，每个controller基本对应了一个页面，并持有model作为成员变量，这样代码写起来简单，适用于这种不是很复杂的小型游戏。网络游戏的前端很多时候是由服务器消息驱动的，每次收到服务器消息，直接交给controller处理，controller将自身持有的model刷新，然后处理必要的逻辑，最后刷新UI。</p>
+<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>一个项目的开发流程，美术和后端先行，美术尽快出好素材后，前端就可以拼UI了，并且根据效果图和策划案，可以把各个功能模块都先写好，这样后端接口提供之后，前端在接入后端消息后，只需要一个个调用功能模块，给UI填入实际数据就可以了。至于前后端的通信协议，因为主要是由后端进行逻辑处理，所以我认为主动权在后端，除非前端认为不合理的时候，再进行沟通。Å</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/10/cocos-glprogram/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/10/cocos-glprogram/" itemprop="url">cocos源代码之GLProgram</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-10T11:13:31+08:00">
+                2016-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="GLProgram和GLProgramState"><a href="#GLProgram和GLProgramState" class="headerlink" title="GLProgram和GLProgramState"></a>GLProgram和GLProgramState</h3><p>在cocos内操作shader，基本就是使用GLProgram和GLProgramState这两个类，他们的关系，在官方注释里写着</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLProgramState holds the &apos;state&apos; (uniforms and attributes) of the GLProgram.</span><br><span class="line"> A GLProgram can be used by thousands of Nodes, but if different uniform values are going to be used, then each node will need its own GLProgramState</span><br></pre></td></tr></table></figure>
+<p>GLProgram是着色器的实现，GLProgramState是在Node上使用GLProgram的封装，所以我们在Node上应该操作GLProgramState，而不是GLProgram，例如设置uniform的值</p>
+<h3 id="GLProgram的创建"><a href="#GLProgram的创建" class="headerlink" title="GLProgram的创建"></a>GLProgram的创建</h3><p>第一步是init,主要是完成顶点着色器和片段着色器编译</p>
+<p>第二步是link</p>
+<ul>
+<li>调用bindPredefinedVertexAttribs，绑定一些默认的attribute，包括</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const char* GLProgram::ATTRIBUTE_NAME_COLOR = &quot;a_color&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_POSITION = &quot;a_position&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD = &quot;a_texCoord&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD1 = &quot;a_texCoord1&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD2 = &quot;a_texCoord2&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD3 = &quot;a_texCoord3&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_NORMAL = &quot;a_normal&quot;;</span><br></pre></td></tr></table></figure>
+<p>这样我们在顶点着色器内，就可以直接声明和使用这些变量名了，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">attribute vec4 a_position;</span><br><span class="line">attribute vec2 a_texCoord;</span><br></pre></td></tr></table></figure>
+<p>使用attribute修饰的变量，只能在顶点着色器中使用，且只能在顶点着色器中读取，不能赋值。</p>
+<ul>
+<li>调用glLinkProgram进行链接，如果链接成功，调用parseVertexAttribs保存实际用到了的attributes，以及parseUniforms保存自定义的uniforms</li>
+<li>updateUniforms 将系统内置uniforms的使用情况存起来并更新</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/06/cocos-gzip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/06/cocos-gzip/" itemprop="url">cocos之获取gzip压缩的http文本</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-06T20:23:38+08:00">
+                2016-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当使用http请求文本内容时，如果使用gzip压缩，可以大大减少字符串长度，提高传输效率。要实现此功能，客户端需要写一些代码：</p>
+<p>首先是请求时候，设定好http头</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;std::string&gt; headers;</span><br><span class="line">headers.push_back(&quot;Accept-Encoding: gzip,deflate&quot;)</span><br><span class="line">request-&gt;setHeaders(headers);</span><br></pre></td></tr></table></figure>
+<p>然后在处理收到的消息时解压缩一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();</span><br><span class="line">std::ostringstream outBuff;</span><br><span class="line">for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)&#123;</span><br><span class="line">    outBuff &lt;&lt; (*buffer)[i];</span><br><span class="line">&#125;</span><br><span class="line">outBuff.flush();</span><br><span class="line">std::string outstr = outBuff.str();</span><br><span class="line">const unsigned char* tmp = (const unsigned char*)outstr.c_str();</span><br><span class="line">size_t len = outstr.length();</span><br><span class="line">unsigned char* outtmp = (unsigned char*)malloc(len);</span><br><span class="line">ssize_t outlen = ZipUtils::inflateMemory((unsigned char*)tmp, len, &amp;outtmp);</span><br><span class="line">if(outlen &gt; 0)&#123;</span><br><span class="line">    outstr = std::string((const char*)outtmp);</span><br><span class="line">    free(outtmp);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    CCLOG(&quot;inflate gzip content failed....&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ZipUtils是cocos基于zlib的封装，还有一些别的接口，需要的时候可以去看看</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/05/leetcode453/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/05/leetcode453/" itemprop="url">【leetcode】Minimum Moves to Equal Array Elements</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-05T14:41:30+08:00">
+                2016-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://leetcode.com/problems/minimum-moves-to-equal-array-elements/" target="_blank" rel="noopener">题目链接</a></p>
+<p>看完题目之后，稍微想了下，觉得不能用递归或者动态规划，于是老老实实的按题目意思写，每次进行排序，除了最大的数字外都加1，直到所有数字相等。提交之后，直接在测试用例[1, 2147483647]超时挂了，于是开始思考怎么解决，因为这是个easy难度的题目，所以思路倒是很快就有了。</p>
+<p>将数组排序后，要让所有数字都相同，第一步很容易想到，就是把除了最大的数字每次加1，直到最大的数字有两个，它需要的步数就是最大数字和第二大数字的差。然后顺着这个思路，再通过累加，把最大的数字变成有三个，这需要的步数如果一时无法总结出公式，可以写个例子很容易看出来，是最大数字和第二大数字之差的两倍，以此类推即可。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;number[]&#125; nums</span><br><span class="line"> * @return &#123;number&#125;</span><br><span class="line"> */</span><br><span class="line">var minMoves = function(nums) &#123;</span><br><span class="line">    var mul= 1;</span><br><span class="line">    nums.sort(function(left,right) &#123;return left - right&#125;)</span><br><span class="line">    var len = nums.length;</span><br><span class="line">    if(len === 1) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    var re = 0;</span><br><span class="line">    for(var i = len -1; i &gt; 0; i--) &#123;</span><br><span class="line">        re += (nums[i] - nums[i - 1]) * mul;</span><br><span class="line">        mul += 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return re;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/01/cocos-blendFunc/" itemprop="url">cocos使用blendFunc实现擦除效果</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-01T19:04:27+08:00">
+                2016-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>效果图跟用clippingNode实现的那次差不多</p>
+<p><img src="cocos-blendFunc/6DA8FA29-187A-4ED3-BF65-F97CD8F2755D.png" alt="img"></p>
+<p>直接上代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">bool HelloWorld::init() &#123;</span><br><span class="line">   if ( !Layer::init()) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    auto winsize = Director::getInstance()-&gt;getWinSize();</span><br><span class="line">    auto width = winsize.width;</span><br><span class="line">    auto height = winsize.height;</span><br><span class="line"> </span><br><span class="line">    auto s = Sprite::create(&quot;HelloWorld.png&quot;);</span><br><span class="line">    s-&gt;setPosition(width * 0.5, height * 0.5);</span><br><span class="line">    this-&gt;addChild(s);</span><br><span class="line">    </span><br><span class="line">    mDrawNode = DrawNode::create();</span><br><span class="line">    this-&gt;addChild(mDrawNode);</span><br><span class="line"></span><br><span class="line">    auto listener = EventListenerTouchOneByOne::create();</span><br><span class="line">    listener-&gt;onTouchBegan = std::bind(&amp;HelloWorld::onTouchBegan, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    listener-&gt;onTouchMoved = std::bind(&amp;HelloWorld::onTouchMoved, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    </span><br><span class="line">    EventDispatcher* ed = Director::getInstance()-&gt;getEventDispatcher();</span><br><span class="line">    ed-&gt;addEventListenerWithSceneGraphPriority(listener, this);</span><br><span class="line">    </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) &#123;</span><br><span class="line">    mTouchBeganPos = touch-&gt;getLocation();</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event) &#123;</span><br><span class="line">    Vec2 pos = touch-&gt;getLocation();</span><br><span class="line">    std::vector&lt;cocos2d::Vec2&gt; vec(2);</span><br><span class="line">    vec[0] = mTouchBeganPos;</span><br><span class="line">    vec[1] = pos;</span><br><span class="line">    mPoints.push_back(vec);</span><br><span class="line">    mTouchBeganPos = pos;</span><br><span class="line">    refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::refresh() &#123;</span><br><span class="line">    mDrawNode-&gt;setBlendFunc(BlendFunc::DISABLE);</span><br><span class="line">    mDrawNode-&gt;clear();</span><br><span class="line">    mDrawNode-&gt;setLineWidth(10);</span><br><span class="line">    for(std::vector&lt;std::vector&lt;cocos2d::Vec2&gt;&gt;::iterator iter = mPoints.begin(); iter != mPoints.end(); iter++) &#123;</span><br><span class="line">        std::vector&lt;cocos2d::Vec2&gt; vec = *iter;</span><br><span class="line">        mDrawNode-&gt;drawLine(vec[0], vec[1], Color4F(0,0,0,0));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Render-&gt;end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次代码比上次的要简单一些，我们先加上背景图，然后再加上一个DrawNode来实现擦除，这个DrawNode设置BlendFunc为BlendFunc::DISABLE，也就是在它与背景混合的地方，只显示自己不显示背景，而他自己又是把运动轨迹绘制成透明的线段，所以就产生了背景图被擦除的效果。如果我们需要限制在局部范围内，只要处理好触摸区域或者添加到容器内即可</p>
+<p>然后解释下blendFunc，它是用来处理颜色混合的，我们要将一个图片渲染到屏幕上时，需要将它的颜色（RGBA）与屏幕上已有的颜色混合，我们将要被渲染上去的称为源（src），屏幕上已有的称为目标(dst)，最终颜色显示是它们和各自的因子相乘。如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源颜色 Rs Gs Bs As</span><br><span class="line">目标颜色 Rd Gd Bd Ad</span><br><span class="line">源因子 Sr Sg Sb Sa</span><br><span class="line">目标因子 Dr Dg Db Da</span><br><span class="line">最终颜色 Rs * Sr + Rd * Dr Gs * Sg + Gd * Dg Bs * Sb + Bd * Db As * Sa + Ad * Da</span><br></pre></td></tr></table></figure>
+<p>cocos内置了一些值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GL_ZERO					//全部不用 (0,0,0,0)                           </span><br><span class="line">GL_ONE                 //全部使用 (1,1,1,1)</span><br><span class="line">GL_SRC_COLOR           //使用源颜色(Rs, Gs, Bs, As)           </span><br><span class="line">GL_ONE_MINUS_SRC_COLOR //使用反源色(1-Rs, 1-Gs, 1-Bs, 1-As)</span><br><span class="line">GL_SRC_ALPHA           //使用源透明度 (As, As, As, As)</span><br><span class="line">GL_ONE_MINUS_SRC_ALPHA //使用反源透明度 (1-As, 1-As, 1-As, 1-As)</span><br><span class="line">GL_DST_ALPHA           //使用目标透明度(Ad, Ad, Ad, Ad) </span><br><span class="line">GL_ONE_MINUS_DST_ALPHA //使用反目标透明度(1-Ad, 1-Ad, 1-Ad, 1-Ad) </span><br><span class="line"></span><br><span class="line">const BlendFunc BlendFunc::DISABLE = &#123;GL_ONE, GL_ZERO&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_PREMULTIPLIED = &#123;GL_ONE, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_NON_PREMULTIPLIED = &#123;GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ADDITIVE = &#123;GL_SRC_ALPHA, GL_ONE&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样就不难理解本例中我们使用的BlendFunc::DISABLE了，它意味着混合的时候，不取目标颜色，只显示源颜色。想一下sprite默认应该使用哪种呢？这取决于图片是否已经预乘了alpha，如果是则使用ALPHA_PREMULTIPLIED，否则使用ALPHA_NON_PREMULTIPLIED，很好理解。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/01/cocos-clippingNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/01/cocos-clippingNode/" itemprop="url">cocos使用clippingNode实现擦除效果</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-01T15:42:12+08:00">
+                2016-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>先直接上模拟器上运行效果图<br><img src="cocos-clippingNode/3F578633-F7F8-40B3-A5E1-A009FCB6D110.png" alt="img"></p>
+<p>代码也不复杂，只要知道怎么用clippingNode即可，先放上代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">bool HelloWorld::init() &#123;</span><br><span class="line">   if ( !Layer::init()) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    auto winsize = Director::getInstance()-&gt;getWinSize();</span><br><span class="line">    auto width = winsize.width;</span><br><span class="line">    auto height = winsize.height;</span><br><span class="line"></span><br><span class="line">    auto stencil = mDrawNode = DrawNode::create();</span><br><span class="line">    </span><br><span class="line">    auto cnode = ClippingNode::create(stencil);</span><br><span class="line">    cnode-&gt;setContentSize(winsize);</span><br><span class="line">    cnode-&gt;setInverted(true);</span><br><span class="line">    auto s = Sprite::create(&quot;HelloWorld.png&quot;);</span><br><span class="line">    s-&gt;setPosition(width * 0.5,height * 0.5);</span><br><span class="line">    cnode-&gt;addChild(s);</span><br><span class="line">    </span><br><span class="line">    this-&gt;addChild(cnode);</span><br><span class="line">    </span><br><span class="line">    auto listener = EventListenerTouchOneByOne::create();</span><br><span class="line">    listener-&gt;onTouchBegan = std::bind(&amp;HelloWorld::onTouchBegan, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    listener-&gt;onTouchMoved = std::bind(&amp;HelloWorld::onTouchMoved, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    </span><br><span class="line">    EventDispatcher* ed = Director::getInstance()-&gt;getEventDispatcher();</span><br><span class="line">    ed-&gt;addEventListenerWithSceneGraphPriority(listener, this);</span><br><span class="line">    </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) &#123;</span><br><span class="line">    mTouchBeganPos = touch-&gt;getLocation();</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event) &#123;</span><br><span class="line">    Vec2 pos = touch-&gt;getLocation();</span><br><span class="line">    std::vector&lt;cocos2d::Vec2&gt; vec(2);</span><br><span class="line">    vec[0] = mTouchBeganPos;</span><br><span class="line">    vec[1] = pos;</span><br><span class="line">    mPoints.push_back(vec);</span><br><span class="line">    mTouchBeganPos = pos;</span><br><span class="line">    refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::refresh() &#123;</span><br><span class="line">    mDrawNode-&gt;clear();</span><br><span class="line">    mDrawNode-&gt;setLineWidth(10);</span><br><span class="line">    for(std::vector&lt;std::vector&lt;cocos2d::Vec2&gt;&gt;::iterator iter = mPoints.begin(); iter != mPoints.end(); iter++) &#123;</span><br><span class="line">        std::vector&lt;cocos2d::Vec2&gt; vec = *iter;</span><br><span class="line">        mDrawNode-&gt;drawLine(vec[0], vec[1], Color4F::RED);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单介绍一下clippingNode。它有一个stencil(可以是任何Node)用来决定切割区域，clippingNode的children都会被stencil切割，代码里我们的stencil是一个drawNode，需要擦除的图片HelloWorld.png添加为clippingNode的子节点。本来除了drawNode渲染的区域外都会被切割，我们通过setInverted接口设置后变成了相反，drawNode渲染的区域将被切割，被切割后我们就看到了图片下面的黑色背景，于是就呈现出擦除的效果。</p>
+<p>使用setAlphaThreshold接口可以设置alpha阈值，当stencil中像素的alpha值大于这个阈值时，才会被绘制</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

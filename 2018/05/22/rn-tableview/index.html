@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。 封装tableView本身很简单，按官方教程走就行了。">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之封装TableView组件">
+<meta property="og:url" content="http://yangguang1029.github.io/2018/05/22/rn-tableview/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。 封装tableView本身很简单，按官方教程走就行了。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-25T13:01:06.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative之封装TableView组件">
+<meta name="twitter:description" content="众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。 封装tableView本身很简单，按官方教程走就行了。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2018/05/22/rn-tableview/"/>
+
+
+
+
+
+  <title>ReactNative之封装TableView组件 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/22/rn-tableview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative之封装TableView组件</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T20:18:36+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。</p>
+<p>封装tableView本身很简单，按<a href="https://reactnative.cn/docs/0.51/native-component-ios.html#content" target="_blank" rel="noopener">官方教程</a>走就行了。我们从js中传一个rowCount属性过来，用于给tableView的numberOfRowsInSection回调使用。对tableView来说，最重要的就是每个tableViewCell怎么渲染了。因为每个单元行渲染的内容需要从js端传过来，如果能够在原生层捕获到这个js中渲染的组件，然后放到每个TableViewCell里去作为它的subview，当这个TableViewCell被重用时，获取到这个subview，然后通知js端刷新这个组件的内容即可。</p>
+<p>从原生捕获js组件的方案就是，在js层的tableView里，给它添加子控件，然后在对应的原生tableview代码中，通过</p>
+<pre><code>- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
+
+}
+</code></pre><p>接口，可以获取到这个子控件。这些控件既然需要从原生层往js层发消息，那么理所当然也需要是原生封装的组件了，我们给它通过RCTBubblingEventBlock回调，就可以让它往js发消息了，这样当一个tableViewCell被重用时，我们已经知道它被重用到了哪个位置，把这个位置发到js层，js层刷新显示即可。</p>
+<p>在js层使用的时候，我们需要往tableView里添加子控件用于显示单元行内容，这些子控件在每次tableViewCell新建的时候都需要一个，所以理论上来说，这些子控件的数量应该保证至少能填满一个tableView的空间，像demo里tableview的高度是300，单元行高度是40，那么至少需要8个。但如果只放8个，就会发现在快速滑动时不够用了，导致可能个别单元行变成了空白。推测是快速滑动时，部分tableViewCell还没来得及进入回收队列，所以需要新建，所以在demo里我就放了两屏的数量，也就是16个，就没有再出现问题了。</p>
+<p>以上就是实现思路，具体代码可以查看<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview" target="_blank" rel="noopener">demo</a></p>
+<p>updated on 2018-06-11</p>
+<p>在原基础上，实现了单元行可变高度的功能。demo代码也做了一些优化，</p>
+<ol>
+<li>给TableViewCell设定{ position: ‘absolute’,left: 0,top: 0 }的style，代替原来在原生层getUnusedCell方法中获取到TableCell后setFrame的方案，因为当单元行高度可变时，js层的单元行组件会频繁的需要重新布局，位置就会变乱了，设定一个(0,0)的绝对坐标，目的是防止单元行位置变乱</li>
+<li>js层的TableCell不再负责渲染，转为交给TableView的props的renderRow接口。</li>
+<li>在js层指定每个单元行的type然后传入到原生层，作为tableCell的Identifier，提高单元行复用时的效率。</li>
+</ol>
+<p>updated on 2018-06-25</p>
+<p>在原基础上，增加了下拉刷新功能。</p>
+<ol>
+<li>在MyTableView的init函数里是无法使用js层传过来的prop属性的，都是初始化数值。所以增加UIRefreshControl必须在收到enablePullRefresh属性时才去增加。</li>
+<li>要让js层主动调用原生的代码，改变props值就行，这样原生的set函数就会被调用。例如下拉刷新后js层获取网络数据结束，此时需要通过原生层关闭UIRefreshControl，这时把refreshing设置为false，则原生层的setRefreshing被调用，做相应的操作就可以了</li>
+</ol>
+<p>新版本代码<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview2" target="_blank" rel="noopener">见此</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/04/rn-import-require/" rel="next" title="ReactNative之两种模块管理方式">
+                <i class="fa fa-chevron-left"></i> ReactNative之两种模块管理方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/23/rn-native-call-js/" rel="prev" title="ReactNative之快速实现native调用js">
+                ReactNative之快速实现native调用js <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

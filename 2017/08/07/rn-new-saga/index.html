@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="我们先新建一个RN项目 react-native init testrn 然后安装redux cd testrn npm install --save redux 在动手之前确保自己已经理解了redux的概念 redux官方中文文档。 现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建一个redux saga项目的简要流程">
+<meta property="og:url" content="http://yangguang1029.github.io/2017/08/07/rn-new-saga/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="我们先新建一个RN项目 react-native init testrn 然后安装redux cd testrn npm install --save redux 在动手之前确保自己已经理解了redux的概念 redux官方中文文档。 现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.784Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="创建一个redux saga项目的简要流程">
+<meta name="twitter:description" content="我们先新建一个RN项目 react-native init testrn 然后安装redux cd testrn npm install --save redux 在动手之前确保自己已经理解了redux的概念 redux官方中文文档。 现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2017/08/07/rn-new-saga/"/>
+
+
+
+
+
+  <title>创建一个redux saga项目的简要流程 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/08/07/rn-new-saga/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">创建一个redux saga项目的简要流程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T20:18:36+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我们先新建一个RN项目</p>
+<pre><code>react-native init testrn
+</code></pre><p>然后安装redux</p>
+<pre><code>cd testrn
+npm install --save redux
+</code></pre><p>在动手之前确保自己已经理解了redux的概念 <a href="http://cn.redux.js.org/" target="_blank" rel="noopener">redux官方中文文档</a>。</p>
+<p>现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设计为</p>
+<pre><code>{
+    &quot;subState1&quot;:{&quot;text&quot;:&quot;&quot;},
+    &quot;subState2&quot;:{&quot;text&quot;:&quot;&quot;}
+}
+</code></pre><p>实际项目中的state肯定不会这么简单，可能会非常庞大，这就要求结构不能太草率，因为是树状结构，所以要掌握好分级的粒度，层级太少则可能单个子state过于复杂，因为一个reducer处理一个子state，则会导致reducer函数过于繁冗。层级太多则不易梳理结构，显得混乱。</p>
+<p>然后我们给这两个修改text的动作设定两个action</p>
+<pre><code>const CHANGE1 = &quot;change1&quot;;
+const CHANGE2 = &quot;change2&quot;;
+</code></pre><p>然后根据这个结构来写reducer</p>
+<pre><code>function reducer1(state={&quot;text&quot;:&quot;&quot;}, action) {
+    if(action.type === CHANGE1) {
+        return Object.assign({}, state, {&quot;text&quot;:&quot;hello&quot; + action.data});
+    }
+    return state;
+}
+function reducer2(state={&quot;text&quot;:&quot;&quot;}, action) {
+    if(action.type === CHANGE2) {
+        return Object.assign({}, state, {&quot;text&quot;:&quot;world&quot; + action.data});
+    }
+    return state;
+}
+let reducer = combineReducers({&quot;subState1&quot;:reducer1, &quot;subState2&quot;:reducer2});
+</code></pre><p>有的人在使用combineReducers时，习惯使用ES5的对象简写，例如</p>
+<pre><code>let reducer = combineReducers({reducer1, reducer2})
+</code></pre><p>这样不是很好，这样写的话，state的实际内容就是</p>
+<pre><code>{
+    &quot;reducer1&quot;:{&quot;text&quot;:&quot;&quot;},
+    &quot;reducer2&quot;:{&quot;text&quot;:&quot;&quot;}
+}
+</code></pre><p>我们在使用state数据时，以reducer1为key，而reducer1本身又是reducer函数的名称，一不小心就容易搞糊涂。所以我们提倡在设计state时就想好子state的key，然后在combine时用key:reducer的形式。</p>
+<p>为了方便使用redux，我们还需要react-redux库</p>
+<pre><code>npm install --save react-redux
+</code></pre><p>我们使用connect这个API，来简化触发和监听action的操作。我们开始把这个页面写出来</p>
+<pre><code>import {Provider, connect} from &quot;react-redux&quot;
+
+class TestRN extends Component{
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;{this.props.subState1.text}&lt;/Text&gt;
+            &lt;Text&gt;{this.props.subState2.text}&lt;/Text&gt;
+            &lt;Button title=&quot;btn1&quot; onPress={()=&gt;{
+                this.props.createSagaAction1();
+            }}/&gt;
+            &lt;Button title=&quot;btn2&quot; onPress={()=&gt;{
+                this.props.createSagaAction2();
+            }}/&gt;
+        &lt;/View&gt;)
+    }
+}
+
+const mapStateToProps = (state, ownProps) =&gt;{
+    return state;
+}
+const mapDispatchToProps = (dispatch, ownProps)=&gt;{
+    return bindActionCreators({createSagaAction1, createSagaAction2}, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TestRN)
+</code></pre><p>这段代码里，我们点击按钮后，并不是发出了CHANGE1和CHANGE2事件，而是createSagaAction1和createSagaAction2，这是因为我打算在接下来使用redux saga，让它收到而是createSagaAction1和createSagaAction2后，模拟一次异步操作，再由saga来发出CHANGE1和CHANGE2事件</p>
+<p>redux saga是用来处理异步操作的，所以我们先写个模拟异步的功能函数</p>
+<pre><code>function delay(cb, time) {
+    return new Promise((resolve)=&gt;{
+        setTimeout(()=&gt;{
+            cb(parseInt(Math.random() * 100));
+            resolve();
+        }, time);
+    })
+}
+async function getNum(){
+    let a;
+    await delay((num)=&gt;{
+        a = num;
+    }, 5000);
+    return a;
+}
+</code></pre><p>然后开始redux saga相关，首先是安装saga</p>
+<pre><code>npm install --save redux-saga
+</code></pre><p>然后开始代码，我们把点击按钮要发出的两个action实现出来然后监听并处理</p>
+<pre><code>import regeneratorRuntime from &quot;regenerator-runtime&quot;;
+
+const SAGA_ACTION1 = &quot;sagaAction1&quot;;
+const SAGA_ACTION2 = &quot;sagaAction2&quot;;
+function createSagaAction1(){
+    return {&quot;type&quot;: SAGA_ACTION1};
+}
+function createSagaAction2(){
+    return {&quot;type&quot;: SAGA_ACTION2};
+}
+function* sagaFunc1(){
+    while(true) {
+        yield take(SAGA_ACTION1);
+        let a = yield call(getNum);
+        yield put({type:CHANGE1, data:a});
+    }
+}
+function* sagaFunc2(){
+    while(true) {
+        yield take(SAGA_ACTION2);
+        let a = yield call(getNum);
+        yield put({type:CHANGE2, data:a});
+    }
+}
+function* mySaga(){
+    yield fork(sagaFunc1);
+    yield fork(sagaFunc2);
+}
+</code></pre><p>这里需要注意的就是saga函数必须是generators函数，不能用async, await。 sagaFunc1通过使用三个effect来进行操作，首先使用take来监听SAGA_ACTION1，然后使用call来阻塞调用异步函数，最后使用put来发出CHANGE1这个action，这时我们前面写的reducer收到CHANGE1这个action，就会修改state，从而让页面发生变化。</p>
+<p>然后就是不要忘了import regeneratorRuntime，否则项目是跑不起来的，会出现红屏错误，提示cannot read property ‘mark’ of undefined。这是babel处理generators函数所需要的。</p>
+<p>最后是创建store和使用provider了</p>
+<pre><code>let middle = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(middle));
+middle.run(mySaga);
+
+export default class TestRNContainer extends Component{
+    render(){
+        return (
+            &lt;Provider store = {store}&gt;
+            &lt;TestRN /&gt;
+            &lt;/Provider&gt;
+        )
+    }
+}
+</code></pre><p>到此为止，一个新建项目使用redux saga就全部完成了</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/02/rn-ref/" rel="next" title="ReactNative之ref赋值应使用成员函数">
+                <i class="fa fa-chevron-left"></i> ReactNative之ref赋值应使用成员函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/19/rn-image/" rel="prev" title="ReactNative之Image控件从js到java的追踪流程">
+                ReactNative之Image控件从js到java的追踪流程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

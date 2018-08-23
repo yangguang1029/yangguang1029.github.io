@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如 //ES6风格 //a.js export let a = 1; export function adda(){     a += 1; } //index.js import {a, adda} from &amp;quot;./a.js&amp;quot; console.log(&amp;quot;a is &amp;">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之两种模块管理方式">
+<meta property="og:url" content="http://yangguang1029.github.io/2018/04/04/rn-import-require/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如 //ES6风格 //a.js export let a = 1; export function adda(){     a += 1; } //index.js import {a, adda} from &amp;quot;./a.js&amp;quot; console.log(&amp;quot;a is &amp;">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-04T10:22:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative之两种模块管理方式">
+<meta name="twitter:description" content="在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如 //ES6风格 //a.js export let a = 1; export function adda(){     a += 1; } //index.js import {a, adda} from &amp;quot;./a.js&amp;quot; console.log(&amp;quot;a is &amp;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2018/04/04/rn-import-require/"/>
+
+
+
+
+
+  <title>ReactNative之两种模块管理方式 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/04/04/rn-import-require/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative之两种模块管理方式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-04T20:18:36+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如</p>
+<pre><code>//ES6风格
+//a.js
+export let a = 1;
+export function adda(){
+    a += 1;
+}
+//index.js
+import {a, adda} from &quot;./a.js&quot;
+console.log(&quot;a is &quot; + a)
+adda();
+console.log(&quot;after add a is &quot; + a)
+
+//CommonJS风格
+//b.js
+let b = 1;
+function addb(){
+    b += 1;
+}
+module.exports = {b, addb}
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b is &quot; + B.b)
+B.addb();
+console.log(&quot;after add b is &quot; + B.b)
+</code></pre><p>这两者模块管理风格有什么区别，在阮一峰老师的《ECMAScript6 入门》书中，有<a href="http://es6.ruanyifeng.com/#docs/module-loader" target="_blank" rel="noopener">相关的章节</a>。例如ES6是静态导入，所以import必须位于顶层代码，任何位于非顶层代码的import都会报错，而require则可以位于任何位置。ES6风格因为是静态导入，import时模块名不能是动态的，而require可以是动态的。在导出时，ES6的导出是引用，而CommonJS的导出是拷贝，所以上面代码里，a会输出1和2，而b会输出两个1。</p>
+<p>回到项目中来，我们在RN项目中的js代码，都会经过babel编译成ES5标准，在ES5中是没有模块管理的，所以RN自己实现了模块管理的功能，</p>
+<p>先看导入，相关的源代码位于node_modules/metro/src/lib/polyfills/require.js内。我们在代码里不论是写import还是写require，最终都会被翻译成这个require.js里的require方法。通过这个方法可以看到，不论我们执行多少次导入，模块本身只会被加载执行一次。对同一个模块，我们使用ES6和CommonJS两种方式来引用，得到的行为是一样的。对上面的a.js，结果都是1和2，对b.js，结果都是两个1。然后不论使用哪种风格，文件之间的依赖顺序在编译成bundle时都必须确定下来，使用require因为可以写在代码块里，不像import必须写在顶层代码中，所以一定程度上可以延迟模块被执行的时间，个人觉得这个区别还是很微小的，不会造成性能上的区别。</p>
+<p>然后是导出，前面说过这两种风格的导出结果，一个是拷贝，一个是引用。对上面的a.js和b.js，我们看一下他们在bundle内的代码就明白了</p>
+<pre><code>__d(function (global, _require, module, exports, _dependencyMap) {
+    Object.defineProperty(exports, &quot;__esModule&quot;, {
+        value: true
+    });
+    exports.adda = adda;
+    var a = exports.a = 1;
+    function adda() {
+        exports.a = a += 1;
+    }
+},337,[],&quot;js/testImport/a.js&quot;);
+__d(function (global, _require, module, exports, _dependencyMap) {
+    var b = 1;
+    function addb() {
+        b += 1;
+    }
+    module.exports = {
+        b: b,
+        addb: addb
+    };
+},338,[],&quot;js/testImport/b.js&quot;);
+</code></pre><p>对于ES6风格的a.js，导出的属性直接加在了exports上，这个exports就是我们导入时获得的Object，所以它是直接持有了变量的引用。而对于CommonJS风格的b.js，导出的是一个新建的Object，它拷贝了变量b的值，既然是拷贝，就有浅拷贝和深拷贝之分，这里也完全取决于我们怎么实现，会有不同的行为，例如可以跑一下下面的代码试一下</p>
+<pre><code>//b.js
+let b = {value:1}
+function addb(){
+    b.value += 1;
+}
+module.exports = {b1:b, addb, b2:{value:b.value}}
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b1 is &quot; + B.b1.value)
+console.log(&quot;b2 is &quot; + B.b2.value)
+B.addb();
+console.log(&quot;after add b1 is &quot; + B.b1.value)
+console.log(&quot;after add b2 is &quot; + B.b2.value)
+</code></pre><p>到这里基本上都明白了代码里的import, require, export, module.exports都有什么行为了。需要注意一下的就是，当import和require混合使用时，import一定会早于require被执行，这可能导致依赖顺序上发生问题，所以还是尽量避免混用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/12/rn-cached-view/" rel="next" title="ReactNative之一个组件缓存的方案">
+                <i class="fa fa-chevron-left"></i> ReactNative之一个组件缓存的方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/22/rn-tableview/" rel="prev" title="ReactNative之封装TableView组件">
+                ReactNative之封装TableView组件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。 ListViewListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDis">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之listView优化方案">
+<meta property="og:url" content="http://yangguang1029.github.io/2017/12/26/rn-improve-listview/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。 ListViewListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDis">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative之listView优化方案">
+<meta name="twitter:description" content="ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。 ListViewListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDis">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2017/12/26/rn-improve-listview/"/>
+
+
+
+
+
+  <title>ReactNative之listView优化方案 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/26/rn-improve-listview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative之listView优化方案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-26T20:18:36+08:00">
+                2017-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。</p>
+<h3 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h3><p>ListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDistance属性指定初始时单元格数量，可以加快初始化的速度。其次通过dataSource的rowHasChanged接口可以减少单元行re-render的次数。</p>
+<h3 id="FlatList"><a href="#FlatList" class="headerlink" title="FlatList"></a>FlatList</h3><p>这是官方推出的解决方案，FlatList的思路是减少渲染的单元行数量，它在render时进行计算，只渲染屏幕中和缓冲区内的单元行，其余地方使用空白代替，这样不论FlatList有多少内容，实际渲染的单元行数量基本保持不变。因为有的单元行并没有渲染，当快速滑动到这个区域时，渲染是异步的，此时就会看到白屏，然后才开始显示内容。</p>
+<p>使用FlatList时也有一些优化方案，首先是单元行组件如果使用PureComponent可以大大减少render的数量。其次实现props.getItemLayout接口可以避免临时测量每个单元行的尺寸，大大提高性能，如果能明确每个单元行的尺寸就一定要实现此接口。</p>
+<p>initialNumToRender属性默认为10，它设定初始时渲染的单元行数量，这些单元行会常驻内存不被销毁，目的是为了scrollToTop时没有白屏。</p>
+<p>maxToRenderPerBatch属性默认为10，它设定了在计算渲染单元行数量时每次处理的行数，这个数值如果太大可能导致渲染的单元行较多，占用内存以及增加白屏时间，如果太小了则会增加setState的次数</p>
+<p>windowSize属性指定了屏幕外的区域渲染多少个屏幕单元(visible length)，默认是21，它也会影响初始渲染的单元行数量。假如一个android设备高度为640，减去20像素的状态栏，一个屏幕单元是620，会额外渲染20个。这个数字如果比较大，则同时渲染的单元格数量会比较多，也增加了初始化的时间，如果比较小，则会增加出现白屏的几率。</p>
+<h3 id="SGListView"><a href="#SGListView" class="headerlink" title="SGListView"></a>SGListView</h3><p><a href="https://github.com/sghiassy/react-native-sglistview" target="_blank" rel="noopener">SGListView</a>的原理是通过onChangeVisibleRows接口，当单元行滑动到屏幕外时将渲染内容变成一个空白View，当滑动到屏幕内时变回实际内容。这样因为屏幕外的单元行都是空白view，所以优化了内存占用。 <a href="https://github.com/39otrebla/react-native-enhanced-listview" target="_blank" rel="noopener">enhancedListView</a>也是类似的思路，但实现有点简陋。这个解决方案也会有白屏问题，实际上只要单元行的内容变掉，重新要渲染时，因为渲染是异步的，就都会有白屏问题。</p>
+<h3 id="LargeList"><a href="#LargeList" class="headerlink" title="LargeList"></a>LargeList</h3><p><a href="https://github.com/bolan9999/react-native-largelist" target="_blank" rel="noopener">LargeList</a>的想法是在js层实现了单元行复用。首先它和FlatList一样有白屏问题，因为渲染是异步的，在js层实现单元行复用，要求一个View渲染某些内容到真正展示出来，这段时间里屏幕就是白的。其次复用的作用是减少了创建单元行的消耗，这个消耗在整个ListView的性能消耗里并不占大头。最后使用ref持有Component引用并进行操作实际上不是RN推荐的一种处理方式，在复杂场景下很可能出问题。所以我不是很推荐使用它，实测也有不少bug。</p>
+<h3 id="RealRecyclerView"><a href="#RealRecyclerView" class="headerlink" title="RealRecyclerView"></a>RealRecyclerView</h3><p><a href="https://github.com/droidwolf/react-native-RealRecyclerView" target="_blank" rel="noopener">RealRecyclerView</a>是封装了Android的原生控件RecyclerView，通过接口绑定同步原生view和js组件的内容。自己封装原生组件可能是难度最大的一种方案，因为有很多坑需要填，而且Android和iOS平台下风格也会不一致。但如果弄好了，就是真正实现了单元行复用的方案。像一些大厂的技术团队比如去哪儿就封装了自己的原生listView。 github上还有一个<a href="https://github.com/asciiman/react-native-native-listview" target="_blank" rel="noopener">react-native-native-listview</a>是同时封装了Android和iOS平台，可供参考。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/21/rn-pureComponent/" rel="next" title="ReactNative之PureComponent">
+                <i class="fa fa-chevron-left"></i> ReactNative之PureComponent
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/27/rn-ts/" rel="prev" title="ReactNative之在项目中使用TypeScript">
+                ReactNative之在项目中使用TypeScript <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ListView"><span class="nav-number">1.</span> <span class="nav-text">ListView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FlatList"><span class="nav-number">2.</span> <span class="nav-text">FlatList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SGListView"><span class="nav-number">3.</span> <span class="nav-text">SGListView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LargeList"><span class="nav-number">4.</span> <span class="nav-text">LargeList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RealRecyclerView"><span class="nav-number">5.</span> <span class="nav-text">RealRecyclerView</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

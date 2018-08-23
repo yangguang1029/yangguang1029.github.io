@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cocos," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="效果图跟用clippingNode实现的那次差不多  直接上代码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051bool HelloWorld::init() &amp;#123;   if ( !Layer::init()) &amp;#123;        return">
+<meta name="keywords" content="cocos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cocos使用blendFunc实现擦除效果">
+<meta property="og:url" content="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="效果图跟用clippingNode实现的那次差不多  直接上代码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051bool HelloWorld::init() &amp;#123;   if ( !Layer::init()) &amp;#123;        return">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/cocos-blendFunc/6DA8FA29-187A-4ED3-BF65-F97CD8F2755D.png">
+<meta property="og:updated_time" content="2018-03-30T12:44:49.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cocos使用blendFunc实现擦除效果">
+<meta name="twitter:description" content="效果图跟用clippingNode实现的那次差不多  直接上代码 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051bool HelloWorld::init() &amp;#123;   if ( !Layer::init()) &amp;#123;        return">
+<meta name="twitter:image" content="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/cocos-blendFunc/6DA8FA29-187A-4ED3-BF65-F97CD8F2755D.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/"/>
+
+
+
+
+
+  <title>cocos使用blendFunc实现擦除效果 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cocos使用blendFunc实现擦除效果</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-01T19:04:27+08:00">
+                2016-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>效果图跟用clippingNode实现的那次差不多</p>
+<p><img src="cocos-blendFunc/6DA8FA29-187A-4ED3-BF65-F97CD8F2755D.png" alt="img"></p>
+<p>直接上代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">bool HelloWorld::init() &#123;</span><br><span class="line">   if ( !Layer::init()) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    auto winsize = Director::getInstance()-&gt;getWinSize();</span><br><span class="line">    auto width = winsize.width;</span><br><span class="line">    auto height = winsize.height;</span><br><span class="line"> </span><br><span class="line">    auto s = Sprite::create(&quot;HelloWorld.png&quot;);</span><br><span class="line">    s-&gt;setPosition(width * 0.5, height * 0.5);</span><br><span class="line">    this-&gt;addChild(s);</span><br><span class="line">    </span><br><span class="line">    mDrawNode = DrawNode::create();</span><br><span class="line">    this-&gt;addChild(mDrawNode);</span><br><span class="line"></span><br><span class="line">    auto listener = EventListenerTouchOneByOne::create();</span><br><span class="line">    listener-&gt;onTouchBegan = std::bind(&amp;HelloWorld::onTouchBegan, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    listener-&gt;onTouchMoved = std::bind(&amp;HelloWorld::onTouchMoved, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    </span><br><span class="line">    EventDispatcher* ed = Director::getInstance()-&gt;getEventDispatcher();</span><br><span class="line">    ed-&gt;addEventListenerWithSceneGraphPriority(listener, this);</span><br><span class="line">    </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) &#123;</span><br><span class="line">    mTouchBeganPos = touch-&gt;getLocation();</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event) &#123;</span><br><span class="line">    Vec2 pos = touch-&gt;getLocation();</span><br><span class="line">    std::vector&lt;cocos2d::Vec2&gt; vec(2);</span><br><span class="line">    vec[0] = mTouchBeganPos;</span><br><span class="line">    vec[1] = pos;</span><br><span class="line">    mPoints.push_back(vec);</span><br><span class="line">    mTouchBeganPos = pos;</span><br><span class="line">    refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::refresh() &#123;</span><br><span class="line">    mDrawNode-&gt;setBlendFunc(BlendFunc::DISABLE);</span><br><span class="line">    mDrawNode-&gt;clear();</span><br><span class="line">    mDrawNode-&gt;setLineWidth(10);</span><br><span class="line">    for(std::vector&lt;std::vector&lt;cocos2d::Vec2&gt;&gt;::iterator iter = mPoints.begin(); iter != mPoints.end(); iter++) &#123;</span><br><span class="line">        std::vector&lt;cocos2d::Vec2&gt; vec = *iter;</span><br><span class="line">        mDrawNode-&gt;drawLine(vec[0], vec[1], Color4F(0,0,0,0));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Render-&gt;end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次代码比上次的要简单一些，我们先加上背景图，然后再加上一个DrawNode来实现擦除，这个DrawNode设置BlendFunc为BlendFunc::DISABLE，也就是在它与背景混合的地方，只显示自己不显示背景，而他自己又是把运动轨迹绘制成透明的线段，所以就产生了背景图被擦除的效果。如果我们需要限制在局部范围内，只要处理好触摸区域或者添加到容器内即可</p>
+<p>然后解释下blendFunc，它是用来处理颜色混合的，我们要将一个图片渲染到屏幕上时，需要将它的颜色（RGBA）与屏幕上已有的颜色混合，我们将要被渲染上去的称为源（src），屏幕上已有的称为目标(dst)，最终颜色显示是它们和各自的因子相乘。如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源颜色 Rs Gs Bs As</span><br><span class="line">目标颜色 Rd Gd Bd Ad</span><br><span class="line">源因子 Sr Sg Sb Sa</span><br><span class="line">目标因子 Dr Dg Db Da</span><br><span class="line">最终颜色 Rs * Sr + Rd * Dr Gs * Sg + Gd * Dg Bs * Sb + Bd * Db As * Sa + Ad * Da</span><br></pre></td></tr></table></figure>
+<p>cocos内置了一些值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GL_ZERO					//全部不用 (0,0,0,0)                           </span><br><span class="line">GL_ONE                 //全部使用 (1,1,1,1)</span><br><span class="line">GL_SRC_COLOR           //使用源颜色(Rs, Gs, Bs, As)           </span><br><span class="line">GL_ONE_MINUS_SRC_COLOR //使用反源色(1-Rs, 1-Gs, 1-Bs, 1-As)</span><br><span class="line">GL_SRC_ALPHA           //使用源透明度 (As, As, As, As)</span><br><span class="line">GL_ONE_MINUS_SRC_ALPHA //使用反源透明度 (1-As, 1-As, 1-As, 1-As)</span><br><span class="line">GL_DST_ALPHA           //使用目标透明度(Ad, Ad, Ad, Ad) </span><br><span class="line">GL_ONE_MINUS_DST_ALPHA //使用反目标透明度(1-Ad, 1-Ad, 1-Ad, 1-Ad) </span><br><span class="line"></span><br><span class="line">const BlendFunc BlendFunc::DISABLE = &#123;GL_ONE, GL_ZERO&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_PREMULTIPLIED = &#123;GL_ONE, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_NON_PREMULTIPLIED = &#123;GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ADDITIVE = &#123;GL_SRC_ALPHA, GL_ONE&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样就不难理解本例中我们使用的BlendFunc::DISABLE了，它意味着混合的时候，不取目标颜色，只显示源颜色。想一下sprite默认应该使用哪种呢？这取决于图片是否已经预乘了alpha，如果是则使用ALPHA_PREMULTIPLIED，否则使用ALPHA_NON_PREMULTIPLIED，很好理解。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cocos/" rel="tag"># cocos</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/01/cocos-clippingNode/" rel="next" title="cocos使用clippingNode实现擦除效果">
+                <i class="fa fa-chevron-left"></i> cocos使用clippingNode实现擦除效果
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/05/leetcode453/" rel="prev" title="【leetcode】Minimum Moves to Equal Array Elements">
+                【leetcode】Minimum Moves to Equal Array Elements <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

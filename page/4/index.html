@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react-native,react,react native,cocos" />
+
+
+
+
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="杨光的笔记">
+<meta property="og:url" content="http://yangguang1029.github.io/page/4/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="杨光的笔记">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/page/4/"/>
+
+
+
+
+
+  <title>杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/21/rn-component-liftcycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/21/rn-component-liftcycle/" itemprop="url">ReactNative中的Component的生命周期</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-21T19:15:36+08:00">
+                2017-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文介绍一下Component生命周期相关的一些函数，主要参考自<a href="https://reactjs.org/docs/react-component.html" target="_blank" rel="noopener">官方文档</a> </p>
+<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>render函数是必须实现的，它用来渲染界面。一般会由this.props和this.state来控制如何显示。在这个函数里不能调用setState，否则会导致死循环，因为setState会导致render被调用。<br>render函数返回true,false,null,undefined都是合法的jsx语法，但它们都不会产生渲染。render函数应该避免太复杂耗时的操作。另外注意一下<text></text>组件里如果想显示bool值,null,undefined时也需要显示转换成字符串才行。</p>
+<h2 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h2><h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p>构造函数是最早被调用的，构造函数的第一句应该是super(props)。 state的初始化应该放在构造函数里。当然还有声明类的成员变量。</p>
+<h3 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h3><p>当Component将要被加载时被调用，它在render之前被调用。在这个函数里执行setState的话，不会触发componentWillUpdate和render。因为render还没被调用，所以在这个函数里想通过ref获取子控件是不行的。componentWillMount为第一次render提供了准备数据的机会，我们可以放心的操作props和state。</p>
+<p>componentWillMount也适合用来注册事件监听，假如有的事件在渲染时触发，那么在render前就注册显然更合适。componentWillMount的父节点会早于子节点被调用。</p>
+<h3 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h3><p>当component已经被加载后调用，它在render之后被调用。所以在这个函数里执行setState会触发componentWillUpdate和render。对于同级节点，先渲染的componentDidMount会先被调用，对于父子节点，子节点的componentDidMount会比父节点先调用。前面说到render不应该调用setState来触发re-render，而componentWillMount调用setState又不会触发re-render，显然componentDidMount则完全没问题了，比如我们有一个component的尺寸未知，取决于另一个component的已知尺寸，就可以在componentDidMount里获取数据，计算好后setState来重新render。</p>
+<h3 id="constructor，componentWillMount和componentDidMount分别适合做什么事情"><a href="#constructor，componentWillMount和componentDidMount分别适合做什么事情" class="headerlink" title="constructor，componentWillMount和componentDidMount分别适合做什么事情"></a>constructor，componentWillMount和componentDidMount分别适合做什么事情</h3><p>constructor显然适合做初始化，比如初始化state,成员变量，绑定成员函数等。而componentWillMount和componentDidMount的主要区别就是一个在render前，一个在render后。如果需要处理原始props和state，就应该放到componentWillMount中，比如使用props给state赋值，此外注册监听适合放在componentWillMount内。除此之外，大多数情况下的操作应该放到componentDidMount里，比如发起异步请求，开启计时器等等。</p>
+<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><h3 id="componentWillReceiveProps-nextProps"><a href="#componentWillReceiveProps-nextProps" class="headerlink" title="componentWillReceiveProps(nextProps)"></a>componentWillReceiveProps(nextProps)</h3><p>当component的props被更新时被调用，但需要注意的是，update流程的所有回调触发的前提都是有update，也就是我们在父控件代码中改变子控件props但不触发update的话，这个回调也不会被调用的。例子很简单，比如</p>
+<pre><code>render(){
+    return (&lt;View&gt;
+        &lt;TestComponent num=this._num&gt;
+        &lt;Button onPress={()=&gt;{this._num=999}}&gt;
+    &lt;/View&gt;)
+}
+</code></pre><p>点击按钮改变了this._num，而this._num又作为TestComponent的props传递进去了，但因为并没有触发update，所以TestComponent的任何update回调都不会被触发。</p>
+<p>另外需要注意，该回调被调用时，不一定props发生了变化，这里的没有发生变化有两种情形，一种是父控件没有改变子控件的props，例如父组件代码内调用setState刷新界面，此时子控件的componentWillReceiveProps也会被调用，但props没有发生变化。还有就是父控件传递过去的props是一个复杂数据类型，所以实际上是个引用，即使props发生了变化，this.props和nextProps也是相同的。</p>
+<p>什么时候会用到这个回调呢？就是如果我们的state受props影响时，当传入的props发生了变化，我们在这里去修改state。在这里可以放心去执行setState</p>
+<h3 id="shouldComponentUpdate-nextProps-nextState"><a href="#shouldComponentUpdate-nextProps-nextState" class="headerlink" title="shouldComponentUpdate(nextProps, nextState)"></a>shouldComponentUpdate(nextProps, nextState)</h3><p>通过这个回调函数返回true还是false来决定是否re-render。如果不重写的话会使用源代码的默认实现。默认实现可以参考源代码，它使用了fbjs/lib/shallowEqual.js内的shallowEqual方法来比较新旧props和state，只要props和state有一个改变了，就会触发re-render。 从shallowEqual代码看，首先是===强等判断，所以如果是同一个引用，那么不管内容怎么变，都认为是不变。例如</p>
+<pre><code>let old = this.state;
+old.num=999;
+this.setState(old);
+</code></pre><p>这样不会触发re-render。然后是比较key-value，value的比较也是===强等。举个例子</p>
+<pre><code>this.state = {num:1};
+...
+this.setState({num:1});
+</code></pre><p>这里虽然setState时将state变成了一个新的对象，但因为key-value完全一致，所以也不会导致re-render。如果value是复杂数据类型同理，例如</p>
+<pre><code>this.state = {obj:{num:1}}
+...
+let old = this.state.obj;
+old.num = 999;
+this.setState({obj:old})
+</code></pre><p>这里虽然num变了，但并不会触发re-render。</p>
+<p>以上是源代码中的默认实现，如果需要的话就重写通过限制一些re-render的触发条件，可以起到优化性能的作用。</p>
+<h3 id="componentWillUpdate-nextProps-nextState"><a href="#componentWillUpdate-nextProps-nextState" class="headerlink" title="componentWillUpdate(nextProps, nextState)"></a>componentWillUpdate(nextProps, nextState)</h3><p>这个方法在每次re-render之前都会被调用，因为是在render之前，所以有点类似于componentWillMount，我们在这个回调里为下次render做好准备，通过this.props和this.state可以获取到当前的props和state，通过传进来的nextProps和nextState参数可以获得新的props和state。与componentWillMount不一样的是，在这里我们是可以操作UI的，但并不建议这么做，因为此时操作的是上次渲染的UI，它们有可能在下次render时就失效了。我们也不应该在这里调用setState，因为setState又会触发componentWillUpdate,这就造成了死循环，当然如果通过对nextProps或者nextState做判断是可以杜绝进入死循环的，但最好还是避免这样操作。</p>
+<h3 id="componentDidUpdate-prevProps-prevState"><a href="#componentDidUpdate-prevProps-prevState" class="headerlink" title="componentDidUpdate(prevProps, prevState)"></a>componentDidUpdate(prevProps, prevState)</h3><p>正如前面说的componentWillUpdate对应componentWillMount，这里componentDidUpdate就对应着componentDidMount。它在render之后被调用，在这里就可以放心的获取和操作UI了。它的参数prevProps和prevState对应着componentWillUpdate里的this.props和this.state，而这个函数里的this.props和this.state就是当前的props和state，也就是componentWillUpdate里的nextProps和nextState。子节点的回调先于父节点被调用。在这里调用setState也需要非常小心，很可能会造成无限循环，如果确实需要的话，应该配合shouldComponentUpdate加以限制。如果我们需要对UI进行交互，比如获取某个UI的尺寸位置，这里是最合适的位置。</p>
+<h2 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h2><p>当一个component不再被渲染时会被调用。例如</p>
+<pre><code>constructor(props){
+    super(props);
+    this.state={bVisible:true};
+}
+
+render(){
+    return (&lt;View&gt;
+        {this.state.bVisible ? &lt;MyComponent /&gt; : null} 
+        &lt;Button onPress={()=&gt;{
+            this.setState({bVisible:false})
+        }}&gt;
+    &lt;/View&gt;)
+}
+</code></pre><p>这个demo起始时MyComponent显示，点击按钮后不显示。不要误以为MyComponent只是被隐藏了，实际上它被销毁了，它所占用的内存都会被回收，此时它的componentWillUnmount会被调用。我们在componentWillMount或者componentDidMount里如果注册了一些监听，就需要在这里注销掉。与componentDidMount相反，父控件的componentWillUnmount会比子控件的先被调用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/16/rn-reducer-pure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/16/rn-reducer-pure/" itemprop="url">ReactNative中的reducer函数中的浅拷贝和深拷贝</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-16T20:15:36+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们都知道reducer函数必须是纯函数，不能修改传入的state参数。先看一段示例代码</p>
+<pre><code>export function updateData(state=[], action) {
+    switch(action.type){
+        case Actions.ADD:
+            return state.concat(action.data);
+        case Actions.UPDATE:
+            state[action.index] = action.data
+            return state
+        default:
+            return state;
+    }
+}
+</code></pre><p>这里state是一个简单的数组，ADD操作返回的是一个新的state，因为concat函数会创建并返回一个新的array。而UPDATE操作是修改了原state后返回原state。在demo中的表现就是，当reducer收到ADD时，会触发render刷新界面。而当收到update时，不会触发render，但如果再次收到ADD触发render刷新界面时，能看到UPDATE操作的数据已经被更新了。</p>
+<p>结论就是</p>
+<ul>
+<li>只要返回的是原state，就不会触发render。这也正是我们default需要返回state本身的原因。即使state数据发生了变化，也不会触发render，但数据的变化被存储起来了。</li>
+<li>只要返回的是新state，就会触发render，即使数据完全不变</li>
+</ul>
+<p>如果希望上面的UPDATE生效的话也很简单，把return state改成return state.slice(0)就可以了。但这种操作是不对的，虽然通过返回一个新的state来让render触发了，但它修改了state，它会导致的问题就是在component的componentWillReceiveProps函数里，nextProps和原来的props完全一致。reducer的原则是每个action对应着一个state，如果在action操作前后state相同，那就失去了这个特性了。</p>
+<p>我们一般使用的Object.assign来构造一个新的state，Object.assign执行的就是浅拷贝而不是深拷贝，所以如果我们操作的state是一个比较复杂的结构，那么应该想办法手动执行深拷贝，否则使用浅拷贝的话，对应的内容就是同一份。</p>
+<pre><code>export function updateDeep(state={sth:[]}, action) {
+    let sth = state.sth;
+    switch(action.type){
+        case Actions.ADD:
+            sth.push({data:action.data});
+            return Object.assign({}, {sth:sth})
+        case Actions.DELETE:
+            sth.splice(action.index, 1);
+            return Object.assign({}, {sth:sth})
+        case Actions.UPDATE:
+            sth[action.index].data = action.data;
+            return Object.assign({}, {sth:sth})
+        default:
+            return state;
+    }
+}
+</code></pre><p>这个reducer函数直接修改了state.sth，虽然使用Object.assign返回了一个新的state，触发了render进行了刷新，但如果在componentWillReceiveProps函数里观察，就会发现this.props里的sth和nextprops里的sth是一模一样的，也就是执行action操作前后的state没有区分开来。</p>
+<p>要解决上面的问题，可以有两种方案，一个是把reducer函数细分，确保在操作state时不会执行对对象进行浅拷贝。比如第二个例子的state改为[]，用combineReducer来合并细分后的reducer函数，但如果数组成员是Object，而不是简单数据类型，就仍然有浅拷贝的问题，所以可以用第二种方案，先把state深拷贝一份，然后修改这个拷贝后的state并返回，如果state是个很复杂的数据结构，深拷贝一次代价会比较大。所以实际中应该这两种方案结合起来。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/11/git-work-flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/11/git-work-flow/" itemprop="url">一个比较好的git分支管理方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-11T20:22:43+08:00">
+                2017-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>假如当前处于开发分支develop上，接到一个任务时，使用git的话，应该优先考虑开一个分支来做这件事情，假设我们开了一个分支b1，这个任务未必是可以一次开发完，可能中间去做了别的事情，导致写了一半的代码暂时提交上去，这样到这个任务完成时，这个分支有了commit1, commit2…..一系列的提交。但假设这是一件完整的单独的功能，我们需要让人review代码并作为一次完整的提交的时候，我们可以这么做：</p>
+<p>在b1分支上先git reset –soft回到开分支的节点去，这样我们在这个分支上所有的改动，都变成了待commit的状态，然后我们找人review并提交。之后回到develop分支上，用git cherry-pick把刚才那个提交搬到develop分支上来，在develop分支上就只会看到一个干干净净的提交节点了。然后我们删除本地分支b1就可以了。</p>
+<p>相比其它做法，比如在develop分支上使用merge来合并，它的缺点是查看develop分支的log时，会看到b1分支跟它交错，如果我们有很多个分支b1,b2….那develop分支的log看起来就会像蜘蛛网一样乱了。</p>
+<p>当然我们可以用git merge –no-ff或者git rebase来保持develop分支的干净，但这样也有缺陷，我们在b1分支上有很多临时提交节点，也全部在develop分支上显示了，明明只是一个单独的任务，却有很多个commit节点，在查看log的时候，也会比较麻烦。</p>
+<p>有的人不想临时提交，所以要做别的事情时，使用stash来暂存工作区，再次回到分支来时，使用stash pop恢复工作区，这是非常不可取的，一旦分支多了，在某个分支上stash，另一个分支上pop，就容易乱套了。所以还是尽量commit，但如果又不想让commit节点太多太乱的话，就可以用reset的办法来合并成一次提交，就干净了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/11/rn_listview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/11/rn_listview/" itemprop="url">ReactNative中的listView使用介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-11T19:15:36+08:00">
+                2017-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天下午稍微把listView的js代码看了一遍，大致总结一下它的接口和使用，<a href="https://reactnative.cn/docs/0.43/using-a-listview.html#content" target="_blank" rel="noopener">官方文档</a>上的介绍太过简单。listView的js源代码位于node_modules\react-native\Libraries文件夹内。</p>
+<p>一个最简单的listView，代码如下</p>
+<pre><code>&lt;ListView
+      dataSource={this.state.dataSource}
+      renderRow={(rowData) =&gt; &lt;Text&gt;{rowData}&lt;/Text&gt;}
+ /&gt;
+</code></pre><h3 id="dataSource"><a href="#dataSource" class="headerlink" title="dataSource"></a>dataSource</h3><p>dataSource顾名思义是为了给listView提供数据源，这个类的源代码为ListViewDataSource.js。这个类除了存储数据外，还提供了4个接口给listView调用，这4个接口我们都可以自定义实现，其中2个有默认实现，2个没有。这段源代码就是</p>
+<pre><code>this._rowHasChanged = params.rowHasChanged;
+this._getRowData = params.getRowData || defaultGetRowData;
+this._sectionHeaderHasChanged = params.sectionHeaderHasChanged;
+this._getSectionHeaderData =
+  params.getSectionHeaderData || defaultGetSectionHeaderData;
+</code></pre><p>rowHasChanged是一定要实现的，用来区分两个row是否相同，如果没有特殊需求的话，使用下面的就可以了</p>
+<pre><code>rowHasChanged: (r1, r2) =&gt; r1 !== r2
+</code></pre><p>sectionHeaderHasChanged是如果listView有分节，则必须要的，没有特殊需求的话可以直接</p>
+<pre><code>sectionHeaderHasChanged: (s1, s2) =&gt; s1 !== s2
+</code></pre><p>getRowData这个源代码有提供默认的实现，它用来获取每行的需要显示的数据，没有特殊需求的话不用实现<br>getSectionHeaderData源代码也有默认实现，顾名思义它用来获取每节的数据。</p>
+<p>dataSource要拿来使用，除了实现必须的接口之外，还需要给它提供数据，这就用到了cloneWithRows和cloneWithRowsAndSections这两个方法，前者是后者的简化版，所以我们就拿最复杂的来举例说明。cloneWithRowsAndSections的函数声明为</p>
+<pre><code>cloneWithRowsAndSections(
+ dataBlob: any,
+ sectionIdentities: ?Array&lt;string&gt;,
+ rowIdentities: ?Array&lt;Array&lt;string&gt;&gt;): ListViewDataSource
+</code></pre><p>它接受三个参数，并返回一个ListViewDataSource的实例对象。第一个参数dataBlob是传入的数据，它应该是一个Object，第二个参数是一个数组，它指定了一些key，也就是说dataBlob这个Object里，sectionIdentities里的keys对应的value才是需要显示的。rowIdentities则是一个二维数组，它指定了每节的数据中，哪些key对应的数据需要显示。前面我们说过，需要显示的数据是由getRowData和getSectionHeaderData来获取的，所以上面所说的是系统默认的实现，我们当然也可以自己去实现这两个接口，来自定义数据的获取行为。 以下是一段示例代码</p>
+<pre><code>let data=[[&quot;1&quot;,&quot;2&quot;, &quot;3&quot;],[&quot;4&quot;,&quot;5&quot;, &quot;6&quot;],[&quot;7&quot;,&quot;8&quot;, &quot;9&quot;]];
+const ds = new ListView.DataSource({
+    rowHasChanged: (r1, r2) =&gt; r1 !== r2, 
+    sectionHeaderHasChanged: (s1, s2) =&gt; s1 !== s2
+});
+&lt;ListView
+    dataSource={ds.cloneWithRowsAndSections(data, [&quot;0&quot;, &quot;2&quot;], [[0,1], [1,2]])}
+/&gt;
+</code></pre><p>这段代码的行为是显示两个section，第一个section显示1和2，第二个section会显示8和9。这个例子里dataBlob是一个数组，它只是比较特殊的Object，key是0123…，如果是普通的key-value也是一样处理。cloneWithRows同理但更为简单，它只有两个参数，第一个参数dataBlob是传入的数据，第二个参数是一个数组，指定需要显示的rowIdentities。</p>
+<p>对于这样一段代码</p>
+<pre><code>let data = [&quot;111&quot;, &quot;222&quot;, &quot;333&quot;]
+&lt;ListView
+    dataSource={ds.cloneWithRowsAndSections(data)}
+/&gt;
+</code></pre><p>显示效果会是有三个section，每个section有3个row，这是由于系统默认的getRowData和getSectionHeaderData实现方式决定的，思考一下就能明白了。</p>
+<h3 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h3><p>把dataSource弄明白之后，接下来看listView。从源代码的propTypes可以查看它能接收的props。</p>
+<ul>
+<li><p>dataSource就是我们上面说到的，给它传递一个dataSource实例即可</p>
+</li>
+<li><p>renderSeparator函数声明为(sectionID, rowID, adjacentRowHighlighted) =&gt; renderable<br>这个函数可以不用实现，系统会有默认实现，它的作用是绘制listView里每节中各个行的分割线。adjacentRowHighlighted为bool值，它的值由renderRow函数指定。</p>
+</li>
+<li><p>renderRow函数声明为(rowData, sectionID, rowID, highlightRow) =&gt; renderable，这是必须实现的，作用是绘制每个单元行，rowData就是从dataSource里获取来的数据，sectionID为所在节id，rowID为所在行的id。这三个数据都是dataSource传递过来的，所以像上面的那个dataSource例子，sectionID分别是”0”, “1”, “2”, rowID是0, 1, 2。最后的highlightRow参数是一个function，它可以在renderRow函数里适当的时候调用（比如按钮被点击），调用highlightRow(sectionID, rowID)可以让这个单元在上面的renderSeparator函数里接受到的adjacentRowHighlighted变为true。不要直接在renderRow函数里调用highlightRow函数，它会导致死循环然后调用栈溢出</p>
+</li>
+<li><p>renderSectionHeader函数声明为(sectionData, sectionID) =&gt; renderable，如果listView有分节，则实现此函数来绘制每节的头部，返回null或者undefined则不会渲染。</p>
+</li>
+<li><p>initialListSize用来指定起始时渲染多少个单元行，如果不指定的话，系统默认是10个。但首次渲染的单元行数量不完全取决于此，还取决于一个属性值DEFAULT_SCROLL_RENDER_AHEAD = 1000，这代表整个listView最多渲染多少个逻辑像素高，首次渲染的单元行数量取这两者中较大的那个。这是用来做性能优化的，如果确实碰到性能瓶颈时，需要将源代码完全看明白才能着手，所以建议在没完全看明白源代码之前没必要去碰这些参数。</p>
+</li>
+<li><p>scrollRenderAheadDistance这是一个数字，前面说过了，它参与限制首次渲染的单元行数量，默认值为1000，我们写一个demo，设置数据量比较大，然后让这个值为不同的值，可以看到首次渲染的单元行数量会不一样</p>
+</li>
+<li><p>onEndReached在整个listView滚动到最底部时会被调用的回调</p>
+</li>
+<li><p>onEndReachedThreshold是一个数字，指定当滑动了多少距离时会触发onEndReached事件</p>
+</li>
+<li><p>pageSize指定了每次事件循环时渲染的单元格数量</p>
+</li>
+<li><p>renderFooter和renderHeader函数声明为() =&gt; renderable，它们渲染整个listView的头部和底部，头部和底部会随着listView滑动。</p>
+</li>
+<li><p>renderScrollComponent函数声明为(props) =&gt; renderable，用来渲染装listView内容的容器，默认实现是直接返回了一个ScrollView</p>
+</li>
+<li><p>onChangeVisibleRows函数声明为(visibleRows, changedRows) =&gt; void，它在当前正在显示哪些单元行发生变化时被调用，visibleRows是一个字典，形式为{ sectionID: { rowID: true }}，表示所有当前可见的单元行，changedRows也是一个字典，形式为{ sectionID: { rowID: true | false }}，表示visible发生了变化的单元行</p>
+</li>
+<li><p>removeClippedSubviews 这是一个bool值，默认是true，用来优化数据量很大时的显示性能</p>
+</li>
+<li><p>stickyHeaderIndices,这是一个数字数组，用来指定哪些单元行在listview滑动时固定在屏幕顶端，只在ios平台而且是竖直方向的listView上才生效</p>
+</li>
+<li><p>enableEmptySections,这是一个Bool值，用来指定当一个没有数据的节是否需要展示，例如dataSource数据为[[1,2],[],[3,4]]时，中间的那个节（包括sectionHead和rows）是否会展示，如果不指定的话这个值为undefined，就不会显示。</p>
+</li>
+</ul>
+<p>以上就是listView的所有props了，也就是说明白了上面的内容，使用listView来完成功能肯定没问题了，但如果希望了解更多的细节，还是需要查看源代码，包括js端以及native端的源码。react-native的最新版本提供了flatList组件，它是listView的升级版，应该优先考虑使用flatList。</p>
+<p>ps：当我们修改listView的数据源时，即使只是修改数组内的一项，也会导致整个listView都重新刷新，如果短时间内频繁更新数据源的话，可能导致性能瓶颈，应该优化为缓存数据后集中更新一次。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/09/19/rn-image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/19/rn-image/" itemprop="url">ReactNative之Image控件从js到java的追踪流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T11:18:36+08:00">
+                2017-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们以image控件为例，简单的介绍下一个系统控件的实现，方便进行自定义，以及了解它的内部实现。</p>
+<p>我们要使用Image的话，第一步就是</p>
+<pre><code>import {Image} from &quot;react-native&quot;
+</code></pre><p>我们需要找到源文件export出Image的地方，它位于node_modules/react-native/Libraries/Image目录下。基本上RN的js源代码都在这个Libraries目录下。</p>
+<p>在Image.android.js里，文件结尾是</p>
+<pre><code>module.exports = Image;
+</code></pre><p>证明我们使用的Image就是这里导出的。在这个文件的render函数里，可以看出来它使用了RKImage控件。然后查找RKImage的来源</p>
+<pre><code>var RKImage = requireNativeComponent(&apos;RCTImageView&apos;, Image, cfg);
+</code></pre><p>可以看出来，RKImage是native的实现，所以我们到node_modules/react-native/ReactAndroid/src/main/java目录下搜索关键字RCTImageView,找到在哪里注册的。</p>
+<p>观察一下搜索结果，可以看到有两个类RCTImageViewManager和ReactImageManager，他们都是导出到js层的类，且导出名字都是RCTImageView。</p>
+<p>我们找一下这两个类是在哪里注册的，如果对流程比较熟悉的话，看到它们继承自ViewManager也已经知道了。在node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\shell\MainReactPackage.java的createViewManagers方法里可以看到</p>
+<pre><code>if(useFlatUi) {
+    viewManagers.add(new RCTImageViewManager());
+}else{
+    viewManagers.add(new ReactImageManager());
+}
+</code></pre><p>所以根据useFlatUi的值，Image控件的native实现,可能是node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\views\image\ReactImageView.java或者node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\flat\RCTImageView.java</p>
+<p>其余控件如果想追踪native实现，也可以按这个流程走就行了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/08/07/rn-new-saga/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/07/rn-new-saga/" itemprop="url">创建一个redux saga项目的简要流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T20:18:36+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们先新建一个RN项目</p>
+<pre><code>react-native init testrn
+</code></pre><p>然后安装redux</p>
+<pre><code>cd testrn
+npm install --save redux
+</code></pre><p>在动手之前确保自己已经理解了redux的概念 <a href="http://cn.redux.js.org/" target="_blank" rel="noopener">redux官方中文文档</a>。</p>
+<p>现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设计为</p>
+<pre><code>{
+    &quot;subState1&quot;:{&quot;text&quot;:&quot;&quot;},
+    &quot;subState2&quot;:{&quot;text&quot;:&quot;&quot;}
+}
+</code></pre><p>实际项目中的state肯定不会这么简单，可能会非常庞大，这就要求结构不能太草率，因为是树状结构，所以要掌握好分级的粒度，层级太少则可能单个子state过于复杂，因为一个reducer处理一个子state，则会导致reducer函数过于繁冗。层级太多则不易梳理结构，显得混乱。</p>
+<p>然后我们给这两个修改text的动作设定两个action</p>
+<pre><code>const CHANGE1 = &quot;change1&quot;;
+const CHANGE2 = &quot;change2&quot;;
+</code></pre><p>然后根据这个结构来写reducer</p>
+<pre><code>function reducer1(state={&quot;text&quot;:&quot;&quot;}, action) {
+    if(action.type === CHANGE1) {
+        return Object.assign({}, state, {&quot;text&quot;:&quot;hello&quot; + action.data});
+    }
+    return state;
+}
+function reducer2(state={&quot;text&quot;:&quot;&quot;}, action) {
+    if(action.type === CHANGE2) {
+        return Object.assign({}, state, {&quot;text&quot;:&quot;world&quot; + action.data});
+    }
+    return state;
+}
+let reducer = combineReducers({&quot;subState1&quot;:reducer1, &quot;subState2&quot;:reducer2});
+</code></pre><p>有的人在使用combineReducers时，习惯使用ES5的对象简写，例如</p>
+<pre><code>let reducer = combineReducers({reducer1, reducer2})
+</code></pre><p>这样不是很好，这样写的话，state的实际内容就是</p>
+<pre><code>{
+    &quot;reducer1&quot;:{&quot;text&quot;:&quot;&quot;},
+    &quot;reducer2&quot;:{&quot;text&quot;:&quot;&quot;}
+}
+</code></pre><p>我们在使用state数据时，以reducer1为key，而reducer1本身又是reducer函数的名称，一不小心就容易搞糊涂。所以我们提倡在设计state时就想好子state的key，然后在combine时用key:reducer的形式。</p>
+<p>为了方便使用redux，我们还需要react-redux库</p>
+<pre><code>npm install --save react-redux
+</code></pre><p>我们使用connect这个API，来简化触发和监听action的操作。我们开始把这个页面写出来</p>
+<pre><code>import {Provider, connect} from &quot;react-redux&quot;
+
+class TestRN extends Component{
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;{this.props.subState1.text}&lt;/Text&gt;
+            &lt;Text&gt;{this.props.subState2.text}&lt;/Text&gt;
+            &lt;Button title=&quot;btn1&quot; onPress={()=&gt;{
+                this.props.createSagaAction1();
+            }}/&gt;
+            &lt;Button title=&quot;btn2&quot; onPress={()=&gt;{
+                this.props.createSagaAction2();
+            }}/&gt;
+        &lt;/View&gt;)
+    }
+}
+
+const mapStateToProps = (state, ownProps) =&gt;{
+    return state;
+}
+const mapDispatchToProps = (dispatch, ownProps)=&gt;{
+    return bindActionCreators({createSagaAction1, createSagaAction2}, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TestRN)
+</code></pre><p>这段代码里，我们点击按钮后，并不是发出了CHANGE1和CHANGE2事件，而是createSagaAction1和createSagaAction2，这是因为我打算在接下来使用redux saga，让它收到而是createSagaAction1和createSagaAction2后，模拟一次异步操作，再由saga来发出CHANGE1和CHANGE2事件</p>
+<p>redux saga是用来处理异步操作的，所以我们先写个模拟异步的功能函数</p>
+<pre><code>function delay(cb, time) {
+    return new Promise((resolve)=&gt;{
+        setTimeout(()=&gt;{
+            cb(parseInt(Math.random() * 100));
+            resolve();
+        }, time);
+    })
+}
+async function getNum(){
+    let a;
+    await delay((num)=&gt;{
+        a = num;
+    }, 5000);
+    return a;
+}
+</code></pre><p>然后开始redux saga相关，首先是安装saga</p>
+<pre><code>npm install --save redux-saga
+</code></pre><p>然后开始代码，我们把点击按钮要发出的两个action实现出来然后监听并处理</p>
+<pre><code>import regeneratorRuntime from &quot;regenerator-runtime&quot;;
+
+const SAGA_ACTION1 = &quot;sagaAction1&quot;;
+const SAGA_ACTION2 = &quot;sagaAction2&quot;;
+function createSagaAction1(){
+    return {&quot;type&quot;: SAGA_ACTION1};
+}
+function createSagaAction2(){
+    return {&quot;type&quot;: SAGA_ACTION2};
+}
+function* sagaFunc1(){
+    while(true) {
+        yield take(SAGA_ACTION1);
+        let a = yield call(getNum);
+        yield put({type:CHANGE1, data:a});
+    }
+}
+function* sagaFunc2(){
+    while(true) {
+        yield take(SAGA_ACTION2);
+        let a = yield call(getNum);
+        yield put({type:CHANGE2, data:a});
+    }
+}
+function* mySaga(){
+    yield fork(sagaFunc1);
+    yield fork(sagaFunc2);
+}
+</code></pre><p>这里需要注意的就是saga函数必须是generators函数，不能用async, await。 sagaFunc1通过使用三个effect来进行操作，首先使用take来监听SAGA_ACTION1，然后使用call来阻塞调用异步函数，最后使用put来发出CHANGE1这个action，这时我们前面写的reducer收到CHANGE1这个action，就会修改state，从而让页面发生变化。</p>
+<p>然后就是不要忘了import regeneratorRuntime，否则项目是跑不起来的，会出现红屏错误，提示cannot read property ‘mark’ of undefined。这是babel处理generators函数所需要的。</p>
+<p>最后是创建store和使用provider了</p>
+<pre><code>let middle = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(middle));
+middle.run(mySaga);
+
+export default class TestRNContainer extends Component{
+    render(){
+        return (
+            &lt;Provider store = {store}&gt;
+            &lt;TestRN /&gt;
+            &lt;/Provider&gt;
+        )
+    }
+}
+</code></pre><p>到此为止，一个新建项目使用redux saga就全部完成了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/08/02/rn-ref/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/02/rn-ref/" itemprop="url">ReactNative之ref赋值应使用成员函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-02T20:18:36+08:00">
+                2017-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在线上项目收集的js error里，发现有一个问题，有的ref成员变量可能变为null,然后就出了问题。先看下面的代码。</p>
+<pre><code>class Test extends Component{
+    constructor(props) {
+        super(props);
+        this._ref = null;
+    }
+
+    render(){
+        return (&lt;View&gt;
+        &lt;MyComponent ref={component=&gt;this._ref=component}/&gt;
+        &lt;Button onPress={this._onPress.bind(this)}/&gt;
+        &lt;/View&gt;    
+        )
+    }
+
+    _onPress(){
+        this.setState({});
+        this._ref.test();
+    }
+}
+</code></pre><p>当_onPress被调用时，this._ref就可能变为null。</p>
+<p>在facebook的<a href="https://facebook.github.io/react/docs/refs-and-the-dom.html" target="_blank" rel="noopener">官方文档</a>里，最后一段是一个警告信息</p>
+<blockquote>
+<p>If the ref callback is defined as an inline function, it will get called twice during updates, first with null and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. You can avoid this by defining the ref callback as a bound method on the class, but note that it shouldn’t matter in most cases.</p>
+</blockquote>
+<p>可以很清楚的看到，如果ref函数每次都是一个新函数，就可能导致当render函数被执行时，ref被赋值两次，第一次被赋值为null，第二次才被赋值为需要指定的component。上面例子里我们在_onPress函数里调用setState导致页面被重新渲染，然后_ref被重新赋值，有比较小的几率_ref会变为null，如果此时我们使用了_ref变量，就出现问题了。</p>
+<p>解决的办法很简单，我们不应该让ref赋值函数每次都是新的函数，而不管是箭头函数，还是bind方法，每次都是生成一个新函数。所以我们在constructor函数里先绑定好一个成员函数来，然后使用它就可以了。这里就不写代码了，相信对js熟练的同学肯定很快就能写出来。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/07/26/rn-pixelRatio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/26/rn-pixelRatio/" itemprop="url">ReactNative中的pixelRatio</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-26T20:18:36+08:00">
+                2017-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>关于pixelRatio，<a href="https://reactnative.cn/docs/0.43/pixelratio.html#content" target="_blank" rel="noopener">官方文档</a>有相关内容。通过</p>
+<pre><code>PixelRatio.get()
+</code></pre><p>接口可以获取到设备的像素密度，但有的同学不清楚这个像素密度做什么用的，比如我发现在项目里，给图片设置尺寸时，都乘以了这个像素密度值，实际上这是不对的。</p>
+<p>手机屏幕像素是大家都知道的，比如1080*1920，他们指的是物理像素。除此之外还有一个参数叫做设备独立像素，在<a href="https://material.io/devices/" target="_blank" rel="noopener">这里</a>可以看到部分移动设备的相关参数。这个设备独立像素，我们用Dimensions API可以获取到</p>
+<pre><code>import {Dimensions} from &quot;react-native&quot;
+let size = Dimensions.get(&quot;window&quot;);
+console.log(&quot;width: &quot; size.width + &quot; height: &quot; + size.height);
+</code></pre><p>而像素密度比pixelRatio，就是物理像素除以独立像素的值。比如我手里的坚果pro，它的物理像素是1080*1920，设备独立像素是360*640，所以它的像素密度是3。 在上面界面里也可以看到，例如ipad, GalaxyTab等平板一般像素密度是1，中断设备像素密度是2，高端些的设备像素密度就是3，当然也有一些设备像素密度是1.5或者2.5等。</p>
+<p>首先我们要明确一点，我们在给图片设置尺寸时，是不需要写单位的，实际上单位就是独立像素。</p>
+<p>假设有两个设备，它们的独立像素相同，都是360*640，那么我有一张图片，设置宽度为180，在这两个设备上都是占了一半屏幕宽。而如果有一个pad它的独立像素是768*1024，我们仍然希望它占一半屏幕的话，就需要把宽度设置为768*0.5=384了。例如对于背景图片，显然需要在任何设备上都占满屏幕，所以给它设置尺寸直接就是设备独立像素的值，也就是Dimension.get(“window”)得到的值。有的时候我们不希望随着屏幕变，例如那张图片仍然设置宽度为180，那么它在pad上宽度只占了23.4%。所以我们可以得知，给图片设置尺寸时，只决定于它在不同的独立像素屏幕上，需要显示成什么效果。最简单的方案是两种，要么设为固定值，要么跟屏幕独立像素成比例。否则就根据不同的屏幕来细分了。</p>
+<p>那么这个像素密度拿来做什么用呢？</p>
+<p>仍然说那两个设备，它们独立像素都是360*640，A设备像素密度为1，B设备像素密度为3，很容易得知A设备物理像素为360*640，而B设备物理像素为1080*1920。我有一张图片，美术给的尺寸是360*360,现在我给它设的尺寸宽度为180*180，根据上面所说，在这两个设备上图片都占屏幕一半宽，但A设备屏幕一半的物理像素是180，对于图片物理像素宽度360来说，缩小了一半。B设备屏幕一半的物理像素是540，对于图片物理像素宽度360来说，放大了1.5倍。不论放大还是缩小，都会导致图片显示模糊。如果要达到最好的显示效果，就应该给A设备提供180*180尺寸的图片，给B设备提供540*540尺寸的图片，这就是像素密度的作用。</p>
+<p>是否要根据不同屏幕提供多套素材资源，取决于项目要求。我们在实际项目中可以使用pixelRation接口来实现物理像素和独立像素之间数值的转换，只要记住物理像素=独立像素*像素密度这个公式即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/07/03/rn-split-bundle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/03/rn-split-bundle/" itemprop="url">ReactNative拆分bundle实践</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-03T20:15:36+08:00">
+                2017-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>实践了一下最简单的ReactNative bundle拆分方案。将项目bundle拆分成RN源代码和业务代码，这样在热更新时不用每次都更新整个bundle。</p>
+<p>首先新建一个项目testrn，将index.android.js内代码注释掉，只保留两行import</p>
+<pre><code>import React, { Component } from &apos;react&apos;;
+import {
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View
+} from &apos;react-native&apos;;
+</code></pre><p>然后使用bundle命令打包成common.bundle，这就是RN源代码部分</p>
+<pre><code>react-native bundle --entry-file ./index.android.js --platform android --dev false --bundle-output ./output/common.bundle
+</code></pre><p>这里dev可以选择true或者false，如果为了试验建议先设成true，正式使用时使用false</p>
+<p>然后我们将index.android.js内注释代码打开，再使用bundle命令打包成total.bundle</p>
+<p>我们在total.bundle内搜索项目名testrn，很容易找到这么一段代码:(或者使用软件例如compareBeyond对比)</p>
+<pre><code>__d(/* testrn/index.android.js */function(global, require, module, exports) {Object.defineProperty(exports, &quot;__esModule&quot;, {
+    value: true});
+    var _jsxFileName = &apos;F:\\test\\testrn\\index.android.js&apos;;
+
+    //中间代码省略...
+
+    _reactNative.AppRegistry.registerComponent(&apos;testrn&apos;, function () {
+    return testrn;
+    });
+}, 0, null, &quot;testrn/index.android.js&quot;);
+</code></pre><p>其实这是整个的一句，从当前的__d到下个__d</p>
+<p>我们把这一段放到一个新建文件叫bussiness.bundle内，同时把common.bundle的最后两行剪切到bussiness.bundle的最后</p>
+<pre><code>;require(120);
+;require(0);
+</code></pre><p>然后我们修改一下C++代码，加载bundle时改成读取common.bundle和bussiness.bundle并连接起来，就可以了。我的修改代码如下，已经测试运行正常：</p>
+<pre><code>//node_modules\react-native\ReactAndroid\src\main\jni\xreact\jni\CatalystInstanceImpl.cpp
+void CatalystInstanceImpl::jniLoadScriptFromAssets(
+    jni::alias_ref&lt;JAssetManager::javaobject&gt; assetManager, const std::string&amp; assetURL) {
+    const int kAssetsLength = 9;  // strlen(&quot;assets://&quot;);
+    auto sourceURL = assetURL.substr(kAssetsLength);
+
+    auto manager = extractAssetManager(assetManager);
+    // auto script = loadScriptFromAssets(manager, &quot;index.android.bundle&quot;);
+    auto script1 = loadScriptFromAssets(manager, &quot;common.bundle&quot;);
+    auto script2 = loadScriptFromAssets(manager, &quot;diff.js&quot;);
+
+    auto script = folly::make_unique&lt;JSBigBufferString&gt;(script1-&gt;size()+script2-&gt;size());
+    memcpy(script-&gt;data(), script1-&gt;c_str(), script1-&gt;size());
+    memcpy(script-&gt;data() + script1-&gt;size(), script2-&gt;c_str(), script2-&gt;size());
+
+    if (JniJSModulesUnbundle::isUnbundle(manager, sourceURL)) {instance_-&gt;loadUnbundle(
+        folly::make_unique&lt;JniJSModulesUnbundle&gt;(manager, sourceURL),
+        std::move(script),
+        sourceURL);
+        return;
+    } else {
+        instance_-&gt;loadScriptFromString(std::move(script), sourceURL);
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/06/16/rn-connect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/16/rn-connect/" itemprop="url">Redux中的Provider和connect</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-16T11:15:36+08:00">
+                2017-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>redux里有不少概念，一时半会看不明白，这里讲下我理解的provider和connect。我们知道使用Reudx，数据作为state被存储在一个单独的store中。我们在渲染时从state获取数据，需要修改数据时，dispatch一个action即可。provider和connect的作用，是为了更方便的存取state数据。</p>
+<p>如果不使用provider和connect，也是完全没问题的，这样的话我们需要把store传入到Component中以便使用，例如需要这么写：</p>
+<pre><code>index.android.js:    //此代码缺少action和reducer的实现，并不能直接运行，只是用以描述
+
+let store = createStore(reducer);
+export default class testrn extends Component{
+    render(){
+        &lt;NoConnect store={store}/&gt;
+    }
+}
+
+NoConnect.js:
+
+export default class NoConnect extends Component{
+    constructor(props){
+        super(props);
+        this.state = this.props.store.getState();
+    }
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;this.state.prop1&lt;/Text&gt;
+            &lt;Button title=&quot;click&quot; onPress={()=&gt;{
+                this.props.store.dispatch(action);
+                this.setState(this.props.store.getState());
+            }}&gt;
+        &lt;/View&gt;)
+    }
+}
+</code></pre><p>从上面可以看出来，我们主要是通过把store传入Component，然后利用它的getState和dispatch接口进行存取数据，数据需要保存为自身的state，在dispatch后需要通过setState来刷新界面。</p>
+<p>如果使用provider和connect，就可以大大简化代码了。例如</p>
+<pre><code>index.android.js:
+
+let store = createStore(reducer);
+export default class testrn extends Component{
+    render(){
+        &lt;Provider store={store}&gt;
+        &lt;TestContainer  /&gt;
+        &lt;/Provider&gt;
+    }
+}
+
+testContainer.js:
+import { connect } from &apos;react-redux&apos;;
+class testContainer extends Component{
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;this.props.text1&lt;/Text&gt;
+            &lt;Button title=&quot;click&quot; onPress={()=&gt;{
+                this.props.change1(&quot;123&quot;);
+            }}&gt;
+        &lt;/View&gt;)
+    }
+}
+
+const mapStateToProps = (state, ownProps)=&gt;{
+    return {
+        text1:state.prop1
+    }
+}
+
+const mapDispatchToProps = {
+    change1:Actions.createAction1
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(testContainer)
+</code></pre><p>从上面代码可以看出来，在Component里不再需要使用store变量，代码简化了。只要被Provider包含着的组件及其子组件，都可以使用connect方法，就不需要到处传递store变量了。</p>
+<p>mapStateToProps的作用，就是把state内的值转换成Component的props的值，这样在Component内使用时，不需要通过store.getState来获取并存为自己的state了。每当state发生变化时，这个方法就会被调用，这样Component的props就被修改了，于是就不用再通过setState来通知页面刷新。</p>
+<p>mapStateToProps是一个方法，它的第一个参数就是state，第二个参数ownProps是传递给Component的props。在上述代码中就是<code>&lt;TestContainer /&gt;</code>处传递的props</p>
+<p>mapDispatchToProps的作用，就是把创建action的方法，绑定在Component的props上，这样就不需要通过store.dispatch来更改state。</p>
+<p>上述代码中mapDispatchToProps是一个Object，它的values就是创建action的方法，keys绑定为Component的props属性，这样在testContainer中调用this.props.change1就创建并发布了一个action。</p>
+<p>mapDispatchToProps也可以是一个方法，它的第一个参数是store的dispatch方法，第二个参数是ownProps。用方法实现比起用Object实现，可以做更多的注入操作，代码如下</p>
+<pre><code>const mapDispatchToProps = (dispatch, ownProps) {
+    return {
+        change1:(data)=&gt;{
+            console.log(&quot;dispatch action1.....&quot;);
+            dispatch(Actions.createAction1(data));
+        }
+    }
+}
+</code></pre><p>可以看到如果用方法来实现，在change1里就可以做很灵活的操作了。同时Redux提供了一个很简便的接口bindActionCreators(Actions, dispatch)，使用它相当于使用Object实现，并且key和创建action的方法名一致。</p>
+<p>上面代码里用到的Actions，是创建action的接口</p>
+<p>除了上面提到的mapStateToProps和mapDispatchToProps外，connect方法后面还可以再带两个参数</p>
+<p>mergeprops</p>
+<p>options:</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -259,6 +259,209 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/06/16/rn-connect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/06/16/rn-connect/" itemprop="url">Redux中的Provider和connect</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-16T11:15:36+08:00">
+                2017-06-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>redux里有不少概念，一时半会看不明白，这里讲下我理解的provider和connect。我们知道使用Reudx，数据作为state被存储在一个单独的store中。我们在渲染时从state获取数据，需要修改数据时，dispatch一个action即可。provider和connect的作用，是为了更方便的存取state数据。</p>
+<p>如果不使用provider和connect，也是完全没问题的，这样的话我们需要把store传入到Component中以便使用，例如需要这么写：</p>
+<pre><code>index.android.js:    //此代码缺少action和reducer的实现，并不能直接运行，只是用以描述
+
+let store = createStore(reducer);
+export default class testrn extends Component{
+    render(){
+        &lt;NoConnect store={store}/&gt;
+    }
+}
+
+NoConnect.js:
+
+export default class NoConnect extends Component{
+    constructor(props){
+        super(props);
+        this.state = this.props.store.getState();
+    }
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;this.state.prop1&lt;/Text&gt;
+            &lt;Button title=&quot;click&quot; onPress={()=&gt;{
+                this.props.store.dispatch(action);
+                this.setState(this.props.store.getState());
+            }}&gt;
+        &lt;/View&gt;)
+    }
+}
+</code></pre><p>从上面可以看出来，我们主要是通过把store传入Component，然后利用它的getState和dispatch接口进行存取数据，数据需要保存为自身的state，在dispatch后需要通过setState来刷新界面。</p>
+<p>如果使用provider和connect，就可以大大简化代码了。例如</p>
+<pre><code>index.android.js:
+
+let store = createStore(reducer);
+export default class testrn extends Component{
+    render(){
+        &lt;Provider store={store}&gt;
+        &lt;TestContainer  /&gt;
+        &lt;/Provider&gt;
+    }
+}
+
+testContainer.js:
+import { connect } from &apos;react-redux&apos;;
+class testContainer extends Component{
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;this.props.text1&lt;/Text&gt;
+            &lt;Button title=&quot;click&quot; onPress={()=&gt;{
+                this.props.change1(&quot;123&quot;);
+            }}&gt;
+        &lt;/View&gt;)
+    }
+}
+
+const mapStateToProps = (state, ownProps)=&gt;{
+    return {
+        text1:state.prop1
+    }
+}
+
+const mapDispatchToProps = {
+    change1:Actions.createAction1
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(testContainer)
+</code></pre><p>从上面代码可以看出来，在Component里不再需要使用store变量，代码简化了。只要被Provider包含着的组件及其子组件，都可以使用connect方法，就不需要到处传递store变量了。</p>
+<p>mapStateToProps的作用，就是把state内的值转换成Component的props的值，这样在Component内使用时，不需要通过store.getState来获取并存为自己的state了。每当state发生变化时，这个方法就会被调用，这样Component的props就被修改了，于是就不用再通过setState来通知页面刷新。</p>
+<p>mapStateToProps是一个方法，它的第一个参数就是state，第二个参数ownProps是传递给Component的props。在上述代码中就是<code>&lt;TestContainer /&gt;</code>处传递的props</p>
+<p>mapDispatchToProps的作用，就是把创建action的方法，绑定在Component的props上，这样就不需要通过store.dispatch来更改state。</p>
+<p>上述代码中mapDispatchToProps是一个Object，它的values就是创建action的方法，keys绑定为Component的props属性，这样在testContainer中调用this.props.change1就创建并发布了一个action。</p>
+<p>mapDispatchToProps也可以是一个方法，它的第一个参数是store的dispatch方法，第二个参数是ownProps。用方法实现比起用Object实现，可以做更多的注入操作，代码如下</p>
+<pre><code>const mapDispatchToProps = (dispatch, ownProps) {
+    return {
+        change1:(data)=&gt;{
+            console.log(&quot;dispatch action1.....&quot;);
+            dispatch(Actions.createAction1(data));
+        }
+    }
+}
+</code></pre><p>可以看到如果用方法来实现，在change1里就可以做很灵活的操作了。同时Redux提供了一个很简便的接口bindActionCreators(Actions, dispatch)，使用它相当于使用Object实现，并且key和创建action的方法名一致。</p>
+<p>上面代码里用到的Actions，是创建action的接口</p>
+<p>除了上面提到的mapStateToProps和mapDispatchToProps外，connect方法后面还可以再带两个参数</p>
+<p>mergeprops</p>
+<p>options:</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/06/15/es6-import/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1477,142 +1680,6 @@ export {A, B, ... G, H}
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/02/13/cocos-assetsManager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/02/13/cocos-assetsManager/" itemprop="url">cocos之使用AssetsManager实现热更新</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-13T21:12:32+08:00">
-                2017-02-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>cocos提供了AssetsManager类进行热更新。这里大概介绍下它的使用方法和内部原理，引擎使用的是v3.13。首先是一段简单的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">string url = &quot;https://.....test.zip&quot;;</span><br><span class="line">string vurl = &quot;https://.../version&quot;;</span><br><span class="line">string root = CCFileUtils::getInstance()-&gt;getWritablePath();</span><br><span class="line">string path =root + &quot;test/&quot;;</span><br><span class="line"></span><br><span class="line">FileUtils::getInstance()-&gt;createDirectory(path);</span><br><span class="line"></span><br><span class="line">AssetsManager* am = AssetsManager::create(url.c_str(), vurl.c_str(), path.c_str(), [](int a)&#123;</span><br><span class="line">    CCLOG(&quot;update failed %d&quot;, a);</span><br><span class="line">&#125;, [](int b)&#123;</span><br><span class="line">    CCLOG(&quot;update progress %d&quot;, b);</span><br><span class="line">&#125;, []()&#123;</span><br><span class="line">    CCLOG(&quot;update success&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">am-&gt;retain();	</span><br><span class="line">am-&gt;checkUpdate();</span><br></pre></td></tr></table></figure>
-<p>这里有两个地方特别需要需要注意：</p>
-<ul>
-<li>AssetsManager继承自Node，所以它的实例需要retain，否则无法正常工作</li>
-<li>更新包的存储路径，必须是已存在的路径，否则会导致拷贝失败而报错</li>
-</ul>
-<p>可以看到使用还是很简单的，构造的参数包括更新包url地址，返回最新版本号的url地址，更新包存储路径，下载成功回调，下载失败回调，下载进度回调。 然后调用checkUpdate就开始了整个更新流程，我们按照流程看一下源代码。</p>
-<p>AssetsManager内部通过一个_downloader来实现下载的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cocos2d::network::Downloader* _downloader = new Downloader();</span><br></pre></td></tr></table></figure>
-<p>它在构造函数里初始化，并设定好onTaskError, onTaskProgress, onDataTaskSuccess, onFileTaskSuccess四个回调。 </p>
-<ol>
-<li>当我们调用checkUpdate开始一次热更任务时，它使用_downloader创建一个下载任务，根据_versionFileUrl来获取需要更新资源的版本号。如果获取成功，会进入onDataTaskSuccess回调中，这里会获取本地存储的版本号，与之进行比较，如果相等，说明本地已经是最新版本，不需要更新。然后检查一下本地已下载版本，如果等于获取的版本号，说明更新包已经下载但尚未解压，直接执行解压操作。否则创建一个下载任务开始下载。</li>
-<li>在下载进度回调中，获取到当前下载的百分比</li>
-<li>zip下载完成后，进行解压缩，如果失败，则把已下载成功的版本号记录在本地，避免再次下载。如果成功，则解压缩在我们设定的存储目录下，将本地版本目录更新至当前版本。删除已下载的zip文件，将存储目录添加到searchPath的最前面。</li>
-</ol>
-<p>关于searchPath，它是一个队列，实现位于CCFileUtils内。cocos引擎在使用某个资源时，如果指定的资源路径不是绝对路径，就会依次使用searchPath内的路径合成一个绝对路径，如果找到了文件，就直接使用这个文件，所以我们热更新后的目录，设为searchPath的第一个，就可以实现替换掉老资源的功能。当然如果想节省空间，在下载成功的回调里，删除掉上个版本的目录就可以了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1663,7 +1730,7 @@ export {A, B, ... G, H}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-count">85</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

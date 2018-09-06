@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="杨光的笔记">
 <meta property="og:description" content="在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是  iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类 Android端NativeModule为继承ReactContextBaseJavaModule类">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-06T11:35:26.150Z">
+<meta property="og:updated_time" content="2018-09-06T11:40:21.040Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReactNative之原生模块重名的问题">
 <meta name="twitter:description" content="在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是  iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类 Android端NativeModule为继承ReactContextBaseJavaModule类">
@@ -331,13 +331,13 @@
 
       
         <p>在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是</p>
-<ol>
+<ul>
 <li>iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类</li>
-<li>Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager类。</li>
-</ol>
-<p>iOS端使用RCT_EXPORT_MODULE宏来指定模块或者组件名，这个名字是禁止重复的，如果重复在运行时会红屏报错。报错信息为</p>
+<li>Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者ViewGroupManager类。</li>
+</ul>
+<p>iOS端使用RCT_EXPORT_MODULE宏来指定模块名，这个名字是禁止重复的，如果重复在运行时会红屏报错。报错信息为</p>
 <blockquote>
-<p>Attempted to register RCTBridgeModule class XXX for the name “MyView”, but name was already resgitered by class XXX</p>
+<p>Attempted to register RCTBridgeModule class XXX for the name “xxx”, but name was already resgitered by class XXX</p>
 </blockquote>
 <p>这段错误提示位于RCTCxxBridge.mm的registerModulesForClasses方法内。所以iOS端就不用担心什么了，一旦有模块名重复，运行会直接报错。</p>
 <p>Android端通过重写getName方法来指定模块或者组件名，NativeModule是允许重名的，在BaseJavaModule类中有一个接口</p>

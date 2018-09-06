@@ -259,6 +259,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/06/rn-cli-add-params/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/06/rn-cli-add-params/" itemprop="url">ReactNative之给bundle命令增加参数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-06T20:18:36+08:00">
+                2017-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>因为拆分bundle的需要，在使用react-native bundle命令打业务bundle时，需要不同bundle的module id不一样，如果直接打，它们的id都是从0开始递增的。为了解决这个问题，通过修改源代码，给react-native bundle命令增加了两个参数，指定打bundle时生成ModuleID的行为。</p>
+<p>首先我们跟踪下react-native bundle命令运行的轨迹</p>
+<p>cli功能的源代码位于node_modules/react-native/local-cli文件夹内，cliEntry.js的111行</p>
+<pre><code>return command.func(argv, config, passedOptions);
+</code></pre><p>是执行命令行的入口，react-native bundle命令就是从这里进入了local-cli/bundle/bundle.js内的bundle方法，然后进入buildBundle.js内的buildBundle方法。</p>
+<p>之后是node_modules/react-native/packager/react-packager/src/Server/index.js。从它的buildBundle方法，可以再跟踪到packager/react-packager/src/Bundler文件夹，这里的index.js内有一个方法createModuleIdFactory就是给每个模块生成一个module id的地方，我们把这个函数改一下就可以了。</p>
+<p>因为参数传递比较复杂，我采用了一种比较很简单而且不会修改太多源代码的方法，就是在local-cli/bundle/bundle.js的bundle方法内读取我们增加的参数，存成全局变量，在需要用的地方读取即可。</p>
+<pre><code>function bundle(argv, config, args, packagerInstance) {
+      let cid = args.cid;    //modified by guangy cid为common module的最大数字 add为需要加的数字
+      let add = args.add;
+      setCidAndAdd(cid, add);
+
+      return bundleWithOutput(argv, config, args, undefined, packagerInstance);
+}
+</code></pre><p>存储和读取cid和add参数的代码为</p>
+<pre><code>let cid = 10000;
+let add = 0;
+
+export function setCidAndAdd(_cid, _add) {
+    cid = parseInt(_cid);
+    add = parseInt(_add);
+}
+
+export function getCidAndAdd(){
+    return {cid, add}
+}
+</code></pre><p>最后在createModuleIdFactory方法里，通过调用getCidAndAdd获取cid和add的值来使用就可以了。</p>
+<p>可以看到cli功能是用nodejs实现的，对于react-native bundle命令，从命令行读取什么参数，是否必带，是否有默认值等等在local-cli/bundle/bundleCommandLineArgs.js里进行配置，我们这次需要增加两个参数，只需要照已有的增加就行了。command里使用&lt;&gt;表示强制要求必须带这个参数。</p>
+<pre><code>{ //modified by guangy 增加两个参数 add和cid
+command: &apos;--cid &lt;cid&gt;&apos;,
+description: &apos;common的最大Module id
+  },{
+command: &apos;--add &lt;add&gt;&apos;,
+description: &apos;需要加的数字，比如10000，20000&apos;,
+  },
+</code></pre><p>然后还需要修改下node_modules/react-native/packager/react-packager/src/Server/index.js文件里的const bundleOpts = declareOpts({…})<br>增加</p>
+<pre><code>cid: {  //modified by guangy 增加两个参数
+    type: &apos;string&apos;,
+    required: true,
+  },
+  add: {
+    type: &apos;string&apos;,
+    required: true,
+  },
+</code></pre><p>即可。</p>
+<p>如果要修改其他命令，也可以照着这个思路，先把流程捋顺了，不用每行代码都看明白，大概找到需要改动的地方就行了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/03/rn-split-bundle2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1695,138 +1860,6 @@ export default class TestRNContainer extends Component{
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/07/26/rn-pixelRatio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/26/rn-pixelRatio/" itemprop="url">ReactNative中的pixelRatio</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-26T20:18:36+08:00">
-                2017-07-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>关于pixelRatio，<a href="https://reactnative.cn/docs/0.43/pixelratio.html#content" target="_blank" rel="noopener">官方文档</a>有相关内容。通过</p>
-<pre><code>PixelRatio.get()
-</code></pre><p>接口可以获取到设备的像素密度，但有的同学不清楚这个像素密度做什么用的，比如我发现在项目里，给图片设置尺寸时，都乘以了这个像素密度值，实际上这是不对的。</p>
-<p>手机屏幕像素是大家都知道的，比如1080*1920，他们指的是物理像素。除此之外还有一个参数叫做设备独立像素，在<a href="https://material.io/devices/" target="_blank" rel="noopener">这里</a>可以看到部分移动设备的相关参数。这个设备独立像素，我们用Dimensions API可以获取到</p>
-<pre><code>import {Dimensions} from &quot;react-native&quot;
-let size = Dimensions.get(&quot;window&quot;);
-console.log(&quot;width: &quot; size.width + &quot; height: &quot; + size.height);
-</code></pre><p>而像素密度比pixelRatio，就是物理像素除以独立像素的值。比如我手里的坚果pro，它的物理像素是1080*1920，设备独立像素是360*640，所以它的像素密度是3。 在上面界面里也可以看到，例如ipad, GalaxyTab等平板一般像素密度是1，中断设备像素密度是2，高端些的设备像素密度就是3，当然也有一些设备像素密度是1.5或者2.5等。</p>
-<p>首先我们要明确一点，我们在给图片设置尺寸时，是不需要写单位的，实际上单位就是独立像素。</p>
-<p>假设有两个设备，它们的独立像素相同，都是360*640，那么我有一张图片，设置宽度为180，在这两个设备上都是占了一半屏幕宽。而如果有一个pad它的独立像素是768*1024，我们仍然希望它占一半屏幕的话，就需要把宽度设置为768*0.5=384了。例如对于背景图片，显然需要在任何设备上都占满屏幕，所以给它设置尺寸直接就是设备独立像素的值，也就是Dimension.get(“window”)得到的值。有的时候我们不希望随着屏幕变，例如那张图片仍然设置宽度为180，那么它在pad上宽度只占了23.4%。所以我们可以得知，给图片设置尺寸时，只决定于它在不同的独立像素屏幕上，需要显示成什么效果。最简单的方案是两种，要么设为固定值，要么跟屏幕独立像素成比例。否则就根据不同的屏幕来细分了。</p>
-<p>那么这个像素密度拿来做什么用呢？</p>
-<p>仍然说那两个设备，它们独立像素都是360*640，A设备像素密度为1，B设备像素密度为3，很容易得知A设备物理像素为360*640，而B设备物理像素为1080*1920。我有一张图片，美术给的尺寸是360*360,现在我给它设的尺寸宽度为180*180，根据上面所说，在这两个设备上图片都占屏幕一半宽，但A设备屏幕一半的物理像素是180，对于图片物理像素宽度360来说，缩小了一半。B设备屏幕一半的物理像素是540，对于图片物理像素宽度360来说，放大了1.5倍。不论放大还是缩小，都会导致图片显示模糊。如果要达到最好的显示效果，就应该给A设备提供180*180尺寸的图片，给B设备提供540*540尺寸的图片，这就是像素密度的作用。</p>
-<p>是否要根据不同屏幕提供多套素材资源，取决于项目要求。我们在实际项目中可以使用pixelRation接口来实现物理像素和独立像素之间数值的转换，只要记住物理像素=独立像素*像素密度这个公式即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1877,7 +1910,7 @@ console.log(&quot;width: &quot; size.width + &quot; height: &quot; + size.height
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">86</span>
+                  <span class="site-state-item-count">87</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

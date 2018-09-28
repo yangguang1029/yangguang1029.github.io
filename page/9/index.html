@@ -259,6 +259,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/重用ccnode需要注意的触摸事件处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/15/重用ccnode需要注意的触摸事件处理/" itemprop="url">重用ccnode需要注意的触摸事件处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:39:37+08:00">
+                2016-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在使用cocos开发过程中，对node的重用非常常见，例如TableViewCell就是重用的，这些被重用的node会频繁的被添加到父节点以及从父节点中移除，当被移除时会调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">removeFromParent(cleanup)</span><br></pre></td></tr></table></figure>
+<p>这个cleanup参数很关键，如果为true，会导致其cleanup方法被调用。如果不带此参数，则默认为true。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cleanup: function () &#123;</span><br><span class="line">    this.stopAllActions();</span><br><span class="line">    this.unscheduleAllCallbacks();</span><br><span class="line">    cc.eventManager.removeListeners(this);</span><br><span class="line">    this._arrayMakeObjectsPerformSelector(this._children, cc.Node._stateCallbackType.cleanup);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，所有被加到此节点上的eventListener都被清除掉了，同时还递归调用了所有子节点的cleanup方法，也就意味着<strong>一个node执行了cleanup的话，其自身以及所有子孙结点注册的eventListener都会被移除</strong>。在重用这个node时，很可能就会发现给它添加的eventListener不生效了。</p>
+<p>但cocos对一些node做了相应的功能完善，专门针对的是触摸事件。在其添加触摸事件时，用成员变量_touchListener保存起来，在onEnter时重新添加。这也是我们在碰到此类问题时的解决方案。cocos只对三个类做了这种实现，他们是cc.Control, cc.Menu, ccui.widget。理所当然的，继承自这三个类的也都有此功能，例如cc.ControlButton被重用时，它的触摸事件不会消失。</p>
+<p>有人会说，tableViewCell一直在被重用，也不继承自上面三个类，为什么对它的触摸回调tableCellTouched一直能生效呢？这是因为tableCellTouched并不是在tableViewCell上添加的触摸事件，而是在tableView上添加的，如果你尝试重用tableView或者其父容器，就会发现触摸失效了，我的解决方案是重用时调用一次tableview的setTouchEnable接口。</p>
+<p>总之在实现重用node时，要注意添加给它和它的子孙节点的事件，需要在onEnter时重新添加，例如某个节点的一个子孙节点是一个cc.TableView，那么在重用这个节点时，这个tableview的触摸肯定失效了，解决办法要么修改源代码在tableView的onEnter方法里重新添加，或者在重用时手动调用tableview的setTouchEnabled方法（这个方法继承自scrollview）</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/js中的string和unicode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1220,7 +1347,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

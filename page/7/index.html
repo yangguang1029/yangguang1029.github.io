@@ -259,135 +259,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/21/new-cocos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/21/new-cocos/" itemprop="url">一个简单的联网棋牌游戏开发流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-21T16:15:36+08:00">
-                2016-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近负责一款新的牌类游戏的前端开发任务。这个项目从零开始到开发完成，稍微总结一下，棋牌类游戏属于比较简单的，项目使用MVC架构，一开始就可以规划好各个模块，我是划分成了</p>
-<ul>
-<li>model    MVC中的model</li>
-<li>controller 兼具MVC中的controller和view</li>
-<li>net    负责收和发网络消息</li>
-<li>util    独立功能，例如constants, global, enum等</li>
-<li>test    测试模块</li>
-</ul>
-<h3 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h3><p>controller兼具MVC中的controller和view的功能，每个controller基本对应了一个页面，并持有model作为成员变量，这样代码写起来简单，适用于这种不是很复杂的小型游戏。网络游戏的前端很多时候是由服务器消息驱动的，每次收到服务器消息，直接交给controller处理，controller将自身持有的model刷新，然后处理必要的逻辑，最后刷新UI。</p>
-<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>一个项目的开发流程，美术和后端先行，美术尽快出好素材后，前端就可以拼UI了，并且根据效果图和策划案，可以把各个功能模块都先写好，这样后端接口提供之后，前端在接入后端消息后，只需要一个个调用功能模块，给UI填入实际数据就可以了。至于前后端的通信协议，因为主要是由后端进行逻辑处理，所以我认为主动权在后端，除非前端认为不合理的时候，再进行沟通。Å</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/10/cocos-glprogram/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1544,6 +1415,149 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/25/cocos-addImageAsync/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/25/cocos-addImageAsync/" itemprop="url">cocos-addImageAsync解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-25T11:44:28+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当我们在cocos内需要做一些比较耗性能的事情时，我们可以一些很巧妙地方案，例如开启多线程，以及将任务分解到每一帧完成一部分。在TextureCache的addImageAsync方法里，就同时用到了这两种办法，把这部分源码看明白，对自己实现能有很大的帮助</p>
+<p>类TextureCache维护一个队列_asyncStructQueue，它存放需要执行的任务，这些任务将在异步线程执行，加载生成Image类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;AsyncStruct*&gt;* _asyncStructQueue;</span><br></pre></td></tr></table></figure>
+<p>一个双向队列_imageInfoQueue,他存放加载好的Image，这些加载好的图片资源就会每帧从队列中获取一个，用来生成纹理Texture2D，生成好的纹理就可以在游戏内直接使用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;ImageInfo*&gt;* _imageInfoQueue;</span><br></pre></td></tr></table></figure>
+<p>这两个队列都是先进先出的操作，我也不是很明白为什么要用deque，有知道的可以告诉我一下。然后这两个队列因为都需要在异步线程操作，所以操作时需要用锁锁住。</p>
+<p>使用一个_asyncRefCount来记录当前任务的数量，当往_asyncStructQueue添加一个任务asyncStruct时，计数+1，当一个纹理生成完成，销毁该任务asyncStruct，计数-1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int _asyncRefCount;</span><br></pre></td></tr></table></figure>
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>需要异步加载一个图片时，首先调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::addImageAsync(const std::string &amp;path, const std::function&lt;void(Texture2D*)&gt;&amp; callback)</span><br></pre></td></tr></table></figure>
+<p>首先判断一下这个path对应的texture是否已经在缓存里，如果在，则直接返回。否则如果_asyncStructQueue还未初始化，则执行初始化，然后生成一个AsyncStruct加入队列_asyncStructQueue中。</p>
+<h3 id="异步线程"><a href="#异步线程" class="headerlink" title="异步线程"></a>异步线程</h3><p>类TextureCache维护一个异步线程，这个线程在_asyncStructQueue初始化时开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::thread* _loadingThread;</span><br></pre></td></tr></table></figure>
+<p>在这个线程执行的函数是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::loadImage()</span><br></pre></td></tr></table></figure>
+<p>这个线程通过std::condition_variable _sleepCondition来唤醒和休眠，当有任务加入任务队列_asyncStructQueue时，唤醒线程执行loadImage函数，在这个函数里发现_asyncStructQueue被清空时，休眠这个线程。</p>
+<p>在执行loadImage时，会先看一下需要加载的图片是否已经在处理队列_imageInfoQueue中了。如果不在，则生成一个新的Image，执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image-&gt;initWithImageFileThreadSafe(filename)</span><br></pre></td></tr></table></figure>
+<p>如果initWithImageFileThreadSafe返回true，则表示这张图片资源加载成功了，用这个image生成一个imageInfo放到_imageInfoQueue里。</p>
+<h3 id="定时回调"><a href="#定时回调" class="headerlink" title="定时回调"></a>定时回调</h3><p>这个定时回调每帧都会被调用一次，它将上一步生成的image变成Texture2D。当_asyncRefCount从0变为1时，表示开始有任务需要完成，开启这个定时器，当_asyncRefCount变为0时表示任务全部完成，这个定时器会被关闭。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Director::getInstance()-&gt;getScheduler()-&gt;schedule(CC_SCHEDULE_SELECTOR(TextureCache::addImageAsyncCallBack), this, 0, false);</span><br></pre></td></tr></table></figure>
+<p>定时执行的函数就是addImageAsyncCallBack了，在这个函数里，通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">texture-&gt;initWithImage(image);</span><br></pre></td></tr></table></figure>
+<p>生成Texture2d，并存在缓存里，每次通过TextureCache加载纹理的时候，都会先看看是否已经存在缓存里了。<br>到这里，这个任务就完成了，执行下回调函数，然后把_asyncRefCount减一，搞定了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1594,7 +1608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">90</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

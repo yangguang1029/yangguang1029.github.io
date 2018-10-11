@@ -259,143 +259,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/09/19/rn-image/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/19/rn-image/" itemprop="url">ReactNative之Image控件从js到java的追踪流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T11:18:36+08:00">
-                2017-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们以image控件为例，简单的介绍下一个系统控件的实现，方便进行自定义，以及了解它的内部实现。</p>
-<p>我们要使用Image的话，第一步就是</p>
-<pre><code>import {Image} from &quot;react-native&quot;
-</code></pre><p>我们需要找到源文件export出Image的地方，它位于node_modules/react-native/Libraries/Image目录下。基本上RN的js源代码都在这个Libraries目录下。</p>
-<p>在Image.android.js里，文件结尾是</p>
-<pre><code>module.exports = Image;
-</code></pre><p>证明我们使用的Image就是这里导出的。在这个文件的render函数里，可以看出来它使用了RKImage控件。然后查找RKImage的来源</p>
-<pre><code>var RKImage = requireNativeComponent(&apos;RCTImageView&apos;, Image, cfg);
-</code></pre><p>可以看出来，RKImage是native的实现，所以我们到node_modules/react-native/ReactAndroid/src/main/java目录下搜索关键字RCTImageView,找到在哪里注册的。</p>
-<p>观察一下搜索结果，可以看到有两个类RCTImageViewManager和ReactImageManager，他们都是导出到js层的类，且导出名字都是RCTImageView。</p>
-<p>我们找一下这两个类是在哪里注册的，如果对流程比较熟悉的话，看到它们继承自ViewManager也已经知道了。在node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\shell\MainReactPackage.java的createViewManagers方法里可以看到</p>
-<pre><code>if(useFlatUi) {
-    viewManagers.add(new RCTImageViewManager());
-}else{
-    viewManagers.add(new ReactImageManager());
-}
-</code></pre><p>所以根据useFlatUi的值，Image控件的native实现,可能是node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\views\image\ReactImageView.java或者node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\flat\RCTImageView.java</p>
-<p>其余控件如果想追踪native实现，也可以按这个流程走就行了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/08/07/rn-new-saga/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1845,6 +1708,145 @@ export {A, B, ... G, H}
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-function-obj/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/10/cpp-function-obj/" itemprop="url">c++之函数对象</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-10T19:32:37+08:00">
+                2017-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>std::function是一个类模板，定义于头文件\&lt;functional>。我们主要关注下它的几种生成方式。</p>
+<ul>
+<li>直接指向函数。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bool func(int item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f = func;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用lambda表达式。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int t = 3;</span><br><span class="line">std::function&lt;bool(int)&gt; f1 = [t](int item) &#123;</span><br><span class="line">	return item % t == 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用函数对象。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Func()&#123;</span><br><span class="line">	private:</span><br><span class="line">		int t;</span><br><span class="line">	public:</span><br><span class="line">		Func(int _t):t(_t)&#123;&#125;</span><br><span class="line">		bool operator()(int item) &#123;</span><br><span class="line">			return item % t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f2 = Func(3);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用std::bind绑定。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Func1()&#123;</span><br><span class="line">	public:</span><br><span class="line">		bool func(int item) &#123;</span><br><span class="line">			return item % 2 == 0;</span><br><span class="line">		&#125;</span><br><span class="line">		bool func1(int _t, int item) &#123;</span><br><span class="line">			return item % _t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">func1 f1;</span><br><span class="line">std::function&lt;bool(int)&gt; f3 = std::bind(&amp;Func1::func, f1, std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; f4 = std::bind(&amp;Func1::func, f1, 3, std::placeholders::_1);</span><br><span class="line"></span><br><span class="line">bool func(in item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line">bool func1(int _t, int item) &#123;</span><br><span class="line">	return item % _t == 0;</span><br><span class="line">&#125;</span><br><span class="line">std::function&lt;bool(int)&gt; fp5 = std::bind(func,  std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; fp6 = std::bind(func1, 3,  std::placeholders::_1);</span><br></pre></td></tr></table></figure>
+<p>使用函数对象的地方有很多，一个很典型的场景就是STL里的算法，经常会用到Predicate,它就是一个函数对象。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_InputIterator find_if(_InputIterator __first, _InputIterator __last, _Predicate __pred)</span><br></pre></td></tr></table></figure>
+<p>所以我们就可以直接拿上面的例子来使用，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; arr = &#123;1,3,5,7,9,2,4,6,8&#125;;</span><br><span class="line">auto iter5 = std::find_if(arr.begin(), arr.end(),fp5);</span><br><span class="line">cout &lt;&lt; *iter5 &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1895,7 +1897,7 @@ export {A, B, ... G, H}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">90</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -393,179 +393,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/10/08/listview/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/08/listview/" itemprop="url">Untitled</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-08T20:38:49+08:00">
-                2018-10-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MRNListView"><a href="#MRNListView" class="headerlink" title="MRNListView"></a>MRNListView</h1><blockquote>
-<p>组件负责人 @yangguang11 @shengshuqiang</p>
-</blockquote>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>高性能列表组件（基础组件），用来解决大量数据项下列表页内存溢出和卡顿问题。</p>
-<p><strong>原理</strong>：参考网上开源 <a href="https://github.com/droidwolf/react-native-RealRecyclerView" target="_blank" rel="noopener">react-native-RealRecyclerView</a> 做法，</p>
-<ol>
-<li>根据列表页高度和数据项高度，创建出若干数据项控件。</li>
-<li>每个可复用数据项控件在复用时，发事件给 JS 通知刷新数据项。</li>
-</ol>
-<p><strong>效果截图</strong><br><img src="../assets/listview.gif" width="400px"></p>
-<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><p>详见 MRNListViewDemo.js</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;Listview</span><br><span class="line">        style=&#123;styles.listView&#125;</span><br><span class="line">        renderRow=&#123;this.renderRow&#125;</span><br><span class="line">        getViewHeight=&#123;this.getViewHeight&#125;</span><br><span class="line">        dataViewTypeList=&#123;dataViewTypeList&#125;</span><br><span class="line">        initCount=&#123;12&#125;</span><br><span class="line">        tableHeight=&#123;400&#125;</span><br><span class="line">        enablePullRefresh=&#123;true&#125;</span><br><span class="line">        onPullRefresh=&#123;this.onPullRefresh&#125;</span><br><span class="line">        refreshing=&#123;this.state.refreshing&#125;</span><br><span class="line">        listEmptyComponent=&#123;this.renderListEmptyComponent()&#125;</span><br><span class="line">        onEndReached=&#123;this.onEndReached&#125;</span><br><span class="line">        renderHeader=&#123;this.renderListHeaderComponent&#125;</span><br><span class="line">        renderFooter=&#123;this.renderListFooterComponent&#125;</span><br><span class="line">        onScroll=&#123;this.onScroll&#125;</span><br><span class="line">        onSelectIndex=&#123;this.onSelectIndex&#125;</span><br><span class="line">        getHeaderHeight=&#123;this.getHeaderHeight&#125;</span><br><span class="line">        getFooterHeight=&#123;this.getFooterHeight&#125;</span><br><span class="line">        ref=&#123;this.captureRef&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="属性说明"><a href="#属性说明" class="headerlink" title="属性说明"></a>属性说明</h2><p>必须实现属性：</p>
-<ul>
-<li>renderRow：渲染列表数据项组件函数，传入参数position为列表位置</li>
-<li>getViewHeight：获取每一个数据项组件高度函数，传入参数position为列表位置</li>
-<li>dataViewTypeList：列表数据对应的类型数组，标识每行对应的复用组件标识，同一个类型组件标识相同</li>
-<li>initCount：创建的用于复用的单元行数量（iOS平台生效，Android平台在代码中进行计算）</li>
-<li>tableHeight：列表页高度（Android平台生效）</li>
-</ul>
-<p>可选属性：</p>
-<ul>
-<li>enablePullRefresh：是否启用下拉刷新功能</li>
-<li>onPullRefresh：开始下拉刷新的回调</li>
-<li>refreshing：是否结束下拉刷新，当下拉刷新结束时，设置此props为false通知原生层关闭下拉刷新UI</li>
-<li>listEmptyComponent：如果列表为空，显示此组件</li>
-<li>onEndReached：滚动到底回调</li>
-<li>renderHeader：渲染列表头，如果不实现代表无列表头</li>
-<li>renderFooter：渲染列表尾，同renderHeader</li>
-<li>getHeaderHeight：列表头高度，iOS平台专用，如果有列表头则必须实现此接口</li>
-<li>getFooterHeight：同getHeaderHeight</li>
-<li>onScroll：滚动回调，通过参数可以获取到滚动距离delta</li>
-<li>scrollToIndex：设定滚动到哪个位置。<strong>此prop已被弃用</strong></li>
-<li>onSelectIndex：某个单元行被选中的回调</li>
-</ul>
-<h2 id="方法说明"><a href="#方法说明" class="headerlink" title="方法说明"></a>方法说明</h2><ul>
-<li><p>scrollToIndexWithOffset(index, offset, animated)</p>
-<ol>
-<li>offset单位是dp</li>
-<li>animated表示是否有滚动动画</li>
-<li>index不包含头部和尾部，如果超出范围无操作</li>
-<li>offset如果为正，表示需要多滚动一段距离，如果为负表示需要少滚动一段距离</li>
-</ol>
-</li>
-<li><p>reloadData</p>
-<p>调用此方法将主动刷新当前列表显示的单元行内容。它与setState刷新界面的区别在于，setState用于dataViewTypeList变化的情况，而reloadData用于dataViewTypeList没有变化，但单元行展示的数据需要变化的情况。</p>
-</li>
-</ul>
-<h2 id="其它内容"><a href="#其它内容" class="headerlink" title="其它内容"></a>其它内容</h2><ul>
-<li>需要在style里面指定宽高，否则显示有问题（Android不能滑动，ios不显示）</li>
-<li>initCount只在iOS平台生效，表示初始化单元行的数量，设置为约等于listview两屏的单元行数量即可，设置太小在快速滑动时可能出现空白单元行</li>
-<li>scrollToIndex已被弃用，如果需要滚动列表，使用scrollToIndexWithOffset方法</li>
-<li>注意reloadData和setState的区别，刷新列表数据时，根据场景，选择其中一种方式使用</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/09/27/rn-native-view-method/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1693,6 +1520,148 @@ BatchedBridge.registerCallableModule(&apos;hello&apos;, {
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/22/rn-tableview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/22/rn-tableview/" itemprop="url">ReactNative之封装TableView组件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T20:18:36+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。</p>
+<p>封装tableView本身很简单，按<a href="https://reactnative.cn/docs/0.51/native-component-ios.html#content" target="_blank" rel="noopener">官方教程</a>走就行了。我们从js中传一个rowCount属性过来，用于给tableView的numberOfRowsInSection回调使用。对tableView来说，最重要的就是每个tableViewCell怎么渲染了。因为每个单元行渲染的内容需要从js端传过来，如果能够在原生层捕获到这个js中渲染的组件，然后放到每个TableViewCell里去作为它的subview，当这个TableViewCell被重用时，获取到这个subview，然后通知js端刷新这个组件的内容即可。</p>
+<p>从原生捕获js组件的方案就是，在js层的tableView里，给它添加子控件，然后在对应的原生tableview代码中，通过</p>
+<pre><code>- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
+
+}
+</code></pre><p>接口，可以获取到这个子控件。这些控件既然需要从原生层往js层发消息，那么理所当然也需要是原生封装的组件了，我们给它通过RCTBubblingEventBlock回调，就可以让它往js发消息了，这样当一个tableViewCell被重用时，我们已经知道它被重用到了哪个位置，把这个位置发到js层，js层刷新显示即可。</p>
+<p>在js层使用的时候，我们需要往tableView里添加子控件用于显示单元行内容，这些子控件在每次tableViewCell新建的时候都需要一个，所以理论上来说，这些子控件的数量应该保证至少能填满一个tableView的空间，像demo里tableview的高度是300，单元行高度是40，那么至少需要8个。但如果只放8个，就会发现在快速滑动时不够用了，导致可能个别单元行变成了空白。推测是快速滑动时，部分tableViewCell还没来得及进入回收队列，所以需要新建，所以在demo里我就放了两屏的数量，也就是16个，就没有再出现问题了。</p>
+<p>以上就是实现思路，具体代码可以查看<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview" target="_blank" rel="noopener">demo</a></p>
+<p>updated on 2018-06-11</p>
+<p>在原基础上，实现了单元行可变高度的功能。demo代码也做了一些优化，</p>
+<ol>
+<li>给TableViewCell设定{ position: ‘absolute’,left: 0,top: 0 }的style，代替原来在原生层getUnusedCell方法中获取到TableCell后setFrame的方案，因为当单元行高度可变时，js层的单元行组件会频繁的需要重新布局，位置就会变乱了，设定一个(0,0)的绝对坐标，目的是防止单元行位置变乱</li>
+<li>js层的TableCell不再负责渲染，转为交给TableView的props的renderRow接口。</li>
+<li>在js层指定每个单元行的type然后传入到原生层，作为tableCell的Identifier，提高单元行复用时的效率。</li>
+</ol>
+<p>updated on 2018-06-25</p>
+<p>在原基础上，增加了下拉刷新功能。</p>
+<ol>
+<li>在MyTableView的init函数里是无法使用js层传过来的prop属性的，都是初始化数值。所以增加UIRefreshControl必须在收到enablePullRefresh属性时才去增加。</li>
+<li>要让js层主动调用原生的代码，改变props值就行，这样原生的set函数就会被调用。例如下拉刷新后js层获取网络数据结束，此时需要通过原生层关闭UIRefreshControl，这时把refreshing设置为false，则原生层的setRefreshing被调用，做相应的操作就可以了</li>
+</ol>
+<p>新版本代码<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview2" target="_blank" rel="noopener">见此</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1743,7 +1712,7 @@ BatchedBridge.registerCallableModule(&apos;hello&apos;, {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">90</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

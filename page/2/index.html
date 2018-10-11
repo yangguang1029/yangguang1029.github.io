@@ -259,6 +259,331 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/22/rn-tableview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/22/rn-tableview/" itemprop="url">ReactNative之封装TableView组件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T20:18:36+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。</p>
+<p>封装tableView本身很简单，按<a href="https://reactnative.cn/docs/0.51/native-component-ios.html#content" target="_blank" rel="noopener">官方教程</a>走就行了。我们从js中传一个rowCount属性过来，用于给tableView的numberOfRowsInSection回调使用。对tableView来说，最重要的就是每个tableViewCell怎么渲染了。因为每个单元行渲染的内容需要从js端传过来，如果能够在原生层捕获到这个js中渲染的组件，然后放到每个TableViewCell里去作为它的subview，当这个TableViewCell被重用时，获取到这个subview，然后通知js端刷新这个组件的内容即可。</p>
+<p>从原生捕获js组件的方案就是，在js层的tableView里，给它添加子控件，然后在对应的原生tableview代码中，通过</p>
+<pre><code>- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
+
+}
+</code></pre><p>接口，可以获取到这个子控件。这些控件既然需要从原生层往js层发消息，那么理所当然也需要是原生封装的组件了，我们给它通过RCTBubblingEventBlock回调，就可以让它往js发消息了，这样当一个tableViewCell被重用时，我们已经知道它被重用到了哪个位置，把这个位置发到js层，js层刷新显示即可。</p>
+<p>在js层使用的时候，我们需要往tableView里添加子控件用于显示单元行内容，这些子控件在每次tableViewCell新建的时候都需要一个，所以理论上来说，这些子控件的数量应该保证至少能填满一个tableView的空间，像demo里tableview的高度是300，单元行高度是40，那么至少需要8个。但如果只放8个，就会发现在快速滑动时不够用了，导致可能个别单元行变成了空白。推测是快速滑动时，部分tableViewCell还没来得及进入回收队列，所以需要新建，所以在demo里我就放了两屏的数量，也就是16个，就没有再出现问题了。</p>
+<p>以上就是实现思路，具体代码可以查看<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview" target="_blank" rel="noopener">demo</a></p>
+<p>updated on 2018-06-11</p>
+<p>在原基础上，实现了单元行可变高度的功能。demo代码也做了一些优化，</p>
+<ol>
+<li>给TableViewCell设定{ position: ‘absolute’,left: 0,top: 0 }的style，代替原来在原生层getUnusedCell方法中获取到TableCell后setFrame的方案，因为当单元行高度可变时，js层的单元行组件会频繁的需要重新布局，位置就会变乱了，设定一个(0,0)的绝对坐标，目的是防止单元行位置变乱</li>
+<li>js层的TableCell不再负责渲染，转为交给TableView的props的renderRow接口。</li>
+<li>在js层指定每个单元行的type然后传入到原生层，作为tableCell的Identifier，提高单元行复用时的效率。</li>
+</ol>
+<p>updated on 2018-06-25</p>
+<p>在原基础上，增加了下拉刷新功能。</p>
+<ol>
+<li>在MyTableView的init函数里是无法使用js层传过来的prop属性的，都是初始化数值。所以增加UIRefreshControl必须在收到enablePullRefresh属性时才去增加。</li>
+<li>要让js层主动调用原生的代码，改变props值就行，这样原生的set函数就会被调用。例如下拉刷新后js层获取网络数据结束，此时需要通过原生层关闭UIRefreshControl，这时把refreshing设置为false，则原生层的setRefreshing被调用，做相应的操作就可以了</li>
+</ol>
+<p>新版本代码<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview2" target="_blank" rel="noopener">见此</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/04/04/rn-import-require/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/04/rn-import-require/" itemprop="url">ReactNative之两种模块管理方式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-04T20:18:36+08:00">
+                2018-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如</p>
+<pre><code>//ES6风格
+//a.js
+export let a = 1;
+export function adda(){
+    a += 1;
+}
+//index.js
+import {a, adda} from &quot;./a.js&quot;
+console.log(&quot;a is &quot; + a)
+adda();
+console.log(&quot;after add a is &quot; + a)
+
+//CommonJS风格
+//b.js
+let b = 1;
+function addb(){
+    b += 1;
+}
+module.exports = {b, addb}
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b is &quot; + B.b)
+B.addb();
+console.log(&quot;after add b is &quot; + B.b)
+</code></pre><p>这两者模块管理风格有什么区别，在阮一峰老师的《ECMAScript6 入门》书中，有<a href="http://es6.ruanyifeng.com/#docs/module-loader" target="_blank" rel="noopener">相关的章节</a>。例如ES6是静态导入，所以import必须位于顶层代码，任何位于非顶层代码的import都会报错，而require则可以位于任何位置。ES6风格因为是静态导入，import时模块名不能是动态的，而require可以是动态的。在导出时，ES6的导出是引用，而CommonJS的导出是拷贝，所以上面代码里，a会输出1和2，而b会输出两个1。</p>
+<p>回到项目中来，我们在RN项目中的js代码，都会经过babel编译成ES5标准，在ES5中是没有模块管理的，所以RN自己实现了模块管理的功能，</p>
+<p>先看导入，相关的源代码位于node_modules/metro/src/lib/polyfills/require.js内。我们在代码里不论是写import还是写require，最终都会被翻译成这个require.js里的require方法。通过这个方法可以看到，不论我们执行多少次导入，模块本身只会被加载执行一次。对同一个模块，我们使用ES6和CommonJS两种方式来引用，得到的行为是一样的。对上面的a.js，结果都是1和2，对b.js，结果都是两个1。然后不论使用哪种风格，文件之间的依赖顺序在编译成bundle时都必须确定下来，使用require因为可以写在代码块里，不像import必须写在顶层代码中，所以一定程度上可以延迟模块被执行的时间，个人觉得这个区别还是很微小的，不会造成性能上的区别。</p>
+<p>然后是导出，前面说过这两种风格的导出结果，一个是拷贝，一个是引用。对上面的a.js和b.js，我们看一下他们在bundle内的代码就明白了</p>
+<pre><code>__d(function (global, _require, module, exports, _dependencyMap) {
+    Object.defineProperty(exports, &quot;__esModule&quot;, {
+        value: true
+    });
+    exports.adda = adda;
+    var a = exports.a = 1;
+    function adda() {
+        exports.a = a += 1;
+    }
+},337,[],&quot;js/testImport/a.js&quot;);
+__d(function (global, _require, module, exports, _dependencyMap) {
+    var b = 1;
+    function addb() {
+        b += 1;
+    }
+    module.exports = {
+        b: b,
+        addb: addb
+    };
+},338,[],&quot;js/testImport/b.js&quot;);
+</code></pre><p>对于ES6风格的a.js，导出的属性直接加在了exports上，这个exports就是我们导入时获得的Object，所以它是直接持有了变量的引用。而对于CommonJS风格的b.js，导出的是一个新建的Object，它拷贝了变量b的值，既然是拷贝，就有浅拷贝和深拷贝之分，这里也完全取决于我们怎么实现，会有不同的行为，例如可以跑一下下面的代码试一下</p>
+<pre><code>//b.js
+let b = {value:1}
+function addb(){
+    b.value += 1;
+}
+module.exports = {b1:b, addb, b2:{value:b.value}}
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b1 is &quot; + B.b1.value)
+console.log(&quot;b2 is &quot; + B.b2.value)
+B.addb();
+console.log(&quot;after add b1 is &quot; + B.b1.value)
+console.log(&quot;after add b2 is &quot; + B.b2.value)
+</code></pre><p>到这里基本上都明白了代码里的import, require, export, module.exports都有什么行为了。需要注意一下的就是，当import和require混合使用时，import一定会早于require被执行，这可能导致依赖顺序上发生问题，所以还是尽量避免混用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/03/12/rn-cached-view/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1455,299 +1780,6 @@ const StackNav=StackNavigator({
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/06/rn-flatlist-keyExtractor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/rn-flatlist-keyExtractor/" itemprop="url">ReactNative之一次FlatList无法局部刷新的bug修复</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-06T19:15:36+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天发现项目中一个奇怪的问题，在使用FlatList时，每个单元行Component明明实现了shouldComponentUpdate,但是当增加一行时，还是所有的单元行都重新render了，最后找到了原因。代码中FlatList实现的keyExtractor非常简单，因为每个单元行数据的key要求是唯一的，所以直接使用了index返回</p>
-<pre><code>  _keyExtractor(item, index){
-    return &quot;&quot;+index;
-}
-</code></pre><p>然后在增加数据时，又是把数据插到了数组的最前面</p>
-<pre><code>let data = this.state.data;
-this.setState({data:[{num:key,key}].concat(data)})
-</code></pre><p>这样就出问题了，对FlatList内的每个单元行组件CellRenderer来说，它的props包括keyExtractor给出的key和data给出的数据，假设原来数据是[0,1,2,3]，那么FlatList内的组件就包括</p>
-<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=0 /&gt;
-&lt;CellRenderer key=&quot;1&quot;, num=1 /&gt;
-&lt;CellRenderer key=&quot;2&quot;, num=2 /&gt;
-&lt;CellRenderer key=&quot;3&quot;, num=3 /&gt;
-</code></pre><p>在数组最前面加上一个数据101后，FlatList内的组件就变成了</p>
-<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=101 /&gt;
-&lt;CellRenderer key=&quot;1&quot;, num=0 /&gt;
-&lt;CellRenderer key=&quot;2&quot;, num=1 /&gt;
-&lt;CellRenderer key=&quot;3&quot;, num=2 /&gt;
-&lt;CellRenderer key=&quot;4&quot;, num=3 /&gt;
-</code></pre><p>我们在单元行组件里的shouldComponentUpdate实现是：</p>
-<pre><code>shouldComponentUpdate(nextProps){
-    return this.props.num !== nextProps.num;
-}
-</code></pre><p>所以很显然已有的4个CellRenderer因为num变化，就全部刷新了。</p>
-<p>找到原因后，要解决就很简单了</p>
-<pre><code>_keyExtractor(item, index){
-    return item.num;;
-}
-</code></pre><p>所以结论就是：<strong>keyExtractor应该根据实际情况根据item数据来设置，不要贪图简单直接使用index</strong></p>
-<p>最后做了下验证，keyExtractor使用index时，将数据加在数组最后，而不是插在最前，那么没问题，不会全部刷新，因为前面CellRenderer的props都没有变化。但实际项目中不要贪图省事，之所以FlatList提供这个接口让开发者去实现，就肯定有这个需要，随便返回一个index可能就把自己给坑了。</p>
-<p>关于re-render的原理，官方有一篇文章叫<a href="https://reactjs.org/docs/reconciliation.html" target="_blank" rel="noopener">reconciliation</a>讲的很清楚，看完就更容易理解这个问题的本质了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/27/rn-ts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/rn-ts/" itemprop="url">ReactNative之在项目中使用TypeScript</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-27T20:18:36+08:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近在网上找到个开源的控件，但是源代码是用TypeScript实现的，放到项目里无法直接使用，于是google了一下怎么在ReactNative项目内使用TypeScript，然后找到了一个很简单的解决方案，试了一下没有问题。</p>
-<p>首先安装react-native-typescript-transformer模块</p>
-<pre><code>yarn add --dev react-native-typescript-transformer typescript
-</code></pre><p>然后在项目的根目录下创建一个文件 rn-cli.config.js</p>
-<pre><code>module.exports = {  
-      getTransformModulePath() {
-        return require.resolve(&apos;react-native-typescript-transformer&apos;)
-      },
-      getSourceExts() {
-        return [&apos;ts&apos;, &apos;tsx&apos;];
-      }
-}
-</code></pre><p>在项目根目录下创建一个文件tsconfig.json</p>
-<pre><code>{
-      &quot;compilerOptions&quot;: {
-        &quot;target&quot;: &quot;es2015&quot;,
-        &quot;module&quot;: &quot;es2015&quot;,
-        &quot;jsx&quot;: &quot;react-native&quot;,
-        &quot;moduleResolution&quot;: &quot;node&quot;,
-        &quot;allowSyntheticDefaultImports&quot;: true
-      }
-}
-</code></pre><p>然后就可以放心在项目里写TypeScript代码了，例如项目中ts目录下有test.ts文件，我们在import这个文件时，就像import一个js文件就可以了</p>
-<pre><code>import &apos;./ts/test&apos;
-</code></pre><p>这些以ts,tsx为后缀的TypeScript代码文件会被转换成js文件，我们实际import的是转换后的js文件。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1798,7 +1830,7 @@ this.setState({data:[{num:key,key}].concat(data)})
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">90</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

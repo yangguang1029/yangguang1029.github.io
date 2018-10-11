@@ -259,6 +259,275 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/googleClosureCompiler使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/15/googleClosureCompiler使用/" itemprop="url">googleClosureCompiler使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:47:56+08:00">
+                2016-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>官方文档<a href="https://developers.google.com/closure/compiler/" target="_blank" rel="noopener">在此</a></p>
+<p>最简单的使用命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar --js hello.js --js_output_file hello-compiled.js</span><br></pre></td></tr></table></figure>
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar -help</span><br></pre></td></tr></table></figure>
+<p>可以显示帮助，通过它可以查询有哪些可配置参数，及它们的可选值，默认值</p>
+<p>这里再介绍一下其他的一些常用参数，像–charset这种不是很常用到的参数就不一一举例了，用help查看即可，需要注意的是，随着compiler.jar的版本不一样，可选参数以及默认参数也可能会不一样，以help给出的文档为准即可</p>
+<ul>
+<li>–js指定输入文件名</li>
+<li>–js_output_file 指定输出文件名，如果不设置此参数，则默认输出到stdout</li>
+<li>–compilation_level 混淆级别，可选参数WHITESPACE_ONLY，SIMPLE_OPTIMIZATIONS，ADVANCED_OPTIMIZATIONS。默认值为SIMPLE_OPTIMIZATIONS。WHITESPACE_ONLY只会移除掉空格和注释，SIMPLE_OPTIMIZATIONS会简化局部变量名，ADVANCED_OPTIMIZATIONS通常称为深度混淆，他简化局部以及全局变量名，移除deadCode，并且对一些函数inlining。</li>
+<li>–externs 在使用深度混淆时，如果不希望一些变量名被混淆，则需要使用此参数。可以指定多个extern参数，但每个参数都需要使用一次–externs</li>
+<li>–language_in 可选值包括ECMASCRIPT3,ECMASCRIPT5,ECMASCRIPT5_STRICT，默认值是ECMASCRIPT3，所以如果需要混淆的代码中包含ECMASCRIPT5特性，则必须指定此参数，ECMASCRIPT5_STRICT会使用<a href="http://www.ruanyifeng.com/blog/2013/01/javascript_strict_mode.html" target="_blank" rel="noopener">严格模式</a></li>
+</ul>
+<p>使用SIMPLE_OPTIMIZATIONS没什么好说的，主要是使用ADVANCED_OPTIMIZATIONS时需要注意一些，避免被坑，建议详细阅读下<a href="https://developers.google.com/closure/compiler/docs/api-tutorial3" target="_blank" rel="noopener">官方文档</a></p>
+<p>简单而言：</p>
+<ol>
+<li>为了避免未调用方法被移除，可以进行一次调用，或者export出来</li>
+<li>对成员属性调用的方式有.key和[“key”]两种，因为字符串不会被混淆，所以对于不希望被混淆的变量名，应该采取第二种方式。而且对同一个成员属性，不应该两种方式混用，否则有的地方呗混淆，有的地方被保留，就肯定出错了。这里有个小细节，第一次赋值时使用.key的方式，key不会被混淆。</li>
+<li>因为深度混淆会简化全局变量名，所以必须将需要混淆的所有代码统一进行混淆，否则定义时的变量名被混淆成了a，使用时混淆为b</li>
+<li>混淆和未混淆代码的相互调用。这其中还包括一种隐藏的形式eval，因为eval内的代码是字符串形式所以不会被混淆。未混淆代码调用混淆代码，解决方案为混淆代码使用字符串为key的方式将接口导出。混淆代码调用未混淆代码，解决方案是使用extern参数</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/addTouchToNode的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/15/addTouchToNode的实现/" itemprop="url">addTouchToNode的实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:41:48+08:00">
+                2016-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>直接上代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">function addTouchToNode(node, touchEndCall, target, params) &#123; //给node添加触摸事件</span><br><span class="line">	var bTouchCanceled = false;</span><br><span class="line">	var s = node.getContentSize();</span><br><span class="line">	var rect = cc.rect(0, 0, s.width, s.height);</span><br><span class="line">	var listener = node._tyTouchListener = cc.EventListener.create(&#123;</span><br><span class="line">		event: cc.EventListener.TOUCH_ONE_BY_ONE,</span><br><span class="line">		swallowTouches: true,</span><br><span class="line">		onTouchBegan: function(touch, event) &#123;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode)) &#123;</span><br><span class="line">				bTouchCanceled = false;</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">			return false;</span><br><span class="line">		&#125;,</span><br><span class="line">		onTouchEnded: function(touch, event) &#123;</span><br><span class="line">			if (bTouchCanceled) &#123;</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode)) &#123;</span><br><span class="line">				if (touchEndCall) &#123;</span><br><span class="line">					touchEndCall.call(target, locationInNode, params);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		onTouchCancelled: function() &#123;</span><br><span class="line">			bTouchCanceled = true;</span><br><span class="line">		&#125;,</span><br><span class="line"></span><br><span class="line">		onTouchMoved: function(touch, event) &#123;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode) == false) &#123;</span><br><span class="line">				bTouchCanceled = true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">	cc.eventManager.addListener(listener, node);</span><br><span class="line">	node.onEnter = function()&#123;</span><br><span class="line">		node.__proto__.onEnter.call(this);</span><br><span class="line">		var listener = this._tyTouchListener;</span><br><span class="line">		if(listener._isRegistered() === false) &#123;</span><br><span class="line">			cc.eventManager.addListener(listener, this);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个方法经过了几次陆续的改进</p>
+<p>1 .刚开始只实现了onTouchBegan和onTouchEnded，而且在onTouchEnded的时候，没有判断坐标是否在区域内，产生的bug是在区域内点击后，移动到区域外松手，也产生了点击。于是增加了onTouchEnded内的区域判断</p>
+<ol start="2">
+<li>增加了onTouchCancelled和onTouchMoved接口，当触摸移动出区域时，取消掉触摸事件，如果模拟按钮，此时应该将图片缩小回初始大小</li>
+<li>重写onEnter方法，在onEnter内重新添加事件。为了解决当它自身或者父容器被移除后，重新添加时触摸事件失效的问题</li>
+</ol>
+<p>经过这些完善后，基本上可以代替cc.MenuItemSprite来使用了，再稍微加上放大缩小的效果，就能当cc.ControlButton来使用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/重用ccnode需要注意的触摸事件处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1347,7 +1616,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">90</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

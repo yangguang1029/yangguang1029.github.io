@@ -259,6 +259,391 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/09/19/rn-image/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/19/rn-image/" itemprop="url">ReactNative之Image控件从js到java的追踪流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-19T11:18:36+08:00">
+                2017-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们以image控件为例，简单的介绍下一个系统控件的实现，方便进行自定义，以及了解它的内部实现。</p>
+<p>我们要使用Image的话，第一步就是</p>
+<pre><code>import {Image} from &quot;react-native&quot;
+</code></pre><p>我们需要找到源文件export出Image的地方，它位于node_modules/react-native/Libraries/Image目录下。基本上RN的js源代码都在这个Libraries目录下。</p>
+<p>在Image.android.js里，文件结尾是</p>
+<pre><code>module.exports = Image;
+</code></pre><p>证明我们使用的Image就是这里导出的。在这个文件的render函数里，可以看出来它使用了RKImage控件。然后查找RKImage的来源</p>
+<pre><code>var RKImage = requireNativeComponent(&apos;RCTImageView&apos;, Image, cfg);
+</code></pre><p>可以看出来，RKImage是native的实现，所以我们到node_modules/react-native/ReactAndroid/src/main/java目录下搜索关键字RCTImageView,找到在哪里注册的。</p>
+<p>观察一下搜索结果，可以看到有两个类RCTImageViewManager和ReactImageManager，他们都是导出到js层的类，且导出名字都是RCTImageView。</p>
+<p>我们找一下这两个类是在哪里注册的，如果对流程比较熟悉的话，看到它们继承自ViewManager也已经知道了。在node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\shell\MainReactPackage.java的createViewManagers方法里可以看到</p>
+<pre><code>if(useFlatUi) {
+    viewManagers.add(new RCTImageViewManager());
+}else{
+    viewManagers.add(new ReactImageManager());
+}
+</code></pre><p>所以根据useFlatUi的值，Image控件的native实现,可能是node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\views\image\ReactImageView.java或者node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\flat\RCTImageView.java</p>
+<p>其余控件如果想追踪native实现，也可以按这个流程走就行了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/08/07/rn-new-saga/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/07/rn-new-saga/" itemprop="url">创建一个redux saga项目的简要流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T20:18:36+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们先新建一个RN项目</p>
+<pre><code>react-native init testrn
+</code></pre><p>然后安装redux</p>
+<pre><code>cd testrn
+npm install --save redux
+</code></pre><p>在动手之前确保自己已经理解了redux的概念 <a href="http://cn.redux.js.org/" target="_blank" rel="noopener">redux官方中文文档</a>。</p>
+<p>现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设计为</p>
+<pre><code>{
+    &quot;subState1&quot;:{&quot;text&quot;:&quot;&quot;},
+    &quot;subState2&quot;:{&quot;text&quot;:&quot;&quot;}
+}
+</code></pre><p>实际项目中的state肯定不会这么简单，可能会非常庞大，这就要求结构不能太草率，因为是树状结构，所以要掌握好分级的粒度，层级太少则可能单个子state过于复杂，因为一个reducer处理一个子state，则会导致reducer函数过于繁冗。层级太多则不易梳理结构，显得混乱。</p>
+<p>然后我们给这两个修改text的动作设定两个action</p>
+<pre><code>const CHANGE1 = &quot;change1&quot;;
+const CHANGE2 = &quot;change2&quot;;
+</code></pre><p>然后根据这个结构来写reducer</p>
+<pre><code>function reducer1(state={&quot;text&quot;:&quot;&quot;}, action) {
+    if(action.type === CHANGE1) {
+        return Object.assign({}, state, {&quot;text&quot;:&quot;hello&quot; + action.data});
+    }
+    return state;
+}
+function reducer2(state={&quot;text&quot;:&quot;&quot;}, action) {
+    if(action.type === CHANGE2) {
+        return Object.assign({}, state, {&quot;text&quot;:&quot;world&quot; + action.data});
+    }
+    return state;
+}
+let reducer = combineReducers({&quot;subState1&quot;:reducer1, &quot;subState2&quot;:reducer2});
+</code></pre><p>有的人在使用combineReducers时，习惯使用ES5的对象简写，例如</p>
+<pre><code>let reducer = combineReducers({reducer1, reducer2})
+</code></pre><p>这样不是很好，这样写的话，state的实际内容就是</p>
+<pre><code>{
+    &quot;reducer1&quot;:{&quot;text&quot;:&quot;&quot;},
+    &quot;reducer2&quot;:{&quot;text&quot;:&quot;&quot;}
+}
+</code></pre><p>我们在使用state数据时，以reducer1为key，而reducer1本身又是reducer函数的名称，一不小心就容易搞糊涂。所以我们提倡在设计state时就想好子state的key，然后在combine时用key:reducer的形式。</p>
+<p>为了方便使用redux，我们还需要react-redux库</p>
+<pre><code>npm install --save react-redux
+</code></pre><p>我们使用connect这个API，来简化触发和监听action的操作。我们开始把这个页面写出来</p>
+<pre><code>import {Provider, connect} from &quot;react-redux&quot;
+
+class TestRN extends Component{
+    render(){
+        return (&lt;View&gt;
+            &lt;Text&gt;{this.props.subState1.text}&lt;/Text&gt;
+            &lt;Text&gt;{this.props.subState2.text}&lt;/Text&gt;
+            &lt;Button title=&quot;btn1&quot; onPress={()=&gt;{
+                this.props.createSagaAction1();
+            }}/&gt;
+            &lt;Button title=&quot;btn2&quot; onPress={()=&gt;{
+                this.props.createSagaAction2();
+            }}/&gt;
+        &lt;/View&gt;)
+    }
+}
+
+const mapStateToProps = (state, ownProps) =&gt;{
+    return state;
+}
+const mapDispatchToProps = (dispatch, ownProps)=&gt;{
+    return bindActionCreators({createSagaAction1, createSagaAction2}, dispatch);
+}
+export default connect(mapStateToProps, mapDispatchToProps)(TestRN)
+</code></pre><p>这段代码里，我们点击按钮后，并不是发出了CHANGE1和CHANGE2事件，而是createSagaAction1和createSagaAction2，这是因为我打算在接下来使用redux saga，让它收到而是createSagaAction1和createSagaAction2后，模拟一次异步操作，再由saga来发出CHANGE1和CHANGE2事件</p>
+<p>redux saga是用来处理异步操作的，所以我们先写个模拟异步的功能函数</p>
+<pre><code>function delay(cb, time) {
+    return new Promise((resolve)=&gt;{
+        setTimeout(()=&gt;{
+            cb(parseInt(Math.random() * 100));
+            resolve();
+        }, time);
+    })
+}
+async function getNum(){
+    let a;
+    await delay((num)=&gt;{
+        a = num;
+    }, 5000);
+    return a;
+}
+</code></pre><p>然后开始redux saga相关，首先是安装saga</p>
+<pre><code>npm install --save redux-saga
+</code></pre><p>然后开始代码，我们把点击按钮要发出的两个action实现出来然后监听并处理</p>
+<pre><code>import regeneratorRuntime from &quot;regenerator-runtime&quot;;
+
+const SAGA_ACTION1 = &quot;sagaAction1&quot;;
+const SAGA_ACTION2 = &quot;sagaAction2&quot;;
+function createSagaAction1(){
+    return {&quot;type&quot;: SAGA_ACTION1};
+}
+function createSagaAction2(){
+    return {&quot;type&quot;: SAGA_ACTION2};
+}
+function* sagaFunc1(){
+    while(true) {
+        yield take(SAGA_ACTION1);
+        let a = yield call(getNum);
+        yield put({type:CHANGE1, data:a});
+    }
+}
+function* sagaFunc2(){
+    while(true) {
+        yield take(SAGA_ACTION2);
+        let a = yield call(getNum);
+        yield put({type:CHANGE2, data:a});
+    }
+}
+function* mySaga(){
+    yield fork(sagaFunc1);
+    yield fork(sagaFunc2);
+}
+</code></pre><p>这里需要注意的就是saga函数必须是generators函数，不能用async, await。 sagaFunc1通过使用三个effect来进行操作，首先使用take来监听SAGA_ACTION1，然后使用call来阻塞调用异步函数，最后使用put来发出CHANGE1这个action，这时我们前面写的reducer收到CHANGE1这个action，就会修改state，从而让页面发生变化。</p>
+<p>然后就是不要忘了import regeneratorRuntime，否则项目是跑不起来的，会出现红屏错误，提示cannot read property ‘mark’ of undefined。这是babel处理generators函数所需要的。</p>
+<p>最后是创建store和使用provider了</p>
+<pre><code>let middle = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(middle));
+middle.run(mySaga);
+
+export default class TestRNContainer extends Component{
+    render(){
+        return (
+            &lt;Provider store = {store}&gt;
+            &lt;TestRN /&gt;
+            &lt;/Provider&gt;
+        )
+    }
+}
+</code></pre><p>到此为止，一个新建项目使用redux saga就全部完成了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/08/02/rn-ref/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1460,282 +1845,6 @@ export {A, B, ... G, H}
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-function-obj/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/10/cpp-function-obj/" itemprop="url">c++之函数对象</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-10T19:32:37+08:00">
-                2017-03-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>std::function是一个类模板，定义于头文件\&lt;functional>。我们主要关注下它的几种生成方式。</p>
-<ul>
-<li>直接指向函数。例如</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bool func(int item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f = func;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用lambda表达式。例如</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int t = 3;</span><br><span class="line">std::function&lt;bool(int)&gt; f1 = [t](int item) &#123;</span><br><span class="line">	return item % t == 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用函数对象。例如</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Func()&#123;</span><br><span class="line">	private:</span><br><span class="line">		int t;</span><br><span class="line">	public:</span><br><span class="line">		Func(int _t):t(_t)&#123;&#125;</span><br><span class="line">		bool operator()(int item) &#123;</span><br><span class="line">			return item % t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f2 = Func(3);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用std::bind绑定。例如</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Func1()&#123;</span><br><span class="line">	public:</span><br><span class="line">		bool func(int item) &#123;</span><br><span class="line">			return item % 2 == 0;</span><br><span class="line">		&#125;</span><br><span class="line">		bool func1(int _t, int item) &#123;</span><br><span class="line">			return item % _t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">func1 f1;</span><br><span class="line">std::function&lt;bool(int)&gt; f3 = std::bind(&amp;Func1::func, f1, std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; f4 = std::bind(&amp;Func1::func, f1, 3, std::placeholders::_1);</span><br><span class="line"></span><br><span class="line">bool func(in item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line">bool func1(int _t, int item) &#123;</span><br><span class="line">	return item % _t == 0;</span><br><span class="line">&#125;</span><br><span class="line">std::function&lt;bool(int)&gt; fp5 = std::bind(func,  std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; fp6 = std::bind(func1, 3,  std::placeholders::_1);</span><br></pre></td></tr></table></figure>
-<p>使用函数对象的地方有很多，一个很典型的场景就是STL里的算法，经常会用到Predicate,它就是一个函数对象。例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_InputIterator find_if(_InputIterator __first, _InputIterator __last, _Predicate __pred)</span><br></pre></td></tr></table></figure>
-<p>所以我们就可以直接拿上面的例子来使用，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; arr = &#123;1,3,5,7,9,2,4,6,8&#125;;</span><br><span class="line">auto iter5 = std::find_if(arr.begin(), arr.end(),fp5);</span><br><span class="line">cout &lt;&lt; *iter5 &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-lambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/10/cpp-lambda/" itemprop="url">c++11之lambda简单使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-10T17:28:10+08:00">
-                2017-03-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>lambda是C++11新增的功能，因为不是很熟，碰到需要回调的时候，我都是使用std::bind来绑定函数指针，但lambda有它使用方便的地方，尤其是闭包可以调用函数内的局部变量的特性，非常灵活，所以用简单的笔记记录下怎么使用，详细可以参考<a href="http://zh.cppreference.com/w/cpp/language/lambda" target="_blank" rel="noopener">官方文档</a></p>
-<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ capture-list ] ( params ) mutable(可选) constexpr(可选)(C++17) exception attribute -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) &#123; body &#125;</span><br><span class="line">[ capture-list ] &#123; body &#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>mutable的作用是允许body修改按复制捕获的参数，及调用其非const成员函数，但修改只在lambda内起作用，不会真正改变外面的值。</li>
-<li>可以省略-&gt; ret指定返回值类型，返回类型为void。但有一个例外，若body只由单条带表达式return语句组成，而不含其它内容，则返回类型是被返回表达式的类型（在左值到右值、数组到指针，或函数到指针隐式转换后）</li>
-<li>省略参数列表，等同于参数列表为()</li>
-<li>参数列表和普通函数的写法一样，但C++14之前不允许使用默认参数和auto类型。</li>
-<li>若隐式或显式地以引用捕获一个实体，且在该实体的生存期结束后调用闭包对象的函数调用运算符，则发生未定义行为。C++闭包不会延长被捕获引用的生存期。同样的规则应用于被捕获的this指针所指向对象的生存期</li>
-<li>lambda表达式是一个纯右值表达式，它可以被赋值给std::function类型的变量</li>
-</ol>
-<h3 id="捕获列表规则"><a href="#捕获列表规则" class="headerlink" title="捕获列表规则"></a>捕获列表规则</h3><ul>
-<li>[a,&amp;b] 其中a以值捕获而b以引用捕获。</li>
-<li>[this] 以值捕获this指针</li>
-<li>[&amp;] 以引用捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
-<li>[=] 以值捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
-<li>[] 无捕获</li>
-</ul>
-<p>随便写个简单的例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::for_each(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        cout &lt;&lt; item &lt;&lt; endl;</span><br><span class="line">    &#125;);</span><br><span class="line">std::find_if(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        return item %2 == 0;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1786,7 +1895,7 @@ export {A, B, ... G, H}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">90</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

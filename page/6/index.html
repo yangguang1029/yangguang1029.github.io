@@ -259,6 +259,282 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-function-obj/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/10/cpp-function-obj/" itemprop="url">c++之函数对象</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-10T19:32:37+08:00">
+                2017-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>std::function是一个类模板，定义于头文件\&lt;functional>。我们主要关注下它的几种生成方式。</p>
+<ul>
+<li>直接指向函数。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bool func(int item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f = func;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用lambda表达式。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int t = 3;</span><br><span class="line">std::function&lt;bool(int)&gt; f1 = [t](int item) &#123;</span><br><span class="line">	return item % t == 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用函数对象。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Func()&#123;</span><br><span class="line">	private:</span><br><span class="line">		int t;</span><br><span class="line">	public:</span><br><span class="line">		Func(int _t):t(_t)&#123;&#125;</span><br><span class="line">		bool operator()(int item) &#123;</span><br><span class="line">			return item % t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f2 = Func(3);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用std::bind绑定。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Func1()&#123;</span><br><span class="line">	public:</span><br><span class="line">		bool func(int item) &#123;</span><br><span class="line">			return item % 2 == 0;</span><br><span class="line">		&#125;</span><br><span class="line">		bool func1(int _t, int item) &#123;</span><br><span class="line">			return item % _t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">func1 f1;</span><br><span class="line">std::function&lt;bool(int)&gt; f3 = std::bind(&amp;Func1::func, f1, std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; f4 = std::bind(&amp;Func1::func, f1, 3, std::placeholders::_1);</span><br><span class="line"></span><br><span class="line">bool func(in item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line">bool func1(int _t, int item) &#123;</span><br><span class="line">	return item % _t == 0;</span><br><span class="line">&#125;</span><br><span class="line">std::function&lt;bool(int)&gt; fp5 = std::bind(func,  std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; fp6 = std::bind(func1, 3,  std::placeholders::_1);</span><br></pre></td></tr></table></figure>
+<p>使用函数对象的地方有很多，一个很典型的场景就是STL里的算法，经常会用到Predicate,它就是一个函数对象。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_InputIterator find_if(_InputIterator __first, _InputIterator __last, _Predicate __pred)</span><br></pre></td></tr></table></figure>
+<p>所以我们就可以直接拿上面的例子来使用，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; arr = &#123;1,3,5,7,9,2,4,6,8&#125;;</span><br><span class="line">auto iter5 = std::find_if(arr.begin(), arr.end(),fp5);</span><br><span class="line">cout &lt;&lt; *iter5 &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-lambda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/10/cpp-lambda/" itemprop="url">c++11之lambda简单使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-10T17:28:10+08:00">
+                2017-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>lambda是C++11新增的功能，因为不是很熟，碰到需要回调的时候，我都是使用std::bind来绑定函数指针，但lambda有它使用方便的地方，尤其是闭包可以调用函数内的局部变量的特性，非常灵活，所以用简单的笔记记录下怎么使用，详细可以参考<a href="http://zh.cppreference.com/w/cpp/language/lambda" target="_blank" rel="noopener">官方文档</a></p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ capture-list ] ( params ) mutable(可选) constexpr(可选)(C++17) exception attribute -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) &#123; body &#125;</span><br><span class="line">[ capture-list ] &#123; body &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>mutable的作用是允许body修改按复制捕获的参数，及调用其非const成员函数，但修改只在lambda内起作用，不会真正改变外面的值。</li>
+<li>可以省略-&gt; ret指定返回值类型，返回类型为void。但有一个例外，若body只由单条带表达式return语句组成，而不含其它内容，则返回类型是被返回表达式的类型（在左值到右值、数组到指针，或函数到指针隐式转换后）</li>
+<li>省略参数列表，等同于参数列表为()</li>
+<li>参数列表和普通函数的写法一样，但C++14之前不允许使用默认参数和auto类型。</li>
+<li>若隐式或显式地以引用捕获一个实体，且在该实体的生存期结束后调用闭包对象的函数调用运算符，则发生未定义行为。C++闭包不会延长被捕获引用的生存期。同样的规则应用于被捕获的this指针所指向对象的生存期</li>
+<li>lambda表达式是一个纯右值表达式，它可以被赋值给std::function类型的变量</li>
+</ol>
+<h3 id="捕获列表规则"><a href="#捕获列表规则" class="headerlink" title="捕获列表规则"></a>捕获列表规则</h3><ul>
+<li>[a,&amp;b] 其中a以值捕获而b以引用捕获。</li>
+<li>[this] 以值捕获this指针</li>
+<li>[&amp;] 以引用捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
+<li>[=] 以值捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
+<li>[] 无捕获</li>
+</ul>
+<p>随便写个简单的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::for_each(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        cout &lt;&lt; item &lt;&lt; endl;</span><br><span class="line">    &#125;);</span><br><span class="line">std::find_if(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        return item %2 == 0;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/03/leet-kmp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1353,270 +1629,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/21/new-cocos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/21/new-cocos/" itemprop="url">一个简单的联网棋牌游戏开发流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-21T16:15:36+08:00">
-                2016-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近负责一款新的牌类游戏的前端开发任务。这个项目从零开始到开发完成，稍微总结一下，棋牌类游戏属于比较简单的，项目使用MVC架构，一开始就可以规划好各个模块，我是划分成了</p>
-<ul>
-<li>model    MVC中的model</li>
-<li>controller 兼具MVC中的controller和view</li>
-<li>net    负责收和发网络消息</li>
-<li>util    独立功能，例如constants, global, enum等</li>
-<li>test    测试模块</li>
-</ul>
-<h3 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h3><p>controller兼具MVC中的controller和view的功能，每个controller基本对应了一个页面，并持有model作为成员变量，这样代码写起来简单，适用于这种不是很复杂的小型游戏。网络游戏的前端很多时候是由服务器消息驱动的，每次收到服务器消息，直接交给controller处理，controller将自身持有的model刷新，然后处理必要的逻辑，最后刷新UI。</p>
-<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>一个项目的开发流程，美术和后端先行，美术尽快出好素材后，前端就可以拼UI了，并且根据效果图和策划案，可以把各个功能模块都先写好，这样后端接口提供之后，前端在接入后端消息后，只需要一个个调用功能模块，给UI填入实际数据就可以了。至于前后端的通信协议，因为主要是由后端进行逻辑处理，所以我认为主动权在后端，除非前端认为不合理的时候，再进行沟通。Å</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/10/cocos-glprogram/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/10/cocos-glprogram/" itemprop="url">cocos源代码之GLProgram</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-10T11:13:31+08:00">
-                2016-12-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="GLProgram和GLProgramState"><a href="#GLProgram和GLProgramState" class="headerlink" title="GLProgram和GLProgramState"></a>GLProgram和GLProgramState</h3><p>在cocos内操作shader，基本就是使用GLProgram和GLProgramState这两个类，他们的关系，在官方注释里写着</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLProgramState holds the &apos;state&apos; (uniforms and attributes) of the GLProgram.</span><br><span class="line"> A GLProgram can be used by thousands of Nodes, but if different uniform values are going to be used, then each node will need its own GLProgramState</span><br></pre></td></tr></table></figure>
-<p>GLProgram是着色器的实现，GLProgramState是在Node上使用GLProgram的封装，所以我们在Node上应该操作GLProgramState，而不是GLProgram，例如设置uniform的值</p>
-<h3 id="GLProgram的创建"><a href="#GLProgram的创建" class="headerlink" title="GLProgram的创建"></a>GLProgram的创建</h3><p>第一步是init,主要是完成顶点着色器和片段着色器编译</p>
-<p>第二步是link</p>
-<ul>
-<li>调用bindPredefinedVertexAttribs，绑定一些默认的attribute，包括</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const char* GLProgram::ATTRIBUTE_NAME_COLOR = &quot;a_color&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_POSITION = &quot;a_position&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD = &quot;a_texCoord&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD1 = &quot;a_texCoord1&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD2 = &quot;a_texCoord2&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD3 = &quot;a_texCoord3&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_NORMAL = &quot;a_normal&quot;;</span><br></pre></td></tr></table></figure>
-<p>这样我们在顶点着色器内，就可以直接声明和使用这些变量名了，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">attribute vec4 a_position;</span><br><span class="line">attribute vec2 a_texCoord;</span><br></pre></td></tr></table></figure>
-<p>使用attribute修饰的变量，只能在顶点着色器中使用，且只能在顶点着色器中读取，不能赋值。</p>
-<ul>
-<li>调用glLinkProgram进行链接，如果链接成功，调用parseVertexAttribs保存实际用到了的attributes，以及parseUniforms保存自定义的uniforms</li>
-<li>updateUniforms 将系统内置uniforms的使用情况存起来并更新</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1667,7 +1679,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">90</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

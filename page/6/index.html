@@ -259,6 +259,282 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/21/cocos-scheduler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/21/cocos-scheduler/" itemprop="url">cocos之定时器scheduler</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-21T17:51:53+08:00">
+                2017-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scheduler::schedule(SEL_SCHEDULE selector, Ref *target, float interval, unsigned int repeat, float delay, bool paused)</span><br></pre></td></tr></table></figure>
+<p>此外还有一个接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void scheduleUpdate(T *target, int priority, bool paused)</span><br></pre></td></tr></table></figure>
+<p>它可以设定优先级priority，优先级越低，越早被调用。注册的对象target的update方法会被调用。</p>
+<p>在CCNode里预先封装了一个函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::scheduleUpdate()</span><br></pre></td></tr></table></figure>
+<p>它就是通过上面scheduleUpdate实现的，其priority为0。如果我们调用它,则Node内的update方法会每帧被调用一次。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>定时器scheduler的实现原理很简单，它的update方法每帧都会被调用，此时查看所有注册了的定时器，如果满足触发条件，则触发一次，然后触发次数加1，触发次数达到注册时的次数，则结束并销毁这个定时器。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li>schedule方法，定时器的回调次数比参数repeat多1，也就是说如果希望只回调一次，repeat应该设为0.以此内推</li>
+<li>通过schedule方法，同一个类注册的定时器，先注册者先回调</li>
+<li>通过schedule方法，不同类注册的定时器，每个类的定时器会按上一条规则全部执行完，然后再执行下一个类的全部回调。不同类之间按照注册时先后顺序来，先注册的类先回调</li>
+<li>通过scheduleUpdate注册的定时器，根据priority排序，priority越小越先被调用</li>
+<li>定时器的回调都有一个参数float t，它表示当前与上一次回调的时间间隔，引擎无法确保两次回调的间隔一定是我们在schedule时设定的间隔，或者我们预计的每帧间隔。</li>
+<li>如果需要将定时器加速或者减速，可以使用Scheduler::setTimeScale方法。设一个小于1的值，回调频率将会变慢，设一个大于1的值，回调频率会变快，但需要注意回调时参数t不会改变</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-function-obj/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/10/cpp-function-obj/" itemprop="url">c++之函数对象</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-10T19:32:37+08:00">
+                2017-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>std::function是一个类模板，定义于头文件\&lt;functional>。我们主要关注下它的几种生成方式。</p>
+<ul>
+<li>直接指向函数。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bool func(int item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f = func;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用lambda表达式。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int t = 3;</span><br><span class="line">std::function&lt;bool(int)&gt; f1 = [t](int item) &#123;</span><br><span class="line">	return item % t == 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用函数对象。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Func()&#123;</span><br><span class="line">	private:</span><br><span class="line">		int t;</span><br><span class="line">	public:</span><br><span class="line">		Func(int _t):t(_t)&#123;&#125;</span><br><span class="line">		bool operator()(int item) &#123;</span><br><span class="line">			return item % t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f2 = Func(3);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用std::bind绑定。例如</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Func1()&#123;</span><br><span class="line">	public:</span><br><span class="line">		bool func(int item) &#123;</span><br><span class="line">			return item % 2 == 0;</span><br><span class="line">		&#125;</span><br><span class="line">		bool func1(int _t, int item) &#123;</span><br><span class="line">			return item % _t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">func1 f1;</span><br><span class="line">std::function&lt;bool(int)&gt; f3 = std::bind(&amp;Func1::func, f1, std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; f4 = std::bind(&amp;Func1::func, f1, 3, std::placeholders::_1);</span><br><span class="line"></span><br><span class="line">bool func(in item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line">bool func1(int _t, int item) &#123;</span><br><span class="line">	return item % _t == 0;</span><br><span class="line">&#125;</span><br><span class="line">std::function&lt;bool(int)&gt; fp5 = std::bind(func,  std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; fp6 = std::bind(func1, 3,  std::placeholders::_1);</span><br></pre></td></tr></table></figure>
+<p>使用函数对象的地方有很多，一个很典型的场景就是STL里的算法，经常会用到Predicate,它就是一个函数对象。例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_InputIterator find_if(_InputIterator __first, _InputIterator __last, _Predicate __pred)</span><br></pre></td></tr></table></figure>
+<p>所以我们就可以直接拿上面的例子来使用，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; arr = &#123;1,3,5,7,9,2,4,6,8&#125;;</span><br><span class="line">auto iter5 = std::find_if(arr.begin(), arr.end(),fp5);</span><br><span class="line">cout &lt;&lt; *iter5 &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/10/cpp-lambda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1343,287 +1619,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/06/cocos-jsb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/06/cocos-jsb/" itemprop="url">cocos之jsbinding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-06T10:31:04+08:00">
-                2017-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/JSAPI_User_Guide" target="_blank" rel="noopener">官网</a>。</p>
-<p>如果能尽量看明白jsbinding的相关代码，在碰到问题时可以更快的解决，比如很常见的invalid native object报错，通过看代码可以知道它是找不到与js对象绑定的c++对象，比如js代码报错说某个方法是undefined时，我们可以去jsbinding的实现代码里查看一下这个方法是否封装进去了，比如一些类或者方法和属性在c++层和js层的名称不一样等等。</p>
-<h4 id="js调用C-代码"><a href="#js调用C-代码" class="headerlink" title="js调用C++代码"></a>js调用C++代码</h4><p>我们在AppDelegate.cpp里可以看到很多cocos的注册函数，通过这些函数，将c++类注册到js的环境中，然后就可以在js代码里构造这个类的实例，调用它的方法。我们基本上照抄就可以实现一个，代码就不贴了</p>
-<ul>
-<li>jsb_myclass_class-&gt;name 这个name就是在js代码中用来执行new时候的类名称</li>
-<li>JS_SetProperty(cx, proto, “__is_ref”, JS::FalseHandleValue); 根据C++类是否继承自Ref，设为True或者False</li>
-<li>注册属性(静态属性和成员属性)和方法(静态方法和成员方法)，按照类似的格式去实现即可</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">static JSPropertySpec properties[] = &#123;</span><br><span class="line">       JS_PSGS(&quot;myProp&quot;, _js_get_myProp, _js_set_myProp, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_PS_END</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   static JSFunctionSpec funcs[] = &#123;</span><br><span class="line">       JS_FN(&quot;func&quot;, js_MyClass_func, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_FS_END</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>我们在js代码中执行new MyClass时，就会调用C++层的 js_MyClass_constructor函数，在这里会新建一个c++对象，并新建一个js对象，然后建立映射关系，之后在互相调用的时候，才可以找得到彼此</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_constructor(JSContext *cx, uint32_t argc, jsval *vp)</span><br><span class="line">&#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    bool ok = true;</span><br><span class="line">    MyClass* cobj = new (std::nothrow) MyClass();</span><br><span class="line">    </span><br><span class="line">    js_type_class_t *typeClass = js_get_type_from_native&lt;MyClass&gt;(cobj);  //从_js_global_type_map里获取，是在下面jsb_register_class的时候存进去的</span><br><span class="line">    </span><br><span class="line">    // link the native object with the javascript object</span><br><span class="line">    </span><br><span class="line">    JS::RootedObject proto(cx, typeClass-&gt;proto.ref());</span><br><span class="line">    JS::RootedObject parent(cx, typeClass-&gt;parentProto.ref());</span><br><span class="line">    JS::RootedObject jsObj(cx, JS_NewObject(cx, typeClass-&gt;jsclass, proto, parent));</span><br><span class="line">    js_proxy_t* newproxy = jsb_new_proxy(cobj, jsObj);</span><br><span class="line">    JS::AddNamedObjectRoot(cx, &amp;newproxy-&gt;obj, &quot;MyClass&quot;);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    args.rval().set(OBJECT_TO_JSVAL(jsObj));</span><br><span class="line">    if (JS_HasProperty(cx, jsObj, &quot;_ctor&quot;, &amp;ok) &amp;&amp; ok)</span><br><span class="line">        ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jsObj), &quot;_ctor&quot;, args);</span><br><span class="line">   //如果js层实现了_ctor方法，则调用它</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>然后看一个简单的绑定C++函数到js中的实现。在这里我们看到了很眼熟的”invalid native object”。我们首先获取到js中的this，然后通过映射找到c++中的对象，然后调用方法即可。如果绑定静态方法，因为不需要实例，所以非常简单，直接执行即可。获取当前的js对象，并以此获取绑定的c++对象，这些代码能看懂并使用就足够了。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_func(JSContext *cx, uint32_t argc, jsval *vp) &#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    JS::RootedObject jsobj(cx, args.thisv().toObjectOrNull());</span><br><span class="line">    js_proxy_t *proxy = jsb_get_js_proxy(jsobj);</span><br><span class="line">    MyClass* cobj = (MyClass *)(proxy ? proxy-&gt;ptr : NULL);</span><br><span class="line">    JSB_PRECONDITION2( cobj, cx, false, &quot;Invalid Native Object&quot;);</span><br><span class="line">    </span><br><span class="line">    if (cobj) &#123;</span><br><span class="line">        cobj-&gt;func();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        JS_ReportError(cx, &quot;Error: SocketIO instance is invalid.&quot;);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="C-调用js"><a href="#C-调用js" class="headerlink" title="C++调用js"></a>C++调用js</h4><p>前面代码能差不多明白的话，c++调用js的其实也很好写，这里贴一段例子代码，它就不再是从cocos引擎内拷贝的，而是我自己写的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void MyClass::calljs() &#123;</span><br><span class="line">    JSContext *cx = ScriptingCore::getInstance()-&gt;getGlobalContext();</span><br><span class="line">    </span><br><span class="line">    js_proxy_t *proxy = jsb_get_native_proxy(this);</span><br><span class="line">    JSObject* jso = proxy-&gt;_jsobj;</span><br><span class="line">    </span><br><span class="line">    std::string param = &quot;test111&quot;;</span><br><span class="line">    jsval jsparam = std_string_to_jsval(cx, param);</span><br><span class="line">    JS::RootedValue retval(cx);</span><br><span class="line">    std::string ret = &quot;&quot;;</span><br><span class="line">    std::string funcName = &quot;calljs&quot;;</span><br><span class="line">    </span><br><span class="line">    bool success = ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jso), funcName.c_str(), 1, &amp;jsparam, &amp;retval);</span><br><span class="line">    if(success) &#123;</span><br><span class="line">        if(retval.isString()) &#123;</span><br><span class="line">           jsval_to_std_string(cx, retval, &amp;ret);</span><br><span class="line">            CCLOG(&quot;return....%s &quot; , ret.c_str());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        CCLOG(&quot;excute failed ...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们在C++代码中调用这个函数，它会调用绑定的对象在js中的calljs函数，并可以传递参数和接受返回值。</p>
-<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>cocos封装了很多辅助函数，例如类型转换</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jsval_to_std_string</span><br><span class="line">std_string_to_jsval</span><br><span class="line">OBJECT_TO_JSVAL</span><br><span class="line">ccpoint_to_jsval</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p>一般来说是够用了，需要的时候，多去引擎内部找找就可以了</p>
-<p>另外，除了关注js-binding相关的代码外，cocos引擎在js层也有很多封装代码，位于js-bindings/bindings/script文件夹内。例如我们看tableView的jsbinding，它的构造方法是接受0个参数，但实际上我们可以这么写</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var tableView = new cc.TableView(this, tsize);</span><br></pre></td></tr></table></figure>
-<p>原因就是在jsb_ext_create_apis.js内有这么一段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cc.TableView.prototype._ctor = function(dataSouurce, size, container) &#123;</span><br><span class="line">    container == undefined ? this._init(dataSouurce, size) : this._init(dataSouurce, size, container);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>它在js层实现了_ctor方法，而我们前面说到，在jsbinding的constructor函数里，如果发现js对象有_ctor方法，则会调用它，所以这个方法被调用，它执行了_init方法。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/21/new-cocos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/21/new-cocos/" itemprop="url">一个简单的联网棋牌游戏开发流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-21T16:15:36+08:00">
-                2016-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近负责一款新的牌类游戏的前端开发任务。这个项目从零开始到开发完成，稍微总结一下，棋牌类游戏属于比较简单的，项目使用MVC架构，一开始就可以规划好各个模块，我是划分成了</p>
-<ul>
-<li>model    MVC中的model</li>
-<li>controller 兼具MVC中的controller和view</li>
-<li>net    负责收和发网络消息</li>
-<li>util    独立功能，例如constants, global, enum等</li>
-<li>test    测试模块</li>
-</ul>
-<h3 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h3><p>controller兼具MVC中的controller和view的功能，每个controller基本对应了一个页面，并持有model作为成员变量，这样代码写起来简单，适用于这种不是很复杂的小型游戏。网络游戏的前端很多时候是由服务器消息驱动的，每次收到服务器消息，直接交给controller处理，controller将自身持有的model刷新，然后处理必要的逻辑，最后刷新UI。</p>
-<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>一个项目的开发流程，美术和后端先行，美术尽快出好素材后，前端就可以拼UI了，并且根据效果图和策划案，可以把各个功能模块都先写好，这样后端接口提供之后，前端在接入后端消息后，只需要一个个调用功能模块，给UI填入实际数据就可以了。至于前后端的通信协议，因为主要是由后端进行逻辑处理，所以我认为主动权在后端，除非前端认为不合理的时候，再进行沟通。Å</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1669,7 +1669,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">89</span>
+                  <span class="site-state-item-count">91</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

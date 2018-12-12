@@ -1543,6 +1543,173 @@ export default a1
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/11/rn-red-screen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/11/rn-red-screen/" itemprop="url">ReactNative之红屏是如何产生的</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-11T19:15:36+08:00">
+                2017-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们在开发RN项目时，红屏是司空见惯的事情，然后我发现很多人会问，调试时出现红屏，那应用发布后是否会红屏呢？要确定的知道答案，还得从源代码去看。</p>
+<p>在node_modules/react-native/Libraries/Core/InitializeCore.js中有一段代码</p>
+<pre><code>const handleError = (e, isFatal) =&gt; {
+  try {
+    ExceptionsManager.handleException(e, isFatal);
+  } catch (ee) {
+    console.log(&apos;Failed to print error: &apos;, ee.message);
+    throw e;
+  }
+};
+const ErrorUtils = require(&apos;ErrorUtils&apos;);
+ErrorUtils.setGlobalHandler(handleError);
+</code></pre><p>这是默认的异常处理函数。handleException的实现，在node_modules/react-native/Libraries/Core/ExceptionsManager.js中</p>
+<pre><code>const {ExceptionsManager} = require(&apos;NativeModules&apos;);
+ExceptionsManager.reportFatalException
+ExceptionsManager.reportSoftException
+</code></pre><p>然后就进入到了原生代码中。</p>
+<p>先看iOS中的RCTExceptionManager.m中的reportFatalException函数可以看到</p>
+<pre><code>[_bridge.redBox showErrorMessage:message withStack:stack];
+if (_delegate) {
+  [_delegate handleFatalJSExceptionWithMessage:message stack:stack exceptionId:exceptionId];
+}
+static NSUInteger reloadRetries = 0;
+if (!RCT_DEBUG &amp;&amp; reloadRetries &lt; _maxReloadAttempts) {
+  reloadRetries++;
+  [_bridge reload];
+} else {
+  NSString *description = [@&quot;Unhandled JS Exception: &quot; stringByAppendingString:message];
+  NSDictionary *errorInfo = @{ NSLocalizedDescriptionKey: description, RCTJSStackTraceKey: stack };
+  RCTFatal([NSError errorWithDomain:RCTErrorDomain code:0 userInfo:errorInfo]);
+}
+</code></pre><p>这就是产生红屏的代码，可以看到，只要异常进入到原生层，都会出现红屏，不论是连本地webserver调试，还是加载包内或文件夹内bundle，更和打bundle时是否是dev模式无关。然后可以看到这里允许使用delegate在收到错误时进行额外处理，例如进行上报。如果是release模式且设置了maxReloadAttempts值（默认为0），就会进行reload重试，再进去RCTFatal函数可以看到它的实现是抛出了一个异常，但debug模式下会try catch住，避免应用崩溃，而release模式下则不会try catch，异常会继续抛出。</p>
+<p>android端要复杂一些，首先仍然是找到ExceptionManagerModule.java，它里面的实现是</p>
+<pre><code>if (mDevSupportManager.getDevSupportEnabled()) {
+  mDevSupportManager.showNewJSError(title, details, exceptionId);
+} else {
+  throw new JavascriptException(JSStackTrace.format(title, details));
+}
+</code></pre><p>如果mDevSupportManager.getDevSupportEnabled返回true，那么就会调用showNewJSError处理，否则直接抛出异常，这会导致应用直接闪退。mDevSupportManager的来源是ReactInstanceManager的构造函数，通过源代码可以看到如果useDeveloperSupport为false,则使用的是DisabledDevSupportManager，否则是DevSupportManagerImpl。useDeveloperSupport又来自于ReactNativeHost的接口getUseDeveloperSupport，模板工程里它的实现是</p>
+<pre><code>public boolean getUseDeveloperSupport() {
+  return BuildConfig.DEBUG;
+}
+</code></pre><p>所以对android端来说，release模式使用的DisabledDevSupportManager的getDevSupportEnabled返回false，所以在接到js层传来的异常时会直接抛出一个java异常，然后就结束了。debug模式使用的DevSupportManagerImpl，它的getDevSupportEnabled由ReactInstanceManager调用setDevSupportEnabled进行控制，它的showNewError就是产生红屏的具体实现代码。</p>
+<p>根据上面的一路跟踪，我们可以得出的结论是：</p>
+<ol>
+<li>如果不想出现红屏，最方便的办法就是在js层使用ErrorUtils.setGlobalHandler捕获异常，这样异常不会被传到原生层，也就不会导致红屏了</li>
+<li>如果异常被传到原生层，iOS端一定会出现红屏，release模式下可能闪退。Android端在release模式下不会红屏但可能会闪退，debug模式下则会红屏</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/07/other-programmer-ability/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1657,186 +1824,6 @@ export default a1
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/06/rn-setstate-async/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/06/rn-setstate-async/" itemprop="url">ReactNative之setState的同异步</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-06T20:18:36+08:00">
-                2017-12-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在<a href="https://reactjs.org/docs/react-component.html#setstate" target="_blank" rel="noopener">官方文档</a>中关于setState有一段说明</p>
-<blockquote>
-<p>Think of setState() as a request rather than an immediate command to update the component. For better perceived performance, React may delay it, and then update several components in a single pass. React does not guarantee that the state changes are applied immediately.</p>
-<p>setState() does not always immediately update the component. It may batch or defer the update until later. This makes reading this.state right after calling setState() a potential pitfall. Instead, use componentDidUpdate or a setState callback (setState(updater, callback)), either of which are guaranteed to fire after the update has been applied. </p>
-</blockquote>
-<p>可以明确地看到，setState只是发起一个请求，要求改变state，并<strong>不一定</strong>会立即执行。如果在setState后立即获取state，<strong>有可能</strong>得到的还是赋值前的旧值。这里需要特别注意的是“不一定”和“有可能”，也就意味着有的情况下是异步执行的，有的情况下是同步。我们需要搞明白分别什么情况下会是同异步。看下面的例子</p>
-<pre><code>constructor(props){
-    super(props);
-    this.state={
-        text:&quot;123&quot;
-    }
-}
-
-componentWillUpdate(){
-    console.log(&quot;guangy componentWillUpdate&quot;)
-}
-
-_onClick(){
-    console.log(&quot;guangy before set state,now value &quot; + this.state.text);
-    let num = Math.floor(Math.random()*100);
-    this.setState({text: &quot;&quot;+num });
-    console.log(&quot;guangy after set state,now value &quot; + this.state.text);
-}
-
-render(){
-    console.log(&quot;guangy render.....&quot;)
-    return(&lt;View&gt;
-        &lt;Text&gt;{this.state.text}&lt;/Text&gt;
-        &lt;Button title=&quot;A&quot; onPress={
-            ()=&gt;{
-                this._onClick();
-            }
-        }/&gt;
-        &lt;Button title=&quot;B&quot; onPress={
-            ()=&gt;{
-                   setTimeout(()=&gt;{
-                    this._onClick();
-                   }, 10);
-            }
-        }/&gt;
-    &lt;/View&gt;);
-}
-</code></pre><p>当点击A按钮时，输出log为</p>
-<pre><code>guangy before set state,now value 123
-guangy after set state,now value 123
-guangy componentWillUpdate
-guangy render.....
-</code></pre><p>可以看到这里setState是异步执行了。</p>
-<p>当点击B按钮时，输出log为</p>
-<pre><code>guangy before set state,now value 123
-guangy componentWillUpdate
-guangy render.....
-guangy after set state,now value 80
-</code></pre><p>很明显，这里setState是同步执行了。</p>
-<p>除了setTimeout外，在DeviceEventEmitter的回调函数里，也是同步执行。这跟js的事件循环机制有关，render函数,setTimeout和DeviceEventEmitter的回调都是在事件循环结束时调用，所以此时调用setState触发render会是同步的，其余时候调用setState则是异步的。</p>
-<p>在setState为异步时，要注意如果在一次事件循环中多次setState，后面的会覆盖掉前面的，因为这一次循环里所有的setState会集中到一次来处理。 然后就是注意不要在setState后立即获取state，如果想要获取新的state，应该在setState传入回调函数作为第二个参数，在这个回调函数里获取。</p>
-<p>setState还有一种形式就是接受function作为第一个参数，形式为</p>
-<pre><code>this.setState((prevState, props)=&gt;{
-    return {xxx};
-})
-</code></pre><p>这样可以明确知道当前state是什么状态，然后返回新的state。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1887,7 +1874,7 @@ guangy after set state,now value 80
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

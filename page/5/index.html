@@ -259,6 +259,130 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/11/git-work-flow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/11/git-work-flow/" itemprop="url">一个比较好的git分支管理方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-11T20:22:43+08:00">
+                2017-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>假如当前处于开发分支develop上，接到一个任务时，使用git的话，应该优先考虑开一个分支来做这件事情，假设我们开了一个分支b1，这个任务未必是可以一次开发完，可能中间去做了别的事情，导致写了一半的代码暂时提交上去，这样到这个任务完成时，这个分支有了commit1, commit2…..一系列的提交。但假设这是一件完整的单独的功能，我们需要让人review代码并作为一次完整的提交的时候，我们可以这么做：</p>
+<p>在b1分支上先git reset –soft回到开分支的节点去，这样我们在这个分支上所有的改动，都变成了待commit的状态，然后我们找人review并提交。之后回到develop分支上，用git cherry-pick把刚才那个提交搬到develop分支上来，在develop分支上就只会看到一个干干净净的提交节点了。然后我们删除本地分支b1就可以了。</p>
+<p>相比其它做法，比如在develop分支上使用merge来合并，它的缺点是查看develop分支的log时，会看到b1分支跟它交错，如果我们有很多个分支b1,b2….那develop分支的log看起来就会像蜘蛛网一样乱了。</p>
+<p>当然我们可以用git merge –no-ff或者git rebase来保持develop分支的干净，但这样也有缺陷，我们在b1分支上有很多临时提交节点，也全部在develop分支上显示了，明明只是一个单独的任务，却有很多个commit节点，在查看log的时候，也会比较麻烦。</p>
+<p>有的人不想临时提交，所以要做别的事情时，使用stash来暂存工作区，再次回到分支来时，使用stash pop恢复工作区，这是非常不可取的，一旦分支多了，在某个分支上stash，另一个分支上pop，就容易乱套了。所以还是尽量commit，但如果又不想让commit节点太多太乱的话，就可以用reset的办法来合并成一次提交，就干净了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/11/rn_listview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1763,143 +1887,6 @@ export {A, B, ... G, H}
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/23/js-this/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/23/js-this/" itemprop="url">javaScript之this</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-23T15:50:39+08:00">
-                2017-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>js中的this，很容易让刚接触的人摸不着头脑，但其实主要明白了怎么回事，也不会很复杂。函数里的this指向什么，跟它的当前执行环境有关。</p>
-<p>我们从简单到复杂，通过一些例子来说明</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">&#125;</span><br><span class="line">var a = new A();</span><br></pre></td></tr></table></figure>
-<p>这个很简单，因为A是作为一个构造函数来使用的，所以这时的this指向的是a</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">&#125;</span><br><span class="line">A();</span><br></pre></td></tr></table></figure>
-<p>这里A是作为一个普通函数被调用的，当函数被作为一个普通函数调用时this指向全局变量，即使在嵌套了很多层的复杂情况也是如此。</p>
-<p>然后再看一个情况:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">	func:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">a.func();</span><br></pre></td></tr></table></figure>
-<p>这里func是作为一个对象a的成员方法被调用的，所以this指向的是对象a本身。</p>
-<p>我们不考虑通过bind和apply设定this的情况，则不论代码多么复杂，最终都可以归结为上面的三种情况，然后分析属于哪种就行了。</p>
-<p>比如写个复杂点的例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);	//1</span><br><span class="line">	var B = (function()&#123;</span><br><span class="line">		console.log(this);	//2</span><br><span class="line">		return function()&#123;</span><br><span class="line">			console.log(this);	//3</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)();</span><br><span class="line">	this.cb = function()&#123;</span><br><span class="line">		console.log(this);	//4</span><br><span class="line">		B();	//43</span><br><span class="line">	&#125;</span><br><span class="line">	B();	//53</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a = new A();</span><br><span class="line">a.cb();</span><br></pre></td></tr></table></figure>
-<p>这里1很简单，this就是a，因为A作为一个构造函数。 2这里是在一个闭包里，这个立即执行函数是被直接调用的，所以这里的this也是global。3这里会被执行两次，分别为43和53，但这两种情况都是直接执行函数，所以this也都是global。至于4，它被调用时是a.cb()的形式，cb作为a的成员函数被调用，所以this时a本身。</p>
-<p>至于bind和apply，使用它们给一个函数绑定了什么对象，这个函数被调用时，this就是什么对象。举个简单的例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">	func:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;,</span><br><span class="line">	func1:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;.bind(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.func();		//1</span><br><span class="line">a.func1();	//2</span><br></pre></td></tr></table></figure>
-<p>1这里this就是a本身，2这里则是global。2这里往func1绑定的this，是在定义a时环境的this，而不是a本身，需要注意，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	var a = &#123;</span><br><span class="line">		func:function()&#123;</span><br><span class="line">			console.log(this);</span><br><span class="line">		&#125;,</span><br><span class="line">		func1:function()&#123;</span><br><span class="line">			console.log(this);</span><br><span class="line">		&#125;.bind(this)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	a.func();		//1</span><br><span class="line">	a.func1();	//2</span><br><span class="line">&#125;</span><br><span class="line">var tmp = new A();</span><br></pre></td></tr></table></figure>
-<p>这时1的this仍然是a, 而2的this就是就是tmp</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1950,7 +1937,7 @@ export {A, B, ... G, H}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">91</span>
+                  <span class="site-state-item-count">92</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

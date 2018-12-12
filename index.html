@@ -259,6 +259,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/11/rn-red-screen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/11/rn-red-screen/" itemprop="url">ReactNative之红屏是如何产生的</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T19:15:36+08:00">
+                2018-12-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们在开发RN项目时，红屏是司空见惯的事情，然后我发现很多人会问，调试时出现红屏，那应用发布后是否会红屏呢？要确定的知道答案，还得从源代码去看。</p>
+<p>在node_modules/react-native/Libraries/Core/InitializeCore.js中有一段代码</p>
+<pre><code>const handleError = (e, isFatal) =&gt; {
+  try {
+    ExceptionsManager.handleException(e, isFatal);
+  } catch (ee) {
+    console.log(&apos;Failed to print error: &apos;, ee.message);
+    throw e;
+  }
+};
+const ErrorUtils = require(&apos;ErrorUtils&apos;);
+ErrorUtils.setGlobalHandler(handleError);
+</code></pre><p>这是默认的异常处理函数。handleException的实现，在node_modules/react-native/Libraries/Core/ExceptionsManager.js中</p>
+<pre><code>const {ExceptionsManager} = require(&apos;NativeModules&apos;);
+ExceptionsManager.reportFatalException
+ExceptionsManager.reportSoftException
+</code></pre><p>然后就进入到了原生代码中。</p>
+<p>先看iOS中的RCTExceptionManager.m中的reportFatalException函数可以看到</p>
+<pre><code>[_bridge.redBox showErrorMessage:message withStack:stack];
+if (_delegate) {
+  [_delegate handleFatalJSExceptionWithMessage:message stack:stack exceptionId:exceptionId];
+}
+static NSUInteger reloadRetries = 0;
+if (!RCT_DEBUG &amp;&amp; reloadRetries &lt; _maxReloadAttempts) {
+  reloadRetries++;
+  [_bridge reload];
+} else {
+  NSString *description = [@&quot;Unhandled JS Exception: &quot; stringByAppendingString:message];
+  NSDictionary *errorInfo = @{ NSLocalizedDescriptionKey: description, RCTJSStackTraceKey: stack };
+  RCTFatal([NSError errorWithDomain:RCTErrorDomain code:0 userInfo:errorInfo]);
+}
+</code></pre><p>这就是产生红屏的代码，可以看到，只要异常进入到原生层，都会出现红屏，不论是连本地webserver调试，还是加载包内或文件夹内bundle，更和打bundle时是否是dev模式无关。然后可以看到这里允许使用delegate在收到错误时进行额外处理，例如进行上报。如果是release模式且设置了maxReloadAttempts值（默认为0），就会进行reload重试，再进去RCTFatal函数可以看到它的实现是抛出了一个异常，但debug模式下会try catch住，避免应用崩溃，而release模式下则不会try catch，异常会继续抛出。</p>
+<p>android端要复杂一些，首先仍然是找到ExceptionManagerModule.java，它里面的实现是</p>
+<pre><code>if (mDevSupportManager.getDevSupportEnabled()) {
+  mDevSupportManager.showNewJSError(title, details, exceptionId);
+} else {
+  throw new JavascriptException(JSStackTrace.format(title, details));
+}
+</code></pre><p>如果mDevSupportManager.getDevSupportEnabled返回true，那么就会调用showNewJSError处理，否则直接抛出异常，这会导致应用直接闪退。mDevSupportManager的来源是ReactInstanceManager的构造函数，通过源代码可以看到如果useDeveloperSupport为false,则使用的是DisabledDevSupportManager，否则是DevSupportManagerImpl。useDeveloperSupport又来自于ReactNativeHost的接口getUseDeveloperSupport，模板工程里它的实现是</p>
+<pre><code>public boolean getUseDeveloperSupport() {
+  return BuildConfig.DEBUG;
+}
+</code></pre><p>所以对android端来说，release模式使用的DisabledDevSupportManager的getDevSupportEnabled返回false，所以在接到js层传来的异常时会直接抛出一个java异常，然后就结束了。debug模式使用的DevSupportManagerImpl，它的getDevSupportEnabled由ReactInstanceManager调用setDevSupportEnabled进行控制，它的showNewError就是产生红屏的具体实现代码。</p>
+<p>根据上面的一路跟踪，我们可以得出的结论是：</p>
+<ol>
+<li>如果不想出现红屏，最方便的办法就是在js层使用ErrorUtils.setGlobalHandler捕获异常，这样异常不会被传到原生层，也就不会导致红屏了</li>
+<li>如果异常被传到原生层，iOS端一定会出现红屏，release模式下可能闪退。Android端在release模式下不会红屏但可能会闪退，debug模式下则会红屏</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/04/js-async-await/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1533,175 +1700,6 @@ NSLog(@&quot;c1 isa : %p c2 isa  %p o isa %p&quot;, c1-&gt;isa, c2-&gt;isa, o-&g
 //c1 isa isa : 0x10ae6ee58 c2 isa isa 0x10ae6ee58 o isa isa 0x10ae6ee58
 NSLog(@&quot;c1 isa isa : %p c2 isa isa %p o isa isa %p&quot;, c1-&gt;isa-&gt;isa, c2-&gt;isa-&gt;isa, o-&gt;isa-&gt;isa);
 </code></pre><p>  可以证明前面的说法，c1, c2对应的是各自类对象的地址，它们的isa指向了各自MetaClass的地址，再下一层meta就都是NSObject的MetaClass了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/28/rn-event-emitter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/rn-event-emitter/" itemprop="url">ReactNative之EventEmitter</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T20:18:36+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>官方文档推荐的原生往js层传递消息的方式，<a href="https://reactnative.cn/docs/0.51/native-modules-ios.html#%E7%BB%99javascript%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6" target="_blank" rel="noopener">iOS端</a>是继承RCTEventEmitter，然后调用sendEventWithName方法</p>
-<pre><code>[self sendEventWithName:@&quot;EventReminder&quot; body:nil];
-</code></pre><p><a href="https://reactnative.cn/docs/0.51/native-modules-android.html#%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6%E5%88%B0javascript" target="_blank" rel="noopener">Android端</a>是</p>
-<pre><code>getReactApplicationContext()
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(&quot;EventReminder&quot;, null);
-</code></pre><p>Android端一眼就能看出来是通过RCTDeviceEventEmitter模块来交流的，所以在js层直接使用RCTDeviceEventEmitter来注册监听。例如</p>
-<pre><code>var emitter = require(&quot;RCTDeviceEventEmitter&quot;)
-emitter.addListener(&quot;EventReminder&quot;,(e)=&gt;{
-  console.log(&quot;guangy get event in RCTDeviceEventEmitter&quot;)
-})
-</code></pre><p>或者</p>
-<pre><code>import {DeviceEventEmitter} from &quot;react-native&quot;
-DeviceEventEmitter.addListener(&quot;EventReminder&quot;,(e)=&gt;{
-  console.log(&quot;guangy get event in DeviceEventEmitter&quot;)
-})
-</code></pre><p>但是在iOS端就会发现这两个回调都不管用了。实际上去RCTEventEmitter类里面看一下它的sendEventWithName方法，发送事件的代码是</p>
-<pre><code>if (_listenerCount &gt; 0) {
-    [_bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
-                method:@&quot;emit&quot;
-                  args:body ? @[eventName, body] : @[eventName]
-            completion:NULL];
-}
-</code></pre><p>其实也是通过RCTDeviceEventEmitter发送的消息。但这里有个if判断，_listenerCount的初始值为0，下个断点就很快发现，没有进到if里去。使用NativeEventEmitter来注册监听，就可以收到了</p>
-<pre><code>const Test = NativeModules.TestNative;
-const testEmitter = new NativeEventEmitter(Test);
-const subscription = testEmitter.addListener(&apos;EventReminder&apos;,
-    ()=&gt;{
-        console.log(&quot;guangy get event in NativeEventEmitter&quot;);
-    }
-);
-</code></pre><p>看一下NativeEventEmitter的代码很快就能找到原因，在它的addListener方法里，有</p>
-<pre><code>if (this._nativeModule != null) {
-  this._nativeModule.addListener(eventType);
-}
-</code></pre><p>这是调了原生模块的addListener方法，在RCTEventEmitter类中它的实现就是让_listenerCount加1。所以在iOS端，因为原生代码中通过继承RCTEventEmitter类来发送消息，js层就必须使用NativeEventEmitter来注册监听，否则的话，原生层连消息都不会发出去。但是在Android端，因为底层实现就是直接给RCTDeviceEventEmitter发消息，不像iOS端有RCTEventEmitter类的那一套逻辑，所以三种注册监听的方式都一样，构造NativeEventEmitter实例时，也可以不传递NativeModule参数。</p>
-<p>如果iOS的原生层不使用RCTEventEmitter，那么就和Android端一样可以直接使用RCTDeviceEventEmitter监听，例如</p>
-<pre><code>[self.bridge.eventDispatcher sendDeviceEventWithName:@&quot;EventReminder&quot; body:nil];
-</code></pre><p>但这个接口已经被废弃了，所以不建议使用。要么直接套用sendEventWithName的if里面的实现</p>
-<pre><code>[self.bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
-              method:@&quot;emit&quot;
-                args:@[@&quot;EventReminder&quot;]
-          completion:NULL];
-</code></pre><p>这样也可以直接使用RCTDeviceEventEmitter来监听。</p>
-<p>到这里结论就清楚了，<strong>我们在js层应该使用NativeEventEmitter，这是双端统一的事件传递接口</strong>。</p>
-<p>我们再看一下NativeEventEmitter.js里的实现，它的构造函数里有一句</p>
-<pre><code>super(RCTDeviceEventEmitter.sharedSubscriber);
-</code></pre><p>这就很明显了，虽然我们在js层可以给每个模块都new一个NativeEventEmitter，但实际上它们都是交给了RCTDeviceEventEmitter来处理，这也跟原生代码中是通过调用RCTDeviceEventEmitter模块的emit来发送消息是一致的。js层所有的注册都在EventSubscriptionVendor.js中进行管理，实现也很简单，就是通过字典存储事件名和回调函数列表。</p>
-<p>在js层还有一个类RCTNativeAppEventEmitter，不过已经被声明废弃了，所以忽略掉。</p>
-<p>最后我稍微想了一下，如果不使用NativeEventEmitter的话，其实代码更简单，不用考虑remove取消监听，双端也是统一的。但为什么iOS平台废弃掉直接发送事件的接口，然后统一使用NativeEventEmitter呢？我能想到的优点就是原生层可以通过startObserving和stopObserving来监听某个事件的监听状况，然后虽然本质上事件仍然都是扔到了RCTDeviceEventEmitter来处理，但至少从代码上进行了隔离，将事件和模块绑定起来，避免了混杂。</p>
 
           
         

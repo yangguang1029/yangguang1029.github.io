@@ -259,6 +259,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/18/cocos-some-ui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/18/cocos-some-ui/" itemprop="url">cocos之部分ui控件的使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-18T16:11:42+08:00">
+                2017-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。</p>
+<h3 id="scale9Sprite"><a href="#scale9Sprite" class="headerlink" title="scale9Sprite"></a>scale9Sprite</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/cocos/ui/UIScale9Sprite.cpp内</li>
+<li>scale9的实现原理是将纹理根据设定的区域，生成9个sprite，然后batch渲染</li>
+<li>它可以跟sprite一样通过setSpriteFrame来切换纹理，但切换之后需要重新执行setPreferredSize。否则显示不正确</li>
+</ul>
+<p>用的比较多的接口有:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame);</span><br><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame, const Rect&amp; capInsets);</span><br><span class="line">create(const std::string&amp; file);</span><br><span class="line"></span><br><span class="line">//实际显示大小</span><br><span class="line">setPreferredSize(const Size&amp; preferedSize)</span><br><span class="line">//设定缩放区域</span><br><span class="line">setCapInsets(const Rect&amp; capInsets)</span><br></pre></td></tr></table></figure>
+<h3 id="EditBox"><a href="#EditBox" class="headerlink" title="EditBox"></a>EditBox</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/cocos/ui/UIEditBox/UIEditBox.cpp内</li>
+<li>只需要注意它的各个状态的sprite都是scale9即可</li>
+</ul>
+<p>使用较多的接口有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create(const Size&amp; size, Scale9Sprite* normalSprite, Scale9Sprite* pressedSprite = nullptr, Scale9Sprite* disabledSprite = nullptr);</span><br><span class="line"></span><br><span class="line">setFontSize(int fontSize);</span><br><span class="line">setFontColor(const Color3B&amp; color);</span><br><span class="line">setPlaceHolder(const char* pText);	//提示字符串</span><br><span class="line"></span><br><span class="line">getString();	//在C++接口是getText，注意名称不一样</span><br></pre></td></tr></table></figure>
+<h3 id="Controlbutton"><a href="#Controlbutton" class="headerlink" title="Controlbutton"></a>Controlbutton</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCControlExtension/CCControlButton.cpp内</li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create(cocos2d::ui::Scale9Sprite* sprite)</span><br><span class="line">create(const std::string&amp; title, const std::string&amp; fontName, float fontSize)</span><br><span class="line"></span><br><span class="line">setPreferredSize(const Size&amp; size)</span><br><span class="line">setBackgroundSpriteForState(ui::Scale9Sprite* sprite, State state)</span><br><span class="line">setEnabled(bool enabled)</span><br><span class="line"></span><br><span class="line">//绑定事件</span><br><span class="line">button.addTargetWithActionForControlEvents(this, this._onClickSend, cc.CONTROL_EVENT_TOUCH_UP_INSIDE);</span><br></pre></td></tr></table></figure>
+<h3 id="scrollView"><a href="#scrollView" class="headerlink" title="scrollView"></a>scrollView</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCScrollView.cpp内</li>
+<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内</li>
+<li>scrollView本身的大小是viewSize。它内部有一个container，当我们执行addChild时，实际上是被加到了这个container里，它的大小比viewSize要大，所以才可以滚动，设置它的大小是setContentSize。这是与其他node的setContentSize方法不一样的地方，需要注意。</li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create()</span><br><span class="line">create(Size size, Node* container/* = nullptr*/)</span><br><span class="line"></span><br><span class="line">setContainer(Node * pContainer)</span><br><span class="line">addChild(Node * child, int zOrder, int tag)</span><br><span class="line"></span><br><span class="line">setDelegate()</span><br><span class="line">setDirection(Direction eDirection)</span><br><span class="line"></span><br><span class="line">setContentSize(const Size &amp; size)</span><br><span class="line">setViewSize(Size size)</span><br><span class="line">setContentOffset(Vec2 offset, bool animated/* = false*/)</span><br><span class="line"></span><br><span class="line">//回调</span><br><span class="line">scrollViewDidScroll(ScrollView* view)</span><br></pre></td></tr></table></figure>
+<h3 id="tableView"><a href="#tableView" class="headerlink" title="tableView"></a>tableView</h3><ul>
+<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
+<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCTableView.cpp内</li>
+<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内,在这里也额外定义了一个create方法，而没有放在上面的jsbinding里</li>
+<li>js-bindings/bindings/script/extension/jsb_ext_create_apis.js定义了新的构造函数cc.TableView.prototype._ctor = function(dataSouurce, size, container)，所以可以直接new</li>
+<li>在jsbinding的init函数里，以及create函数里，都会自动调用一次reloadData，所以在js层代码中，新建一个tableView是不需要手动调用reloadData的，而C++代码则需要。 </li>
+</ul>
+<p>使用较多的接口有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setDirection(Direction eDirection)</span><br><span class="line">setVerticalFillOrder(VerticalFillOrder fillOrder)</span><br><span class="line">reloadData()</span><br><span class="line"></span><br><span class="line">//回调就不写了，基本上都会知道</span><br></pre></td></tr></table></figure>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>像checkbox,ControlSlider等用的不多的，可以临时去查一下。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/12/cocos-ccb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1433,134 +1592,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/28/cocos-jpgmaskpng2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/28/cocos-jpgmaskpng2/" itemprop="url">cocos之使用jpg+mask合成png实现方式（二）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-28T17:47:08+08:00">
-                2016-11-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>第二种方式就是使用shader，这种方式的优点是不需要修改源代码，但性能上不如第一种方式。</p>
-<p>编写shader涉及到顶点着色器和片断着色器，前者使用sprite默认的即可。sprite使用哪个着色器，只要看一下CCSprite.cpp里这句就找到了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP, texture));</span><br></pre></td></tr></table></figure>
-<p>然后我们稍微改动一下片断着色器，如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#ifdef GL_ES</span><br><span class="line">precision lowp float;</span><br><span class="line">#endif</span><br><span class="line">                                                          </span><br><span class="line">varying vec4 v_fragmentColor;</span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line">uniform sampler2D mask;</span><br><span class="line">                                                          </span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    gl_FragColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);</span><br><span class="line">    gl_FragColor.a = texture2D(mask, v_texCoord).a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们通过代码将mask作为一个Texture传进来，然后取它的每个像素的alpha值拿来用。</p>
-<p>使用代码为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GLProgram *gp = GLProgram::createWithFilenames(&quot;res/test.vert&quot;, &quot;res/test.frag&quot;);</span><br><span class="line">GLProgramState* gs = GLProgramState::create(gp);</span><br><span class="line"></span><br><span class="line">Image* img = new Image();</span><br><span class="line">img-&gt;initWithImageFile(&quot;res/zjz_pop_word_title_zhanji.png&quot;);</span><br><span class="line">Texture2D* t1 = new Texture2D();</span><br><span class="line">t1-&gt;initWithImage(img);</span><br><span class="line"></span><br><span class="line">gs-&gt;setUniformTexture(&quot;mask&quot;, t1);</span><br><span class="line"></span><br><span class="line">Sprite* s = Sprite::create(&quot;res/splash_tuyoo_m.jpg&quot;);</span><br><span class="line">s-&gt;setGLProgramState(gs);</span><br><span class="line">s-&gt;setPosition(480,320);</span><br><span class="line">this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
-<p>这里只需要小心一点不要把s-&gt;setGLProgramState(gs);写成s-&gt;setGLProgram(gp);就行，node上同时提供了这两个接口，但使用后者会创建一个新的GLProgramState，我们已经创建的gs也就失去了作用了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1611,7 +1642,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">92</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

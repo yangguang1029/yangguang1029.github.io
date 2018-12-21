@@ -259,6 +259,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/16/cocos屏幕适配策略/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/16/cocos屏幕适配策略/" itemprop="url">cocos屏幕适配策略</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-16T21:51:39+08:00">
+                2016-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>cocos的屏幕适配包括两个方面，一个涉及到屏幕的宽高比，一个涉及到缩放因子。</p>
+<h3 id="宽高比"><a href="#宽高比" class="headerlink" title="宽高比"></a>宽高比</h3><p>我打算尽量用通俗的语言来说这件事情，cocos处理不同宽高比的适配，使用了设计分辨率这么个东西，就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void GLView::setDesignResolutionSize(float width, float height, ResolutionPolicy resolutionPolicy)</span><br></pre></td></tr></table></figure>
+<p>resolutionPolicy有好几种选择，但我们通常只使用FIXED_HEIGHT和FIXED_WIDTH。</p>
+<p>设计分辨率的意义就是：你不用管实际上屏幕是什么样，你通过代码或者工具给一个node设定尺寸和坐标时，都只想象它是放在设计分辨率的屏幕里，然后给他设计尺寸和坐标，最后显示在实际屏幕上时，引擎会进行适当的比例缩放。</p>
+<p>我们一般在项目中使用的ResolutionPolicy是FIXED_HEIGHT和FIXED_WIDTH，前者一般用于手机横屏，后者用于手机竖屏。我们拿FIXED_WIDTH举例，使用这个模式，意味着采用宽度的缩放比例，那么UI节点的x坐标和width就不用担心了，系统会帮你完美适配好来，y坐标和height则必须使用屏幕高度的百分比来进行设置，只要在需要适配的宽高比最大（通俗说就是最“扁”）的屏幕上不会发生冲突即可。FIXED_HEIGHT也是类似的道理，因为使用了高度的缩放比例，那么x坐标和width必须使用屏幕宽度的百分比来进行设置，保证在需要适配的宽高比最小的屏幕上不发生冲突即可。当然实际中我们对不管xy坐标还是width,height都习惯性采用百分比坐标。这两种方案的适用情况不能靠死记硬背，只要明白了原理，其实很容易理解。</p>
+<h3 id="缩放因子"><a href="#缩放因子" class="headerlink" title="缩放因子"></a>缩放因子</h3><p>缩放因子可以理解为图片资源尺寸与设计分辨率的比值。一般我们的资源都是配合设计分辨率而出的，但如果不是，就需要设置缩放因子了，比如一种情况就是，同样是1024*768的设计分辨率，我们有一套1024*768的资源，这套资源在2048*1536的屏幕上会被拉伸两倍显示，可能效果就不好了，那我们再准备一套2048*1536的资源，因为设计分辨率还是1024*768，所以就需要将缩放因子设为2了。</p>
+<p>设置缩放因子的接口是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Director::setContentScaleFactor(float scaleFactor)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/14/autorelease/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1437,132 +1564,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/使用closureCompiler深度混淆的一个坑/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/使用closureCompiler深度混淆的一个坑/" itemprop="url">使用closureCompiler深度混淆的一个坑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:25:30+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>混淆命令为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js a.js --js_output_file b.js</span><br></pre></td></tr></table></figure>
-<p>混淆前代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function test(result)&#123;</span><br><span class="line">	console.log(result.fuck.text);</span><br><span class="line">	console.log(result.text.fuck);</span><br><span class="line">	console.log(result.color.colour);</span><br><span class="line">	var tmp = &#123;</span><br><span class="line">		test1:Math.random(),</span><br><span class="line">		&quot;test2&quot;:Math.random()</span><br><span class="line">	&#125;</span><br><span class="line">	for(var i = 0; i &lt; result.length; i++) &#123;</span><br><span class="line">		console.log(result[i].text);</span><br><span class="line">		console.log(result[i].text.text1.text2.text3);</span><br><span class="line">		tmp.test1 += 1;</span><br><span class="line">		tmp.test2 += 2;</span><br><span class="line">		console.log(tmp.test1);</span><br><span class="line">		console.log(tmp.test1.test11.test111);</span><br><span class="line">		console.log(tmp.test2);</span><br><span class="line">	&#125;</span><br><span class="line">	result.tmp = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>混淆后代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function d(b) &#123;</span><br><span class="line">	console.log(b.b.text);</span><br><span class="line">	console.log(b.text.b);</span><br><span class="line">	console.log(b.color.d);</span><br><span class="line">	for (var a = &#123;</span><br><span class="line">			a: Math.random(),</span><br><span class="line">			test2: Math.random()</span><br><span class="line">		&#125;, c = 0; c &lt; b.length; c++) console.log(b[c].text), console.log(b[c].text.c.j.k), a.a += 1, a.b += 2, console.log(a.a), console.log(a.a.h.i), console.log(a.b);</span><br><span class="line">	b.l = a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>目前可以看到 text和color，在深度混淆中不会被混淆。是否还有别的一些关键字不被混淆，还不确定。比如colour就会被混淆= =</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1613,7 +1614,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">93</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

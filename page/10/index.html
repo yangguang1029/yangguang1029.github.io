@@ -259,6 +259,132 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/使用closureCompiler深度混淆的一个坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/15/使用closureCompiler深度混淆的一个坑/" itemprop="url">使用closureCompiler深度混淆的一个坑</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:25:30+08:00">
+                2016-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>混淆命令为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js a.js --js_output_file b.js</span><br></pre></td></tr></table></figure>
+<p>混淆前代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function test(result)&#123;</span><br><span class="line">	console.log(result.fuck.text);</span><br><span class="line">	console.log(result.text.fuck);</span><br><span class="line">	console.log(result.color.colour);</span><br><span class="line">	var tmp = &#123;</span><br><span class="line">		test1:Math.random(),</span><br><span class="line">		&quot;test2&quot;:Math.random()</span><br><span class="line">	&#125;</span><br><span class="line">	for(var i = 0; i &lt; result.length; i++) &#123;</span><br><span class="line">		console.log(result[i].text);</span><br><span class="line">		console.log(result[i].text.text1.text2.text3);</span><br><span class="line">		tmp.test1 += 1;</span><br><span class="line">		tmp.test2 += 2;</span><br><span class="line">		console.log(tmp.test1);</span><br><span class="line">		console.log(tmp.test1.test11.test111);</span><br><span class="line">		console.log(tmp.test2);</span><br><span class="line">	&#125;</span><br><span class="line">	result.tmp = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>混淆后代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function d(b) &#123;</span><br><span class="line">	console.log(b.b.text);</span><br><span class="line">	console.log(b.text.b);</span><br><span class="line">	console.log(b.color.d);</span><br><span class="line">	for (var a = &#123;</span><br><span class="line">			a: Math.random(),</span><br><span class="line">			test2: Math.random()</span><br><span class="line">		&#125;, c = 0; c &lt; b.length; c++) console.log(b[c].text), console.log(b[c].text.c.j.k), a.a += 1, a.b += 2, console.log(a.a), console.log(a.a.h.i), console.log(a.b);</span><br><span class="line">	b.l = a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>目前可以看到 text和color，在深度混淆中不会被混淆。是否还有别的一些关键字不被混淆，还不确定。比如colour就会被混淆= =</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/git在错误分支上提交后的修正/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -687,7 +813,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">93</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

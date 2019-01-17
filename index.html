@@ -259,6 +259,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/01/16/rn-add-perf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/16/rn-add-perf/" itemprop="url">ReactNative之一个监控组件刷新次数的实现方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T21:15:36+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在做RN开发中，检测是否有多余的重复渲染是做性能监控的重要手段，在React16.0之前，官方有一个工具叫做<a href="https://reactjs.org/docs/perf.html" target="_blank" rel="noopener">perf</a>，对应的在RN中，也可以使用Libraries/Performance/RCTRenderingPerf中提供的PerfMonitor类，它们提供了监控组件渲染次数的功能，借此发现是否有不必要的渲染。可惜这个工具在React16.0和ReactNative0.45以后就不再提供了，官方仓库有个<a href="https://github.com/facebook/react-native/issues/15371" target="_blank" rel="noopener">issue</a>提到了这个问题，然后就没有然后了……</p>
+<p>官方的Perf功能看起来比较强大，它的printWasted可以把渲染前后没有任何变化的组件打印出来，很直观的看到哪些组件发生了重复渲染，不过我们可以参照类似的API自己做一个简化版的，把组件的刷新次数变化打印出来，因为我们自己是明白哪些组件需要刷新哪些不需要刷新的，所以用这个数据可以自己找出是否有多余的渲染。代码我放到了<a href="https://github.com/yangguang1029/MyReactNative/tree/master/perf" target="_blank" rel="noopener">github仓库里</a></p>
+<p>在addPerf.js里，给Component和PureComponent注入三个回调函数，在componentDidMount里，如果发现组件有tag成员属性，就把这个组件注册起来，记录其更新次数，在componentWillUnmount里取消注册，在componentWillUpdate里添加更新次数。如果想要监控某个组件的渲染次数，就必须在构造函数里添加tag成员属性，注意：<strong>这个tag必须是每个组件实例唯一。</strong>然后如果这个组件实现了这三个函数，需要使用super来调用基类的实现，例如super.componentDidMount()。ps:tag这个属性名太普遍，容易跟实际代码中的属性名重复，但我比较懒，不想再取个属性名，有需要的话，自己想个属性名吧</p>
+<p>在index.js里，renderCountDict以tag为key存储每个组件实例的渲染次数，perfDataDict则存储每次perf起始时的renderCountDict快照，调用startPerf传入一个key开始一次记录，调用stopPerf传入对应的key来完成一次记录，然后会自动打印出开始和结束时renderCountDict的变化。</p>
+<p>testPerf是一个用例，界面有一个flatlist和一个button，每次点击按钮，会给flatlist添加一个单元行，单元行组件Cell继承自Component并且拥有成员属性tag，所以会被记录刷新次数。我们在页面的componentWillUpdate里开始一次监控，在componentDidUpdate里结束这次监控，就可以看到页面刷新时，单元行组件的刷新状况。如果单元行组件Cell继承自Component，那么每次添加单元行时，原有的单元行也都跟着刷新了一次，但实际上它们的渲染内容没有任何变化，所以它们是重复渲染。而一旦我们让Cell继承自PureComponent，就会发现每次增加单元行时，只变化了新增的那个，这就比之前的方案要更优化。</p>
+<p>上面是一个很简单的例子，但用这个方法，可以很方便的监控两个时间点之间的组件刷新次数，比较重要的是选择好开始和停止的时间点，并且自己先明白有哪些组件需要刷新，那些不需要刷新但也发生刷新了的组件，就是我们需要优化的对象了。以上只是一个思路，实现上如果有更巧妙的方案，或者有大牛可以实现官方perf那样，能对比出组件渲染前后是否发生了变化，还请不吝赐教，谢谢~</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/20/rn-improve-flatlist/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1611,130 +1736,6 @@ public boolean canOverrideExistingModule() {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/08/29/js-class-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/29/js-class-function/" itemprop="url">javaScript之类的成员函数和箭头函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-29T11:44:45+08:00">
-                2018-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近发现有的地方在使用ES6的class时，使用箭头函数来声明方法，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">  func1(num)&#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">  func2 = (num) =&gt; &#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">var t = new Test()</span><br></pre></td></tr></table></figure>
-<p>这两种方案是有区别的，区别就是func1是protoType上的属性，而func2是实例上的属性，我们用console.dir(t)在chrome dev tool上一看就知道了。根据prototype的原理，func1对于所有的实例只有一份，func2对每个实例都有一份。</p>
-<p>所以对于需要bind的函数，例如要用在闭包里，那使用箭头函数或者bind没有区别，bind也会生成一个新的函数对象赋给this。但如果是不需要bind的函数，写成箭头函数就会造成内存浪费了，应该避免。</p>
-<p>对于属性property，在constructor内声明还是在类中声明则没有区别，两者都是实例属性。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1785,7 +1786,7 @@ public boolean canOverrideExistingModule() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">94</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1851,7 +1852,7 @@ public boolean canOverrideExistingModule() {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -259,6 +259,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/16/rn-layoutanimation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/16/rn-layoutanimation/" itemprop="url">ReactNative之使用LayoutAnimation创建动画</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-16T20:18:36+08:00">
+                2017-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>LayoutAnimation是官方提供的一个实现动画的API，但官方文档比较简单，结合查看源代码和demo试验，总结了一下如何使用。</p>
+<p>最开始重点强调一下，android平台要使用的话，必须加上这段代码才行，否则像我一样用android设备调试，写了半天发现都不起作用。</p>
+<pre><code>var UIManager = require(&apos;UIManager&apos;);
+UIManager.setLayoutAnimationEnabledExperimental &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental(true);
+</code></pre><p>使用LayoutAnimation实现动画其实很简单，就是在setState之前调用LayoutAnimation.configureNext，然后在下次渲染时就根据新的state产生动画了，所以先写一个最简单的例子</p>
+<pre><code>class TestLayoutAnimation extends Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {left:100,top:100,width:100,height:100,isVisible:true}
+    }    
+    render(){
+        return &lt;View&gt;
+            &lt;Button title=&quot;click&quot; onPress={this._onClick.bind(this)}/&gt;
+            {
+            this.state.isVisible ? 
+            &lt;View style={{position:"absolute", left:this.state.left, top:this.state.top,
+					width:this.state.width, height:this.state.height, backgroundColor:"red",
+				}}/&gt;
+             : null
+            }
+        &lt;/View&gt;
+    }
+    _onClick(){
+        LayoutAnimation.configureNext({
+            duration:500,
+            update:{
+                type:LayoutAnimation.Types.spring
+            }
+        });
+        this.setState({left:this.state.left+50,top:this.state.top+50,
+        width:this.state.width+50,height:this.state.height+50});
+    }
+}
+</code></pre><p>运行这个简单的demo就可以看到动画效果，就是由LayoutAnimation.configureNext产生的，我们可以通过看源代码知道这个API的使用规则。LayoutAnimation.js位于react-native\Libraries\LayoutAnimation\文件夹内，Java代码位于react-native\ReactAndroid\src\main\java\com\facebook\react\uimanager\layoutanimation文件夹内</p>
+<p>configureNext方法接受的参数是一个Config对象，这个对象的规则是</p>
+<pre><code>type Config = {
+      duration: number,
+      create?: Anim,
+      update?: Anim,
+      delete?: Anim,
+};
+</code></pre><p>duration参数是必须的，指定这个动画的执行时间。 create,update,delete三个参数是Anim类型，都是可选参数。</p>
+<ul>
+<li>create指定了一个View从不可见变成可见状态时执行的动画效果，这里的不可见，包括width,height为0，或者像demo通过this.state.isVisible控制了不渲染，不包括透明度为0的情况。如果没有create参数，那view出现时是没有动画效果的</li>
+<li>update参数指定了View在可见状态时因为state变化产生的动画效果</li>
+<li>delete和create相反，当一个View变为不可见时，指定其动画效果。</li>
+</ul>
+<p>所以如果一个View在执行动画前是不可见的状态，则必须配置create参数，否则配置update参数就可以。如果消失时需要动画，则配置delete参数。</p>
+<p>我们看Anim的格式要求</p>
+<pre><code>const animType = PropTypes.shape({
+      duration: PropTypes.number,
+      delay: PropTypes.number,
+      springDamping: PropTypes.number,
+      initialVelocity: PropTypes.number,
+      type: PropTypes.oneOf(Object.keys(Types)).isRequired,
+      property: PropTypes.oneOf(
+        // Only applies to create/delete
+        Object.keys(Properties),
+      ),
+});
+</code></pre><p>其中type参数是一定需要的，而property参数则只在create和delete时需要。简单点的话，就只看type和property参数</p>
+<ul>
+<li>type参数必须是LayoutAnimation.Types这个Enum中的值，可取的值有spring, linear, easeInEaseOut, easeIn, easeOut, keyboard 它们的具体效果可以自行通过demo测试</li>
+<li>property必须是LayoutAnimation.Properties这个Enum中的值，可取的值只有两个opacity, scaleXY。不看源代码大概也能推测出它的意义就是View在出现或者消失时，是按scale还是opacity的效果来。</li>
+</ul>
+<p>了解这些之后我们就可以实现改变View的尺寸，坐标的动画了，但<strong>对透明度，Transform的变动不会有动画效果</strong>。</p>
+<p>LayoutAnimation提供了一个接口Create方法，可以生成configureNext方法需要的参数Config</p>
+<pre><code>function create(duration: number, type, creationProp): Config {
+      return {
+           duration,
+        create: {type,property: creationProp,},
+        update: {type,},
+        delete: {type,property: creationProp,},
+      };
+}
+</code></pre><p>使用这个方法可以生成了一个比较简单的config，它把create,update,delete都实现了，属性只有type和property。</p>
+<p>此外LayoutAnimation还提供了3个写好的动画效果可以直接使用，它们是LayoutAnimation.easeInEaseOut, LayoutAnimation.linear, LayoutAnimation.spring,看源代码就很容易明白，它们其实就是写好了代码实现的configureNext方法，所以使用起来就是在setState之前直接调用即可</p>
+<pre><code>LayoutAnimation.easeInEaseOut();
+LayoutAnimation.linear();
+LayoutAnimation.spring();
+</code></pre><p>LayoutAnimation的底层实现是在native层，所以不会被js线程卡顿影响，比较适合做一些简单的动画，使用起来也很简单,但不太适合用来做组合动画。configureNext的第二个参数可以传入一个回调，通过这个回调函数可以开始新的动画，但只在ios平台才有效，如果需要实现复杂的动画，应该使用Animated类。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/15/js-mix-import/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1686,132 +1887,6 @@ import &quot;react-native&quot;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/02/rn-run-release/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/02/rn-run-release/" itemprop="url">ReactNative之生成android debug安装包</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-02T20:18:36+08:00">
-                2017-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们使用react-native init创建一个空的项目，想要让它在android设备上跑起来，<a href="https://reactnative.cn/docs/0.43/running-on-device-android.html#content" target="_blank" rel="noopener">官网教程</a>给的方案就是使用react-native run-android命令开启联网调试，或者使用./gradlew assembleRelease来生成安装包。 前者必须依赖开发机开启联网服务，然后手机设置好服务器和端口并连接，否则要么屏幕一片空白，要么提示红屏报错。找到android/app/build/output/appDebug.apk可以看到安装包内没有Bundle等资源。后者需要配置签名。实际上如果我们想查看apk实际运行状况，可以很快生成一个debug安装包。</p>
-<h3 id="打包bundle"><a href="#打包bundle" class="headerlink" title="打包bundle"></a>打包bundle</h3><p>这是最重要的一步，在项目根目录下执行</p>
-<pre><code>react-native bundle --entry-file index.android.js --platform android --dev false --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-</code></pre><p>这里最重要的是指定–bundle-output和–assets-dest两个参数。首先是–bundle-output，它必须放在android/app/src/main/assets目录下，如果该目录不存在就创建。必须指定文件名为index.android.bundle。 所有的图片资源必须放在android/app/src/main/res下，否则会无法找到图片资源而不能显示。</p>
-<h3 id="安装运行"><a href="#安装运行" class="headerlink" title="安装运行"></a>安装运行</h3><p>到android目录下执行./gradlew installDebug即可</p>
-<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>在打包bundle那一步中，很多参数只是遵循默认的设置，比如bundle文件名叫index.android.bundle，位置在assets目录下，这些都可以按自己的需求来改，但前提是在java代码内也要做相应的调整，如果对这块不是很熟悉就按默认的来就行了。</p>
-<p>不过–assets-dest目录必须在res目录下这个一定要遵守，因为Android系统要使用安装包内的资源，必须先转换成res id，如果放到别的文件夹下，没法转换，最后肯定找不到资源，也就没法显示图片了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1862,7 +1937,7 @@ import &quot;react-native&quot;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">94</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1928,7 +2003,7 @@ import &quot;react-native&quot;
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

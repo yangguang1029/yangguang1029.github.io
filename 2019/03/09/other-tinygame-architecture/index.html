@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="ReactNative," />
+  <meta name="keywords" content="其它," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是  iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类 Android端NativeModule为继承ReactContextBaseJavaModule类">
-<meta name="keywords" content="ReactNative">
+<meta name="description" content="最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构 功能系统消息分发系统它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避">
+<meta name="keywords" content="其它">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ReactNative之原生模块重名的问题">
-<meta property="og:url" content="http://yangguang1029.github.io/2018/09/06/rn-duplicate-native-module/index.html">
+<meta property="og:title" content="一个小游戏的通用架构">
+<meta property="og:url" content="http://yangguang1029.github.io/2019/03/09/other-tinygame-architecture/index.html">
 <meta property="og:site_name" content="杨光的笔记">
-<meta property="og:description" content="在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是  iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类 Android端NativeModule为继承ReactContextBaseJavaModule类">
+<meta property="og:description" content="最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构 功能系统消息分发系统它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-09-06T12:10:30.351Z">
+<meta property="og:updated_time" content="2019-03-09T08:03:50.826Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ReactNative之原生模块重名的问题">
-<meta name="twitter:description" content="在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是  iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类 Android端NativeModule为继承ReactContextBaseJavaModule类">
+<meta name="twitter:title" content="一个小游戏的通用架构">
+<meta name="twitter:description" content="最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构 功能系统消息分发系统它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yangguang1029.github.io/2018/09/06/rn-duplicate-native-module/"/>
+  <link rel="canonical" href="http://yangguang1029.github.io/2019/03/09/other-tinygame-architecture/"/>
 
 
 
 
 
-  <title>ReactNative之原生模块重名的问题 | 杨光的笔记</title>
+  <title>一个小游戏的通用架构 | 杨光的笔记</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/09/06/rn-duplicate-native-module/">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/03/09/other-tinygame-architecture/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yangguang1029">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ReactNative之原生模块重名的问题</h1>
+          <h1 class="post-title" itemprop="name headline">一个小游戏的通用架构</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-06T21:18:36+08:00">
-                2018-09-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-09T15:50:39+08:00">
+                2019-03-09
               </time>
             
 
@@ -330,24 +330,21 @@
       
 
       
-        <p>在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是</p>
-<ul>
-<li>iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类</li>
-<li>Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者ViewGroupManager类。</li>
-</ul>
-<p>iOS端使用RCT_EXPORT_MODULE宏来指定模块名，这个名字是禁止重复的，如果重复在运行时会红屏报错。报错信息为</p>
-<blockquote>
-<p>Attempted to register RCTBridgeModule class XXX for the name “xxx”, but name was already resgitered by class XXX</p>
-</blockquote>
-<p>这段错误提示位于RCTCxxBridge.mm的registerModulesForClasses方法内。所以iOS端就不用担心什么了，一旦有模块名重复，运行会直接报错。</p>
-<p>Android端通过重写getName方法来指定模块或者组件名，NativeModule是允许重名的，在BaseJavaModule类中有一个接口</p>
-<pre><code>@Override
-public boolean canOverrideExistingModule() {
-  // TODO(t11394819): Make this final and use annotation
-  return false;
-}
-</code></pre><p>如果后注册的重名模块重写了这个接口返回true，那么模块名允许重复，后添加的模块会覆盖掉先添加的模块。如果不重写或者这个接口返回false，则不允许重名，一旦重名会报错，报错信息位于NativeModuleRegistryBuilder.java内，在这里做了检测。</p>
-<p>对于NativeComponent，虽然ViewManager也是继承自BaseJavaModule，但是它因为不走NativeModuleRegistryBuilder的流程，所以不会检测。不论是否重写canOverrideExistingModule接口，都允许重名，后添加的NativeComponent覆盖掉先添加的，这就是需要小心的地方，如果无意中写了两个重名的NativeComponent，先添加的就会被悄悄的覆盖了。</p>
+        <p>最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构</p>
+<h2 id="功能系统"><a href="#功能系统" class="headerlink" title="功能系统"></a>功能系统</h2><h3 id="消息分发系统"><a href="#消息分发系统" class="headerlink" title="消息分发系统"></a>消息分发系统</h3><p>它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。</p>
+<p>监听者模式是代码解耦的一大神器，应用也非常普遍，所以第一个想到的就是它，当然它的缺点就是不利于流程的跟踪。</p>
+<h3 id="UI管理系统"><a href="#UI管理系统" class="headerlink" title="UI管理系统"></a>UI管理系统</h3><p>游戏中一般场景scene并不多，大多数都是在scene上面分布着各种弹窗界面，例如弹出提示框，获得奖励框，各种二级界面等等。如果没有一个管理系统，很容易混乱，要么zorder设置起来累的要死，要么弹窗覆盖导致界面丑陋不堪。</p>
+<p>UI管理系统一般提供的接口就是弹出界面和关闭界面，默认会自动设置zorder，并且关闭的界面一般不做销毁，而是从父节点移除后留作下次备用，以提高性能。如果实现的简单，就直接弹出窗口，设置最高zorder即可，复杂些的话可以进行分类管理，哪些节点可被覆盖，哪些不可以，支持什么弹出动画等等。</p>
+<h3 id="数据管理系统"><a href="#数据管理系统" class="headerlink" title="数据管理系统"></a>数据管理系统</h3><p>前端页面如何展示，依赖于后端传递的数据，这些数据最好使用一个管理系统来全局存储，而不是存在UI类中，这样更有利于解耦。</p>
+<p>后端传回的数据现在经常是json格式，可以直接拿来使用，但最好还是解析为model，这样做的一个好处是即使没有协议文档，也很容易明白协议格式，而且可以在model层封装一些特定的接口比如getDataByType等。另外还有一个好处，就是前端代码最终很可能会被深度混淆，如果直接使用json，处处要小心使用[‘xxx’]而不是.xxx的格式，但解析为model后就不用担心了。</p>
+<h2 id="具体代码模块"><a href="#具体代码模块" class="headerlink" title="具体代码模块"></a>具体代码模块</h2><h3 id="Model模块"><a href="#Model模块" class="headerlink" title="Model模块"></a>Model模块</h3><p>前面提到过，后端获得的数据转为model来使用，本地的配置信息等也可以，取决于实际需求</p>
+<h3 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h3><p>包括两部分，一部分是和各个UI界面的实现（在cocos creator上则是绑定在各个界面的脚本），作用是控制UI界面的各个组件显示，实现一些交互逻辑。按层级可以分为scene和window, component等级别。<br>另一部分是做组件封装，例如给按钮增加防快速点击的功能，给弹窗增加吞触摸事件的背景等等</p>
+<p>看到model和UI，就知道项目其实还是MVC这个万金油结构，这里提到了model和view,上面提到的数据管理系统就可以当做controller了。</p>
+<h3 id="网络模块"><a href="#网络模块" class="headerlink" title="网络模块"></a>网络模块</h3><p>实现网络通信功能，一般都需要保持长连接，在浏览器中使用websock，或者在原生端封装tcp。一般就是实现open, onConnect, onDisconnect, onMessage, send这几个接口。</p>
+<p>这里需要提到的就是最好在网络模块中实现一个比较完善的mock系统，它可以和真正的网络模块无缝切换，接口完全一致，唯一的区别就是在send函数里，对需要mock的接口使用mock的数据回调onMessage，其它接口走真正的网络请求。这样非常灵活，使用方便，功能比单纯在代码中mock一下数据要强大很多。</p>
+<h3 id="Utils模块"><a href="#Utils模块" class="headerlink" title="Utils模块"></a>Utils模块</h3><p>只要比较独立的代码，都往里面扔就是了，一般Constants,Global,Enums三大巨头就够用了，要继续细分也可以，比如EventName啥的</p>
+<h3 id="manager模块"><a href="#manager模块" class="headerlink" title="manager模块"></a>manager模块</h3><p>就是上面提到的消息监听，数据管理，ui管理三大功能系统的实现，它们可以适用于任何项目，实现一套后要么直接搬来用，要么封装成公共sdk都可以</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般的小游戏，有这样的框架，绝对够应付的来了，在这个框架的基础上可以继续细分，但跑不掉还是这些。不论是新建一个项目，还是重构已有项目，都可以按这个结构来。</p>
 
       
     </div>
@@ -365,7 +362,7 @@ public boolean canOverrideExistingModule() {
       
         <div class="post-tags">
           
-            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+            <a href="/tags/其它/" rel="tag"># 其它</a>
           
         </div>
       
@@ -378,8 +375,8 @@ public boolean canOverrideExistingModule() {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/29/rn-assistance-lib/" rel="next" title="ReactNative之辅助库选择">
-                <i class="fa fa-chevron-left"></i> ReactNative之辅助库选择
+              <a href="/2019/01/16/rn-add-perf/" rel="next" title="ReactNative之一个监控组件刷新次数的实现方案">
+                <i class="fa fa-chevron-left"></i> ReactNative之一个监控组件刷新次数的实现方案
               </a>
             
           </div>
@@ -387,10 +384,6 @@ public boolean canOverrideExistingModule() {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/27/rn-native-view-method/" rel="prev" title="ReactNative之原生UI导出方法">
-                ReactNative之原生UI导出方法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -447,8 +440,17 @@ public boolean canOverrideExistingModule() {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -515,6 +517,22 @@ public boolean canOverrideExistingModule() {
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#功能系统"><span class="nav-number">1.</span> <span class="nav-text">功能系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息分发系统"><span class="nav-number">1.1.</span> <span class="nav-text">消息分发系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI管理系统"><span class="nav-number">1.2.</span> <span class="nav-text">UI管理系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据管理系统"><span class="nav-number">1.3.</span> <span class="nav-text">数据管理系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体代码模块"><span class="nav-number">2.</span> <span class="nav-text">具体代码模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Model模块"><span class="nav-number">2.1.</span> <span class="nav-text">Model模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI模块"><span class="nav-number">2.2.</span> <span class="nav-text">UI模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络模块"><span class="nav-number">2.3.</span> <span class="nav-text">网络模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Utils模块"><span class="nav-number">2.4.</span> <span class="nav-text">Utils模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#manager模块"><span class="nav-number">2.5.</span> <span class="nav-text">manager模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

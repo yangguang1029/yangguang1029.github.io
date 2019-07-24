@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。 这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已">
+<meta name="description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。 这个Redux源码阅读系列会把整个Redux的源码都过一遍">
 <meta name="keywords" content="ReactNative">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReactNative之Redux源码阅读(createStore)">
 <meta property="og:url" content="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/index.html">
 <meta property="og:site_name" content="杨光的笔记">
-<meta property="og:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。 这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已">
+<meta property="og:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。 这个Redux源码阅读系列会把整个Redux的源码都过一遍">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-24T13:25:04.387Z">
+<meta property="og:updated_time" content="2019-07-24T13:36:29.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReactNative之Redux源码阅读(createStore)">
-<meta name="twitter:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。 这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已">
+<meta name="twitter:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。 这个Redux源码阅读系列会把整个Redux的源码都过一遍">
 
 
 
@@ -330,11 +330,12 @@
       
 
       
-        <p>很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。</p>
-<p>这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已经有足够了解的同学，如果不是很了解，建议仔细把<a href="https://www.redux.org.cn/" target="_blank" rel="noopener">官方文档</a>再看一看。进入正题，进入Redux在github上的<a href="https://github.com/reduxjs/redux/tree/master/src" target="_blank" rel="noopener">仓库</a>，可以看到文件数量只有几个，我们一个一个的讲</p>
-<h3 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h3><p>我们要看一个js库的源码，首当其冲就是<a href="https://github.com/reduxjs/redux/blob/master/src/index.js" target="_blank" rel="noopener">index.js</a>，这里展示了对外暴露的接口，我们可以看到熟悉的createStore, combineReducers, bindActionCreators以及applyMiddleware。</p>
+        <p>很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。</p>
+<p>这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已经有足够了解的同学，如果不是很了解，建议仔细把<a href="https://www.redux.org.cn/" target="_blank" rel="noopener">官方文档</a>再看一看。话不多说，进入Redux在github上的<a href="https://github.com/reduxjs/redux/tree/master/src" target="_blank" rel="noopener">仓库</a>，可以看到文件数量只有几个，我们一个一个的讲</p>
+<h3 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h3><p>我们要看一个js库的源码，首当其冲就是<a href="https://github.com/reduxjs/redux/blob/master/src/index.js" target="_blank" rel="noopener">index.js</a>，这里展示了对外暴露的接口，我们可以看到熟悉的createStore, combineReducers, bindActionCreators以及applyMiddleware。这就过去一个文件了，有没有信心满满呢？哈哈</p>
 <h3 id="createStore-js"><a href="#createStore-js" class="headerlink" title="createStore.js"></a>createStore.js</h3><p>然后是<a href="https://github.com/reduxjs/redux/blob/master/src/createStore.js" target="_blank" rel="noopener">createStore.js</a>，最顶上的注释把大部分的内容都介绍到了，先看完注释再看源码，会轻松很多。createStore顾名思义是用来创建store，redux的<a href="https://www.redux.org.cn/docs/introduction/ThreePrinciples.html" target="_blank" rel="noopener">三大原则</a>第一条是单一数据源，所以整个App只会创建一个store。</p>
-<p>createStore接受的第一个参数是reducer函数，第二个是可选参数preloadState，第三个是可选参数enhancer。其中reducer函数不用多说，它可以是一个普通函数，或者使用combineReducer生成的函数。preloadState是state的初始值，如果需要设置初始state则传入这个参数，需要注意如果使用了combineReducers，那么preloadState和combineReducers的结构也就是keys需要一致。enhancer参数用来加强redux的能力，Redux自带的applyMiddleware就是一个enhancer。然后再看一下返回值，它返回的是一个object，内容是</p>
+<p>createStore接受的第一个参数是reducer函数，第二个是可选参数preloadState，第三个是可选参数enhancer。其中reducer函数不用多说，它可以是一个普通函数，或者使用combineReducer生成的函数。preloadState是state的初始值，如果需要设置初始state则传入这个参数，需要注意如果使用了combineReducers，那么preloadState和combineReducers的结构也就是keys需要一致。enhancer参数用来加强redux的能力，Redux自带的applyMiddleware就是一个enhancer。combineReducer和applyMiddleware后面都会看到它们的源码。</p>
+<p>然后再看一下返回值，它返回的是一个object，内容是</p>
 <pre><code>return {
     dispatch,
     subscribe,
@@ -342,14 +343,16 @@
     replaceReducer,
     [$$observable]: observable
 }
-</code></pre><p>接下来开始看具体源码了，最开始那些参数的校验之类的快速跳过，</p>
+</code></pre><p>我们直接看这4个返回的方法都做啥，createStore函数最开始那些参数的校验之类的可以快速跳过。</p>
 <h4 id="dispatch"><a href="#dispatch" class="headerlink" title="dispatch"></a>dispatch</h4><p>先看dispatch方法，dispatch方法就是发出一个action，这个action会被reducer函数处理，生成新的state，然后通知所有注册了监听的组件。它接受一个参数action，action必须是一个plain object，而且必须有type值。</p>
 <p>然后是一个开关变量isDispatching，在reducer函数还没执行完之前，是不允许又接收一个action来执行reducer函数的，所以使用这个变量来做开关。</p>
-<p>接着currentState = currentReducer(currentState, action)就是调用reducer函数来得到新的state并赋值，之后遍历所有的listeners。</p>
-<h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>subscribe用来注册一个监听，前面dispatch修改了state之后，就会通知所有的监听者。这里的细节就是维护了两个listeners队列：currentListeners和nextListeners，在dispatch方法里，先把nextListeners赋值给currentListeners，然后遍历currentListeners，然后在subscribe时，通过ensureCanMutateNextListeners函数拷贝一份currentListeners给nextListeners，然后修改nextListeners。虽然听起来有点绕，但并不难理解，在遍历listeners期间如果注册监听和取消监听，肯定不能修改正在遍历中的数组，所以需要维护两个，一个用来遍历，另一个用来修改。</p>
+<p>接着currentState = currentReducer(currentState, action)就是调用reducer函数来得到新的state并赋值，之后可以看到遍历了所有的listeners。</p>
+<h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>subscribe用来注册一个监听，前面dispatch修改了state之后，会通知所有的监听者，监听者就是通过subscribe来注册的。</p>
+<p>这里的细节是维护了两个listeners队列：currentListeners和nextListeners，在dispatch方法里，先把nextListeners赋值给currentListeners，然后遍历currentListeners，然后在subscribe时，通过ensureCanMutateNextListeners函数拷贝一份currentListeners给nextListeners，然后修改nextListeners。虽然听起来有点绕，但并不难理解，在遍历listeners期间如果注册监听和取消监听，肯定不能修改正在遍历中的数组，所以需要维护两个，一个用来遍历，另一个用来修改。</p>
+<p>subscribe函数返回一个unsubscribe函数，这也是js库里常见的一种设计，用来取消注册监听，代码非常好看懂。</p>
 <h4 id="getState和replaceReducer"><a href="#getState和replaceReducer" class="headerlink" title="getState和replaceReducer"></a>getState和replaceReducer</h4><p>这两个比较简单，一起带过，前者是获取到state值。后者是整体替换掉reducer，实际中用到的不多。</p>
-<h4 id="dispatch-type-ActionTypes-INIT"><a href="#dispatch-type-ActionTypes-INIT" class="headerlink" title="dispatch({ type: ActionTypes.INIT })"></a>dispatch({ type: ActionTypes.INIT })</h4><p>createStore函数在return之前，dispatch了这么一个action，reducer函数可以用这个action来做初始化工作，当然我们一般都是在reducer函数中用默认值来做初始化，所以这个action也很少会用到。</p>
-<h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>写到后面发现如果把所有源码阅读写成一篇会太长了，所以就做成系列吧，接下来再陆续把剩下的写完。顺便感慨一下，读完源码加记完笔记用了俩小时，现在写这一篇就用了一个半小时多，还写的不咋的，可见要写一篇好博客，真的很不容易啊……</p>
+<h4 id="dispatch-type-ActionTypes-INIT"><a href="#dispatch-type-ActionTypes-INIT" class="headerlink" title="dispatch({ type: ActionTypes.INIT })"></a>dispatch({ type: ActionTypes.INIT })</h4><p>createStore函数在return之前，dispatch了这么一个action，reducer函数可以用这个action来做初始化工作，当然我们一般都是在reducer函数中用默认值来做初始化，所以这个action实际中很少会用到，但了解这个细节其实会很有用的。</p>
+<h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>写到后面发现如果把所有源码阅读写成一篇会太长了，所以就做成系列吧，接下来再陆续把剩下的写完。顺便感慨一下，读完源码加记完笔记用了俩小时，现在写这一篇就用了俩小时差不多，还写的很不咋的，语言和文字表达能力有点太堪忧，总是前言不搭后语，可见要写一篇好博客，真的很不容易啊……</p>
 
       
     </div>

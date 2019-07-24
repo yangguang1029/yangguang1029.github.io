@@ -259,6 +259,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/01/cocos-blendFunc/" itemprop="url">cocos使用blendFunc实现擦除效果</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-01T19:04:27+08:00">
+                2016-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>效果图跟用clippingNode实现的那次差不多</p>
+<p><img src="cocos-blendFunc/6DA8FA29-187A-4ED3-BF65-F97CD8F2755D.png" alt="img"></p>
+<p>直接上代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">bool HelloWorld::init() &#123;</span><br><span class="line">   if ( !Layer::init()) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    auto winsize = Director::getInstance()-&gt;getWinSize();</span><br><span class="line">    auto width = winsize.width;</span><br><span class="line">    auto height = winsize.height;</span><br><span class="line"> </span><br><span class="line">    auto s = Sprite::create(&quot;HelloWorld.png&quot;);</span><br><span class="line">    s-&gt;setPosition(width * 0.5, height * 0.5);</span><br><span class="line">    this-&gt;addChild(s);</span><br><span class="line">    </span><br><span class="line">    mDrawNode = DrawNode::create();</span><br><span class="line">    this-&gt;addChild(mDrawNode);</span><br><span class="line"></span><br><span class="line">    auto listener = EventListenerTouchOneByOne::create();</span><br><span class="line">    listener-&gt;onTouchBegan = std::bind(&amp;HelloWorld::onTouchBegan, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    listener-&gt;onTouchMoved = std::bind(&amp;HelloWorld::onTouchMoved, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    </span><br><span class="line">    EventDispatcher* ed = Director::getInstance()-&gt;getEventDispatcher();</span><br><span class="line">    ed-&gt;addEventListenerWithSceneGraphPriority(listener, this);</span><br><span class="line">    </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) &#123;</span><br><span class="line">    mTouchBeganPos = touch-&gt;getLocation();</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event) &#123;</span><br><span class="line">    Vec2 pos = touch-&gt;getLocation();</span><br><span class="line">    std::vector&lt;cocos2d::Vec2&gt; vec(2);</span><br><span class="line">    vec[0] = mTouchBeganPos;</span><br><span class="line">    vec[1] = pos;</span><br><span class="line">    mPoints.push_back(vec);</span><br><span class="line">    mTouchBeganPos = pos;</span><br><span class="line">    refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::refresh() &#123;</span><br><span class="line">    mDrawNode-&gt;setBlendFunc(BlendFunc::DISABLE);</span><br><span class="line">    mDrawNode-&gt;clear();</span><br><span class="line">    mDrawNode-&gt;setLineWidth(10);</span><br><span class="line">    for(std::vector&lt;std::vector&lt;cocos2d::Vec2&gt;&gt;::iterator iter = mPoints.begin(); iter != mPoints.end(); iter++) &#123;</span><br><span class="line">        std::vector&lt;cocos2d::Vec2&gt; vec = *iter;</span><br><span class="line">        mDrawNode-&gt;drawLine(vec[0], vec[1], Color4F(0,0,0,0));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Render-&gt;end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次代码比上次的要简单一些，我们先加上背景图，然后再加上一个DrawNode来实现擦除，这个DrawNode设置BlendFunc为BlendFunc::DISABLE，也就是在它与背景混合的地方，只显示自己不显示背景，而他自己又是把运动轨迹绘制成透明的线段，所以就产生了背景图被擦除的效果。如果我们需要限制在局部范围内，只要处理好触摸区域或者添加到容器内即可</p>
+<p>然后解释下blendFunc，它是用来处理颜色混合的，我们要将一个图片渲染到屏幕上时，需要将它的颜色（RGBA）与屏幕上已有的颜色混合，我们将要被渲染上去的称为源（src），屏幕上已有的称为目标(dst)，最终颜色显示是它们和各自的因子相乘。如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源颜色 Rs Gs Bs As</span><br><span class="line">目标颜色 Rd Gd Bd Ad</span><br><span class="line">源因子 Sr Sg Sb Sa</span><br><span class="line">目标因子 Dr Dg Db Da</span><br><span class="line">最终颜色 Rs * Sr + Rd * Dr Gs * Sg + Gd * Dg Bs * Sb + Bd * Db As * Sa + Ad * Da</span><br></pre></td></tr></table></figure>
+<p>cocos内置了一些值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GL_ZERO					//全部不用 (0,0,0,0)                           </span><br><span class="line">GL_ONE                 //全部使用 (1,1,1,1)</span><br><span class="line">GL_SRC_COLOR           //使用源颜色(Rs, Gs, Bs, As)           </span><br><span class="line">GL_ONE_MINUS_SRC_COLOR //使用反源色(1-Rs, 1-Gs, 1-Bs, 1-As)</span><br><span class="line">GL_SRC_ALPHA           //使用源透明度 (As, As, As, As)</span><br><span class="line">GL_ONE_MINUS_SRC_ALPHA //使用反源透明度 (1-As, 1-As, 1-As, 1-As)</span><br><span class="line">GL_DST_ALPHA           //使用目标透明度(Ad, Ad, Ad, Ad) </span><br><span class="line">GL_ONE_MINUS_DST_ALPHA //使用反目标透明度(1-Ad, 1-Ad, 1-Ad, 1-Ad) </span><br><span class="line"></span><br><span class="line">const BlendFunc BlendFunc::DISABLE = &#123;GL_ONE, GL_ZERO&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_PREMULTIPLIED = &#123;GL_ONE, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_NON_PREMULTIPLIED = &#123;GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ADDITIVE = &#123;GL_SRC_ALPHA, GL_ONE&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样就不难理解本例中我们使用的BlendFunc::DISABLE了，它意味着混合的时候，不取目标颜色，只显示源颜色。想一下sprite默认应该使用哪种呢？这取决于图片是否已经预乘了alpha，如果是则使用ALPHA_PREMULTIPLIED，否则使用ALPHA_NON_PREMULTIPLIED，很好理解。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/01/cocos-clippingNode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1466,143 +1595,6 @@ console.log(d2.prop2.a);
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/18/js对象与继承/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/18/js对象与继承/" itemprop="url">js对象与继承(一)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-18T11:24:32+08:00">
-                2016-11-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>大家都知道在js中创建一个对象的一种很基本的方式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function f()&#123;</span><br><span class="line">	this.a = 1;</span><br><span class="line">&#125;</span><br><span class="line">var test = new f();</span><br></pre></td></tr></table></figure>
-<p>当执行new的时候，系统实际做的事情分了几步</p>
-<ol>
-<li>var obj = Object.create(f.prototype)</li>
-<li>var result = f.call(obj)</li>
-<li>result &amp;&amp; typeof result === ‘object’ ? return result : return obj</li>
-</ol>
-<p>用语言描述就是，首先用f.prototype构造一个Object，这里命名为obj，然后将obj作为参数this去调用构造函数f，返回值为result，如果result是一个对象，则返回它，也就意味着test = result，否则 test = obj。</p>
-<p>然后再看prototype是什么东西吧，举个例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var p = &#123;&quot;a&quot;:1, &quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f = function()&#123;this.d = 3&#125;</span><br><span class="line">f.prototype = p</span><br><span class="line">var t = new f()</span><br><span class="line">console.log(t.d)</span><br><span class="line">console.log(t.a)</span><br></pre></td></tr></table></figure>
-<p>这里p是一个对象，f是一个构造函数，将f的prototype设为p，当使用f构造出一个对象t出来时，t会有一个属性__proto__,它就指向了p</p>
-<p>当我们获取t.d时，t是有d属性的，这个没问题<br>当我们获取t.a时，t没有a属性，此时会沿着它的原型链往上查找，也就是查找它的__proto__，也就是p，p是有a属性的，所以将a的值返回。我们可以使用Object类上的一个方法hasOwnProperty来判断一个属性或方法是对象本身的，还是原型链上的。例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(t.hasOwnProperty(&quot;a&quot;))	//false</span><br><span class="line">console.log(t.hasOwnProperty(&quot;d&quot;))	//true</span><br></pre></td></tr></table></figure>
-<p>上面说的是取值，赋值的时候就稍微复杂些，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.a = 11;</span><br><span class="line">t.b.c = 12</span><br></pre></td></tr></table></figure>
-<p>执行第一句话，也就是对于基础数据类型，在chrome控制台上可以看到t的属性列表里出现了a并且值为11，而p的a仍然是1不变。也就是对原型上的基础数据类型赋值，不会影响原型，而是自身多了一个这样的属性。但使用hasOwnProperty看，仍然为false，这应该是js的一些不完善的地方吧。</p>
-<p>执行第二句话，可以看到p的b变成了{“c”:12}，也就是修改原型链上的非基础数据类型，会改变原型链本身。这也是javascript中使用类继承比使用原型继承更好的原因之一。下篇再分别讲这两种继承方式</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1653,7 +1645,7 @@ console.log(d2.prop2.a);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">96</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

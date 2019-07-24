@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。 这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之Redux源码阅读(createStore)">
+<meta property="og:url" content="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。 这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-24T13:25:04.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative之Redux源码阅读(createStore)">
+<meta name="twitter:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。 这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/"/>
+
+
+
+
+
+  <title>ReactNative之Redux源码阅读(createStore) | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative之Redux源码阅读(createStore)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-24T21:15:36+08:00">
+                2019-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，再想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要。</p>
+<p>这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已经有足够了解的同学，如果不是很了解，建议仔细把<a href="https://www.redux.org.cn/" target="_blank" rel="noopener">官方文档</a>再看一看。进入正题，进入Redux在github上的<a href="https://github.com/reduxjs/redux/tree/master/src" target="_blank" rel="noopener">仓库</a>，可以看到文件数量只有几个，我们一个一个的讲</p>
+<h3 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h3><p>我们要看一个js库的源码，首当其冲就是<a href="https://github.com/reduxjs/redux/blob/master/src/index.js" target="_blank" rel="noopener">index.js</a>，这里展示了对外暴露的接口，我们可以看到熟悉的createStore, combineReducers, bindActionCreators以及applyMiddleware。</p>
+<h3 id="createStore-js"><a href="#createStore-js" class="headerlink" title="createStore.js"></a>createStore.js</h3><p>然后是<a href="https://github.com/reduxjs/redux/blob/master/src/createStore.js" target="_blank" rel="noopener">createStore.js</a>，最顶上的注释把大部分的内容都介绍到了，先看完注释再看源码，会轻松很多。createStore顾名思义是用来创建store，redux的<a href="https://www.redux.org.cn/docs/introduction/ThreePrinciples.html" target="_blank" rel="noopener">三大原则</a>第一条是单一数据源，所以整个App只会创建一个store。</p>
+<p>createStore接受的第一个参数是reducer函数，第二个是可选参数preloadState，第三个是可选参数enhancer。其中reducer函数不用多说，它可以是一个普通函数，或者使用combineReducer生成的函数。preloadState是state的初始值，如果需要设置初始state则传入这个参数，需要注意如果使用了combineReducers，那么preloadState和combineReducers的结构也就是keys需要一致。enhancer参数用来加强redux的能力，Redux自带的applyMiddleware就是一个enhancer。然后再看一下返回值，它返回的是一个object，内容是</p>
+<pre><code>return {
+    dispatch,
+    subscribe,
+    getState,
+    replaceReducer,
+    [$$observable]: observable
+}
+</code></pre><p>接下来开始看具体源码了，最开始那些参数的校验之类的快速跳过，</p>
+<h4 id="dispatch"><a href="#dispatch" class="headerlink" title="dispatch"></a>dispatch</h4><p>先看dispatch方法，dispatch方法就是发出一个action，这个action会被reducer函数处理，生成新的state，然后通知所有注册了监听的组件。它接受一个参数action，action必须是一个plain object，而且必须有type值。</p>
+<p>然后是一个开关变量isDispatching，在reducer函数还没执行完之前，是不允许又接收一个action来执行reducer函数的，所以使用这个变量来做开关。</p>
+<p>接着currentState = currentReducer(currentState, action)就是调用reducer函数来得到新的state并赋值，之后遍历所有的listeners。</p>
+<h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>subscribe用来注册一个监听，前面dispatch修改了state之后，就会通知所有的监听者。这里的细节就是维护了两个listeners队列：currentListeners和nextListeners，在dispatch方法里，先把nextListeners赋值给currentListeners，然后遍历currentListeners，然后在subscribe时，通过ensureCanMutateNextListeners函数拷贝一份currentListeners给nextListeners，然后修改nextListeners。虽然听起来有点绕，但并不难理解，在遍历listeners期间如果注册监听和取消监听，肯定不能修改正在遍历中的数组，所以需要维护两个，一个用来遍历，另一个用来修改。</p>
+<h4 id="getState和replaceReducer"><a href="#getState和replaceReducer" class="headerlink" title="getState和replaceReducer"></a>getState和replaceReducer</h4><p>这两个比较简单，一起带过，前者是获取到state值。后者是整体替换掉reducer，实际中用到的不多。</p>
+<h4 id="dispatch-type-ActionTypes-INIT"><a href="#dispatch-type-ActionTypes-INIT" class="headerlink" title="dispatch({ type: ActionTypes.INIT })"></a>dispatch({ type: ActionTypes.INIT })</h4><p>createStore函数在return之前，dispatch了这么一个action，reducer函数可以用这个action来做初始化工作，当然我们一般都是在reducer函数中用默认值来做初始化，所以这个action也很少会用到。</p>
+<h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>写到后面发现如果把所有源码阅读写成一篇会太长了，所以就做成系列吧，接下来再陆续把剩下的写完。顺便感慨一下，读完源码加记完笔记用了俩小时，现在写这一篇就用了一个半小时多，还写的不咋的，可见要写一篇好博客，真的很不容易啊……</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/09/other-tinygame-architecture/" rel="next" title="一个小游戏的通用架构">
+                <i class="fa fa-chevron-left"></i> 一个小游戏的通用架构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#index-js"><span class="nav-number">1.</span> <span class="nav-text">index.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#createStore-js"><span class="nav-number">2.</span> <span class="nav-text">createStore.js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatch"><span class="nav-number">2.1.</span> <span class="nav-text">dispatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#subscribe"><span class="nav-number">2.2.</span> <span class="nav-text">subscribe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getState和replaceReducer"><span class="nav-number">2.3.</span> <span class="nav-text">getState和replaceReducer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatch-type-ActionTypes-INIT"><span class="nav-number">2.4.</span> <span class="nav-text">dispatch({ type: ActionTypes.INIT })</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结语"><span class="nav-number">2.5.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

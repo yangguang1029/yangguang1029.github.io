@@ -259,6 +259,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/07/28/rn-redux-source-code1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/28/rn-redux-source-code1/" itemprop="url">ReactNative之Redux源码阅读(combineReducers&bindActionCreators)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-28T21:15:36+08:00">
+                2019-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>闲话少叙，直接开始看另外两个文件</p>
+<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><p>照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。</p>
+<p>直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有了解的同学应该不难理解，每个reducer函数都会返回一个state，这些state就以这些key组合起来），在前一篇<a href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>里也提到，使用combineReducers时如果有preloadState，两者结构需要保持一致。</p>
+<p>接下来开始看源码，前面的类型检验看完就可以跳过，首先需要注意一下assertReducerShape，它对每个reducer函数先做一次校验，传递一个ActionTypes.INIT以及一个随机字符串type进去，看是否返回合法值，这就要求reducer函数中state必须要有初始值，而且必须能响应任意action返回合法值，在实际操作中我们都是通过switch case的default来返回原始state，如果不这么做会抛出异常，就是这块代码实现的。</p>
+<p>接下来可以看到combineReducers返回的combination仍然是一个reducer函数（接收state和action，返回state），这样前一篇提到createStore的第一个参数可以是combineReducers函数的返回值，就很好理解了。</p>
+<p>接下来看combination的实现，首先是debug模式下使用getUnexpectedStateShapeWarningMessage进行一下校验，例如reducers不能是空object，state必须是plain object，以及state和reducers结构必须一致，校验不通过会发出黄屏警告。</p>
+<p>接下来它把接收的action交给每个reducer处理，然后把返回的state组合起来生成一个新的state.如果某个reducer函数不需要处理这个action，按照我们reducer函数的实现方案，它会返回原state。这里使用了一个临时变量hasChanged做标记，如果所有reducer函数响应该action后都没有发生变化，combination这个聚合reducer函数就返回原state，而不会返回一个新对象，但只要有一个reducer函数响应后state发生变化了，combination就会返回一个新的state对象，从而触发刷新。</p>
+<h3 id="bindActionCreators"><a href="#bindActionCreators" class="headerlink" title="bindActionCreators"></a>bindActionCreators</h3><p>在这个文件初始有一个函数bindActionCreator，这个函数接受actionCreator函数和dispatch函数，返回一个新函数，它把actionCreator生成的action dispatch出去，我们调用这个新函数时，就是触发了dispatch，这个函数只是帮助开发者稍微简化一下代码。</p>
+<p>接下来看bindActionCreators的注释，它把一个object变成新的object，原object的每个value都是actionCreator函数，新object的key与原来一致，但value变成使用上面bindActionCreator封装之后的结果。函数的具体实现非常好看懂，其接受的第一个参数如果是object，就退化成bindActionCreator，否则就如上面所说，把每个value转换一次。</p>
+<p>这个辅助函数会用于react-redux中，我们通过this.props.actionCreator来dispatch一个action，就是使用它来简化了代码，以后分析到react-redux时再看</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -350,6 +479,7 @@
 <h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>subscribe用来注册一个监听，前面dispatch修改了state之后，会通知所有的监听者，监听者就是通过subscribe来注册的。</p>
 <p>这里的细节是维护了两个listeners队列：currentListeners和nextListeners，在dispatch方法里，先把nextListeners赋值给currentListeners，然后遍历currentListeners，然后在subscribe时，通过ensureCanMutateNextListeners函数拷贝一份currentListeners给nextListeners，然后修改nextListeners。虽然听起来有点绕，但并不难理解，在遍历listeners期间如果注册监听和取消监听，肯定不能修改正在遍历中的数组，所以需要维护两个，一个用来遍历，另一个用来修改。</p>
 <p>subscribe函数返回一个unsubscribe函数，这也是js库里常见的一种设计，用来取消注册监听，代码非常好看懂。</p>
+<h4 id="observable"><a href="#observable" class="headerlink" title="observable"></a>observable</h4><p>这里代码不是很好看懂，它用了一个第三方库<a href="https://github.com/zenparsing/es-observable" target="_blank" rel="noopener">symbol-observable</a>，但大概可以看明白这个函数做了什么，它对外暴露了一个subscribe接口，内部实际上是调用上面的subscribe进行注册监听，对外暴露的subscribe需要接受一个observer object。在react-redux中应该能看到这个接口的实际应用。</p>
 <h4 id="getState和replaceReducer"><a href="#getState和replaceReducer" class="headerlink" title="getState和replaceReducer"></a>getState和replaceReducer</h4><p>这两个比较简单，一起带过，前者是获取到state值。后者是整体替换掉reducer，实际中用到的不多。</p>
 <h4 id="dispatch-type-ActionTypes-INIT"><a href="#dispatch-type-ActionTypes-INIT" class="headerlink" title="dispatch({ type: ActionTypes.INIT })"></a>dispatch({ type: ActionTypes.INIT })</h4><p>createStore函数在return之前，dispatch了这么一个action，reducer函数可以用这个action来做初始化工作，当然我们一般都是在reducer函数中用默认值来做初始化，所以这个action实际中很少会用到，但了解这个细节其实会很有用的。</p>
 <h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>写到后面发现如果把所有源码阅读写成一篇会太长了，所以就做成系列吧，接下来再陆续把剩下的写完。顺便感慨一下，读完源码加记完笔记用了俩小时，现在写这一篇就用了俩小时差不多，还写的很不咋的，语言和文字表达能力有点太堪忧，总是前言不搭后语，可见要写一篇好博客，真的很不容易啊……</p>
@@ -1580,143 +1710,6 @@ iter.next()
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/09/06/rn-duplicate-native-module/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/06/rn-duplicate-native-module/" itemprop="url">ReactNative之原生模块重名的问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-06T21:18:36+08:00">
-                2018-09-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是</p>
-<ul>
-<li>iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类</li>
-<li>Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者ViewGroupManager类。</li>
-</ul>
-<p>iOS端使用RCT_EXPORT_MODULE宏来指定模块名，这个名字是禁止重复的，如果重复在运行时会红屏报错。报错信息为</p>
-<blockquote>
-<p>Attempted to register RCTBridgeModule class XXX for the name “xxx”, but name was already resgitered by class XXX</p>
-</blockquote>
-<p>这段错误提示位于RCTCxxBridge.mm的registerModulesForClasses方法内。所以iOS端就不用担心什么了，一旦有模块名重复，运行会直接报错。</p>
-<p>Android端通过重写getName方法来指定模块或者组件名，NativeModule是允许重名的，在BaseJavaModule类中有一个接口</p>
-<pre><code>@Override
-public boolean canOverrideExistingModule() {
-  // TODO(t11394819): Make this final and use annotation
-  return false;
-}
-</code></pre><p>如果后注册的重名模块重写了这个接口返回true，那么模块名允许重复，后添加的模块会覆盖掉先添加的模块。如果不重写或者这个接口返回false，则不允许重名，一旦重名会报错，报错信息位于NativeModuleRegistryBuilder.java内，在这里做了检测。</p>
-<p>对于NativeComponent，虽然ViewManager也是继承自BaseJavaModule，但是它因为不走NativeModuleRegistryBuilder的流程，所以不会检测。不论是否重写canOverrideExistingModule接口，都允许重名，后添加的NativeComponent覆盖掉先添加的，这就是需要小心的地方，如果无意中写了两个重名的NativeComponent，先添加的就会被悄悄的覆盖了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1767,7 +1760,7 @@ public boolean canOverrideExistingModule() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

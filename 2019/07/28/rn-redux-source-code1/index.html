@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="cocos," />
+  <meta name="keywords" content="ReactNative," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。 使用使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。 1Scheduler::schedu">
-<meta name="keywords" content="cocos">
+<meta name="description" content="闲话少叙，直接开始看另外两个文件 combineReducers照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。 直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有">
+<meta name="keywords" content="ReactNative">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cocos之定时器scheduler">
-<meta property="og:url" content="http://yangguang1029.github.io/2017/03/21/cocos-scheduler/index.html">
+<meta property="og:title" content="ReactNative之Redux源码阅读(combineReducers&amp;bindActionCreators)">
+<meta property="og:url" content="http://yangguang1029.github.io/2019/07/28/rn-redux-source-code1/index.html">
 <meta property="og:site_name" content="杨光的笔记">
-<meta property="og:description" content="游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。 使用使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。 1Scheduler::schedu">
+<meta property="og:description" content="闲话少叙，直接开始看另外两个文件 combineReducers照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。 直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-03-30T12:44:49.772Z">
+<meta property="og:updated_time" content="2019-07-29T02:48:47.294Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cocos之定时器scheduler">
-<meta name="twitter:description" content="游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。 使用使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。 1Scheduler::schedu">
+<meta name="twitter:title" content="ReactNative之Redux源码阅读(combineReducers&amp;bindActionCreators)">
+<meta name="twitter:description" content="闲话少叙，直接开始看另外两个文件 combineReducers照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。 直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yangguang1029.github.io/2017/03/21/cocos-scheduler/"/>
+  <link rel="canonical" href="http://yangguang1029.github.io/2019/07/28/rn-redux-source-code1/"/>
 
 
 
 
 
-  <title>cocos之定时器scheduler | 杨光的笔记</title>
+  <title>ReactNative之Redux源码阅读(combineReducers&bindActionCreators) | 杨光的笔记</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/21/cocos-scheduler/">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/07/28/rn-redux-source-code1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yangguang1029">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">cocos之定时器scheduler</h1>
+          <h1 class="post-title" itemprop="name headline">ReactNative之Redux源码阅读(combineReducers&bindActionCreators)</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-21T17:51:53+08:00">
-                2017-03-21
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-28T21:15:36+08:00">
+                2019-07-28
               </time>
             
 
@@ -330,24 +330,16 @@
       
 
       
-        <p>游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。</p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scheduler::schedule(SEL_SCHEDULE selector, Ref *target, float interval, unsigned int repeat, float delay, bool paused)</span><br></pre></td></tr></table></figure>
-<p>此外还有一个接口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void scheduleUpdate(T *target, int priority, bool paused)</span><br></pre></td></tr></table></figure>
-<p>它可以设定优先级priority，优先级越低，越早被调用。注册的对象target的update方法会被调用。</p>
-<p>在CCNode里预先封装了一个函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::scheduleUpdate()</span><br></pre></td></tr></table></figure>
-<p>它就是通过上面scheduleUpdate实现的，其priority为0。如果我们调用它,则Node内的update方法会每帧被调用一次。</p>
-<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>定时器scheduler的实现原理很简单，它的update方法每帧都会被调用，此时查看所有注册了的定时器，如果满足触发条件，则触发一次，然后触发次数加1，触发次数达到注册时的次数，则结束并销毁这个定时器。</p>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
-<li>schedule方法，定时器的回调次数比参数repeat多1，也就是说如果希望只回调一次，repeat应该设为0.以此内推</li>
-<li>通过schedule方法，同一个类注册的定时器，先注册者先回调</li>
-<li>通过schedule方法，不同类注册的定时器，每个类的定时器会按上一条规则全部执行完，然后再执行下一个类的全部回调。不同类之间按照注册时先后顺序来，先注册的类先回调</li>
-<li>通过scheduleUpdate注册的定时器，根据priority排序，priority越小越先被调用</li>
-<li>定时器的回调都有一个参数float t，它表示当前与上一次回调的时间间隔，引擎无法确保两次回调的间隔一定是我们在schedule时设定的间隔，或者我们预计的每帧间隔。</li>
-<li>如果需要将定时器加速或者减速，可以使用Scheduler::setTimeScale方法。设一个小于1的值，回调频率将会变慢，设一个大于1的值，回调频率会变快，但需要注意回调时参数t不会改变</li>
-</ol>
+        <p>闲话少叙，直接开始看另外两个文件</p>
+<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><p>照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。</p>
+<p>直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有了解的同学应该不难理解，每个reducer函数都会返回一个state，这些state就以这些key组合起来），在前一篇<a href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>里也提到，使用combineReducers时如果有preloadState，两者结构需要保持一致。</p>
+<p>接下来开始看源码，前面的类型检验看完就可以跳过，首先需要注意一下assertReducerShape，它对每个reducer函数先做一次校验，传递一个ActionTypes.INIT以及一个随机字符串type进去，看是否返回合法值，这就要求reducer函数中state必须要有初始值，而且必须能响应任意action返回合法值，在实际操作中我们都是通过switch case的default来返回原始state，如果不这么做会抛出异常，就是这块代码实现的。</p>
+<p>接下来可以看到combineReducers返回的combination仍然是一个reducer函数（接收state和action，返回state），这样前一篇提到createStore的第一个参数可以是combineReducers函数的返回值，就很好理解了。</p>
+<p>接下来看combination的实现，首先是debug模式下使用getUnexpectedStateShapeWarningMessage进行一下校验，例如reducers不能是空object，state必须是plain object，以及state和reducers结构必须一致，校验不通过会发出黄屏警告。</p>
+<p>接下来它把接收的action交给每个reducer处理，然后把返回的state组合起来生成一个新的state.如果某个reducer函数不需要处理这个action，按照我们reducer函数的实现方案，它会返回原state。这里使用了一个临时变量hasChanged做标记，如果所有reducer函数响应该action后都没有发生变化，combination这个聚合reducer函数就返回原state，而不会返回一个新对象，但只要有一个reducer函数响应后state发生变化了，combination就会返回一个新的state对象，从而触发刷新。</p>
+<h3 id="bindActionCreators"><a href="#bindActionCreators" class="headerlink" title="bindActionCreators"></a>bindActionCreators</h3><p>在这个文件初始有一个函数bindActionCreator，这个函数接受actionCreator函数和dispatch函数，返回一个新函数，它把actionCreator生成的action dispatch出去，我们调用这个新函数时，就是触发了dispatch，这个函数只是帮助开发者稍微简化一下代码。</p>
+<p>接下来看bindActionCreators的注释，它把一个object变成新的object，原object的每个value都是actionCreator函数，新object的key与原来一致，但value变成使用上面bindActionCreator封装之后的结果。函数的具体实现非常好看懂，其接受的第一个参数如果是object，就退化成bindActionCreator，否则就如上面所说，把每个value转换一次。</p>
+<p>这个辅助函数会用于react-redux中，我们通过this.props.actionCreator来dispatch一个action，就是使用它来简化了代码，以后分析到react-redux时再看</p>
 
       
     </div>
@@ -365,7 +357,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cocos/" rel="tag"># cocos</a>
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
           
         </div>
       
@@ -378,8 +370,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/10/cpp-function-obj/" rel="next" title="c++之函数对象">
-                <i class="fa fa-chevron-left"></i> c++之函数对象
+              <a href="/2019/07/24/rn-redux-source-code/" rel="next" title="ReactNative之Redux源码阅读(createStore)">
+                <i class="fa fa-chevron-left"></i> ReactNative之Redux源码阅读(createStore)
               </a>
             
           </div>
@@ -387,10 +379,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/23/js-this/" rel="prev" title="javaScript之this">
-                javaScript之this <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -534,7 +522,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理"><span class="nav-number">2.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#combineReducers"><span class="nav-number">1.</span> <span class="nav-text">combineReducers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bindActionCreators"><span class="nav-number">2.</span> <span class="nav-text">bindActionCreators</span></a></li></ol></div>
             
 
           </div>

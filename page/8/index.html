@@ -259,6 +259,129 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/05/leetcode453/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/05/leetcode453/" itemprop="url">【leetcode】Minimum Moves to Equal Array Elements</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-05T14:41:30+08:00">
+                2016-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://leetcode.com/problems/minimum-moves-to-equal-array-elements/" target="_blank" rel="noopener">题目链接</a></p>
+<p>看完题目之后，稍微想了下，觉得不能用递归或者动态规划，于是老老实实的按题目意思写，每次进行排序，除了最大的数字外都加1，直到所有数字相等。提交之后，直接在测试用例[1, 2147483647]超时挂了，于是开始思考怎么解决，因为这是个easy难度的题目，所以思路倒是很快就有了。</p>
+<p>将数组排序后，要让所有数字都相同，第一步很容易想到，就是把除了最大的数字每次加1，直到最大的数字有两个，它需要的步数就是最大数字和第二大数字的差。然后顺着这个思路，再通过累加，把最大的数字变成有三个，这需要的步数如果一时无法总结出公式，可以写个例子很容易看出来，是最大数字和第二大数字之差的两倍，以此类推即可。代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;number[]&#125; nums</span><br><span class="line"> * @return &#123;number&#125;</span><br><span class="line"> */</span><br><span class="line">var minMoves = function(nums) &#123;</span><br><span class="line">    var mul= 1;</span><br><span class="line">    nums.sort(function(left,right) &#123;return left - right&#125;)</span><br><span class="line">    var len = nums.length;</span><br><span class="line">    if(len === 1) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    var re = 0;</span><br><span class="line">    for(var i = len -1; i &gt; 0; i--) &#123;</span><br><span class="line">        re += (nums[i] - nums[i - 1]) * mul;</span><br><span class="line">        mul += 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return re;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/01/cocos-blendFunc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1466,135 +1589,6 @@ console.log(d2.prop2.a);
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/18/js对象与继承2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/18/js对象与继承2/" itemprop="url">js对象与继承(二)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-18T16:33:43+08:00">
-                2016-11-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="类继承与原型继承"><a href="#类继承与原型继承" class="headerlink" title="类继承与原型继承"></a>类继承与原型继承</h3><p>先分别举个例子吧，首先是原型继承</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var proto = &#123;&quot;a&quot;:1,&quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f1 = function()&#123;&#125;</span><br><span class="line">var f2 = function()&#123;&#125;</span><br><span class="line">f1.prototype = proto</span><br><span class="line">f2.prototype = proto</span><br><span class="line">var t1 = new f1()</span><br><span class="line">var t2 = new f2()</span><br></pre></td></tr></table></figure>
-<p>其次是类继承</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var proto = function()&#123;</span><br><span class="line">		this.a = 1;</span><br><span class="line">		this.b = &#123;&quot;c&quot;:2&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">var f1 = function()&#123;&#125;</span><br><span class="line">var f2 = function()&#123;&#125;</span><br><span class="line">f1.prototype = new proto()</span><br><span class="line">f2.prototype = new proto()</span><br><span class="line">var t1 = new f1()</span><br><span class="line">var t2 = new f2()</span><br></pre></td></tr></table></figure>
-<p>它们的区别就在于，类继承先定义了一个基类proto，在继承时，子类构造函数的prototype是根据这个基类new出来的一个对象。</p>
-<p>这两种方式各有优劣:</p>
-<p>正如上一篇说到的，如果执行代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t1.b.c = 12</span><br><span class="line">console.log(t2.b.c)</span><br></pre></td></tr></table></figure>
-<p>对于原型继承，因为proto被改变了，所以t2.b.c也变成了12，而对于类继承则不会有问题，这对于不够熟悉js的人来说绝对是个坑。</p>
-<p>不过原型继承实现起来比类继承要更灵活，因为不需要做抽象基类的工作，但如果随意地使用原型继承，例如用作prototype的对象是一个非常庞大复杂的对象，那显然会产生问题。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1645,7 +1639,7 @@ console.log(d2.prop2.a);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

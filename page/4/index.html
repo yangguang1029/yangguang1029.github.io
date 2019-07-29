@@ -259,6 +259,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/21/rn-pureComponent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/21/rn-pureComponent/" itemprop="url">ReactNative之PureComponent</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-21T18:18:36+08:00">
+                2017-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先把官方文档对于PureComponent的介绍搬过来，如果看明白了，就可以直接结束本文了：）</p>
+<blockquote>
+<p>React.PureComponent is similar to React.Component. The difference between them is that React.Component doesn’t implement shouldComponentUpdate(), but React.PureComponent implements it with a shallow prop and state comparison.</p>
+<p>If your React component’s render() function renders the same result given the same props and state, you can use React.PureComponent for a performance boost in some cases.</p>
+<p>React.PureComponent’s shouldComponentUpdate() only shallowly compares the objects. If these contain complex data structures, it may produce false-negatives for deeper differences. Only extend PureComponent when you expect to have simple props and state, or use forceUpdate() when you know deep data structures have changed. Or, consider using immutable objects to facilitate fast comparisons of nested data.</p>
+<p>Furthermore, React.PureComponent’s shouldComponentUpdate() skips prop updates for the whole component subtree. Make sure all the children components are also “pure”.</p>
+</blockquote>
+<p>PureComponent和Component的唯一区别就是shouldComponentUpdate方法</p>
+<pre><code>//Component
+shouldComponentUpdate(nextProps, nextState){
+    return true;
+}
+//PureComponent
+shouldComponentUpdate(nextProps, nextState){
+    return this.props !== nextProps || this.state !== nextState;
+}
+</code></pre><p>当props或者state发生了变化时shouldComponentUpdate会被调用，如果返回true则触发re-render，否则不会。 这里说的发生了变化，不一定是指内容或者引用发生了改变，只要调用了this.setState就认为是发生了变化，而只要父组件触发了re-render，就认为props发生了变化。</p>
+<p>Component采用的默认实现是直接返回true，意味着只要props或者state发生了变化就会re-render。<br>PureComponent则是进行了一次浅比较(shallow comparison)，只有当props和state之一在引用上发生了变化，才会re-render。</p>
+<p>PureComponent相比Component减少了re-render的可能性，所以一定程度上可以优化性能。一个很明显的例子就是在使用flatList的时候。假设flatList当前渲染了第0-200个单元行，滑动后需要渲染第0-201个单元行，这是通过flatList的setState来刷新的，因为父组件flatList触发了re-render，所有的子元素也就是单元行组件，都会触发shouldComponentUpdate。如果单元行组件继承自Component，那么第0-200个单元行都会触发re-render，总共201次render。但如果继承自PureComponent，那么只会触发第201个单元行的render，总共只有1次render。这可以通过写一个小demo进行验证。</p>
+<p>PureComponent虽然可以减少re-render，但也有坑，那就是它在shouldComponentUpdate里进行的是浅比较，也就意味着如果props和state是一个复杂对象的引用，那么它的内容变了但是引用本身没变，此时可能需要触发re-render却没有触发。</p>
+<p>PureComponent适合用于props和state比较简单的组件，否则的话应该使用Component并重写componentShouldUpdate方法，既能减少re-render，又能避免错过re-render。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/19/rn-navigation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1746,171 +1886,6 @@ console.dir(A)    //输出为{}
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/06/rn-cli-add-params/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/06/rn-cli-add-params/" itemprop="url">ReactNative之给bundle命令增加参数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-06T20:18:36+08:00">
-                2017-11-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>因为拆分bundle的需要，在使用react-native bundle命令打业务bundle时，需要不同bundle的module id不一样，如果直接打，它们的id都是从0开始递增的。为了解决这个问题，通过修改源代码，给react-native bundle命令增加了两个参数，指定打bundle时生成ModuleID的行为。</p>
-<p>首先我们跟踪下react-native bundle命令运行的轨迹</p>
-<p>cli功能的源代码位于node_modules/react-native/local-cli文件夹内，cliEntry.js的111行</p>
-<pre><code>return command.func(argv, config, passedOptions);
-</code></pre><p>是执行命令行的入口，react-native bundle命令就是从这里进入了local-cli/bundle/bundle.js内的bundle方法，然后进入buildBundle.js内的buildBundle方法。</p>
-<p>之后是node_modules/react-native/packager/react-packager/src/Server/index.js。从它的buildBundle方法，可以再跟踪到packager/react-packager/src/Bundler文件夹，这里的index.js内有一个方法createModuleIdFactory就是给每个模块生成一个module id的地方，我们把这个函数改一下就可以了。</p>
-<p>因为参数传递比较复杂，我采用了一种比较很简单而且不会修改太多源代码的方法，就是在local-cli/bundle/bundle.js的bundle方法内读取我们增加的参数，存成全局变量，在需要用的地方读取即可。</p>
-<pre><code>function bundle(argv, config, args, packagerInstance) {
-      let cid = args.cid;    //modified by guangy cid为common module的最大数字 add为需要加的数字
-      let add = args.add;
-      setCidAndAdd(cid, add);
-
-      return bundleWithOutput(argv, config, args, undefined, packagerInstance);
-}
-</code></pre><p>存储和读取cid和add参数的代码为</p>
-<pre><code>let cid = 10000;
-let add = 0;
-
-export function setCidAndAdd(_cid, _add) {
-    cid = parseInt(_cid);
-    add = parseInt(_add);
-}
-
-export function getCidAndAdd(){
-    return {cid, add}
-}
-</code></pre><p>最后在createModuleIdFactory方法里，通过调用getCidAndAdd获取cid和add的值来使用就可以了。</p>
-<p>可以看到cli功能是用nodejs实现的，对于react-native bundle命令，从命令行读取什么参数，是否必带，是否有默认值等等在local-cli/bundle/bundleCommandLineArgs.js里进行配置，我们这次需要增加两个参数，只需要照已有的增加就行了。command里使用&lt;&gt;表示强制要求必须带这个参数。</p>
-<pre><code>{ //modified by guangy 增加两个参数 add和cid
-command: &apos;--cid &lt;cid&gt;&apos;,
-description: &apos;common的最大Module id
-  },{
-command: &apos;--add &lt;add&gt;&apos;,
-description: &apos;需要加的数字，比如10000，20000&apos;,
-  },
-</code></pre><p>然后还需要修改下node_modules/react-native/packager/react-packager/src/Server/index.js文件里的const bundleOpts = declareOpts({…})<br>增加</p>
-<pre><code>cid: {  //modified by guangy 增加两个参数
-    type: &apos;string&apos;,
-    required: true,
-  },
-  add: {
-    type: &apos;string&apos;,
-    required: true,
-  },
-</code></pre><p>即可。</p>
-<p>如果要修改其他命令，也可以照着这个思路，先把流程捋顺了，不用每行代码都看明白，大概找到需要改动的地方就行了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1961,7 +1936,7 @@ description: &apos;需要加的数字，比如10000，20000&apos;,
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

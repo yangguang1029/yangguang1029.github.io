@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="杨光的笔记">
 <meta property="og:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。 这个Redux源码阅读系列会把整个Redux的源码都过一遍">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-24T13:36:29.102Z">
+<meta property="og:updated_time" content="2019-07-29T02:48:39.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ReactNative之Redux源码阅读(createStore)">
 <meta name="twitter:description" content="很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。 这个Redux源码阅读系列会把整个Redux的源码都过一遍">
@@ -350,6 +350,7 @@
 <h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>subscribe用来注册一个监听，前面dispatch修改了state之后，会通知所有的监听者，监听者就是通过subscribe来注册的。</p>
 <p>这里的细节是维护了两个listeners队列：currentListeners和nextListeners，在dispatch方法里，先把nextListeners赋值给currentListeners，然后遍历currentListeners，然后在subscribe时，通过ensureCanMutateNextListeners函数拷贝一份currentListeners给nextListeners，然后修改nextListeners。虽然听起来有点绕，但并不难理解，在遍历listeners期间如果注册监听和取消监听，肯定不能修改正在遍历中的数组，所以需要维护两个，一个用来遍历，另一个用来修改。</p>
 <p>subscribe函数返回一个unsubscribe函数，这也是js库里常见的一种设计，用来取消注册监听，代码非常好看懂。</p>
+<h4 id="observable"><a href="#observable" class="headerlink" title="observable"></a>observable</h4><p>这里代码不是很好看懂，它用了一个第三方库<a href="https://github.com/zenparsing/es-observable" target="_blank" rel="noopener">symbol-observable</a>，但大概可以看明白这个函数做了什么，它对外暴露了一个subscribe接口，内部实际上是调用上面的subscribe进行注册监听，对外暴露的subscribe需要接受一个observer object。在react-redux中应该能看到这个接口的实际应用。</p>
 <h4 id="getState和replaceReducer"><a href="#getState和replaceReducer" class="headerlink" title="getState和replaceReducer"></a>getState和replaceReducer</h4><p>这两个比较简单，一起带过，前者是获取到state值。后者是整体替换掉reducer，实际中用到的不多。</p>
 <h4 id="dispatch-type-ActionTypes-INIT"><a href="#dispatch-type-ActionTypes-INIT" class="headerlink" title="dispatch({ type: ActionTypes.INIT })"></a>dispatch({ type: ActionTypes.INIT })</h4><p>createStore函数在return之前，dispatch了这么一个action，reducer函数可以用这个action来做初始化工作，当然我们一般都是在reducer函数中用默认值来做初始化，所以这个action实际中很少会用到，但了解这个细节其实会很有用的。</p>
 <h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>写到后面发现如果把所有源码阅读写成一篇会太长了，所以就做成系列吧，接下来再陆续把剩下的写完。顺便感慨一下，读完源码加记完笔记用了俩小时，现在写这一篇就用了俩小时差不多，还写的很不咋的，语言和文字表达能力有点太堪忧，总是前言不搭后语，可见要写一篇好博客，真的很不容易啊……</p>
@@ -392,6 +393,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/28/rn-redux-source-code1/" rel="prev" title="ReactNative之Redux源码阅读(combineReducers&bindActionCreators)">
+                ReactNative之Redux源码阅读(combineReducers&bindActionCreators) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -473,7 +478,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">97</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -535,7 +540,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#index-js"><span class="nav-number">1.</span> <span class="nav-text">index.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#createStore-js"><span class="nav-number">2.</span> <span class="nav-text">createStore.js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatch"><span class="nav-number">2.1.</span> <span class="nav-text">dispatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#subscribe"><span class="nav-number">2.2.</span> <span class="nav-text">subscribe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getState和replaceReducer"><span class="nav-number">2.3.</span> <span class="nav-text">getState和replaceReducer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatch-type-ActionTypes-INIT"><span class="nav-number">2.4.</span> <span class="nav-text">dispatch({ type: ActionTypes.INIT })</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结语"><span class="nav-number">2.5.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#index-js"><span class="nav-number">1.</span> <span class="nav-text">index.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#createStore-js"><span class="nav-number">2.</span> <span class="nav-text">createStore.js</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatch"><span class="nav-number">2.1.</span> <span class="nav-text">dispatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#subscribe"><span class="nav-number">2.2.</span> <span class="nav-text">subscribe</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#observable"><span class="nav-number">2.3.</span> <span class="nav-text">observable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getState和replaceReducer"><span class="nav-number">2.4.</span> <span class="nav-text">getState和replaceReducer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dispatch-type-ActionTypes-INIT"><span class="nav-number">2.5.</span> <span class="nav-text">dispatch({ type: ActionTypes.INIT })</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结语"><span class="nav-number">2.6.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="react-native,react,react native,cocos" />
+  <meta name="keywords" content="ReactNative," />
 
 
 
@@ -79,13 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="杨光的笔记">
-<meta property="og:url" content="http://yangguang1029.github.io/archives/page/4/index.html">
+<meta name="description" content="去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。 applyMiddleware在ReactNative之Redux源码阅读(createStore)里提到了enhancer函">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative之Redux源码阅读(applyMiddleware,compose)">
+<meta property="og:url" content="http://yangguang1029.github.io/2019/07/29/rn-redux-source-code2/index.html">
 <meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。 applyMiddleware在ReactNative之Redux源码阅读(createStore)里提到了enhancer函">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-30T03:34:39.429Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="杨光的笔记">
+<meta name="twitter:title" content="ReactNative之Redux源码阅读(applyMiddleware,compose)">
+<meta name="twitter:description" content="去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。 applyMiddleware在ReactNative之Redux源码阅读(createStore)里提到了enhancer函">
 
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yangguang1029.github.io/archives/page/4/"/>
+  <link rel="canonical" href="http://yangguang1029.github.io/2019/07/29/rn-redux-source-code2/"/>
 
 
 
 
 
-  <title>Archive | 杨光的笔记</title>
+  <title>ReactNative之Redux源码阅读(applyMiddleware,compose) | 杨光的笔记</title>
   
 
 
@@ -150,7 +155,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -244,410 +249,167 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/07/29/rn-redux-source-code2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
-         
+          <h1 class="post-title" itemprop="name headline">ReactNative之Redux源码阅读(applyMiddleware,compose)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-29T21:15:36+08:00">
+                2019-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        Good! 98 posts in total. Keep on posting.
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/26/rn-improve-listview/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之listView优化方案</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-26T20:18:36+08:00"
-              content="2017-12-26" >
-          12-26
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/21/rn-pureComponent/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之PureComponent</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-21T18:18:36+08:00"
-              content="2017-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/19/rn-navigation/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之react-navigation使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-19T20:18:36+08:00"
-              content="2017-12-19" >
-          12-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。</p>
+<h3 id="applyMiddleware"><a href="#applyMiddleware" class="headerlink" title="applyMiddleware"></a>applyMiddleware</h3><p>在<a href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>里提到了enhancer函数，applyMiddleware就是redux内置的一个enhancer。enhencer函数都接受createStore函数作为参数，然后返回新的createStore函数。</p>
+<p>老样子，先看一下代码注释，然后看具体的代码实现，applyMiddleware接受的参数是middlewares数组，在它返回的createStore函数里，先调用createStore得到store，然后拿middlewares加工store.dispatch方法，最后返回store和加工后的dispatch函数。</p>
+<pre><code>const middlewareAPI = {
+  getState: store.getState,
+  dispatch: (...args) =&gt; dispatch(...args)
+}
+const chain = middlewares.map(middleware =&gt; middleware(middlewareAPI))
+dispatch = compose(...chain)(store.dispatch)
+</code></pre><p>从这里可以看到，每个middleware函数接受middlewareAPI参数，其中包含getState和dispatch两个属性，并返回一个函数，返回的函数通过compose组合起来（详见<a href="https://github.com/reduxjs/redux/blob/master/src/compose.js" target="_blank" rel="noopener">compose.js</a>内的代码注释），所以这个返回函数接受的参数是上一个middleware函数的返回值(也是dispatch函数)，并返回dispatch函数（会成为下一个middleware的参数）。也就是middleware函数的定义是</p>
+<pre><code>function myMiddleware({getState, dispatch}) {
+    return function(next) {
+        return function(action) {
+            return next(action);
+        }
+    }
+}
+// 箭头函数写法
+const myMiddleware = ({getState, dispatch}) =&gt; next =&gt; action =&gt; next(action)
+</code></pre><p>建议看一下<a href="https://github.com/reduxjs/redux-thunk/blob/master/src/index.js" target="_blank" rel="noopener">redux-thunk的代码实现</a>加深一下理解。</p>
+<p>整个redux的源码到这里就结束了，到这里就会发现真的没太多内容，接下来再看一下React-redux的代码，因为一般redux都会配合React-redux来使用，而且它的代码也不复杂。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/16/rn-layoutanimation/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之使用LayoutAnimation创建动画</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-16T20:18:36+08:00"
-              content="2017-12-16" >
-          12-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/15/js-mix-import/" itemprop="url">
-              
-                <span itemprop="name">js之import与export复合</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-15T16:33:43+08:00"
-              content="2017-12-15" >
-          12-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/07/other-programmer-ability/" itemprop="url">
-              
-                <span itemprop="name">关于程序员工作能力的思考</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-07T15:50:39+08:00"
-              content="2017-12-07" >
-          12-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/06/rn-setstate-async/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之setState的同异步</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-06T20:18:36+08:00"
-              content="2017-12-06" >
-          12-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/02/rn-high-order-component/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之封装组件</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-02T20:18:36+08:00"
-              content="2017-12-02" >
-          12-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/30/rn-listview-part-rerender/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之ListView局部刷新</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-30T19:18:36+08:00"
-              content="2017-11-30" >
-          11-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/11/15/rn-overlap-touch/" itemprop="url">
-              
-                <span itemprop="name">ReactNative之重叠区域触摸处理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-11-15T19:18:36+08:00"
-              content="2017-11-15" >
-          11-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/28/rn-redux-source-code1/" rel="next" title="ReactNative之Redux源码阅读(combineReducers&bindActionCreators)">
+                <i class="fa fa-chevron-left"></i> ReactNative之Redux源码阅读(combineReducers&bindActionCreators)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/archives/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/10/">10</a><a class="extend next" rel="next" href="/archives/page/5/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -655,6 +417,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -675,8 +446,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -743,6 +523,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#applyMiddleware"><span class="nav-number">1.</span> <span class="nav-text">applyMiddleware</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -870,6 +666,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -898,6 +698,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 

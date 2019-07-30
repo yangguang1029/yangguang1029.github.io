@@ -259,6 +259,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/26/rn-improve-listview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/26/rn-improve-listview/" itemprop="url">ReactNative之listView优化方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-26T20:18:36+08:00">
+                2017-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。</p>
+<h3 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h3><p>ListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDistance属性指定初始时单元格数量，可以加快初始化的速度。其次通过dataSource的rowHasChanged接口可以减少单元行re-render的次数。</p>
+<h3 id="FlatList"><a href="#FlatList" class="headerlink" title="FlatList"></a>FlatList</h3><p>这是官方推出的解决方案，FlatList的思路是减少渲染的单元行数量，它在render时进行计算，只渲染屏幕中和缓冲区内的单元行，其余地方使用空白代替，这样不论FlatList有多少内容，实际渲染的单元行数量基本保持不变。因为有的单元行并没有渲染，当快速滑动到这个区域时，渲染是异步的，此时就会看到白屏，然后才开始显示内容。</p>
+<p>使用FlatList时也有一些优化方案，首先是单元行组件如果使用PureComponent可以大大减少render的数量。其次实现props.getItemLayout接口可以避免临时测量每个单元行的尺寸，大大提高性能，如果能明确每个单元行的尺寸就一定要实现此接口。</p>
+<p>initialNumToRender属性默认为10，它设定初始时渲染的单元行数量，这些单元行会常驻内存不被销毁，目的是为了scrollToTop时没有白屏。</p>
+<p>maxToRenderPerBatch属性默认为10，它设定了在计算渲染单元行数量时每次处理的行数，这个数值如果太大可能导致渲染的单元行较多，占用内存以及增加白屏时间，如果太小了则会增加setState的次数</p>
+<p>windowSize属性指定了屏幕外的区域渲染多少个屏幕单元(visible length)，默认是21，它也会影响初始渲染的单元行数量。假如一个android设备高度为640，减去20像素的状态栏，一个屏幕单元是620，会额外渲染20个。这个数字如果比较大，则同时渲染的单元格数量会比较多，也增加了初始化的时间，如果比较小，则会增加出现白屏的几率。</p>
+<h3 id="SGListView"><a href="#SGListView" class="headerlink" title="SGListView"></a>SGListView</h3><p><a href="https://github.com/sghiassy/react-native-sglistview" target="_blank" rel="noopener">SGListView</a>的原理是通过onChangeVisibleRows接口，当单元行滑动到屏幕外时将渲染内容变成一个空白View，当滑动到屏幕内时变回实际内容。这样因为屏幕外的单元行都是空白view，所以优化了内存占用。 <a href="https://github.com/39otrebla/react-native-enhanced-listview" target="_blank" rel="noopener">enhancedListView</a>也是类似的思路，但实现有点简陋。这个解决方案也会有白屏问题，实际上只要单元行的内容变掉，重新要渲染时，因为渲染是异步的，就都会有白屏问题。</p>
+<h3 id="LargeList"><a href="#LargeList" class="headerlink" title="LargeList"></a>LargeList</h3><p><a href="https://github.com/bolan9999/react-native-largelist" target="_blank" rel="noopener">LargeList</a>的想法是在js层实现了单元行复用。首先它和FlatList一样有白屏问题，因为渲染是异步的，在js层实现单元行复用，要求一个View渲染某些内容到真正展示出来，这段时间里屏幕就是白的。其次复用的作用是减少了创建单元行的消耗，这个消耗在整个ListView的性能消耗里并不占大头。最后使用ref持有Component引用并进行操作实际上不是RN推荐的一种处理方式，在复杂场景下很可能出问题。所以我不是很推荐使用它，实测也有不少bug。</p>
+<h3 id="RealRecyclerView"><a href="#RealRecyclerView" class="headerlink" title="RealRecyclerView"></a>RealRecyclerView</h3><p><a href="https://github.com/droidwolf/react-native-RealRecyclerView" target="_blank" rel="noopener">RealRecyclerView</a>是封装了Android的原生控件RecyclerView，通过接口绑定同步原生view和js组件的内容。自己封装原生组件可能是难度最大的一种方案，因为有很多坑需要填，而且Android和iOS平台下风格也会不一致。但如果弄好了，就是真正实现了单元行复用的方案。像一些大厂的技术团队比如去哪儿就封装了自己的原生listView。 github上还有一个<a href="https://github.com/asciiman/react-native-native-listview" target="_blank" rel="noopener">react-native-native-listview</a>是同时封装了Android和iOS平台，可供参考。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/21/rn-pureComponent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1739,153 +1868,6 @@ this.setState({dataSource:this.state.dataSource.cloneWithRows(arr)});
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/13/es6-circle-import/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/13/es6-circle-import/" itemprop="url">ES6中循环引用的坑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-13T20:08:14+08:00">
-                2017-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天碰到一个很诡异的问题，在import一个模块后直接使用，结果就报红屏错误 undefined is not a function，当时很奇怪，明明那个模块export了很多东西，而且别的地方import又是正常的，为什么在这里import就出问题呢？用console打印出来，发现import进来的结果是个{}。代码大概就是</p>
-<pre><code>import Test from &quot;./test&quot;
-Test.test();    //这里报错，说test是个undefined，所以不能当做方法调用
-</code></pre><p>后来突然想到，可能是产生循环引用了，一查果然是这个原因。因为项目比较庞大，不小心还是很容易间接产生循环import。</p>
-<p>查阅<a href="http://es6.ruanyifeng.com/#docs/module-loader" target="_blank" rel="noopener">阮老师的ES6教程</a>里有ES6关于循环import的说明。写一个简单的例子</p>
-<pre><code>//a.js
-console.log(&quot;before import b&quot;)
-import {b} from &quot;./b&quot;
-console.log(&quot;b is &quot; + b)
-export let a = b+1;
-
-//b.js
-console.log(&quot;before import a&quot;)
-import {a} from &quot;./a&quot;
-console.log(&quot;a is &quot; + a)
-export let b = a+1;
-</code></pre><p>结果是</p>
-<pre><code>before import a
-a is undefined
-before import b
-b is NAN
-</code></pre><p>这里有一个有趣的现象就是第一句输出并不是before import b，也就是虽然import语句在后面，但确会更早执行，当执行import b时，加载并运行b.js，从而第一句输出是before import a。</p>
-<p>然后就是当运行b.js时，发现又需要import a.js，此时不会再去加载a.js了，而是认为整个a.js模块是{}，所以a的值就是undefined了。可以通过以下代码验证</p>
-<pre><code>//b.js
-import * as A from &quot;./a&quot;
-console.dir(A)    //输出为{}
-</code></pre><p>因为循环import一旦出现查找起来比较麻烦，经过了好多个中转，每个文件又都import了很多，很难找到是怎么导致循环的。一个避免出问题的方法就是少写立即执行的代码，尽量使用函数封装起来，需要的时候调用函数，就不会出错了。</p>
-<p>对于像constants, enum, global等一些需要立即执行的模块，则手动确保不要产生循环即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1936,7 +1918,7 @@ console.dir(A)    //输出为{}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

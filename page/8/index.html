@@ -259,6 +259,131 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/06/cocos-gzip/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/06/cocos-gzip/" itemprop="url">cocos之获取gzip压缩的http文本</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-06T20:23:38+08:00">
+                2016-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当使用http请求文本内容时，如果使用gzip压缩，可以大大减少字符串长度，提高传输效率。要实现此功能，客户端需要写一些代码：</p>
+<p>首先是请求时候，设定好http头</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;std::string&gt; headers;</span><br><span class="line">headers.push_back(&quot;Accept-Encoding: gzip,deflate&quot;)</span><br><span class="line">request-&gt;setHeaders(headers);</span><br></pre></td></tr></table></figure>
+<p>然后在处理收到的消息时解压缩一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();</span><br><span class="line">std::ostringstream outBuff;</span><br><span class="line">for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)&#123;</span><br><span class="line">    outBuff &lt;&lt; (*buffer)[i];</span><br><span class="line">&#125;</span><br><span class="line">outBuff.flush();</span><br><span class="line">std::string outstr = outBuff.str();</span><br><span class="line">const unsigned char* tmp = (const unsigned char*)outstr.c_str();</span><br><span class="line">size_t len = outstr.length();</span><br><span class="line">unsigned char* outtmp = (unsigned char*)malloc(len);</span><br><span class="line">ssize_t outlen = ZipUtils::inflateMemory((unsigned char*)tmp, len, &amp;outtmp);</span><br><span class="line">if(outlen &gt; 0)&#123;</span><br><span class="line">    outstr = std::string((const char*)outtmp);</span><br><span class="line">    free(outtmp);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    CCLOG(&quot;inflate gzip content failed....&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ZipUtils是cocos基于zlib的封装，还有一些别的接口，需要的时候可以去看看</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/12/05/leetcode453/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1423,172 +1548,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/24/js-object/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/24/js-object/" itemprop="url">javaScript中的proto</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-24T10:45:21+08:00">
-                2016-11-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="proto"><a href="#proto" class="headerlink" title="__proto__"></a>__proto__</h3><p>js的原型链继承很简单，对任意一个object，都有__proto__属性，当获取这个对象的属性或者方法时，现在对象本身去查找，如果不存在，则往它的__proto__上查找，因为__proto__本身也是一个object，所以如果没找到，则往__proto__的__proto__上查找，跟沿着一条链条走一样，直到找到返回，或者__proto__为null或undefined找到了尽头。</p>
-<p>原型链不可能无止尽的延伸，所以js中有一个默认的object，它的__proto__就是undefined，除非我们强制打断原型链，否则最终都会查找到这个object上，它是长这个样子的,可以看到它是没有__proto__属性的</p>
-<p><img src="js-object/42F976BA-0D05-4C76-ABBD-BA28C1627E46.png" alt="image"></p>
-<p>我们可以对一个object的__proto__属性随意赋值，但如果赋成null或者undefined，则它的__proto__属性变成了undefined，如果赋成基础数据类型，并不会改变其__proto__属性</p>
-<h3 id="proto-来源"><a href="#proto-来源" class="headerlink" title="__proto__来源"></a>__proto__来源</h3><p>如果我们没对object的__proto__赋值，则它的__proto__来源于使用Object.create方法调用时传给他的参数，虽然构造一个object有好几种写法，例如</p>
-<pre><code>var a = {}
-var b = new f();
-var c = Object.create(proto)
-</code></pre><p>但它们实际上都是执行了Object.create，例如var a = {}和var a = Object.create(Object.prototype)是一模一样的，而var b = new f()则基本可以认为等同于var b = Object.create(f.prototype)。所以上面例子里，a的__proto__是Object.prototype, b的__proto__是f.prototype, c的__proto__是proto</p>
-<h3 id="function的prototype"><a href="#function的prototype" class="headerlink" title="function的prototype"></a>function的prototype</h3><p>我们经常通过function来构造一个object,这种情况使用了该function的prototype来作为Object.create的参数，如果我们没有给function指定一个prototype，则它默认的prototype是这样的</p>
-<p><img src="js-object/08078187-DE71-479F-93B2-5E40B8C12934.png" alt="img"></p>
-<p>可以看到，function默认的prototype有一个属性constructor指向函数自己，它的__proto__就是我们前面提到的原型链尽头的那个object（真该给他取个什么名字才好），当然我们可以给function指定一个prototype，而不使用它默认的，那就是我们在js中实现继承的办法。</p>
-<p>function本身也是一个对象，所以上图里f也有__proto__属性，它的__proto__就是Function.prototype。Function是javascript解释器提供的实现，就不用再去追究它的prototype是什么了。</p>
-<h3 id="使用原型链实现继承"><a href="#使用原型链实现继承" class="headerlink" title="使用原型链实现继承"></a>使用原型链实现继承</h3><p>知道原型链是什么东西之后，就可以开始实现继承了。ES6开始有了class和extends关键字，就可以不用手动实现继承，但在ES6之前，我们需要自己来实现，例如</p>
-<pre><code>var base = {
-    prop1:1,
-    prop2:{
-        a:1
-    },
-    func:function(){
-        console.log(&quot;in base...&quot;);
-    }
-}
-
-function Derived(){
-
-}
-
-Derived.prototype = base;
-Derived.prototype.constructor = Derived;
-
-var d1 = new Derived();
-var d2 = new Derived();
-
-d1.func();
-d2.func();
-
-console.log(d1.prop2.a);
-d1.prop2.a = 2;
-console.log(d2.prop2.a);
-</code></pre><p>上面代码里，d1,d2是子类Derived的实例，它们继承了base里的属性和方法，所以可以直接调用d1.func()，也可以直接获取和设置d1.prop2.a的值，但也很容易发现问题，就是我们修改了d1.prop2.a的值，结果d2.prop2.a的值也改变了。prototype上的属性和方法，对于子类的实例是公共的，这是需要注意，容易出问题的地方。</p>
-<p>这里顺便牵扯到一个问题，我们都知道object的constructor属性指向它的构造函数，所以在设定prototype时，必须再将prototype.constructor指向构造函数。就是上面代码里的</p>
-<pre><code>Derived.prototype.constructor = Derived;
-</code></pre><p>如果没有注释掉的那句，则d1.constructor就不是Derived，而是变成了function Object(){[native code]}了</p>
-<p>因为ES6之前没有原生的继承机制，很多地方都使用了John Resig的一种<a href="https://johnresig.com/blog/simple-javascript-inheritance/" target="_blank" rel="noopener">简单实现方式</a>，使用25行代码实现了extends功能。</p>
-<h3 id="缩短原型链"><a href="#缩短原型链" class="headerlink" title="缩短原型链"></a>缩短原型链</h3><p>如果原型链过长，可能会带来性能问题。所以需要注意的是尽量不要去扩展内置类型的原型。直接获取属性和for in函数都会查询原型链，如果想避免查询原型链，可以使用hasOwnProperty方法来判断</p>
-<p>使用var a = Object.create(null) 代替 var a = {}的区别，前者明确将__proto__设置为null，查找属性时就不会再往原型链上查找了，后者__proto__其实是Object.prototype</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1639,7 +1598,7 @@ console.log(d2.prop2.a);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -259,6 +259,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/09/27/rn-native-view-method/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/27/rn-native-view-method/" itemprop="url">ReactNative之原生UI导出方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-27T21:18:36+08:00">
+                2018-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在官方文档的原生UI模块章节: (<a href="https://reactnative.cn/docs/native-components-ios/" target="_blank" rel="noopener">IOS</a> <a href="https://reactnative.cn/docs/native-components-android/" target="_blank" rel="noopener">Android</a>)，我们可以学会如何导出原生UI组件，如何导出prop，如何设置事件回调等等，但是缺少一个内容，那就是如何导出方法。举个例子，我们在使用ScrollView组件时，如果想让它滚动，需要先获取到它的ref，然后调用它的scrollTo方法，这就是一个原生UI导出的方法。通过阅读源代码，我找到了如何实现的方案，这里介绍一下。</p>
+<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><p>iOS端直接在继承自RCTViewManager的类中提供接口。照着下面的模板写就可以了，将获取到的view转换成实际的View然后调用方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;React/RCTUIManager.h&gt;</span><br><span class="line"></span><br><span class="line">RCT_EXPORT_METHOD(scrollToIndexWithOffset:(nonnull NSNumber *)reactTag</span><br><span class="line">                  index:(NSInteger)index</span><br><span class="line">                  offset:(CGFloat)offset</span><br><span class="line">                  animated:(BOOL)animated)</span><br><span class="line">&#123;</span><br><span class="line">    [self.bridge.uiManager addUIBlock:</span><br><span class="line">     ^(__unused RCTUIManager *uiManager, NSDictionary&lt;NSNumber *, UIView *&gt; *viewRegistry)&#123;</span><br><span class="line">         UIView *view = viewRegistry[reactTag];</span><br><span class="line">         if([view class] == MyTableView.class) &#123;</span><br><span class="line">             MyTableView* table = (MyTableView*)view;</span><br><span class="line">             [table scrollToIndex:index offset:offset animated:animated];</span><br><span class="line">         &#125;else &#123;</span><br><span class="line">             RCTLogError(@&quot;tried to call scrollToIndexWithOffset on %@ &quot;</span><br><span class="line">                         &quot;with tag #%@&quot;, view, reactTag);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>android端处理方式不一样，我们在继承SimpleViewManager或者ViewGroupManager的类中需要重写getCommandsMap方法，提供暴露到js层的command命令。然后重写receiveCommand方法，通过commandId判断js层是想要调用什么方法，然后把参数转换好之后进行调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">    public @javax.annotation.Nullable</span><br><span class="line">    Map&lt;String, Integer&gt; getCommandsMap() &#123;</span><br><span class="line">        return MapBuilder.of(</span><br><span class="line">                &quot;scrollToIndexWithOffset&quot;,</span><br><span class="line">                COMMAND_SCROLL_TO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">    public void receiveCommand(</span><br><span class="line">            MyView scrollView,</span><br><span class="line">            int commandId,</span><br><span class="line">            @javax.annotation.Nullable ReadableArray args) &#123;</span><br><span class="line">        if(commandId == COMMAND_SCROLL_TO) &#123;</span><br><span class="line">            int index = Math.round(PixelUtil.toPixelFromDIP(args.getInt(0)));</span><br><span class="line">            float offset = Math.round(PixelUtil.toPixelFromDIP(args.getDouble(1)));</span><br><span class="line">            boolean animated = args.getBoolean(2);</span><br><span class="line">            scrollView.scrollTo(index, offset, animated);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="javaScript"><a href="#javaScript" class="headerlink" title="javaScript"></a>javaScript</h3><p>在js层调用的代码为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scrollToIndexWithOffset (index, offset, animated) &#123;</span><br><span class="line">  UIManager.dispatchViewManagerCommand(</span><br><span class="line">    ReactNative.findNodeHandle(this.tableRef),</span><br><span class="line">    UIManager.MyTableView.Commands.scrollToIndexWithOffset,</span><br><span class="line">    [index, offset, animated]</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的tableRef就是原生组件在js层使用ref获取到的。scrollToIndexWithOffset对应着原生暴露的方法名(iOS为RCT_EXPORT_METHOD之后的方法名，Android为getCommandsMap暴露的方法名)，后面三个参数数组一次是原生方法接受的参数。</p>
+<p>这就是原生组件封装方法到js层的全部流程了，这是基本的操作，实际开发中再注意下例如参数类型转换等小问题即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/09/06/rn-duplicate-native-module/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1583,131 +1711,6 @@ console.log(&quot;after add b2 is &quot; + B.b2.value)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/03/12/rn-cached-view/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/12/rn-cached-view/" itemprop="url">ReactNative之一个组件缓存的方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-12T20:18:36+08:00">
-                2018-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在实际开发中，我们经常会有这样的场景，一个组件需要根据条件来决定显示还是隐藏，我们一般都不假思索就可以写出这种方案</p>
-<pre><code>this.state.isVisible ? &lt;MyComponent /&gt; : null
-</code></pre><p>一般来说这样做都没什么问题，但假如这个MyComponent非常庞大，而显示隐藏又很频繁，这样做性能就很低，根据前面的一篇博文<a href="http://guangy.coding.me/2018/02/25/rn-reconciliation/" target="_blank" rel="noopener">《ReactNative之VirtualDomTree的diff原理》</a>，实际上我们把一个组件在不同的类型MyComponent和null之间切换，是一定会导致MyComponent每次都被重建和销毁的。</p>
-<p>那我们就想办法实现一下缓存，根据实际测试，发现有一个比较简单的方案，当我们希望隐藏时，把MyComponent的尺寸设为0即可，例如组件是沿竖轴排列，只要调节MyComponent的高度即可，所以这个方案只适用于能确定尺寸的情况。</p>
-<p>使用这个方案，MyComponent在显示和隐藏之间切换时，组件本身不会被销毁，我们接下来就是尽量减少re-render的触发，以提高性能。当尺寸变化时，MyComponent无疑必须触发re-render，如果它的所有子组件都是普通Component的话，那么也会相应触发re-render。所以最简单的方案，我们把它的子组件改成PureComponent，这样只要MyComponent的尺寸没有通过props传递下去，子组件就不会re-render。如果要更加灵活的话，我们就实现子组件的shouldComponentUpdate即可。</p>
-<p>我们实际项目中有一个选择表情的组件，它包含了100多个小表情，当这个组件显示和隐藏时，原来都有一定延迟，通过使用这个优化方案，性能得到了很大提高。<a href="https://github.com/yangguang1029/MyReactNative/blob/master/testCacheView.js" target="_blank" rel="noopener">如果不是很明白，可以参考一下我写的demo</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1758,7 +1761,7 @@ console.log(&quot;after add b2 is &quot; + B.b2.value)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">97</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

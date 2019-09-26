@@ -259,6 +259,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/27/rn-ts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/27/rn-ts/" itemprop="url">ReactNative之在项目中使用TypeScript</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-27T20:18:36+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近在网上找到个开源的控件，但是源代码是用TypeScript实现的，放到项目里无法直接使用，于是google了一下怎么在ReactNative项目内使用TypeScript，然后找到了一个很简单的解决方案，试了一下没有问题。</p>
+<p>首先安装react-native-typescript-transformer模块</p>
+<pre><code>yarn add --dev react-native-typescript-transformer typescript
+</code></pre><p>然后在项目的根目录下创建一个文件 rn-cli.config.js</p>
+<pre><code>module.exports = {  
+      getTransformModulePath() {
+        return require.resolve(&apos;react-native-typescript-transformer&apos;)
+      },
+      getSourceExts() {
+        return [&apos;ts&apos;, &apos;tsx&apos;];
+      }
+}
+</code></pre><p>在项目根目录下创建一个文件tsconfig.json</p>
+<pre><code>{
+      &quot;compilerOptions&quot;: {
+        &quot;target&quot;: &quot;es2015&quot;,
+        &quot;module&quot;: &quot;es2015&quot;,
+        &quot;jsx&quot;: &quot;react-native&quot;,
+        &quot;moduleResolution&quot;: &quot;node&quot;,
+        &quot;allowSyntheticDefaultImports&quot;: true
+      }
+}
+</code></pre><p>然后就可以放心在项目里写TypeScript代码了，例如项目中ts目录下有test.ts文件，我们在import这个文件时，就像import一个js文件就可以了</p>
+<pre><code>import &apos;./ts/test&apos;
+</code></pre><p>这些以ts,tsx为后缀的TypeScript代码文件会被转换成js文件，我们实际import的是转换后的js文件。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/26/rn-improve-listview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1745,129 +1889,6 @@ this.setState({dataSource:this.state.dataSource.cloneWithRows(arr)});
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/15/rn-overlap-touch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/15/rn-overlap-touch/" itemprop="url">ReactNative之重叠区域触摸处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-15T19:18:36+08:00">
-                2017-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在做界面时，写了一个弹窗界面，它有个全屏的半透明背景，只是一个普通的View，当弹窗弹出时，发现原来界面的所有触摸都失效了，就像这个半透明背景把触摸都吃掉了一样，按照原来用cocos的习惯，一个普通的View如果不去指定接受触摸，应该不会处理触摸，而是将触摸传递给下一层界面才对。</p>
-<p>为了确定RN的触摸传递机制，写了个demo试验了一下。就不贴代码了，很简单，界面上写两个View分别是A和B，他们区域重叠且A被B覆盖，给他们都设定onStartShouldSetResponder接口，只有这个接口返回true，才会感受到触摸。可以观察到，无论B的onStartShouldSetResponder返回true还是false,当触摸发生在重叠区域时，A的onStartShouldSetResponder都不会被回调。这样结论就很明显了，<strong>同级组件如果有重叠区域，则重叠区域内触摸事件完全由后渲染组件接受，先渲染组件连是否接受触摸的回调都不会被调用，不可能有机会处理触摸</strong></p>
-<p>然后是父子节点，触摸父子节点的重叠区域，子节点的onStartShouldSetResponder会先被调用，如果子节点的onStartShouldSetResponder返回了true，那么父节点的onStartShouldSetResponder将不再被调用，也就是父节点没有机会响应触摸，如果子节点的onStartShouldSetResponder返回了false，那么父节点的onStartShouldSetResponder会被调用，此时子节点忽略触摸，交由父节点处理。</p>
-<p>如果区域不重叠，那显然各干各的，如果重叠，则是遵循上面的原则。所以再看最开始那个例子，这个弹窗有个全屏背景，即使只是一个普通View，没有写任何触摸相关的代码，他也会把同级节点的触摸事件全部屏蔽了。如果一定要让触摸传递下去，可能只能想办法hack了，比如修改层级关系。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1918,7 +1939,7 @@ this.setState({dataSource:this.state.dataSource.cloneWithRows(arr)});
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-count">99</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

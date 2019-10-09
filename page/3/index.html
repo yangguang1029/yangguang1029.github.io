@@ -259,6 +259,148 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/22/rn-tableview/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/22/rn-tableview/" itemprop="url">ReactNative之封装TableView组件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-22T20:18:36+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。</p>
+<p>封装tableView本身很简单，按<a href="https://reactnative.cn/docs/0.51/native-component-ios.html#content" target="_blank" rel="noopener">官方教程</a>走就行了。我们从js中传一个rowCount属性过来，用于给tableView的numberOfRowsInSection回调使用。对tableView来说，最重要的就是每个tableViewCell怎么渲染了。因为每个单元行渲染的内容需要从js端传过来，如果能够在原生层捕获到这个js中渲染的组件，然后放到每个TableViewCell里去作为它的subview，当这个TableViewCell被重用时，获取到这个subview，然后通知js端刷新这个组件的内容即可。</p>
+<p>从原生捕获js组件的方案就是，在js层的tableView里，给它添加子控件，然后在对应的原生tableview代码中，通过</p>
+<pre><code>- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex {
+
+}
+</code></pre><p>接口，可以获取到这个子控件。这些控件既然需要从原生层往js层发消息，那么理所当然也需要是原生封装的组件了，我们给它通过RCTBubblingEventBlock回调，就可以让它往js发消息了，这样当一个tableViewCell被重用时，我们已经知道它被重用到了哪个位置，把这个位置发到js层，js层刷新显示即可。</p>
+<p>在js层使用的时候，我们需要往tableView里添加子控件用于显示单元行内容，这些子控件在每次tableViewCell新建的时候都需要一个，所以理论上来说，这些子控件的数量应该保证至少能填满一个tableView的空间，像demo里tableview的高度是300，单元行高度是40，那么至少需要8个。但如果只放8个，就会发现在快速滑动时不够用了，导致可能个别单元行变成了空白。推测是快速滑动时，部分tableViewCell还没来得及进入回收队列，所以需要新建，所以在demo里我就放了两屏的数量，也就是16个，就没有再出现问题了。</p>
+<p>以上就是实现思路，具体代码可以查看<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview" target="_blank" rel="noopener">demo</a></p>
+<p>updated on 2018-06-11</p>
+<p>在原基础上，实现了单元行可变高度的功能。demo代码也做了一些优化，</p>
+<ol>
+<li>给TableViewCell设定{ position: ‘absolute’,left: 0,top: 0 }的style，代替原来在原生层getUnusedCell方法中获取到TableCell后setFrame的方案，因为当单元行高度可变时，js层的单元行组件会频繁的需要重新布局，位置就会变乱了，设定一个(0,0)的绝对坐标，目的是防止单元行位置变乱</li>
+<li>js层的TableCell不再负责渲染，转为交给TableView的props的renderRow接口。</li>
+<li>在js层指定每个单元行的type然后传入到原生层，作为tableCell的Identifier，提高单元行复用时的效率。</li>
+</ol>
+<p>updated on 2018-06-25</p>
+<p>在原基础上，增加了下拉刷新功能。</p>
+<ol>
+<li>在MyTableView的init函数里是无法使用js层传过来的prop属性的，都是初始化数值。所以增加UIRefreshControl必须在收到enablePullRefresh属性时才去增加。</li>
+<li>要让js层主动调用原生的代码，改变props值就行，这样原生的set函数就会被调用。例如下拉刷新后js层获取网络数据结束，此时需要通过原生层关闭UIRefreshControl，这时把refreshing设置为false，则原生层的setRefreshing被调用，做相应的操作就可以了</li>
+</ol>
+<p>新版本代码<a href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview2" target="_blank" rel="noopener">见此</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/04/04/rn-import-require/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1638,155 +1780,6 @@ const StackNav=StackNavigator({
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/06/rn-flatlist-keyExtractor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/rn-flatlist-keyExtractor/" itemprop="url">ReactNative之一次FlatList无法局部刷新的bug修复</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-06T19:15:36+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天发现项目中一个奇怪的问题，在使用FlatList时，每个单元行Component明明实现了shouldComponentUpdate,但是当增加一行时，还是所有的单元行都重新render了，最后找到了原因。代码中FlatList实现的keyExtractor非常简单，因为每个单元行数据的key要求是唯一的，所以直接使用了index返回</p>
-<pre><code>  _keyExtractor(item, index){
-    return &quot;&quot;+index;
-}
-</code></pre><p>然后在增加数据时，又是把数据插到了数组的最前面</p>
-<pre><code>let data = this.state.data;
-this.setState({data:[{num:key,key}].concat(data)})
-</code></pre><p>这样就出问题了，对FlatList内的每个单元行组件CellRenderer来说，它的props包括keyExtractor给出的key和data给出的数据，假设原来数据是[0,1,2,3]，那么FlatList内的组件就包括</p>
-<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=0 /&gt;
-&lt;CellRenderer key=&quot;1&quot;, num=1 /&gt;
-&lt;CellRenderer key=&quot;2&quot;, num=2 /&gt;
-&lt;CellRenderer key=&quot;3&quot;, num=3 /&gt;
-</code></pre><p>在数组最前面加上一个数据101后，FlatList内的组件就变成了</p>
-<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=101 /&gt;
-&lt;CellRenderer key=&quot;1&quot;, num=0 /&gt;
-&lt;CellRenderer key=&quot;2&quot;, num=1 /&gt;
-&lt;CellRenderer key=&quot;3&quot;, num=2 /&gt;
-&lt;CellRenderer key=&quot;4&quot;, num=3 /&gt;
-</code></pre><p>我们在单元行组件里的shouldComponentUpdate实现是：</p>
-<pre><code>shouldComponentUpdate(nextProps){
-    return this.props.num !== nextProps.num;
-}
-</code></pre><p>所以很显然已有的4个CellRenderer因为num变化，就全部刷新了。</p>
-<p>找到原因后，要解决就很简单了</p>
-<pre><code>_keyExtractor(item, index){
-    return item.num;;
-}
-</code></pre><p>所以结论就是：<strong>keyExtractor应该根据实际情况根据item数据来设置，不要贪图简单直接使用index</strong></p>
-<p>最后做了下验证，keyExtractor使用index时，将数据加在数组最后，而不是插在最前，那么没问题，不会全部刷新，因为前面CellRenderer的props都没有变化。但实际项目中不要贪图省事，之所以FlatList提供这个接口让开发者去实现，就肯定有这个需要，随便返回一个index可能就把自己给坑了。</p>
-<p>关于re-render的原理，官方有一篇文章叫<a href="https://reactjs.org/docs/reconciliation.html" target="_blank" rel="noopener">reconciliation</a>讲的很清楚，看完就更容易理解这个问题的本质了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1837,7 +1830,7 @@ this.setState({data:[{num:key,key}].concat(data)})
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">99</span>
+                  <span class="site-state-item-count">100</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

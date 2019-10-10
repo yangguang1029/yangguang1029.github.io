@@ -259,6 +259,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/25/cocos-render/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/25/cocos-render/" itemprop="url">cocos3.x 渲染机制简述</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-25T15:49:25+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>cocos2dx-3.x对绘制部分进行了重构，将绘制从UI树的遍历中分离了出来。首先进行UI树的遍历给每个元素生成一个绘制命令。等遍历完之后，render开始执行栈中所有renderCommand。</p>
+<h3 id="遍历UI树"><a href="#遍历UI树" class="headerlink" title="遍历UI树"></a>遍历UI树</h3><p>遍历UI树很简单，就是调用每个Node的visit函数，这是个虚函数，除了部分类做了重写(目前源代码里只有三个类重写了，分别是CCAttachNode, CCBillBoard, CCSprite3D)，其余就沿用了Node的实现。通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::visit(Renderer* renderer, const Mat4 &amp;parentTransform, uint32_t parentFlags)</span><br></pre></td></tr></table></figure>
+<p>我们可以看到</p>
+<ol>
+<li>如果一个Node是不可见(_visible为false)，则不会生成渲染命令，因此隐藏的节点不会增加渲染负担，只会占用内存消耗。</li>
+<li>在遍历时，会对所有子节点以localZorder从小到大进行排序，如果localZorder相同，则以_orderOfArrival从小到大排序，这个子节点被添加的先后顺序。排序后先执行所有localZorder小于0的子节点的visit，再执行自己的draw，再执行所有localZorder大于0的子节点的visit。</li>
+</ol>
+<p>draw函数为虚函数，且Node内的实现为空，具体实现在各个子类中，它的作用就是生成RenderCommand</p>
+<h3 id="RenderCommand"><a href="#RenderCommand" class="headerlink" title="RenderCommand"></a>RenderCommand</h3><p>RenderCommand有以下类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">enum class Type</span><br><span class="line">    &#123;</span><br><span class="line">        /** Reserved type.*/</span><br><span class="line">        UNKNOWN_COMMAND,</span><br><span class="line">        /** Quad command, used for draw quad.*/</span><br><span class="line">        QUAD_COMMAND,</span><br><span class="line">        /**Custom command, used for calling callback for rendering.*/</span><br><span class="line">        CUSTOM_COMMAND,</span><br><span class="line">        /**Batch command, used for draw batches in texture atlas.*/</span><br><span class="line">        BATCH_COMMAND,</span><br><span class="line">        /**Group command, which can group command in a tree hierarchy.*/</span><br><span class="line">        GROUP_COMMAND,</span><br><span class="line">        /**Mesh command, used to draw 3D meshes.*/</span><br><span class="line">        MESH_COMMAND,</span><br><span class="line">        /**Primitive command, used to draw primitives such as lines, points and triangles.*/</span><br><span class="line">        PRIMITIVE_COMMAND,</span><br><span class="line">        /**Triangles command, used to draw triangles.*/</span><br><span class="line">        TRIANGLES_COMMAND</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>在CCRender.cpp的processRenderCommand函数里，有各个类型command的具体处理。例如 CUSTOM_COMMAND就是执行设定的回调函数</p>
+<p>通过这里可以了解cocos2dx-3.x的autoBatch机制，Sprite使用的是TrianglesCommand，在处理时，会先统一放在队列里，在遍历队列时，比较每个Command的materialID,如果相同则统一处理。决定materialID的有glProgram， _textureID，_blendType。此外不同globalZorder的精灵因为不在一批处理，所以不会自动autoBatch，不同父节点，不同localZOrder则不会影响，会自动autoBatch</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/25/cocos-addImageAsync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1464,138 +1596,11 @@ console.log(d2.prop2.a);
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/javaScript中的无符号右移运算符/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/javaScript中的无符号右移运算符/" itemprop="url">javaScript中的无符号右移运算符</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:57:49+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天刷leetcode上的题目<a href="https://leetcode.com/problems/reverse-bits/" target="_blank" rel="noopener">revert bits</a>的时候，用到了js里的位移操作，然后就出现了问题。题目里给出的数字是32位无符号整数，但是js里默认的整数是32位有符号整数，所以在执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a = 1 &lt;&lt; 31</span><br></pre></td></tr></table></figure>
-<p>时, a的值是-2147483648，而不是期望中的2147483648</p>
-<p>如果要得到正确的值，就需要用到另一个位操作符：无符号右移运算符 &gt;&gt;&gt;</p>
-<p>它与普通的右移运算符的区别只是在右移补位时只补0，而普通的右移操作符对有符号整数进行操作，当符号位为1时补1，符号位为0时补0</p>
-<p>当需要将一个有符号数转成无符号数时，使用 &gt;&gt;&gt; 0即可，将一个无符号数转成有符号数，使用&lt;&lt; 0即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a = 1 &lt;&lt; 31;	//a = -2147483648</span><br><span class="line">var b = a &gt;&gt;&gt; 0;	//b = 2147483648</span><br><span class="line">var c = b &lt;&lt; 0;		//c = -2147483648</span><br></pre></td></tr></table></figure>
-<p>知道了&gt;&gt;&gt;操作符之后，这个leetcode问题就很好解决了，顺便把我的答案附上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var reverseBits = function(n) &#123;</span><br><span class="line">    var m = 0;</span><br><span class="line">    var index = 31;</span><br><span class="line">    while(n) &#123;</span><br><span class="line">        var tmp = n &amp; 1;</span><br><span class="line">        if(tmp) &#123;</span><br><span class="line">            m = m | (tmp &lt;&lt; index);</span><br><span class="line">        &#125;</span><br><span class="line">        index -= 1;</span><br><span class="line">        n = n &gt;&gt;&gt; 1;	//注意，使用无符号右移</span><br><span class="line">    &#125;</span><br><span class="line">    return m&gt;&gt;&gt;0;	//m默认是有符号数，强制转换成无符号数</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1641,7 +1646,7 @@ console.log(d2.prop2.a);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

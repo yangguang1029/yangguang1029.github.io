@@ -259,6 +259,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/23/rn-native-call-js/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/23/rn-native-call-js/" itemprop="url">ReactNative之快速实现native调用js</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-23T20:18:36+08:00">
+                2018-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在官方文档里推荐的原生调用js的方法是通过发送事件，也就是通过DeviceEventEmitter来发送事件，然后在js层监听。这样虽然可以实现，但毕竟感觉有点绕弯，实际上观察一下源代码就会发现原生层有直接调用js的接口。它们分别是：</p>
+<p>iOS端位于RCTBridge中</p>
+<pre><code>- (void)enqueueJSCall:(NSString *)module method:(NSString *)method args:(NSArray *)args completion:(dispatch_block_t)completion;
+</code></pre><p>Android端位于CatalystInstance中</p>
+<pre><code>void callFunction(String module, String method, NativeArray arguments);
+</code></pre><p>可以看到要调用js代码，都需要一个模块名和方法名，然后是传入的参数。被原生调用的接口，需要在js代码中进行注册，注册的代码例如：</p>
+<pre><code>const BatchedBridge = require(&apos;BatchedBridge&apos;);
+BatchedBridge.registerCallableModule(&apos;hello&apos;, {
+    world:function(){
+        console.log(&quot;hello world&quot;);
+    }
+});
+</code></pre><p>这样在调用时，module就是”hello”，而method就是”world”了，当然调用前要先想办法获取到RCTBridge和CatalystInstance实例，这个对于RN有一定了解程度的同学来说肯定不是什么难事了，RCTBridge可以在初始化时存起来，CatalystInstance在初始化时通过ReactInstanceManager可以获取到。试试看吧，是不是感觉比发送事件监听事件要方便很多呢，不用再想着应该什么时候注册监听，什么时候取消监听了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/22/rn-tableview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1598,193 +1730,11 @@ catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, 
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/12/rn-mix-navigation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/rn-mix-navigation/" itemprop="url">ReactNative之混合Navigation跳转问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-12T20:18:36+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>首先把界面列出来</p>
-<pre><code>class Tab1 extends Component{
-    render(){
-        return &lt;View&gt;&lt;Text&gt;tab1&lt;/Text&gt;
-                &lt;Button title=&quot;totab2&quot; onPress={
-                    ()=&gt;{this.props.navigation.navigate(&quot;tab2&quot;)}
-                }/&gt;
-                &lt;Button title=&quot;toscene2&quot; onPress={
-                    ()=&gt;{this.props.navigation.navigate(&quot;scene2&quot;)}
-                }/&gt;
-    }
-}
-class Tab2 extends Component{
-    render(){
-        return &lt;View&gt;&lt;Text&gt;tab2&lt;/Text&gt;
-                &lt;Button title=&quot;totab1&quot; onPress={
-                    ()=&gt;{this.props.navigation.navigate(&quot;tab1&quot;)}
-                }/&gt;
-                &lt;Button title=&quot;toscene2&quot; onPress={
-                    ()=&gt;{this.props.navigation.navigate(&quot;scene2&quot;)}
-                }/&gt;
-    }
-}
-const TabNav = TabNavigator({
-    tab1：{screen:Tab1,}
-    tab2：{screen:Tab2,}
-}})
-class Scene2 extends Component{
-    render(){
-        return &lt;View&gt;&lt;Text&gt;scene2&lt;/Text&gt;
-                &lt;Button title=&quot;toscene1&quot; onPress={
-                    ()=&gt;{this.props.navigation.navigate(&quot;scene1&quot;)}
-                }/&gt;
-    }
-}
-const StackNav=StackNavigator({
-    scene1:{screen:TabNav},
-    scene2:{screen:Scene2}
-})
-</code></pre><p>这是最简单的情况，一个StackNavigator内的界面是TabNavigator，在Tab1和Tab2里，不论是进行TabNavigator还是StackNavigator内的跳转，都直接使用this.props.navigation.navigate即可。在注册生成TabNavigator和StackNavigator时给每个界面都注册了一个唯一的key，根据这个key可以在任意界面间跳转，例如在scene2界面，除了可以跳回scene1外，也可以指定跳回tab1或者tab2。</p>
-<p>如果TabNavigator被包装在一个普通Component内，情况就稍微复杂一些，例如</p>
-<pre><code>class TabContainer extends Component{
-    render(){
-        return &lt;View style={{flex:1}}&gt;
-            &lt;Text style={{margin:20}}&gt;tabContainer&lt;/Text&gt;
-            &lt;TabNav /&gt;
-        &lt;/View&gt;
-    }
-}
-const StackNav=StackNavigator({
-    scene1:{screen:TabContainer},
-    scene2:{screen:Scene2}
-})
-</code></pre><p>直接运行的话就会发现,在Tab1和Tab2界面之间的跳转没问题，但没法跳转到scene2了，解决方案是将\<tabnav>替换成</tabnav></p>
-<pre><code>&lt;TabNav navigation={this.props.navigation}/&gt;
-</code></pre><p>然后添加一行</p>
-<pre><code>TabContainer.router = TabNav.router;
-</code></pre><p>就和上面行为一样了，可以在各个界面自由跳转。上面这句话通过给TabContainer增加一个router属性，将一个普通Component变成一个navigator，所以就能跳转了。</p>
-<p>还有一种办法是通过给TabNav设置screenProps的办法把this.props.navigation传到Tab1和Tab2里面去，代码就是</p>
-<pre><code>&lt;TabNav screenProps={{navigation:this.props.navigation}}/&gt;
-</code></pre><p>在Tab1和Tab2里跳转到Scene2就可以</p>
-<pre><code>this.props.screenProps.navigation.navigate(&quot;scene2&quot;)
-</code></pre><p>使用这个方案，在Scene2界面只能往StackNavigator的界面跳，不能像第一种方案一样直接跳到tab1或者tab2，所以不够灵活，推荐使用前一种方案。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1830,7 +1780,7 @@ const StackNav=StackNavigator({
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

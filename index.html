@@ -259,6 +259,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/10/09/rn-reconciliation-discussion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/09/rn-reconciliation-discussion/" itemprop="url">ReactNative之一次Reconciliation讨论</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-09T21:15:36+08:00">
+                2019-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先抛出一个问题，这也是这篇博客产生的背景，在<a href="https://github.com/yangguang1029/MyReactNative/blob/master/testReconciliation.js" target="_blank" rel="noopener">这个demo</a>里，有两个render函数，他们的效果是一样的，就是初始渲染Com1和Com2组件，5秒后变成只渲染Com2组件，但实现代码不一样，我看到一篇文章里说第二种写法性能更高，因为第一种写法会有组件的销毁和重新创建，第二种写法没有。读者不妨停下来自己想一想是否认同这个观点，然后再继续看下去。</p>
+<p>我看到这个观点时，首先想到的是：这两种情况下最终渲染结果是一模一样的，所以我推断它们生成的virtual dom也是一样的，而组件（实际上是组件对应的原生view）的销毁创建，完全取决于virtual dom的布局，既然virtual dom一样，那这两种方案就没有区别，不存在后者性能更优的说法。于是我就去找作者讨论，作者使用ReactDevTools观察过这两种情况下的render数据，指出在第一种写法中，Com2组件重新构造了，render次数为1，而第二种情况下，Com2组件的render次数在增加，没有重新构造，这个可以在Com1和Com2的构造函数里打一句log，可以很容易验证。但我觉得这也很好解释，第一种情况下原来Com1位置变成了Com2，所以刷新时会卸载Com1和Com2然后装载Com2，这样来生成virtual dom，在这期间，类组件的实例化代价是非常非常小的，几乎不会造成任何性能差别。</p>
+<p>本来以为讨论已经结束，结果作者观察后发现两种情况下virtual dom并不一致。两种情况下刷新前的渲染是完全一致的，但刷新后，第一种情况下根View下只有一个子节点Com2，而第二种情况下根View下有两个子节点，分别是null和Com2。于是我赶紧去翻了下React的<a href="https://reactjs.org/docs/react-component.html#render" target="_blank" rel="noopener">官方文档</a></p>
+<blockquote>
+<p>Booleans or null. Render nothing. (Mostly exists to support return test &amp;&amp; <child> pattern, where test is boolean.)</child></p>
+</blockquote>
+<p>这里提到bool值和null不会渲染任何内容，但可没有说不会有virtual dom节点，而且实际观察确实有，于是前面得出的两种情况下virtual dom一样的这个结论就站不住脚了。（顺便说一下，这时我发现我前面因为实际渲染内容一样就推断virtual dom一样是很蠢的，因为搞错了因果关系，是virtual dom决定渲染内容，而不能由渲染内容来推断virtual dom）。不过虽然同意两种情况下virtual dom不一致，我仍然在做负隅顽抗，因为我脑子里揪住“两种情况的渲染结果一样”这个点不放，所以想是不是React在对virtual dom做diff时，忽略掉了这个null节点，这样即使virtual dom不一样，反应到原生端view时还是一样的，接着我就想，如果React能做到忽略掉null节点，那么在第一种情况下，它就不会笨笨的先卸载Com1和Com2然后装载Com2，而是通过virtual dom树的比较，发现Com2节点还在，所以复用Com2节点。</p>
+<p>到这里，我觉得我的脑子已经不清醒了，第一种情况下Com2节点并没有被复用，是很明显的，React对virtual dom树的diff算法其实也并没有多深奥和复杂，官方在<a href="https://reactjs.org/docs/reconciliation.html" target="_blank" rel="noopener">Reconciliation</a>这一节介绍的也很清楚。所以很快我也就放弃了“React会很智能地帮我们安排好最高效的刷新方案”这个观点，应该靠事实说话，而不是盲目崇拜和迷信权威。</p>
+<p>既然能实际观察到第一种情况下Com2销毁和创建了，第二种情况下没有，接下来我就开始思考是什么原因导致的，脑子不清醒的我又迅速掉入了一个坑，我想第一种情况下，return的两个js view不一样，是否导致它们在原生端绑定的不是同一个view呢？我不知道是否有人会觉得这句话很可笑，好在我自己迅速反应过来了：JSX只是语法糖，返回的js view并不代表任何意义！React的render原理是这样的：一个类组件要渲染时，调用它实例的render方法，得到virtual dom节点，进行diff，然后反映到原生view上。所以第一种情况下，return的是不是同一个js view根本没任何影响。</p>
+<p>再次跳出坑之后，文章作者跟我说，第二种情况下Com2在父组件内的index没变，第一种情况下变化了，可能跟这个有关系。一句话点醒梦中人，我才突然明白过来，原来真相就是这么简单！React在对virtual dom做diff时，是按顺序一个一个来比较的，除非对组件给出key这个props，diff前后如果key相同，就会认为组件可以复用，这是Reconciliation中的一个重要内容。所以第一种情况下，刷新前后是Com1变成Com2，Com2销毁。而第二种情况下是Com1变成null从而销毁，Com2不变（当然位置变了，但组件不会销毁和创建）。</p>
+<p>整个问题的讨论持续了有2个多小时，我原本以为自己对reconciliation非常了解了，但还出现“渲染结果一致所以virtual dom一致”这种低级错误，真的非常不应该，虽然得出结论后发现问题其实很简单，但整个思考过程还是挺有意思的，于是记录下来。</p>
+<p>最后，在做demo验证时我发现一个很奇怪的问题，如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">  return this.state.visible ? (</span><br><span class="line">    &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">      &#123;false&#125;</span><br><span class="line">      &lt;Com1 /&gt;</span><br><span class="line">    &lt;/View&gt;</span><br><span class="line">  ) : (</span><br><span class="line">    &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">    &lt;Com1 /&gt;</span><br><span class="line">    &lt;/View&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新组件从false Com1变成Com1，理论上来说应该有一次Com1的销毁和创建，但实际上并没有，当增加子组件的个数，例如从false Com1  Com2变成Com1 Com2时，就和预期的一样了，所以为什么只有一个Com1时，没有发生组件的销毁和创建呢？这个我暂时没有答案，希望有大牛帮忙解答。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/10/08/rn-performance-do-and-dont/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1491,178 +1624,11 @@ class Cell extends Component {  //换成PureComponent试试
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/11/rn-red-screen/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/11/rn-red-screen/" itemprop="url">ReactNative之红屏是如何产生的</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-11T19:15:36+08:00">
-                2018-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们在开发RN项目时，红屏是司空见惯的事情，然后我发现很多人会问，调试时出现红屏，那应用发布后是否会红屏呢？要确定的知道答案，还得从源代码去看。</p>
-<p>在node_modules/react-native/Libraries/Core/InitializeCore.js中有一段代码</p>
-<pre><code>const handleError = (e, isFatal) =&gt; {
-  try {
-    ExceptionsManager.handleException(e, isFatal);
-  } catch (ee) {
-    console.log(&apos;Failed to print error: &apos;, ee.message);
-    throw e;
-  }
-};
-const ErrorUtils = require(&apos;ErrorUtils&apos;);
-ErrorUtils.setGlobalHandler(handleError);
-</code></pre><p>这是默认的异常处理函数。handleException的实现，在node_modules/react-native/Libraries/Core/ExceptionsManager.js中</p>
-<pre><code>const {ExceptionsManager} = require(&apos;NativeModules&apos;);
-ExceptionsManager.reportFatalException
-ExceptionsManager.reportSoftException
-</code></pre><p>然后就进入到了原生代码中。</p>
-<p>先看iOS中的RCTExceptionManager.m中的reportFatalException函数可以看到</p>
-<pre><code>[_bridge.redBox showErrorMessage:message withStack:stack];
-if (_delegate) {
-  [_delegate handleFatalJSExceptionWithMessage:message stack:stack exceptionId:exceptionId];
-}
-static NSUInteger reloadRetries = 0;
-if (!RCT_DEBUG &amp;&amp; reloadRetries &lt; _maxReloadAttempts) {
-  reloadRetries++;
-  [_bridge reload];
-} else {
-  NSString *description = [@&quot;Unhandled JS Exception: &quot; stringByAppendingString:message];
-  NSDictionary *errorInfo = @{ NSLocalizedDescriptionKey: description, RCTJSStackTraceKey: stack };
-  RCTFatal([NSError errorWithDomain:RCTErrorDomain code:0 userInfo:errorInfo]);
-}
-</code></pre><p>这就是产生红屏的代码，可以看到，只要异常进入到原生层，都会出现红屏，不论是连本地webserver调试，还是加载包内或文件夹内bundle，更和打bundle时是否是dev模式无关。然后可以看到这里允许使用delegate在收到错误时进行额外处理，例如进行上报。如果是release模式且设置了maxReloadAttempts值（默认为0），就会进行reload重试，再进去RCTFatal函数可以看到它的实现是抛出了一个异常，但debug模式下会try catch住，避免应用崩溃，而release模式下则不会try catch，异常会继续抛出。</p>
-<p>android端要复杂一些，首先仍然是找到ExceptionManagerModule.java，它里面的实现是</p>
-<pre><code>if (mDevSupportManager.getDevSupportEnabled()) {
-  mDevSupportManager.showNewJSError(title, details, exceptionId);
-} else {
-  throw new JavascriptException(JSStackTrace.format(title, details));
-}
-</code></pre><p>如果mDevSupportManager.getDevSupportEnabled返回true，那么就会调用showNewJSError处理，否则直接抛出异常，这会导致应用直接闪退。mDevSupportManager的来源是ReactInstanceManager的构造函数，通过源代码可以看到如果useDeveloperSupport为false,则使用的是DisabledDevSupportManager，否则是DevSupportManagerImpl。useDeveloperSupport又来自于ReactNativeHost的接口getUseDeveloperSupport，模板工程里它的实现是</p>
-<pre><code>public boolean getUseDeveloperSupport() {
-  return BuildConfig.DEBUG;
-}
-</code></pre><p>所以对android端来说，release模式使用的DisabledDevSupportManager的getDevSupportEnabled返回false，所以在接到js层传来的异常时会直接抛出一个java异常，然后就结束了。debug模式使用的DevSupportManagerImpl，它的getDevSupportEnabled由ReactInstanceManager调用setDevSupportEnabled进行控制，它的showNewError就是产生红屏的具体实现代码。</p>
-<p>根据上面的一路跟踪，我们可以得出的结论是：</p>
-<ol>
-<li>如果不想出现红屏，最方便的办法就是在js层使用ErrorUtils.setGlobalHandler捕获异常，这样异常不会被传到原生层，也就不会导致红屏了</li>
-<li>如果异常被传到原生层，iOS端一定会出现红屏，release模式下可能闪退。Android端在release模式下不会红屏但可能会闪退，debug模式下则会红屏</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1708,7 +1674,7 @@ if (!RCT_DEBUG &amp;&amp; reloadRetries &lt; _maxReloadAttempts) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

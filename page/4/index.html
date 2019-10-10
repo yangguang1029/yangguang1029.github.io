@@ -259,6 +259,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/12/rn-mix-navigation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/rn-mix-navigation/" itemprop="url">ReactNative之混合Navigation跳转问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-12T20:18:36+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先把界面列出来</p>
+<pre><code>class Tab1 extends Component{
+    render(){
+        return &lt;View&gt;&lt;Text&gt;tab1&lt;/Text&gt;
+                &lt;Button title=&quot;totab2&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;tab2&quot;)}
+                }/&gt;
+                &lt;Button title=&quot;toscene2&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;scene2&quot;)}
+                }/&gt;
+    }
+}
+class Tab2 extends Component{
+    render(){
+        return &lt;View&gt;&lt;Text&gt;tab2&lt;/Text&gt;
+                &lt;Button title=&quot;totab1&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;tab1&quot;)}
+                }/&gt;
+                &lt;Button title=&quot;toscene2&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;scene2&quot;)}
+                }/&gt;
+    }
+}
+const TabNav = TabNavigator({
+    tab1：{screen:Tab1,}
+    tab2：{screen:Tab2,}
+}})
+class Scene2 extends Component{
+    render(){
+        return &lt;View&gt;&lt;Text&gt;scene2&lt;/Text&gt;
+                &lt;Button title=&quot;toscene1&quot; onPress={
+                    ()=&gt;{this.props.navigation.navigate(&quot;scene1&quot;)}
+                }/&gt;
+    }
+}
+const StackNav=StackNavigator({
+    scene1:{screen:TabNav},
+    scene2:{screen:Scene2}
+})
+</code></pre><p>这是最简单的情况，一个StackNavigator内的界面是TabNavigator，在Tab1和Tab2里，不论是进行TabNavigator还是StackNavigator内的跳转，都直接使用this.props.navigation.navigate即可。在注册生成TabNavigator和StackNavigator时给每个界面都注册了一个唯一的key，根据这个key可以在任意界面间跳转，例如在scene2界面，除了可以跳回scene1外，也可以指定跳回tab1或者tab2。</p>
+<p>如果TabNavigator被包装在一个普通Component内，情况就稍微复杂一些，例如</p>
+<pre><code>class TabContainer extends Component{
+    render(){
+        return &lt;View style={{flex:1}}&gt;
+            &lt;Text style={{margin:20}}&gt;tabContainer&lt;/Text&gt;
+            &lt;TabNav /&gt;
+        &lt;/View&gt;
+    }
+}
+const StackNav=StackNavigator({
+    scene1:{screen:TabContainer},
+    scene2:{screen:Scene2}
+})
+</code></pre><p>直接运行的话就会发现,在Tab1和Tab2界面之间的跳转没问题，但没法跳转到scene2了，解决方案是将\<tabnav>替换成</tabnav></p>
+<pre><code>&lt;TabNav navigation={this.props.navigation}/&gt;
+</code></pre><p>然后添加一行</p>
+<pre><code>TabContainer.router = TabNav.router;
+</code></pre><p>就和上面行为一样了，可以在各个界面自由跳转。上面这句话通过给TabContainer增加一个router属性，将一个普通Component变成一个navigator，所以就能跳转了。</p>
+<p>还有一种办法是通过给TabNav设置screenProps的办法把this.props.navigation传到Tab1和Tab2里面去，代码就是</p>
+<pre><code>&lt;TabNav screenProps={{navigation:this.props.navigation}}/&gt;
+</code></pre><p>在Tab1和Tab2里跳转到Scene2就可以</p>
+<pre><code>this.props.screenProps.navigation.navigate(&quot;scene2&quot;)
+</code></pre><p>使用这个方案，在Scene2界面只能往StackNavigator的界面跳，不能像第一种方案一样直接跳到tab1或者tab2，所以不够灵活，推荐使用前一种方案。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/01/06/rn-flatlist-keyExtractor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1655,205 +1837,11 @@ guangy after set state,now value 80
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/02/rn-high-order-component/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/02/rn-high-order-component/" itemprop="url">ReactNative之封装组件</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-02T20:18:36+08:00">
-                2017-12-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在项目开发中有时候会需要封装一些自定义组件以便复用，本文稍微整理一下。</p>
-<p>我们基于一个自定义组件进行封装，这样方便通过console观察函数的调用情况</p>
-<pre><code>class MyComponent extends Component{
-    componentWillMount(){
-        console.log(&quot;myComponent componentWillMount....&quot;);
-    }
-    componentDidMount(){
-        console.log(&quot;myComponent componentDidMount....&quot;);
-    }
-    render(){
-        return (&lt;View&gt;
-            &lt;Text&gt;123&lt;/Text&gt;
-            &lt;Text&gt;456&lt;/Text&gt;    
-        &lt;/View&gt;);
-    }
-}
-</code></pre><p>如果基于特定某种组件封装，那实际上就是继承，在render的时候，调用父类的render()即可。例如</p>
-<pre><code>class HighComponent extends MyComponent{
-    componentDidMount(){
-        super.componentDidMount();
-        console.log(&quot;HighComponent componentDidMount....&quot;);
-    }
-    render(){
-        return(&lt;View style={{width:100,height:100,backgroundColor:"red"}}&gt;
-            {super.render()}
-        &lt;/View&gt;)
-    }
-}
-</code></pre><p>这里需要注意一点的就是分清子类是否需要重写父类的方法，如果不重写，则会直接使用父类的实现，就像上面的componentWillMount函数。如果重写，判断是否需要使用super调用父类的实现，比如上面的componentDidMount函数。</p>
-<p>还有一种基于特定组件封装的办法，就是重写它的render方法，例如</p>
-<pre><code>import {cloneElement} from &quot;react&quot;
-let originText = Text;
-Text.prototype.render = function(...args){
-    let text = originText.apply(this, args);
-    return cloneElement(text, {style:[
-        text.props.style,
-        {color:&quot;red&quot;}    
-    ]})
-}
-</code></pre><p>然后再使用Text，就发现字体颜色都变成红色了。这个cloneElement是react库里提供的一个方法，可以到源代码里查看了解如何使用</p>
-<p>如果不基于特定组件，那写一个封装的函数，把需要被封装的Component传进去，例如</p>
-<pre><code> function highComponent(Com){
-    return ({children, ...props}) =&gt; {
-        return(&lt;View style={{width:100,height:100,backgroundColor:"red"}}&gt;
-            &lt;Com {...props}&gt;
-                {children}
-            &lt;/Com&gt;
-        &lt;/View&gt;)
-    }
-}
-const HighComponent = highComponent(MyComponent);
-</code></pre><p>或者</p>
-<pre><code>function highComponent(Com){
-    class Tmp extends Component{
-        render(){
-            return(&lt;View style={{width:100,height:100,backgroundColor:"red"}}&gt;
-                &lt;Com {...this.props}/&gt;
-            &lt;/View&gt;)
-        }
-    }
-    return Tmp;
-}
-const HighComponent = highComponent(MyComponent);
-</code></pre><p>这个demo很简单，不论往函数里传什么Component，都会被装在一个我们自定义的View里面。</p>
-<p>这两个写法效果是一样的，但后者比前者更强大一点，基于类可以实现更多功能。</p>
-<h3 id="2017-12-16添加："><a href="#2017-12-16添加：" class="headerlink" title="2017/12/16添加："></a>2017/12/16添加：</h3><p>需要注意在封装组件时，如果有内部使用的style，应该使用this.props.style和内部的进行组合，否则在使用这个封装组件时传入的style就不起作用了，对于上面例子里的HighComponent，下面设置的style不会起作用。</p>
-<pre><code>&lt;HighComponent style={{marginLeft:50}} /&gt;
-</code></pre><p>要想让传入的style生效，在封装时就要使用this.props.style</p>
-<pre><code>class HighComponent extends MyComponent{
-    render(){
-        return(&lt;View style={[this.props.style, {width:100,height:100,backgroundColor:&quot;red&quot;}]}&gt;
-            {super.render()}
-        &lt;/View&gt;)
-    }
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1899,7 +1887,7 @@ const HighComponent = highComponent(MyComponent);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">100</span>
+                  <span class="site-state-item-count">101</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

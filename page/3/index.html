@@ -259,6 +259,175 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/28/rn-event-emitter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/28/rn-event-emitter/" itemprop="url">ReactNative之EventEmitter</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T20:18:36+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>官方文档推荐的原生往js层传递消息的方式，<a href="https://reactnative.cn/docs/0.51/native-modules-ios.html#%E7%BB%99javascript%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6" target="_blank" rel="noopener">iOS端</a>是继承RCTEventEmitter，然后调用sendEventWithName方法</p>
+<pre><code>[self sendEventWithName:@&quot;EventReminder&quot; body:nil];
+</code></pre><p><a href="https://reactnative.cn/docs/0.51/native-modules-android.html#%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6%E5%88%B0javascript" target="_blank" rel="noopener">Android端</a>是</p>
+<pre><code>getReactApplicationContext()
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(&quot;EventReminder&quot;, null);
+</code></pre><p>Android端一眼就能看出来是通过RCTDeviceEventEmitter模块来交流的，所以在js层直接使用RCTDeviceEventEmitter来注册监听。例如</p>
+<pre><code>var emitter = require(&quot;RCTDeviceEventEmitter&quot;)
+emitter.addListener(&quot;EventReminder&quot;,(e)=&gt;{
+  console.log(&quot;guangy get event in RCTDeviceEventEmitter&quot;)
+})
+</code></pre><p>或者</p>
+<pre><code>import {DeviceEventEmitter} from &quot;react-native&quot;
+DeviceEventEmitter.addListener(&quot;EventReminder&quot;,(e)=&gt;{
+  console.log(&quot;guangy get event in DeviceEventEmitter&quot;)
+})
+</code></pre><p>但是在iOS端就会发现这两个回调都不管用了。实际上去RCTEventEmitter类里面看一下它的sendEventWithName方法，发送事件的代码是</p>
+<pre><code>if (_listenerCount &gt; 0) {
+    [_bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
+                method:@&quot;emit&quot;
+                  args:body ? @[eventName, body] : @[eventName]
+            completion:NULL];
+}
+</code></pre><p>其实也是通过RCTDeviceEventEmitter发送的消息。但这里有个if判断，_listenerCount的初始值为0，下个断点就很快发现，没有进到if里去。使用NativeEventEmitter来注册监听，就可以收到了</p>
+<pre><code>const Test = NativeModules.TestNative;
+const testEmitter = new NativeEventEmitter(Test);
+const subscription = testEmitter.addListener(&apos;EventReminder&apos;,
+    ()=&gt;{
+        console.log(&quot;guangy get event in NativeEventEmitter&quot;);
+    }
+);
+</code></pre><p>看一下NativeEventEmitter的代码很快就能找到原因，在它的addListener方法里，有</p>
+<pre><code>if (this._nativeModule != null) {
+  this._nativeModule.addListener(eventType);
+}
+</code></pre><p>这是调了原生模块的addListener方法，在RCTEventEmitter类中它的实现就是让_listenerCount加1。所以在iOS端，因为原生代码中通过继承RCTEventEmitter类来发送消息，js层就必须使用NativeEventEmitter来注册监听，否则的话，原生层连消息都不会发出去。但是在Android端，因为底层实现就是直接给RCTDeviceEventEmitter发消息，不像iOS端有RCTEventEmitter类的那一套逻辑，所以三种注册监听的方式都一样，构造NativeEventEmitter实例时，也可以不传递NativeModule参数。</p>
+<p>如果iOS的原生层不使用RCTEventEmitter，那么就和Android端一样可以直接使用RCTDeviceEventEmitter监听，例如</p>
+<pre><code>[self.bridge.eventDispatcher sendDeviceEventWithName:@&quot;EventReminder&quot; body:nil];
+</code></pre><p>但这个接口已经被废弃了，所以不建议使用。要么直接套用sendEventWithName的if里面的实现</p>
+<pre><code>[self.bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
+              method:@&quot;emit&quot;
+                args:@[@&quot;EventReminder&quot;]
+          completion:NULL];
+</code></pre><p>这样也可以直接使用RCTDeviceEventEmitter来监听。</p>
+<p>到这里结论就清楚了，<strong>我们在js层应该使用NativeEventEmitter，这是双端统一的事件传递接口</strong>。</p>
+<p>我们再看一下NativeEventEmitter.js里的实现，它的构造函数里有一句</p>
+<pre><code>super(RCTDeviceEventEmitter.sharedSubscriber);
+</code></pre><p>这就很明显了，虽然我们在js层可以给每个模块都new一个NativeEventEmitter，但实际上它们都是交给了RCTDeviceEventEmitter来处理，这也跟原生代码中是通过调用RCTDeviceEventEmitter模块的emit来发送消息是一致的。js层所有的注册都在EventSubscriptionVendor.js中进行管理，实现也很简单，就是通过字典存储事件名和回调函数列表。</p>
+<p>在js层还有一个类RCTNativeAppEventEmitter，不过已经被声明废弃了，所以忽略掉。</p>
+<p>最后我稍微想了一下，如果不使用NativeEventEmitter的话，其实代码更简单，不用考虑remove取消监听，双端也是统一的。但为什么iOS平台废弃掉直接发送事件的接口，然后统一使用NativeEventEmitter呢？我能想到的优点就是原生层可以通过startObserving和stopObserving来监听某个事件的监听状况，然后虽然本质上事件仍然都是扔到了RCTDeviceEventEmitter来处理，但至少从代码上进行了隔离，将事件和模块绑定起来，避免了混杂。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/23/rn-native-call-js/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1607,129 +1776,6 @@ catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, 
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/02/06/rn-split-bundle-ios/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/06/rn-split-bundle-ios/" itemprop="url">ReactNative之ios平台bundle拆分实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-06T20:15:36+08:00">
-                2018-02-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今天把放在github上的bundle拆分demo实现了ios版本，运行没问题后代码提交了上去，<a href="https://github.com/yangguang1029/ReactNativeSplit" target="_blank" rel="noopener">demo地址</a>。因为之前没接触过ReactNative的ios端源代码，所以实现的过程其实就是把ios端的运行流程大概看了一遍。</p>
-<p>如果不追究太多细节的话，整个流程就是AppDelegate.m里创建RCTRootView，在RCTRootView的init函数里，创建RCTBridge，然后在RCTCxxBridge的start方法里加载bundle并执行，加载完后回到RCTRootView的runApplication回调函数里，调用js方法AppRegistry.runApplication进入了js代码的入口。</p>
-<p>android和ios端的bundle拆分和分步加载方案原理是一样的，原来的实现是创建一个View，然后加载bundle，加载好了展示界面。我们把步骤稍微改一下，先加载common.bundle创建好js context并存起来，然后当需要展示界面时，创建view，并用已有的js context来加载业务bundle。为了能自由指定Bundle加载的时机，我们需要把加载bundle的接口抽离暴露出来。</p>
-<p>ios和android端流程上基本一样，只是类名字不同。android平台创建js context的类是ReactInstanceManager，而ios平台是RCTBridge，android平台的view是ReactRootView，而ios平台是RCTRootView等等。从代码量上看，android端稍微复杂一些。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1780,7 +1826,7 @@ catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, 
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

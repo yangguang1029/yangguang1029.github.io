@@ -259,6 +259,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/23/js-this/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/23/js-this/" itemprop="url">javaScript之this</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-23T15:50:39+08:00">
+                2017-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>js中的this，很容易让刚接触的人摸不着头脑，但其实主要明白了怎么回事，也不会很复杂。函数里的this指向什么，跟它的当前执行环境有关。</p>
+<p>我们从简单到复杂，通过一些例子来说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">&#125;</span><br><span class="line">var a = new A();</span><br></pre></td></tr></table></figure>
+<p>这个很简单，因为A是作为一个构造函数来使用的，所以这时的this指向的是a</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">&#125;</span><br><span class="line">A();</span><br></pre></td></tr></table></figure>
+<p>这里A是作为一个普通函数被调用的，当函数被作为一个普通函数调用时this指向全局变量，即使在嵌套了很多层的复杂情况也是如此。</p>
+<p>然后再看一个情况:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">	func:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">a.func();</span><br></pre></td></tr></table></figure>
+<p>这里func是作为一个对象a的成员方法被调用的，所以this指向的是对象a本身。</p>
+<p>我们不考虑通过bind和apply设定this的情况，则不论代码多么复杂，最终都可以归结为上面的三种情况，然后分析属于哪种就行了。</p>
+<p>比如写个复杂点的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);	//1</span><br><span class="line">	var B = (function()&#123;</span><br><span class="line">		console.log(this);	//2</span><br><span class="line">		return function()&#123;</span><br><span class="line">			console.log(this);	//3</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)();</span><br><span class="line">	this.cb = function()&#123;</span><br><span class="line">		console.log(this);	//4</span><br><span class="line">		B();	//43</span><br><span class="line">	&#125;</span><br><span class="line">	B();	//53</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a = new A();</span><br><span class="line">a.cb();</span><br></pre></td></tr></table></figure>
+<p>这里1很简单，this就是a，因为A作为一个构造函数。 2这里是在一个闭包里，这个立即执行函数是被直接调用的，所以这里的this也是global。3这里会被执行两次，分别为43和53，但这两种情况都是直接执行函数，所以this也都是global。至于4，它被调用时是a.cb()的形式，cb作为a的成员函数被调用，所以this时a本身。</p>
+<p>至于bind和apply，使用它们给一个函数绑定了什么对象，这个函数被调用时，this就是什么对象。举个简单的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">	func:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;,</span><br><span class="line">	func1:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;.bind(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.func();		//1</span><br><span class="line">a.func1();	//2</span><br></pre></td></tr></table></figure>
+<p>1这里this就是a本身，2这里则是global。2这里往func1绑定的this，是在定义a时环境的this，而不是a本身，需要注意，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	var a = &#123;</span><br><span class="line">		func:function()&#123;</span><br><span class="line">			console.log(this);</span><br><span class="line">		&#125;,</span><br><span class="line">		func1:function()&#123;</span><br><span class="line">			console.log(this);</span><br><span class="line">		&#125;.bind(this)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	a.func();		//1</span><br><span class="line">	a.func1();	//2</span><br><span class="line">&#125;</span><br><span class="line">var tmp = new A();</span><br></pre></td></tr></table></figure>
+<p>这时1的this仍然是a, 而2的this就是就是tmp</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/21/cocos-scheduler/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1489,136 +1626,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/12/cocos-ccb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/12/cocos-ccb/" itemprop="url">cocos之使用ccb的一些坑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-12T10:46:22+08:00">
-                2017-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。</p>
-<h4 id="1-labelttf不是labelttf"><a href="#1-labelttf不是labelttf" class="headerlink" title="1.labelttf不是labelttf"></a>1.labelttf不是labelttf</h4><p>通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。</p>
-<p>虽然Label上有一个方法setTextColor可以设置颜色，但如果使用，会发现最终显示的颜色与设定的颜色并不一致，它将你在ccb里给他设定的初始颜色做了混合，如果想要生效，那要么在ccb里设成白色，要么在代码中调setTextColor前，先调用setColor(cc.color.WHITE)</p>
-<p>同样，setFontSize是LabelTTF上的方法，代码中不能使用，办法是使用Label上的setSystemFontSize方法来代替。当然，最彻底的解决办法就是修改ccb的解析代码，它位于editor-support/cocosbuilder/ccLabelTTFLoader.h中</p>
-<h4 id="2-一个ccb中最好不要有多个动画"><a href="#2-一个ccb中最好不要有多个动画" class="headerlink" title="2.一个ccb中最好不要有多个动画"></a>2.一个ccb中最好不要有多个动画</h4><p>我们一般调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">animationManager.runAnimationsForSequenceNamedTweenDuration();</span><br></pre></td></tr></table></figure>
-<p>来播放动画，这个方法一上来就会把现有的动画都停止掉，所以如果一个界面有多个动画，最好不要放在同一个ccb里，否则一旦需要同时播放的时候，正在播放中的动画就会被停止</p>
-<h4 id="3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"><a href="#3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置" class="headerlink" title="3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"></a>3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置</h4><p>cc.BuilderReader.load方法第二个参数为owner，它用于寻找ccb中设定的属性和方法。owner最好不要重用，否则会出现各种奇怪的现象。例如我们需要加载一个子ccb时，可以新建一个node作为owner来使用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var delegate = new cc.Node();	//用来做ower</span><br><span class="line">delegate.retain();</span><br><span class="line">delegate._finishAction = function()&#123;</span><br><span class="line">	node.removeFromParent();</span><br><span class="line">	delegate.release();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var node = cc.BuilderReader.load(name, delegate);</span><br><span class="line">//owner必须继承自node</span><br></pre></td></tr></table></figure>
-<p>另外回调必须在调用load之前绑定好,这里_finishAction就是绑定的回调，虽然回调的时机在初始化以后，但如果不先设置，那么在解析的时候找不到接口，会导致绑定不成功</p>
-<h4 id="4-不能在tableCellTouched中移除界面"><a href="#4-不能在tableCellTouched中移除界面" class="headerlink" title="4.不能在tableCellTouched中移除界面"></a>4.不能在tableCellTouched中移除界面</h4><p>这个与ccb没有关系，顺便提醒一下。我们经常有点击后关闭界面的需求，在别的情况下可能不会出什么问题，但如果在tableView的tableCellTouched回调中移除，会发生崩溃。因为在这个回调之后，touchEnd其实还没有结束，还会继续处理scroll上的一些代码，如果移除掉了根节点，导致内存被释放，那后续的代码就崩溃了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1669,7 +1676,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

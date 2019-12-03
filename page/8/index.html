@@ -259,6 +259,136 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/12/cocos-ccb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/12/cocos-ccb/" itemprop="url">cocos之使用ccb的一些坑</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-12T10:46:22+08:00">
+                2017-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>cocosBuilder是一款很老的编辑器了，所以如果还在使用的话，需要注意一些坑。</p>
+<h4 id="1-labelttf不是labelttf"><a href="#1-labelttf不是labelttf" class="headerlink" title="1.labelttf不是labelttf"></a>1.labelttf不是labelttf</h4><p>通过查看源代码，以及查看成员方法，可以得出，ccb将LabelTTF解析成了Label，所以在ccb中创建的Labelttf，代码中只能调用Label的方法，像setFontFillColor等LabelTTF的方法都是不能使用的。</p>
+<p>虽然Label上有一个方法setTextColor可以设置颜色，但如果使用，会发现最终显示的颜色与设定的颜色并不一致，它将你在ccb里给他设定的初始颜色做了混合，如果想要生效，那要么在ccb里设成白色，要么在代码中调setTextColor前，先调用setColor(cc.color.WHITE)</p>
+<p>同样，setFontSize是LabelTTF上的方法，代码中不能使用，办法是使用Label上的setSystemFontSize方法来代替。当然，最彻底的解决办法就是修改ccb的解析代码，它位于editor-support/cocosbuilder/ccLabelTTFLoader.h中</p>
+<h4 id="2-一个ccb中最好不要有多个动画"><a href="#2-一个ccb中最好不要有多个动画" class="headerlink" title="2.一个ccb中最好不要有多个动画"></a>2.一个ccb中最好不要有多个动画</h4><p>我们一般调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">animationManager.runAnimationsForSequenceNamedTweenDuration();</span><br></pre></td></tr></table></figure>
+<p>来播放动画，这个方法一上来就会把现有的动画都停止掉，所以如果一个界面有多个动画，最好不要放在同一个ccb里，否则一旦需要同时播放的时候，正在播放中的动画就会被停止</p>
+<h4 id="3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"><a href="#3-owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置" class="headerlink" title="3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置"></a>3.owner最好不要重用，方法绑定在owner或者documentRoot上，在load之前必须先设置</h4><p>cc.BuilderReader.load方法第二个参数为owner，它用于寻找ccb中设定的属性和方法。owner最好不要重用，否则会出现各种奇怪的现象。例如我们需要加载一个子ccb时，可以新建一个node作为owner来使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var delegate = new cc.Node();	//用来做ower</span><br><span class="line">delegate.retain();</span><br><span class="line">delegate._finishAction = function()&#123;</span><br><span class="line">	node.removeFromParent();</span><br><span class="line">	delegate.release();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var node = cc.BuilderReader.load(name, delegate);</span><br><span class="line">//owner必须继承自node</span><br></pre></td></tr></table></figure>
+<p>另外回调必须在调用load之前绑定好,这里_finishAction就是绑定的回调，虽然回调的时机在初始化以后，但如果不先设置，那么在解析的时候找不到接口，会导致绑定不成功</p>
+<h4 id="4-不能在tableCellTouched中移除界面"><a href="#4-不能在tableCellTouched中移除界面" class="headerlink" title="4.不能在tableCellTouched中移除界面"></a>4.不能在tableCellTouched中移除界面</h4><p>这个与ccb没有关系，顺便提醒一下。我们经常有点击后关闭界面的需求，在别的情况下可能不会出什么问题，但如果在tableView的tableCellTouched回调中移除，会发生崩溃。因为在这个回调之后，touchEnd其实还没有结束，还会继续处理scroll上的一些代码，如果移除掉了根节点，导致内存被释放，那后续的代码就崩溃了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/06/cocos-jsb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1431,134 +1561,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/28/cocos-jpgmaskpng/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/28/cocos-jpgmaskpng/" itemprop="url">cocos之使用jpg+mask合成png实现方式（一）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-28T16:11:09+08:00">
-                2016-11-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>第一种方式，在CCImage内读取图片数据后，合并起来使用。改写Image类，增加initWithJpgAndPng方法</p>
-<p>代码如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithJpgAndPng(const std::string&amp; jpgpath, const std::string&amp; pngpath) &#123;</span><br><span class="line">    bool ret = false;</span><br><span class="line">    unsigned char* jd = nullptr;</span><br><span class="line">    do&#123;</span><br><span class="line">        std::string jp = FileUtils::getInstance()-&gt;fullPathForFilename(jpgpath);</span><br><span class="line">        Data jpgdata = FileUtils::getInstance()-&gt;getDataFromFile(jp);</span><br><span class="line">        </span><br><span class="line">        unsigned char* jdata = jpgdata.getBytes();</span><br><span class="line">        ssize_t jsize = jpgdata.getSize();</span><br><span class="line">        </span><br><span class="line">        ret = initWithJpgData(jdata, jsize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int jwidth = _width;</span><br><span class="line">        int jheight = _height;</span><br><span class="line">        </span><br><span class="line">        ssize_t jlen = _dataLen;</span><br><span class="line">        jd = static_cast&lt;unsigned char*&gt;(malloc(jlen * sizeof(unsigned char)));</span><br><span class="line">        memcpy(jd, _data, jlen * sizeof(unsigned char));	//将jpg数据暂存起来</span><br><span class="line">        </span><br><span class="line">        std::string pp = FileUtils::getInstance()-&gt;fullPathForFilename(pngpath);</span><br><span class="line">        Data pngdata = FileUtils::getInstance()-&gt;getDataFromFile(pp);</span><br><span class="line">        unsigned char* pdata = pngdata.getBytes();</span><br><span class="line">        ssize_t psize = pngdata.getSize();</span><br><span class="line">        ret = initWithPngData(pdata, psize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pwidth = _width;</span><br><span class="line">        int pheight = _height;</span><br><span class="line">        if(pwidth != jwidth || pheight != jheight) &#123;</span><br><span class="line">            break;	//要求长宽必须严格相同</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pindex = 0;</span><br><span class="line">        int jindex = 0;</span><br><span class="line">        </span><br><span class="line">        for(int index = 0; index &lt; pwidth * pheight; index++) &#123;</span><br><span class="line">            unsigned char alpha =*(_data+(pindex+3));</span><br><span class="line">            </span><br><span class="line">            *(_data+pindex) = *(jd + jindex) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+1)) = *(jd + jindex+1) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+2)) = *(jd + jindex+2) * alpha / 255;</span><br><span class="line">            </span><br><span class="line">            pindex += 4;</span><br><span class="line">            jindex += 3;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;while(0);</span><br><span class="line">    </span><br><span class="line">    if(jd) &#123;</span><br><span class="line">        CC_SAFE_FREE(jd);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>tips:</p>
-<ol>
-<li>这里为了验证思路，找了个RBGA8888的png做mask图，如果使用的mask图不是该格式，则需要修改_renderFormat, _fileType等属性。</li>
-<li>因为cocos默认png图片是pre_multi_alpha的，所以我们在加入alpha数据时，需要同时将alpha乘到rgb上</li>
-</ol>
-<p>使用时代码如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Image* image = new Image();</span><br><span class="line">    image-&gt;initWithJpgAndPng(&quot;res/test1.jpg&quot;, &quot;res/test2.png&quot;);</span><br><span class="line">    </span><br><span class="line">    Texture2D* t = new Texture2D();</span><br><span class="line">    t-&gt;initWithImage(image);</span><br><span class="line">    Sprite* s = Sprite::createWithTexture(t);</span><br><span class="line">    s-&gt;setPosition(480,320);</span><br><span class="line">    this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1609,7 +1611,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

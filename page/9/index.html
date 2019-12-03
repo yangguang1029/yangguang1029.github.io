@@ -259,6 +259,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/28/cocos-jpgmaskpng/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/28/cocos-jpgmaskpng/" itemprop="url">cocos之使用jpg+mask合成png实现方式（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-28T16:11:09+08:00">
+                2016-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>第一种方式，在CCImage内读取图片数据后，合并起来使用。改写Image类，增加initWithJpgAndPng方法</p>
+<p>代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithJpgAndPng(const std::string&amp; jpgpath, const std::string&amp; pngpath) &#123;</span><br><span class="line">    bool ret = false;</span><br><span class="line">    unsigned char* jd = nullptr;</span><br><span class="line">    do&#123;</span><br><span class="line">        std::string jp = FileUtils::getInstance()-&gt;fullPathForFilename(jpgpath);</span><br><span class="line">        Data jpgdata = FileUtils::getInstance()-&gt;getDataFromFile(jp);</span><br><span class="line">        </span><br><span class="line">        unsigned char* jdata = jpgdata.getBytes();</span><br><span class="line">        ssize_t jsize = jpgdata.getSize();</span><br><span class="line">        </span><br><span class="line">        ret = initWithJpgData(jdata, jsize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int jwidth = _width;</span><br><span class="line">        int jheight = _height;</span><br><span class="line">        </span><br><span class="line">        ssize_t jlen = _dataLen;</span><br><span class="line">        jd = static_cast&lt;unsigned char*&gt;(malloc(jlen * sizeof(unsigned char)));</span><br><span class="line">        memcpy(jd, _data, jlen * sizeof(unsigned char));	//将jpg数据暂存起来</span><br><span class="line">        </span><br><span class="line">        std::string pp = FileUtils::getInstance()-&gt;fullPathForFilename(pngpath);</span><br><span class="line">        Data pngdata = FileUtils::getInstance()-&gt;getDataFromFile(pp);</span><br><span class="line">        unsigned char* pdata = pngdata.getBytes();</span><br><span class="line">        ssize_t psize = pngdata.getSize();</span><br><span class="line">        ret = initWithPngData(pdata, psize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pwidth = _width;</span><br><span class="line">        int pheight = _height;</span><br><span class="line">        if(pwidth != jwidth || pheight != jheight) &#123;</span><br><span class="line">            break;	//要求长宽必须严格相同</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pindex = 0;</span><br><span class="line">        int jindex = 0;</span><br><span class="line">        </span><br><span class="line">        for(int index = 0; index &lt; pwidth * pheight; index++) &#123;</span><br><span class="line">            unsigned char alpha =*(_data+(pindex+3));</span><br><span class="line">            </span><br><span class="line">            *(_data+pindex) = *(jd + jindex) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+1)) = *(jd + jindex+1) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+2)) = *(jd + jindex+2) * alpha / 255;</span><br><span class="line">            </span><br><span class="line">            pindex += 4;</span><br><span class="line">            jindex += 3;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;while(0);</span><br><span class="line">    </span><br><span class="line">    if(jd) &#123;</span><br><span class="line">        CC_SAFE_FREE(jd);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>tips:</p>
+<ol>
+<li>这里为了验证思路，找了个RBGA8888的png做mask图，如果使用的mask图不是该格式，则需要修改_renderFormat, _fileType等属性。</li>
+<li>因为cocos默认png图片是pre_multi_alpha的，所以我们在加入alpha数据时，需要同时将alpha乘到rgb上</li>
+</ol>
+<p>使用时代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Image* image = new Image();</span><br><span class="line">    image-&gt;initWithJpgAndPng(&quot;res/test1.jpg&quot;, &quot;res/test2.png&quot;);</span><br><span class="line">    </span><br><span class="line">    Texture2D* t = new Texture2D();</span><br><span class="line">    t-&gt;initWithImage(image);</span><br><span class="line">    Sprite* s = Sprite::createWithTexture(t);</span><br><span class="line">    s-&gt;setPosition(480,320);</span><br><span class="line">    this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/25/cocos-render/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1464,138 +1592,6 @@ console.log(d2.prop2.a);
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/14/jsbinding热加载/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/14/jsbinding热加载/" itemprop="url">cocos tips之jsbinding热加载</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-14T20:33:32+08:00">
-                2016-11-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>所谓热加载，就是运行时，不用重启模拟器而重新加载js文件，提高开发效率。要实现热加载，首先要找到ocos是怎么加载js代码的，入口就是<br>ScriptingCore::runScript方法，包括在js代码内require，最终也是执行的这个方法。</p>
-<p>在ScriptingCore::compileScript这个方法里，有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (getScript(path)) &#123;    </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>这么一段代码，它读取了已加载文件的缓存，所以这几句必须注释掉，否则读取缓存的话，就没办法热加载了。</p>
-<p>做了这步以后，在开启模拟器调试时，修改js代码后，不重启模拟器，只需要重新require一下文件，就实现了热加载了（比如做一个按钮，点击后重新require）。</p>
-<p>然后如果你这么做，肯定会发现没有生效，原因是什么呢？那是因为我们在执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(&quot;a.js&quot;)</span><br></pre></td></tr></table></figure>
-<p>这句代码时，在模拟器上运行的时候，它实际加载的是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/yangguang/Library/Developer/CoreSimulator/Devices/A25124E2-3204-43C7-A9F9-638FDF466587/data/Containers/Bundle/Application/69FC175C-06EB-4868-85D4-89F008164167/xxx.app/a.js</span><br></pre></td></tr></table></figure>
-<p>这样的路径，而我们修改的是项目中的代码，除非把修改后的代码拷贝到这个文件夹去，否则重新require的也是老代码，那要怎么解决这个问题呢？我们仍然看源代码，在读取js代码时，会获取这个文件的全路径，相关代码为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">std::string FileUtils::fullPathForFilename(const std::string &amp;filename)</span><br><span class="line">&#123;</span><br><span class="line">    if (filename.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (isAbsolutePath(filename))</span><br><span class="line">    &#123;</span><br><span class="line">        return filename;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，如果文件路径写的是全路径，就不会再拼成模拟器应用所在路径了，所以解决的办法就出来了，我们将需要require的js文件的路径，在debug状态下设为开发目录下的全路径即可，在release状态下则为相对路径。</p>
-<p>对于其他资源，也可以采用类似的思路，只要去掉资源缓存，以及使用全路径加载，就可以很容易实现资源热加载，从而避免调试时频繁的启动模拟器</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1646,7 +1642,7 @@ console.log(d2.prop2.a);
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。 今天突">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative性能优化系列（一）包体积优化">
+<meta property="og:url" content="http://yangguang1029.github.io/2019/12/02/rn-improve-performance1/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="前言一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。 今天突">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yangguang1029.github.io/2019/12/02/rn-improve-performance1/rn-improve-performance1/1_Tzo7ki8deVX0ADRFCm1E7Q.png">
+<meta property="og:updated_time" content="2019-12-03T07:15:52.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative性能优化系列（一）包体积优化">
+<meta name="twitter:description" content="前言一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。 今天突">
+<meta name="twitter:image" content="http://yangguang1029.github.io/2019/12/02/rn-improve-performance1/rn-improve-performance1/1_Tzo7ki8deVX0ADRFCm1E7Q.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2019/12/02/rn-improve-performance1/"/>
+
+
+
+
+
+  <title>ReactNative性能优化系列（一）包体积优化 | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/02/rn-improve-performance1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative性能优化系列（一）包体积优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-02T20:18:36+08:00">
+                2019-12-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。</p>
+<p>今天突然想到，与其寄希望于一口气写出一篇集ReactNative性能优化之大成的文章来，不如想到多少写多少，先写了再说，这才是正确的做事方式，所以先来个最简单的开篇吧。</p>
+<h3 id="包体积"><a href="#包体积" class="headerlink" title="包体积"></a>包体积</h3><p>所谓包，就是我们在执行react-native bundle命令生成的产物的统称，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native bundle --entry-file ./index.js --platform ios --dev false --bundle-output ./dist/index.ios.bundle --assets-dest ./dist</span><br></pre></td></tr></table></figure>
+<p>就会在dist目录下生成一个index.ios.bundle文件，以及图片资源也放在dist目录下，这样我们可以把dist目录打一个压缩包，预置在安装包内，或者拿去下发做热更新。</p>
+<p>为什么要优化包体积？首先它会影响到安装包的体积，尤其是预置的情况，安装包体积过大，会影响用户下载应用的体验，各大APP也都在想办法压缩安装包的体积，其次是会影响加载效率，ReactNative需要加载bundle才能运行起来，bundle体积越大，则加载越慢，体验也就更加不好，而如果图片资源体积过大，则影响运行时的图片加载效率，也会影响体验</p>
+<p>既然包是由bundle和资源两大块组成的，我们就分别给出它们的优化策略。</p>
+<h3 id="图片压缩"><a href="#图片压缩" class="headerlink" title="图片压缩"></a>图片压缩</h3><p>资源有很多种，例如图片，音频，视频等，但图片是最普遍的一种，所以我们就只介绍图片压缩。</p>
+<p>图片压缩首先有一个非常简单的方案：<strong>使用JPEG格式</strong>。如果一张图片没有透明度的需要，那么就改成使用jpeg格式，体积比png体积要小很多。</p>
+<p>其次是png图片的压缩，业界有非常多也非常成熟的方案可以选择，如果图片数量不多又想省事，可以直接使用<a href="https://tinypng.com/" target="_blank" rel="noopener">tinypng.com</a>，它也对外开放了API可供脚本调用，但每个月只能免费压缩500张。如果更专业一些，可以使用<a href="https://pngquant.org/" target="_blank" rel="noopener">pngquant</a>，它功能更加强大，可以自定义压缩系数，避免压缩系数过大导致失真，或者压缩系数过小导致压缩率不高，它可以下载工具，或者使用命令行调用。</p>
+<p>使用工具对png图片进行有损压缩，根据不同图片具体情况，压缩比一般能在20%-60%左右，是效果非常显著的。</p>
+<h3 id="bundle压缩"><a href="#bundle压缩" class="headerlink" title="bundle压缩"></a>bundle压缩</h3><p>bundle其实是纯js代码，它包含了ReactNative的JavaScript层源码，第三方库，我们自己的业务代码，要优化它的体积，首先我们需要知道bundle里哪些东西占了多少体积，然后再去针对他们做优化，有一个工具叫<a href="https://www.npmjs.com/package/react-native-bundle-visualizer" target="_blank" rel="noopener">react-native-bundle-visualizer</a>，使用它可以看到bundle内的详细情况，它的底层是使用了<br><a href="https://www.npmjs.com/package/source-map-explorer" target="_blank" rel="noopener">source-map-explorer</a>，所以我们用source-map-explorer也可以。或者如果我们使用了webpack打包，那么可以使用<a href="https://www.npmjs.com/package/webpack-bundle-analyzer" target="_blank" rel="noopener">webpack-bundle-analyzer</a>插件。</p>
+<p>下面是一张网上找到的示例图：</p>
+<p><img src="rn-improve-performance1/1_Tzo7ki8deVX0ADRFCm1E7Q.png" alt="img"></p>
+<p>知道bundle里什么东西占地方的话，就想办法去优化，例如很典型的是moment.js，很多时候我们发现它的locate占了很大一块，实际上又没用到，那我们可以参考<a href="https://github.com/jmblog/how-to-optimize-momentjs-with-webpack" target="_blank" rel="noopener">how-to-optimize-momentjs-with-webpack</a>，或者简单点<strong>直接使用moment.min.js</strong>不要locate功能，或者换成其它的替代库。例如lodash，我们只使用了它的几个方法，却引入了一整个库，我们就可以想办法使用<strong>局部引用</strong>的写法。其次就是如果使用的多个第三方库依赖了同一个库的不同版本，导致了存在同一个库的多份代码，则可以考虑升级其中的一些库来避免这种情况。最后是咱们自己业务的代码，要避免机械的拷贝粘贴，否则同样的代码在bundle里存在多份，就导致了bundle体积的增加。</p>
+<h3 id="分包"><a href="#分包" class="headerlink" title="分包"></a>分包</h3><p>将bundle拆分成基础包和业务包，也是减少包体积的一个有效方案，但实现起来稍微复杂一些，需要改动ReactNative的源码，修改加载流程，对团队的技术能力有一定要求，但也不用担心，技术方案早就已经很成熟，我在两年前就写过相关的<a href="http://guangy.coding.me/2017/11/03/rn-split-bundle2/" target="_blank" rel="noopener">介绍</a>可供参考。因为说起来话题就比较大，暂时不做展开了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>新开了个大坑，这是第一篇，如果能够按照上面的做法，将安装包体积减少，就迈开了性能优化的第一步，这一步虽然不难，但效果会非常显著，如果还没做，不妨立即试一下。</p>
+<p>希望这个ReactNative性能优化系列能填完，也希望整理的东西对大家有实际的帮助，有任何问题，欢迎随时沟通~</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/09/rn-reconciliation-discussion/" rel="next" title="ReactNative之一次Reconciliation讨论">
+                <i class="fa fa-chevron-left"></i> ReactNative之一次Reconciliation讨论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包体积"><span class="nav-number">2.</span> <span class="nav-text">包体积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片压缩"><span class="nav-number">3.</span> <span class="nav-text">图片压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bundle压缩"><span class="nav-number">4.</span> <span class="nav-text">bundle压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分包"><span class="nav-number">5.</span> <span class="nav-text">分包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

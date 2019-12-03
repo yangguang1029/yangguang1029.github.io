@@ -259,6 +259,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/18/rn-map-state-to-props/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/18/rn-map-state-to-props/" itemprop="url">ReactNative之mapStateToProps</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-18T21:15:36+08:00">
+                2018-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>connect是react-redux库提供的一个辅助函数，它的第一个参数是mapStateToProps，官方文档对这个函数的介绍很清晰：</p>
+<blockquote>
+<p>如果定义该参数，组件将会监听 Redux store 的变化。任何时候，只要 Redux store 发生改变，mapStateToProps 函数就会被调用。该回调函数必须返回一个纯对象，这个对象会与组件的 props 合并。如果你省略了这个参数，你的组件将不会监听 Redux store。如果指定了该回调函数中的第二个参数 ownProps，则该参数的值为传递到组件的 props，而且只要组件接收到新的 props，mapStateToProps 也会被调用（例如，当 props 接收到来自父组件一个小小的改动，那么你所使用的 ownProps 参数，mapStateToProps 都会被重新计算）。</p>
+</blockquote>
+<p>首先有一个问题，这个函数只要state发生变化就会被调用，然后又返回了一个纯对象，会让人担心是否组件不关心的state部分变化了，也会导致自己刷新呢？答案显然是否定的，mapStateToProps返回的这个对象是拿去做了浅比较。如果浅比较发生不相等，就会导致组件刷新，否则不会（当然我们暂时忽略自定义了shouldComponentUpdate的情况）。我们说的浅比较，就是RN源代码里的shallowEqual,它的实现是浅比较两个对象的所有值。</p>
+<p>对下面这个简单的例子而言</p>
+<pre><code>const mapStateToProps = (state, ownProps) =&gt; {
+  return {
+    world: state.world[0]
+  }
+}
+</code></pre><p>因为我们在这个函数里只关注了state.world，所以state的其它属性变化虽然也会导致这个函数被调用并返回了一个新对象，但因为返回的新对象浅比较相等，所以不会刷新组件。对于state.world来说，我们这里关注的是state.world[0]，而不是state.world本身，所以如果state.world本身发生了变化但是state.world[0]没变，那也不会刷新，如果state.world本身没变，但是state.world[0]通过发生了变化，那也会刷新组件。虽然说的绕口但只要记住它的原理就行，我们是拿这个函数里返回的这个纯对象去执行shallowEqual的。</p>
+<p>因为只要state发生了变化这个函数就一定会被调用，所以如果这个函数里有复杂的计算，就需要考虑memoization。实现的方式一个是通过<a href="https://cn.redux.js.org/docs/recipes/ComputingDerivedData.html" target="_blank" rel="noopener">reselect库</a>，另一个是在connect时，设置它的第四个参数options，这个参数的areStatesEqual属性是一个函数，返回true或者false来决定state是否发生了变化，从而决定mapStateToProps是否会被调用，而我们上面提到的mapStateToProps返回的纯对象是进行了浅比较，也是这里areStatePropsEqual属性决定的，它是一个函数，默认值是shallowEqual。了解options参数更多可以参见<a href="https://medium.com/@ryansperzel/reduxs-connect-function-and-arestatesequal-option-adc97e00ee0" target="_blank" rel="noopener">这篇博客</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/11/rn-red-screen/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1609,175 +1741,6 @@ NSLog(@&quot;c1 isa isa : %p c2 isa isa %p o isa isa %p&quot;, c1-&gt;isa-&gt;is
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/05/28/rn-event-emitter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/rn-event-emitter/" itemprop="url">ReactNative之EventEmitter</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-28T20:18:36+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>官方文档推荐的原生往js层传递消息的方式，<a href="https://reactnative.cn/docs/0.51/native-modules-ios.html#%E7%BB%99javascript%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6" target="_blank" rel="noopener">iOS端</a>是继承RCTEventEmitter，然后调用sendEventWithName方法</p>
-<pre><code>[self sendEventWithName:@&quot;EventReminder&quot; body:nil];
-</code></pre><p><a href="https://reactnative.cn/docs/0.51/native-modules-android.html#%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6%E5%88%B0javascript" target="_blank" rel="noopener">Android端</a>是</p>
-<pre><code>getReactApplicationContext()
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(&quot;EventReminder&quot;, null);
-</code></pre><p>Android端一眼就能看出来是通过RCTDeviceEventEmitter模块来交流的，所以在js层直接使用RCTDeviceEventEmitter来注册监听。例如</p>
-<pre><code>var emitter = require(&quot;RCTDeviceEventEmitter&quot;)
-emitter.addListener(&quot;EventReminder&quot;,(e)=&gt;{
-  console.log(&quot;guangy get event in RCTDeviceEventEmitter&quot;)
-})
-</code></pre><p>或者</p>
-<pre><code>import {DeviceEventEmitter} from &quot;react-native&quot;
-DeviceEventEmitter.addListener(&quot;EventReminder&quot;,(e)=&gt;{
-  console.log(&quot;guangy get event in DeviceEventEmitter&quot;)
-})
-</code></pre><p>但是在iOS端就会发现这两个回调都不管用了。实际上去RCTEventEmitter类里面看一下它的sendEventWithName方法，发送事件的代码是</p>
-<pre><code>if (_listenerCount &gt; 0) {
-    [_bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
-                method:@&quot;emit&quot;
-                  args:body ? @[eventName, body] : @[eventName]
-            completion:NULL];
-}
-</code></pre><p>其实也是通过RCTDeviceEventEmitter发送的消息。但这里有个if判断，_listenerCount的初始值为0，下个断点就很快发现，没有进到if里去。使用NativeEventEmitter来注册监听，就可以收到了</p>
-<pre><code>const Test = NativeModules.TestNative;
-const testEmitter = new NativeEventEmitter(Test);
-const subscription = testEmitter.addListener(&apos;EventReminder&apos;,
-    ()=&gt;{
-        console.log(&quot;guangy get event in NativeEventEmitter&quot;);
-    }
-);
-</code></pre><p>看一下NativeEventEmitter的代码很快就能找到原因，在它的addListener方法里，有</p>
-<pre><code>if (this._nativeModule != null) {
-  this._nativeModule.addListener(eventType);
-}
-</code></pre><p>这是调了原生模块的addListener方法，在RCTEventEmitter类中它的实现就是让_listenerCount加1。所以在iOS端，因为原生代码中通过继承RCTEventEmitter类来发送消息，js层就必须使用NativeEventEmitter来注册监听，否则的话，原生层连消息都不会发出去。但是在Android端，因为底层实现就是直接给RCTDeviceEventEmitter发消息，不像iOS端有RCTEventEmitter类的那一套逻辑，所以三种注册监听的方式都一样，构造NativeEventEmitter实例时，也可以不传递NativeModule参数。</p>
-<p>如果iOS的原生层不使用RCTEventEmitter，那么就和Android端一样可以直接使用RCTDeviceEventEmitter监听，例如</p>
-<pre><code>[self.bridge.eventDispatcher sendDeviceEventWithName:@&quot;EventReminder&quot; body:nil];
-</code></pre><p>但这个接口已经被废弃了，所以不建议使用。要么直接套用sendEventWithName的if里面的实现</p>
-<pre><code>[self.bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
-              method:@&quot;emit&quot;
-                args:@[@&quot;EventReminder&quot;]
-          completion:NULL];
-</code></pre><p>这样也可以直接使用RCTDeviceEventEmitter来监听。</p>
-<p>到这里结论就清楚了，<strong>我们在js层应该使用NativeEventEmitter，这是双端统一的事件传递接口</strong>。</p>
-<p>我们再看一下NativeEventEmitter.js里的实现，它的构造函数里有一句</p>
-<pre><code>super(RCTDeviceEventEmitter.sharedSubscriber);
-</code></pre><p>这就很明显了，虽然我们在js层可以给每个模块都new一个NativeEventEmitter，但实际上它们都是交给了RCTDeviceEventEmitter来处理，这也跟原生代码中是通过调用RCTDeviceEventEmitter模块的emit来发送消息是一致的。js层所有的注册都在EventSubscriptionVendor.js中进行管理，实现也很简单，就是通过字典存储事件名和回调函数列表。</p>
-<p>在js层还有一个类RCTNativeAppEventEmitter，不过已经被声明废弃了，所以忽略掉。</p>
-<p>最后我稍微想了一下，如果不使用NativeEventEmitter的话，其实代码更简单，不用考虑remove取消监听，双端也是统一的。但为什么iOS平台废弃掉直接发送事件的接口，然后统一使用NativeEventEmitter呢？我能想到的优点就是原生层可以通过startObserving和stopObserving来监听某个事件的监听状况，然后虽然本质上事件仍然都是扔到了RCTDeviceEventEmitter来处理，但至少从代码上进行了隔离，将事件和模块绑定起来，避免了混杂。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1828,7 +1791,7 @@ const subscription = testEmitter.addListener(&apos;EventReminder&apos;,
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">101</span>
+                  <span class="site-state-item-count">102</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

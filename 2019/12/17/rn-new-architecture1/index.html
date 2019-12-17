@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ReactNative," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言在网上看到一个介绍ReactNative新架构的一个博客，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~ ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。">
+<meta name="keywords" content="ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative新架构简介之一（React and Codegen）">
+<meta property="og:url" content="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/index.html">
+<meta property="og:site_name" content="杨光的笔记">
+<meta property="og:description" content="前言在网上看到一个介绍ReactNative新架构的一个博客，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~ ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/rn-new-architecture1/old-diagram-full.png">
+<meta property="og:image" content="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/rn-new-architecture1/new-1.png">
+<meta property="og:updated_time" content="2019-12-17T12:20:04.218Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative新架构简介之一（React and Codegen）">
+<meta name="twitter:description" content="前言在网上看到一个介绍ReactNative新架构的一个博客，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~ ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。">
+<meta name="twitter:image" content="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/rn-new-architecture1/old-diagram-full.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/"/>
+
+
+
+
+
+  <title>ReactNative新架构简介之一（React and Codegen） | 杨光的笔记</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?499229f184ab76620d91873c9ed5e2fe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">杨光的笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ReactNative新架构简介之一（React and Codegen）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-17T19:18:36+08:00">
+                2019-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在网上看到一个介绍ReactNative新架构的一个<a href="https://formidable.com/blog/2019/react-codegen-part-1/" target="_blank" rel="noopener">博客</a>，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~</p>
+<p>ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。我们避免使用代码演示，尽可能让解释通俗易懂，并分享我们对这些新技术方案的激动心情。</p>
+<h3 id="React-and-Codegen"><a href="#React-and-Codegen" class="headerlink" title="React and Codegen"></a>React and Codegen</h3><p>作为这个系列的第一篇，我们将讨论这次重构中切实影响写代码的一个方面：新的React特性以及一个叫做Codegen的工具。</p>
+<p>在深入之前，我们来回顾一下基础知识：ReactNative是一个开源的跨平台移动应用开发解决方案，它让我们可以用React以及JavaScript来开发一个完全原生的移动应用。不光是创造和发展它的Facebook公司在使用ReactNative，其它公司例如亚马逊和微软，以及很多初创公司都在使用它。</p>
+<p>为了帮助更好地理解ReactNative的工作原理，我们准备了下面这张图</p>
+<p><img src="rn-new-architecture1/old-diagram-full.png" alt="img"></p>
+<p>如图所示，ReactNative结构上有四个核心部分：React代码部分，由代码翻译而来的JavaScript部分，一系列统称为”桥”的部分，以及原生部分。</p>
+<p>ReactNative当前架构的一个关键点是：它的两个端——JavaSvript端和Native端，彼此并不了解对方的情况，这意味着，它们的通信必须依赖“桥”传递JSON信息。消息被发到原生端后，寄希望于能收到返回数据，但这无法得到保证。</p>
+<p>为了克服ReactNative当前存在的各种限制，Facebook的开发团队决定重新思考这个异步信息传递的方案，并着手开发一套新的架构。在新的架构中，前文所述的四个核心部分都分别进行了改进。这篇我们就将讲述第一个核心部分：React。</p>
+<p>React核心库开发人员的工作成果，对ReactNative团队的帮助非常大。这意味着ReactNative将具备React在ReactConf2018(<a href="https://reactjs.org/blog/2018/11/13/react-conf-recap.html" target="_blank" rel="noopener">概述</a>)上宣布的所有新特性，尤其是Andrew Clark展示的并发模式和同步事件回调的概念，这些特性从React16.6起开始支持，支撑了一些很重要的底层功能实现，我们将在第三篇中再做介绍。</p>
+<p>在这次重构中，会影响到ReactNative代码开发的React的新特性有：使用Suspense来实现组件延迟渲染，以及通过ReactHooks来使用函数组件代替类组件。</p>
+<p>ReactNative团队在代码静态检查（Flow或者TypeScript）上也很重视，尤其是：他们正在开发一款叫做CodeGen的工具来自动生成JS和原生端的接口代码，借助于类型化JavaScript的可信任性，这个生成工具可以用来生成Fabric和TurboModules(新架构中的功能点，将在第三节中介绍)所需要的接口文件，从而实现更可靠的端之间数据传递。这种自动化也可以提高端之间数据传递的效率，因为可以避免每次都验证数据的合法性。</p>
+<p>总之，在上面ReactNative的架构图上，使用新的架构来描述第一个部分，应该是这个样子：</p>
+<p><img src="rn-new-architecture1/new-1.png" alt="img"></p>
+<p>这就是ReactNative新架构简介的第一部分，其它内容将在接下来的二三四篇中继续介绍。这次ReactNative的架构升级，可以让开发者在少修改甚至不修改代码的基础上，在很多方面都带来极大提高，非常值得期待。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/02/rn-improve-performance1/" rel="next" title="ReactNative性能优化系列（一）包体积优化">
+                <i class="fa fa-chevron-left"></i> ReactNative性能优化系列（一）包体积优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTU4OS8xMjEyNQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">yangguang1029</p>
+              <p class="site-description motion-element" itemprop="description">杨光的笔记</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yangguang1029" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yangguang1029@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#React-and-Codegen"><span class="nav-number">2.</span> <span class="nav-text">React and Codegen</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangguang1029</span>
+  <p>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a></p>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -259,6 +259,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/04/06/js-promise/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/06/js-promise/" itemprop="url">ES6之Promise</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-06T20:14:39+08:00">
+                2017-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Promise是对异步操作做的封装，它解决的是回调嵌套的问题，它的实现仍然是注册和调用回调函数。</p>
+<h3 id="构造和使用"><a href="#构造和使用" class="headerlink" title="构造和使用"></a>构造和使用</h3><p>使用Promise很简单，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var p = new Promise(function(resolve, reject)&#123;</span><br><span class="line">	//do some asynchronous thing</span><br><span class="line">	if(xxx) &#123;</span><br><span class="line">		console.log(&quot;resolve ...&quot;)</span><br><span class="line">		resolve();</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		console.log(&quot;reject....&quot;)</span><br><span class="line">		reject();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br><span class="line">p.then(function()&#123;</span><br><span class="line">		console.log(&quot;in resolve callback&quot;);</span><br><span class="line">	&#125;, function()&#123;</span><br><span class="line">		console.log(&quot;in reject callback&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>在构造时，传入一个函数作为参数，在这个函数里做我们需要做的事情，比如某个异步操作，然后在恰当的时候，调用resolve或者reject。</p>
+<p>一个Promise对象有三种状态，pending（进行中）, resolved（已解决）, rejected（已失败），初始是pending状态,当resolve或者reject函数被调用时进入resolved或者rejected状态，我们通过then方法，分别指定resolved和rejected的回调，当状态变化时，相应的回调就会被调用。</p>
+<p>需要注意的是Promise对象在创建时传入的函数，会立即执行，但它的回调，则在当前脚本所有同步任务都执行完成后，才会开始执行。所以对于下面的代码，输出是132，而不是123</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var p = new Promise((resolve, reject)=&gt;&#123;</span><br><span class="line">	console.log(&quot;1&quot;);	</span><br><span class="line">	resolve()</span><br><span class="line">&#125;)</span><br><span class="line">p.then(()=&gt;&#123;</span><br><span class="line">	console.log(&quot;2&quot;);</span><br><span class="line">&#125;)</span><br><span class="line">console.log(&quot;3&quot;);</span><br></pre></td></tr></table></figure>
+<h3 id="Promise-resolve-Promise-reject"><a href="#Promise-resolve-Promise-reject" class="headerlink" title="Promise.resolve, Promise.reject"></a>Promise.resolve, Promise.reject</h3><p>这两个是Promise类的静态方法，通过它可以生成一个Promise对象，它的状态已经是resolved或者rejected，实际上下面这两种方式是等同的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var p = Promise.resolve(123);</span><br><span class="line">var p = new Promise(function(resolve, reject)&#123;</span><br><span class="line">	resolve(123);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这两个方法还可以接受thenable对象，将其转换成Promise对象,一个thenable对象就是具有then方法的对象，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">	then(resolve, reject) &#123;</span><br><span class="line">		if (resolve) &#123;</span><br><span class="line">			resolve();</span><br><span class="line">		&#125;</span><br><span class="line">		if (reject) &#123;</span><br><span class="line">			reject();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let t = new Test();</span><br><span class="line">t.then(() =&gt; &#123;</span><br><span class="line">	console.log(&quot;resolved....&quot;);</span><br><span class="line">&#125;)</span><br><span class="line">let p = Promise.resolve(t);</span><br></pre></td></tr></table></figure>
+<h3 id="promise-chain"><a href="#promise-chain" class="headerlink" title="promise chain"></a>promise chain</h3><p>then函数返回的是一个新的Promise对象，而不是我们在resolve或者reject回调里return的值，所以我们可以在then函数后面继续接then函数，形成一个promise链，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var p = Promise.resolve(1);</span><br><span class="line">p.then((v1)=&gt;&#123;</span><br><span class="line">	console.log(&quot;resolve 1....&quot;+v1);</span><br><span class="line">	//throw new Error();</span><br><span class="line">	//return Promise.reject();</span><br><span class="line">	//return Promise.resolve();</span><br><span class="line">	/*</span><br><span class="line">	return new Promise(function(resolve, reject)&#123;</span><br><span class="line">		setTimeout(()=&gt;&#123;</span><br><span class="line">			resolve();</span><br><span class="line">		&#125;, 5000)</span><br><span class="line">	&#125;)</span><br><span class="line">	*/</span><br><span class="line">	return 2*v1;</span><br><span class="line">&#125;).then((v2)=&gt;&#123;</span><br><span class="line">	console.log(&quot;resolve2....&quot; + v2)</span><br><span class="line">&#125;, (reason)=&gt;&#123;</span><br><span class="line">	console.log(&quot;reject2...&quot;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>如果我们在then的回调函数里return了一个pending状态的Promise对象，则等待这个对象状态变化后进入下一个then的相应回调中。如果返回一个rejected状态的Promise对象，或者抛出了一个错误，那么会立刻进入下一个then的reject回调中，否则立刻进入下一个then的resolve回调中。如果return的不是Promise对象，则return的值会作为下个then里回调的参数值。</p>
+<h3 id="promise对象作为resolve或者reject参数"><a href="#promise对象作为resolve或者reject参数" class="headerlink" title="promise对象作为resolve或者reject参数"></a>promise对象作为resolve或者reject参数</h3><p>当我们调用一个Promise对象a的resolve函数时，如果参数是另一个promise对象b，那么只有当b的状态发生改变，a的状态才会改变。且a的状态取决于b的状态</p>
+<p>当我们调用一个Promise对象a的reject函数时，如果参数是另一个promise对象b，则a的状态不需等待b的状态，且a的状态不受b影响，一定是rejected。以下是实验代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		setTimeout(() =&gt; &#123;</span><br><span class="line">			// console.log(&quot;resolve p1....&quot;);</span><br><span class="line">			// resolve();</span><br><span class="line">			console.log(&quot;reject p1....&quot;);</span><br><span class="line">			reject();</span><br><span class="line">		&#125;, 5000)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		setTimeout(() =&gt; &#123;</span><br><span class="line">			// console.log(&quot;resolve p2...&quot;);</span><br><span class="line">			// resolve(p1);</span><br><span class="line">			console.log(&quot;reject p2....&quot;);</span><br><span class="line">			reject(p1);</span><br><span class="line">		&#125;, 1000)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">p2.then(function(value) &#123;</span><br><span class="line">		console.log(&quot;in p2 resolve callback&quot;);</span><br><span class="line">	&#125;, function(error) &#123;</span><br><span class="line">		console.log(&quot;in p2 reject callback&quot;);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">		console.log(&quot;in p1 resolve callback&quot;);</span><br><span class="line">	&#125;, function(error) &#123;</span><br><span class="line">		console.log(&quot;in p1 reject callback&quot;);</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure>
+<p>输出为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">resolve(p1), p1 resolve</span><br><span class="line"></span><br><span class="line">resolve p2...</span><br><span class="line">resolve p1...	//4秒后</span><br><span class="line">in p1 resolve callback</span><br><span class="line">in p2 resolve callback</span><br><span class="line">/**************************************/</span><br><span class="line">resolve(p1), p1 reject</span><br><span class="line"></span><br><span class="line">resolve p2...</span><br><span class="line">reject p1...	//4秒后</span><br><span class="line">in p1 reject callback</span><br><span class="line">in p2 reject callback</span><br><span class="line">/**************************************/</span><br><span class="line">reject(p1), p1 resolve</span><br><span class="line"></span><br><span class="line">reject p2...</span><br><span class="line">in p2 reject callback</span><br><span class="line">resolve p1	// 4秒后</span><br><span class="line">in p1 resolve callback</span><br><span class="line">/**************************************/</span><br><span class="line">reject(p1), p1 reject</span><br><span class="line"></span><br><span class="line">reject p2...</span><br><span class="line">in p2 reject callback</span><br><span class="line">reject p1	//4秒后</span><br><span class="line">in p1 reject callback</span><br></pre></td></tr></table></figure>
+<h3 id="Promise-all-Promise-race"><a href="#Promise-all-Promise-race" class="headerlink" title="Promise.all Promise.race"></a>Promise.all Promise.race</h3><p>它们都接收一个Promise数组作为参数，并返回一个新的Promise。</p>
+<p>对于all来说，只有当数组里每个Promise对象状态都变成resolved，新对象的状态才变成resolved，它在then的resolve回调函数参数为一个数组，包含所有Promise的返回值。但只要有一个Promise对象状态变为rejected，那么新对象的状态马上变为rejected。此时reject的参数被传递给then的reject回调</p>
+<p>对于race，只要有一个Promise对象状态发生了变化，新对象的状态就马上跟着改变。第一个改变状态的对象的返回值作为新对象回调的参数。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/03/23/js-this/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1467,165 +1608,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/01/18/cocos-some-ui/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/18/cocos-some-ui/" itemprop="url">cocos之部分ui控件的使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-18T16:11:42+08:00">
-                2017-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>现在cocos有了各种编辑器，需要手写ui的时候不是很多了，但也因为如此，偶尔需要手写的时候，反倒会因为陌生写出各种问题出来，而且对这些ui的接口比较熟悉的话，也有利于日常使用，所以这里稍微总结下部分ui控件的接口和使用,方便以后再用的时候快速回想起来，细节最好还是看源代码。</p>
-<h3 id="scale9Sprite"><a href="#scale9Sprite" class="headerlink" title="scale9Sprite"></a>scale9Sprite</h3><ul>
-<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
-<li>c++代码位于cocos2d-x/cocos/ui/UIScale9Sprite.cpp内</li>
-<li>scale9的实现原理是将纹理根据设定的区域，生成9个sprite，然后batch渲染</li>
-<li>它可以跟sprite一样通过setSpriteFrame来切换纹理，但切换之后需要重新执行setPreferredSize。否则显示不正确</li>
-</ul>
-<p>用的比较多的接口有:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame);</span><br><span class="line">createWithSpriteFrame(SpriteFrame* spriteFrame, const Rect&amp; capInsets);</span><br><span class="line">create(const std::string&amp; file);</span><br><span class="line"></span><br><span class="line">//实际显示大小</span><br><span class="line">setPreferredSize(const Size&amp; preferedSize)</span><br><span class="line">//设定缩放区域</span><br><span class="line">setCapInsets(const Rect&amp; capInsets)</span><br></pre></td></tr></table></figure>
-<h3 id="EditBox"><a href="#EditBox" class="headerlink" title="EditBox"></a>EditBox</h3><ul>
-<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_ui_auto.cpp内</li>
-<li>c++代码位于cocos2d-x/cocos/ui/UIEditBox/UIEditBox.cpp内</li>
-<li>只需要注意它的各个状态的sprite都是scale9即可</li>
-</ul>
-<p>使用较多的接口有：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create(const Size&amp; size, Scale9Sprite* normalSprite, Scale9Sprite* pressedSprite = nullptr, Scale9Sprite* disabledSprite = nullptr);</span><br><span class="line"></span><br><span class="line">setFontSize(int fontSize);</span><br><span class="line">setFontColor(const Color3B&amp; color);</span><br><span class="line">setPlaceHolder(const char* pText);	//提示字符串</span><br><span class="line"></span><br><span class="line">getString();	//在C++接口是getText，注意名称不一样</span><br></pre></td></tr></table></figure>
-<h3 id="Controlbutton"><a href="#Controlbutton" class="headerlink" title="Controlbutton"></a>Controlbutton</h3><ul>
-<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
-<li>c++代码位于cocos2d-x/extensions/GUI/CCControlExtension/CCControlButton.cpp内</li>
-</ul>
-<p>使用较多的接口有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create(cocos2d::ui::Scale9Sprite* sprite)</span><br><span class="line">create(const std::string&amp; title, const std::string&amp; fontName, float fontSize)</span><br><span class="line"></span><br><span class="line">setPreferredSize(const Size&amp; size)</span><br><span class="line">setBackgroundSpriteForState(ui::Scale9Sprite* sprite, State state)</span><br><span class="line">setEnabled(bool enabled)</span><br><span class="line"></span><br><span class="line">//绑定事件</span><br><span class="line">button.addTargetWithActionForControlEvents(this, this._onClickSend, cc.CONTROL_EVENT_TOUCH_UP_INSIDE);</span><br></pre></td></tr></table></figure>
-<h3 id="scrollView"><a href="#scrollView" class="headerlink" title="scrollView"></a>scrollView</h3><ul>
-<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
-<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCScrollView.cpp内</li>
-<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内</li>
-<li>scrollView本身的大小是viewSize。它内部有一个container，当我们执行addChild时，实际上是被加到了这个container里，它的大小比viewSize要大，所以才可以滚动，设置它的大小是setContentSize。这是与其他node的setContentSize方法不一样的地方，需要注意。</li>
-</ul>
-<p>使用较多的接口有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create()</span><br><span class="line">create(Size size, Node* container/* = nullptr*/)</span><br><span class="line"></span><br><span class="line">setContainer(Node * pContainer)</span><br><span class="line">addChild(Node * child, int zOrder, int tag)</span><br><span class="line"></span><br><span class="line">setDelegate()</span><br><span class="line">setDirection(Direction eDirection)</span><br><span class="line"></span><br><span class="line">setContentSize(const Size &amp; size)</span><br><span class="line">setViewSize(Size size)</span><br><span class="line">setContentOffset(Vec2 offset, bool animated/* = false*/)</span><br><span class="line"></span><br><span class="line">//回调</span><br><span class="line">scrollViewDidScroll(ScrollView* view)</span><br></pre></td></tr></table></figure>
-<h3 id="tableView"><a href="#tableView" class="headerlink" title="tableView"></a>tableView</h3><ul>
-<li>jsbinding代码位于 bindings/auto/jsb_cocos2dx_extension_auto.cpp内</li>
-<li>c++代码位于cocos2d-x/extensions/GUI/CCScrollView/CCTableView.cpp内</li>
-<li>回调jsbinding位于bindings/manual/extension/jsb_cocos2dx_extension_manual内,在这里也额外定义了一个create方法，而没有放在上面的jsbinding里</li>
-<li>js-bindings/bindings/script/extension/jsb_ext_create_apis.js定义了新的构造函数cc.TableView.prototype._ctor = function(dataSouurce, size, container)，所以可以直接new</li>
-<li>在jsbinding的init函数里，以及create函数里，都会自动调用一次reloadData，所以在js层代码中，新建一个tableView是不需要手动调用reloadData的，而C++代码则需要。 </li>
-</ul>
-<p>使用较多的接口有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setDirection(Direction eDirection)</span><br><span class="line">setVerticalFillOrder(VerticalFillOrder fillOrder)</span><br><span class="line">reloadData()</span><br><span class="line"></span><br><span class="line">//回调就不写了，基本上都会知道</span><br></pre></td></tr></table></figure>
-<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>像checkbox,ControlSlider等用的不多的，可以临时去查一下。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1676,7 +1658,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

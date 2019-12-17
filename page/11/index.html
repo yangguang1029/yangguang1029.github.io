@@ -259,6 +259,134 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/git在错误分支上提交后的修正/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/15/git在错误分支上提交后的修正/" itemprop="url">git在错误分支上提交后的修正</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:22:43+08:00">
+                2016-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>应该在A分支上做的改动，不小心在B上改动并提交了，过了好几天才发现，此时需要做的操作包括，把这个提交移到A分支上，同时在B分支上把这个提交删除</p>
+<p>移到A分支上很简单，在A分支上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick commitId</span><br></pre></td></tr></table></figure>
+<p>即可，有冲突的话，解决冲突</p>
+<p>在B分支上的删除也简单，直接在B分支上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset commitId</span><br></pre></td></tr></table></figure>
+<p>这里的commitId是需要删除的提交之前的那个提交，然后把不想要的提交去掉，重新commit即可。这里写个简单的示例流程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">touch a.txt</span><br><span class="line">git add a.txt</span><br><span class="line">git commit -m &quot;add a&quot;</span><br><span class="line"></span><br><span class="line">touch b.txt</span><br><span class="line">git add b.txt</span><br><span class="line">git commit -m &quot;add b&quot;</span><br><span class="line"></span><br><span class="line">git reset d9a3249  #这是add a之前的那个提交</span><br><span class="line">git status  #此时可以看到a.txt和b.txt都是Untracked files，也就是从add a之后的所有提交都变成了没有add的状态</span><br><span class="line"></span><br><span class="line">rm -rf a.txt</span><br><span class="line">git add b.txt</span><br><span class="line">git commit -m &quot;reset&quot;	#完成，add a这个提交已经没有了，而且在sourceTree上也看不到这次提交了</span><br></pre></td></tr></table></figure>
+<p>git reset d9a3249这步，也可以添加–soft参数，这个参数可以让所有的改动是已经add的状态，可以省掉之后再add一次，但要移除修改，则需要执行git rm –cached</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/tableview的一个优化方案/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -559,7 +687,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

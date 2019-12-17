@@ -259,6 +259,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/14/autorelease/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/14/autorelease/" itemprop="url">cocos tips 之autorelease</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-14T21:03:49+08:00">
+                2016-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>首先autorelease是个怎么回事呢？引用计数的原理就不用说了，凡是继承自Ref的类new出得对象，都使用引用计数来进行内存管理。对象被new出来时，初始引用计数为1，每次被retain时，引用计数+1，被release时，引用计数-1。当引用计数降为0时，则执行析构函数，内存被回收。<br>所以retain必须和release成对出现，才能避免内存泄漏(例如被加到父容器和从父容器移除时，就分别执行了retain和release)，而且最初的new也必须对应一次release，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Node* node = new Node();	//引用计数1</span><br><span class="line">this-&gt;addChild(node);	//引用计数2</span><br></pre></td></tr></table></figure>
+<p>之后在合适的时候移除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node-&gt;removeFromParent();	//引用计数1</span><br></pre></td></tr></table></figure>
+<p>可见，此时如果不再执行一次release的话，引用计数一直为1，内存得不到释放，内存就泄漏了。对于一个被引用了很多的对象，要找到最终执行release的时机，显然很难，autoRelease就是为了解决这个问题的，当执行autoRelease函数时，这个对象将会被加到一个autoreleasePool中（并不会执行retain），在这帧结束时，这个pool内所有Ref对象都会执行一次release，这次release就抵消掉了new时候的那个引用计数，因此只要保证其他引用它的地方retain和release成对，就可以保证内存不会泄露。</p>
+<p>除了使用系统自带的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PoolManager::getInstance()-&gt;getCurrentPool()</span><br></pre></td></tr></table></figure>
+<p>外，也可以自己新建一个autoRelease，因为要确保执行析构函数，所以不建议使用new来构造，直接在栈上创造一个即可，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AutoreleasePool p;</span><br><span class="line">p.addObject(obj)</span><br></pre></td></tr></table></figure>
+<p>当退出执行函数时，p会被析构，此时所有被加入的Ref对象都会被执行一次release。什么时候需要自己新建一个autoreleasePool来使用呢，例如一帧内生成了大量autorelease对象（通常在循环中），如果使用默认的autoreleasePool，则全部集中在这帧结束时释放，可能导致性能降低，此时可以手动创建一个autoreleasePool来进行管理。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/14/jsbinding热加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1434,134 +1563,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/git在错误分支上提交后的修正/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/git在错误分支上提交后的修正/" itemprop="url">git在错误分支上提交后的修正</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:22:43+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>应该在A分支上做的改动，不小心在B上改动并提交了，过了好几天才发现，此时需要做的操作包括，把这个提交移到A分支上，同时在B分支上把这个提交删除</p>
-<p>移到A分支上很简单，在A分支上执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick commitId</span><br></pre></td></tr></table></figure>
-<p>即可，有冲突的话，解决冲突</p>
-<p>在B分支上的删除也简单，直接在B分支上执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset commitId</span><br></pre></td></tr></table></figure>
-<p>这里的commitId是需要删除的提交之前的那个提交，然后把不想要的提交去掉，重新commit即可。这里写个简单的示例流程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">touch a.txt</span><br><span class="line">git add a.txt</span><br><span class="line">git commit -m &quot;add a&quot;</span><br><span class="line"></span><br><span class="line">touch b.txt</span><br><span class="line">git add b.txt</span><br><span class="line">git commit -m &quot;add b&quot;</span><br><span class="line"></span><br><span class="line">git reset d9a3249  #这是add a之前的那个提交</span><br><span class="line">git status  #此时可以看到a.txt和b.txt都是Untracked files，也就是从add a之后的所有提交都变成了没有add的状态</span><br><span class="line"></span><br><span class="line">rm -rf a.txt</span><br><span class="line">git add b.txt</span><br><span class="line">git commit -m &quot;reset&quot;	#完成，add a这个提交已经没有了，而且在sourceTree上也看不到这次提交了</span><br></pre></td></tr></table></figure>
-<p>git reset d9a3249这步，也可以添加–soft参数，这个参数可以让所有的改动是已经add的状态，可以省掉之后再add一次，但要移除修改，则需要执行git rm –cached</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1612,7 +1613,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

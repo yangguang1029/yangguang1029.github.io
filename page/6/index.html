@@ -259,6 +259,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/16/rn-reducer-pure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/16/rn-reducer-pure/" itemprop="url">ReactNative中的reducer函数中的浅拷贝和深拷贝</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-16T20:15:36+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们都知道reducer函数必须是纯函数，不能修改传入的state参数。先看一段示例代码</p>
+<pre><code>export function updateData(state=[], action) {
+    switch(action.type){
+        case Actions.ADD:
+            return state.concat(action.data);
+        case Actions.UPDATE:
+            state[action.index] = action.data
+            return state
+        default:
+            return state;
+    }
+}
+</code></pre><p>这里state是一个简单的数组，ADD操作返回的是一个新的state，因为concat函数会创建并返回一个新的array。而UPDATE操作是修改了原state后返回原state。在demo中的表现就是，当reducer收到ADD时，会触发render刷新界面。而当收到update时，不会触发render，但如果再次收到ADD触发render刷新界面时，能看到UPDATE操作的数据已经被更新了。</p>
+<p>结论就是</p>
+<ul>
+<li>只要返回的是原state，就不会触发render。这也正是我们default需要返回state本身的原因。即使state数据发生了变化，也不会触发render，但数据的变化被存储起来了。</li>
+<li>只要返回的是新state，就会触发render，即使数据完全不变</li>
+</ul>
+<p>如果希望上面的UPDATE生效的话也很简单，把return state改成return state.slice(0)就可以了。但这种操作是不对的，虽然通过返回一个新的state来让render触发了，但它修改了state，它会导致的问题就是在component的componentWillReceiveProps函数里，nextProps和原来的props完全一致。reducer的原则是每个action对应着一个state，如果在action操作前后state相同，那就失去了这个特性了。</p>
+<p>我们一般使用的Object.assign来构造一个新的state，Object.assign执行的就是浅拷贝而不是深拷贝，所以如果我们操作的state是一个比较复杂的结构，那么应该想办法手动执行深拷贝，否则使用浅拷贝的话，对应的内容就是同一份。</p>
+<pre><code>export function updateDeep(state={sth:[]}, action) {
+    let sth = state.sth;
+    switch(action.type){
+        case Actions.ADD:
+            sth.push({data:action.data});
+            return Object.assign({}, {sth:sth})
+        case Actions.DELETE:
+            sth.splice(action.index, 1);
+            return Object.assign({}, {sth:sth})
+        case Actions.UPDATE:
+            sth[action.index].data = action.data;
+            return Object.assign({}, {sth:sth})
+        default:
+            return state;
+    }
+}
+</code></pre><p>这个reducer函数直接修改了state.sth，虽然使用Object.assign返回了一个新的state，触发了render进行了刷新，但如果在componentWillReceiveProps函数里观察，就会发现this.props里的sth和nextprops里的sth是一模一样的，也就是执行action操作前后的state没有区分开来。</p>
+<p>要解决上面的问题，可以有两种方案，一个是把reducer函数细分，确保在操作state时不会执行对对象进行浅拷贝。比如第二个例子的state改为[]，用combineReducer来合并细分后的reducer函数，但如果数组成员是Object，而不是简单数据类型，就仍然有浅拷贝的问题，所以可以用第二种方案，先把state深拷贝一份，然后修改这个拷贝后的state并返回，如果state是个很复杂的数据结构，深拷贝一次代价会比较大。所以实际中应该这两种方案结合起来。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/11/git-work-flow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1746,147 +1903,6 @@ export {A, B, ... G, H}
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/04/06/js-promise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/06/js-promise/" itemprop="url">ES6之Promise</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-06T20:14:39+08:00">
-                2017-04-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Promise是对异步操作做的封装，它解决的是回调嵌套的问题，它的实现仍然是注册和调用回调函数。</p>
-<h3 id="构造和使用"><a href="#构造和使用" class="headerlink" title="构造和使用"></a>构造和使用</h3><p>使用Promise很简单，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var p = new Promise(function(resolve, reject)&#123;</span><br><span class="line">	//do some asynchronous thing</span><br><span class="line">	if(xxx) &#123;</span><br><span class="line">		console.log(&quot;resolve ...&quot;)</span><br><span class="line">		resolve();</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		console.log(&quot;reject....&quot;)</span><br><span class="line">		reject();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br><span class="line">p.then(function()&#123;</span><br><span class="line">		console.log(&quot;in resolve callback&quot;);</span><br><span class="line">	&#125;, function()&#123;</span><br><span class="line">		console.log(&quot;in reject callback&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>在构造时，传入一个函数作为参数，在这个函数里做我们需要做的事情，比如某个异步操作，然后在恰当的时候，调用resolve或者reject。</p>
-<p>一个Promise对象有三种状态，pending（进行中）, resolved（已解决）, rejected（已失败），初始是pending状态,当resolve或者reject函数被调用时进入resolved或者rejected状态，我们通过then方法，分别指定resolved和rejected的回调，当状态变化时，相应的回调就会被调用。</p>
-<p>需要注意的是Promise对象在创建时传入的函数，会立即执行，但它的回调，则在当前脚本所有同步任务都执行完成后，才会开始执行。所以对于下面的代码，输出是132，而不是123</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var p = new Promise((resolve, reject)=&gt;&#123;</span><br><span class="line">	console.log(&quot;1&quot;);	</span><br><span class="line">	resolve()</span><br><span class="line">&#125;)</span><br><span class="line">p.then(()=&gt;&#123;</span><br><span class="line">	console.log(&quot;2&quot;);</span><br><span class="line">&#125;)</span><br><span class="line">console.log(&quot;3&quot;);</span><br></pre></td></tr></table></figure>
-<h3 id="Promise-resolve-Promise-reject"><a href="#Promise-resolve-Promise-reject" class="headerlink" title="Promise.resolve, Promise.reject"></a>Promise.resolve, Promise.reject</h3><p>这两个是Promise类的静态方法，通过它可以生成一个Promise对象，它的状态已经是resolved或者rejected，实际上下面这两种方式是等同的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var p = Promise.resolve(123);</span><br><span class="line">var p = new Promise(function(resolve, reject)&#123;</span><br><span class="line">	resolve(123);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>这两个方法还可以接受thenable对象，将其转换成Promise对象,一个thenable对象就是具有then方法的对象，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">	then(resolve, reject) &#123;</span><br><span class="line">		if (resolve) &#123;</span><br><span class="line">			resolve();</span><br><span class="line">		&#125;</span><br><span class="line">		if (reject) &#123;</span><br><span class="line">			reject();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let t = new Test();</span><br><span class="line">t.then(() =&gt; &#123;</span><br><span class="line">	console.log(&quot;resolved....&quot;);</span><br><span class="line">&#125;)</span><br><span class="line">let p = Promise.resolve(t);</span><br></pre></td></tr></table></figure>
-<h3 id="promise-chain"><a href="#promise-chain" class="headerlink" title="promise chain"></a>promise chain</h3><p>then函数返回的是一个新的Promise对象，而不是我们在resolve或者reject回调里return的值，所以我们可以在then函数后面继续接then函数，形成一个promise链，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var p = Promise.resolve(1);</span><br><span class="line">p.then((v1)=&gt;&#123;</span><br><span class="line">	console.log(&quot;resolve 1....&quot;+v1);</span><br><span class="line">	//throw new Error();</span><br><span class="line">	//return Promise.reject();</span><br><span class="line">	//return Promise.resolve();</span><br><span class="line">	/*</span><br><span class="line">	return new Promise(function(resolve, reject)&#123;</span><br><span class="line">		setTimeout(()=&gt;&#123;</span><br><span class="line">			resolve();</span><br><span class="line">		&#125;, 5000)</span><br><span class="line">	&#125;)</span><br><span class="line">	*/</span><br><span class="line">	return 2*v1;</span><br><span class="line">&#125;).then((v2)=&gt;&#123;</span><br><span class="line">	console.log(&quot;resolve2....&quot; + v2)</span><br><span class="line">&#125;, (reason)=&gt;&#123;</span><br><span class="line">	console.log(&quot;reject2...&quot;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>如果我们在then的回调函数里return了一个pending状态的Promise对象，则等待这个对象状态变化后进入下一个then的相应回调中。如果返回一个rejected状态的Promise对象，或者抛出了一个错误，那么会立刻进入下一个then的reject回调中，否则立刻进入下一个then的resolve回调中。如果return的不是Promise对象，则return的值会作为下个then里回调的参数值。</p>
-<h3 id="promise对象作为resolve或者reject参数"><a href="#promise对象作为resolve或者reject参数" class="headerlink" title="promise对象作为resolve或者reject参数"></a>promise对象作为resolve或者reject参数</h3><p>当我们调用一个Promise对象a的resolve函数时，如果参数是另一个promise对象b，那么只有当b的状态发生改变，a的状态才会改变。且a的状态取决于b的状态</p>
-<p>当我们调用一个Promise对象a的reject函数时，如果参数是另一个promise对象b，则a的状态不需等待b的状态，且a的状态不受b影响，一定是rejected。以下是实验代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		setTimeout(() =&gt; &#123;</span><br><span class="line">			// console.log(&quot;resolve p1....&quot;);</span><br><span class="line">			// resolve();</span><br><span class="line">			console.log(&quot;reject p1....&quot;);</span><br><span class="line">			reject();</span><br><span class="line">		&#125;, 5000)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		setTimeout(() =&gt; &#123;</span><br><span class="line">			// console.log(&quot;resolve p2...&quot;);</span><br><span class="line">			// resolve(p1);</span><br><span class="line">			console.log(&quot;reject p2....&quot;);</span><br><span class="line">			reject(p1);</span><br><span class="line">		&#125;, 1000)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">p2.then(function(value) &#123;</span><br><span class="line">		console.log(&quot;in p2 resolve callback&quot;);</span><br><span class="line">	&#125;, function(error) &#123;</span><br><span class="line">		console.log(&quot;in p2 reject callback&quot;);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">		console.log(&quot;in p1 resolve callback&quot;);</span><br><span class="line">	&#125;, function(error) &#123;</span><br><span class="line">		console.log(&quot;in p1 reject callback&quot;);</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure>
-<p>输出为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">resolve(p1), p1 resolve</span><br><span class="line"></span><br><span class="line">resolve p2...</span><br><span class="line">resolve p1...	//4秒后</span><br><span class="line">in p1 resolve callback</span><br><span class="line">in p2 resolve callback</span><br><span class="line">/**************************************/</span><br><span class="line">resolve(p1), p1 reject</span><br><span class="line"></span><br><span class="line">resolve p2...</span><br><span class="line">reject p1...	//4秒后</span><br><span class="line">in p1 reject callback</span><br><span class="line">in p2 reject callback</span><br><span class="line">/**************************************/</span><br><span class="line">reject(p1), p1 resolve</span><br><span class="line"></span><br><span class="line">reject p2...</span><br><span class="line">in p2 reject callback</span><br><span class="line">resolve p1	// 4秒后</span><br><span class="line">in p1 resolve callback</span><br><span class="line">/**************************************/</span><br><span class="line">reject(p1), p1 reject</span><br><span class="line"></span><br><span class="line">reject p2...</span><br><span class="line">in p2 reject callback</span><br><span class="line">reject p1	//4秒后</span><br><span class="line">in p1 reject callback</span><br></pre></td></tr></table></figure>
-<h3 id="Promise-all-Promise-race"><a href="#Promise-all-Promise-race" class="headerlink" title="Promise.all Promise.race"></a>Promise.all Promise.race</h3><p>它们都接收一个Promise数组作为参数，并返回一个新的Promise。</p>
-<p>对于all来说，只有当数组里每个Promise对象状态都变成resolved，新对象的状态才变成resolved，它在then的resolve回调函数参数为一个数组，包含所有Promise的返回值。但只要有一个Promise对象状态变为rejected，那么新对象的状态马上变为rejected。此时reject的参数被传递给then的reject回调</p>
-<p>对于race，只要有一个Promise对象状态发生了变化，新对象的状态就马上跟着改变。第一个改变状态的对象的返回值作为新对象回调的参数。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1937,7 +1953,7 @@ export {A, B, ... G, H}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">102</span>
+                  <span class="site-state-item-count">103</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

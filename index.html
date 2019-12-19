@@ -259,6 +259,136 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/18/rn-new-architecture3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/18/rn-new-architecture3/" itemprop="url">ReactNative新架构简介之三（Fabric and TurboModules）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-18T21:18:36+08:00">
+                2019-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本篇我们要讨论新架构中最”干货“的部分，可能所有ReactNative开发者都听过的概念：Fabric和TurboModules。</p>
+<p>在前两篇中我们提到，React允许延迟渲染，而JSI则允许JavaScript代码和Native代码可以直接交互。</p>
+<p>为了更加便于理解，我们将之前架构中的桥简化成下图所示：</p>
+<p><img src="rn-new-architecture1/old-3.png" alt="img"></p>
+<p>这张图描述了ReactNative运行期间我们使用JavaScript代码做的两件事情：UI应该如何渲染和交互（通过shadow Tree）以及管理原生模块（通过Native Modules）。之前曾经提到，这是通过使用序列化的JSON信息，异步、分批次进行的双向通信，由于通信只在一个通道内，所以可能发生堵塞并影响用户体验。因此Facebook的团队决定将这个庞大的桥拆分成了两个角色：Fabric是对UI manager的新架构，而TurboModules则是JavaScript与原生端交互的一种新的实现方式。</p>
+<p>Fabric的宗旨是让ReactNative的渲染层更加先进，在目前的实现方案中，所有的UI渲染最终都是由一系列跨线程的步骤来完成。（React到Shadow Tree再到Native UI）。而新的实现方案则允许UIManager在C++中直接创建Shadow Tree，得利于JSI中C++可以和JavaScript以及原生代码在同一线程直接交互的能力，这样避免了跨线程的操作，从而大大提高了效率，极大地提高了UI的响应速度，例如列表滚动，navigation或者手势等功能，都会变得更加流畅。<br>（注：原文这一段并没有提到线程，而是使用了realm（端）这个词，又说的太绕，我就按自己的理解来表达了）</p>
+<p>在现有的架构实现中，JavaScript端使用的Native Modules需要在应用启动时全部完成初始化，即使是没用到的模块，这是我们第一篇中提到过的“JavaScript和Native端彼此互不知情”导致的。而新的TurboModules则允许开发者在JavaScript代码中使用某个模块时才去加载，且能持有这个模块的引用，这能显著提高应用的启动速度。并且使用TurboModules时，JavaScript端和Native端的通信不需要再借助桥来传递JSON数据，而是可以直接互相调用方法。</p>
+<p>本篇中提到的Fabric和TurboModules之所以能实现，完全依赖于上一篇中提到的JSI。到目前为止，ReactNative的新架构图将变成如下所示：</p>
+<p><img src="rn-new-architecture1/new-5.png" alt="img"></p>
+<p>第三篇的内容就是这些，接下来只剩下最后一篇了。</p>
+<p>最后加几句笔者的感慨，这篇中间三段只有短短的几百个字，花了好几个小时，还是翻的无比别扭，很多时候看一些外文的技术博客都有这种感觉，中文几句话就可以说清楚的事情，英文花几百个单词翻来覆去的说，我反倒觉得绕来绕去的还不准确。上次试图翻译<a href="https://overreacted.io/how-are-function-components-different-from-classes/" target="_blank" rel="noopener">how-are-function-components-different-from-classes</a>时也是这感觉，原文看完一遍觉得都明白了，但翻译的时候，越到后面越痛苦，作者大神是React的开发成员，能力绝对毋庸置疑，所以我只能觉得是自己英文水平还不够，不知道别人是否也有一样的感觉……</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/18/rn-new-architecture2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -341,136 +471,6 @@
 <p>那么前文中ReactNative架构图的第二部分，在新架构中就会变成这样</p>
 <p><img src="rn-new-architecture1/new-2.png" alt="img"></p>
 <p>第二部分的内容就到此结束了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/18/rn-new-architecture3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/18/rn-new-architecture3/" itemprop="url">ReactNative新架构简介之三（Fabric and TurboModules）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-18T19:18:36+08:00">
-                2019-12-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本篇我们要讨论新架构中最”干货“的部分，可能所有ReactNative开发者都听过的概念：Fabric和TurboModules。</p>
-<p>在前两篇中我们提到，React允许延迟渲染，而JSI则允许JavaScript代码和Native代码可以直接交互。</p>
-<p>为了更加便于理解，我们将之前架构中的桥简化成下图所示：</p>
-<p><img src="rn-new-architecture1/old-3.png" alt="img"></p>
-<p>这张图描述了ReactNative运行期间我们使用JavaScript代码做的两件事情：UI应该如何渲染和交互（通过shadow Tree）以及管理原生模块（通过Native Modules）。之前曾经提到，这是通过使用序列化的JSON信息，异步、分批次进行的双向通信，由于通信只在一个通道内，所以可能发生堵塞并影响用户体验。因此Facebook的团队决定将这个庞大的桥拆分成了两个角色：Fabric是对UI manager的新架构，而TurboModules则是JavaScript与原生端交互的一种新的实现方式。</p>
-<p>Fabric的宗旨是让ReactNative的渲染层更加先进，在目前的实现方案中，所有的UI渲染最终都是由一系列跨线程的步骤来完成。（React到Shadow Tree再到Native UI）。而新的实现方案则允许UIManager在C++中直接创建Shadow Tree，得利于JSI中C++可以和JavaScript以及原生代码在同一线程直接交互的能力，这样避免了跨线程的操作，从而大大提高了效率，极大地提高了UI的响应速度，例如列表滚动，navigation或者手势等功能，都会变得更加流畅。<br>（注：原文这一段并没有提到线程，而是使用了realm（端）这个词，又说的太绕，我就按自己的理解来表达了）</p>
-<p>在现有的架构实现中，JavaScript端使用的Native Modules需要在应用启动时全部完成初始化，即使是没用到的模块，这是我们第一篇中提到过的“JavaScript和Native端彼此互不知情”导致的。而新的TurboModules则允许开发者在JavaScript代码中使用某个模块时才去加载，且能持有这个模块的引用，这能显著提高应用的启动速度。并且使用TurboModules时，JavaScript端和Native端的通信不需要再借助桥来传递JSON数据，而是可以直接互相调用方法。</p>
-<p>本篇中提到的Fabric和TurboModules之所以能实现，完全依赖于上一篇中提到的JSI。到目前为止，ReactNative的新架构图将变成如下所示：</p>
-<p><img src="rn-new-architecture1/new-5.png" alt="img"></p>
-<p>第三篇的内容就是这些，接下来只剩下最后一篇了。</p>
-<p>最后加几句笔者的感慨，这篇中间三段只有短短的几百个字，花了好几个小时，还是翻的无比别扭，很多时候看一些外文的技术博客都有这种感觉，中文几句话就可以说清楚的事情，英文花几百个单词翻来覆去的说，我反倒觉得绕来绕去的还不准确。上次试图翻译(how-are-function-components-different-from-classes)[<a href="https://overreacted.io/how-are-function-components-different-from-classes/]时也是这感觉，原文看完一遍觉得都明白了，但翻译的时候，越到后面越痛苦，作者大神是React的开发成员，能力绝对毋庸置疑，所以我只能觉得是自己英文水平还不够，不知道别人是否也有一样的感觉……" target="_blank" rel="noopener">https://overreacted.io/how-are-function-components-different-from-classes/]时也是这感觉，原文看完一遍觉得都明白了，但翻译的时候，越到后面越痛苦，作者大神是React的开发成员，能力绝对毋庸置疑，所以我只能觉得是自己英文水平还不够，不知道别人是否也有一样的感觉……</a></p>
 
           
         

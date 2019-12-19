@@ -259,6 +259,372 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/16/rn-layoutanimation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/16/rn-layoutanimation/" itemprop="url">ReactNative之使用LayoutAnimation创建动画</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-16T20:18:36+08:00">
+                2017-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>LayoutAnimation是官方提供的一个实现动画的API，但官方文档比较简单，结合查看源代码和demo试验，总结了一下如何使用。</p>
+<p>最开始重点强调一下，android平台要使用的话，必须加上这段代码才行，否则像我一样用android设备调试，写了半天发现都不起作用。</p>
+<pre><code>var UIManager = require(&apos;UIManager&apos;);
+UIManager.setLayoutAnimationEnabledExperimental &amp;&amp; UIManager.setLayoutAnimationEnabledExperimental(true);
+</code></pre><p>使用LayoutAnimation实现动画其实很简单，就是在setState之前调用LayoutAnimation.configureNext，然后在下次渲染时就根据新的state产生动画了，所以先写一个最简单的例子</p>
+<pre><code>class TestLayoutAnimation extends Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {left:100,top:100,width:100,height:100,isVisible:true}
+    }    
+    render(){
+        return &lt;View&gt;
+            &lt;Button title=&quot;click&quot; onPress={this._onClick.bind(this)}/&gt;
+            {
+            this.state.isVisible ? 
+            &lt;View style={{position:"absolute", left:this.state.left, top:this.state.top,
+					width:this.state.width, height:this.state.height, backgroundColor:"red",
+				}}/&gt;
+             : null
+            }
+        &lt;/View&gt;
+    }
+    _onClick(){
+        LayoutAnimation.configureNext({
+            duration:500,
+            update:{
+                type:LayoutAnimation.Types.spring
+            }
+        });
+        this.setState({left:this.state.left+50,top:this.state.top+50,
+        width:this.state.width+50,height:this.state.height+50});
+    }
+}
+</code></pre><p>运行这个简单的demo就可以看到动画效果，就是由LayoutAnimation.configureNext产生的，我们可以通过看源代码知道这个API的使用规则。LayoutAnimation.js位于react-native\Libraries\LayoutAnimation\文件夹内，Java代码位于react-native\ReactAndroid\src\main\java\com\facebook\react\uimanager\layoutanimation文件夹内</p>
+<p>configureNext方法接受的参数是一个Config对象，这个对象的规则是</p>
+<pre><code>type Config = {
+      duration: number,
+      create?: Anim,
+      update?: Anim,
+      delete?: Anim,
+};
+</code></pre><p>duration参数是必须的，指定这个动画的执行时间。 create,update,delete三个参数是Anim类型，都是可选参数。</p>
+<ul>
+<li>create指定了一个View从不可见变成可见状态时执行的动画效果，这里的不可见，包括width,height为0，或者像demo通过this.state.isVisible控制了不渲染，不包括透明度为0的情况。如果没有create参数，那view出现时是没有动画效果的</li>
+<li>update参数指定了View在可见状态时因为state变化产生的动画效果</li>
+<li>delete和create相反，当一个View变为不可见时，指定其动画效果。</li>
+</ul>
+<p>所以如果一个View在执行动画前是不可见的状态，则必须配置create参数，否则配置update参数就可以。如果消失时需要动画，则配置delete参数。</p>
+<p>我们看Anim的格式要求</p>
+<pre><code>const animType = PropTypes.shape({
+      duration: PropTypes.number,
+      delay: PropTypes.number,
+      springDamping: PropTypes.number,
+      initialVelocity: PropTypes.number,
+      type: PropTypes.oneOf(Object.keys(Types)).isRequired,
+      property: PropTypes.oneOf(
+        // Only applies to create/delete
+        Object.keys(Properties),
+      ),
+});
+</code></pre><p>其中type参数是一定需要的，而property参数则只在create和delete时需要。简单点的话，就只看type和property参数</p>
+<ul>
+<li>type参数必须是LayoutAnimation.Types这个Enum中的值，可取的值有spring, linear, easeInEaseOut, easeIn, easeOut, keyboard 它们的具体效果可以自行通过demo测试</li>
+<li>property必须是LayoutAnimation.Properties这个Enum中的值，可取的值只有两个opacity, scaleXY。不看源代码大概也能推测出它的意义就是View在出现或者消失时，是按scale还是opacity的效果来。</li>
+</ul>
+<p>了解这些之后我们就可以实现改变View的尺寸，坐标的动画了，但<strong>对透明度，Transform的变动不会有动画效果</strong>。</p>
+<p>LayoutAnimation提供了一个接口Create方法，可以生成configureNext方法需要的参数Config</p>
+<pre><code>function create(duration: number, type, creationProp): Config {
+      return {
+           duration,
+        create: {type,property: creationProp,},
+        update: {type,},
+        delete: {type,property: creationProp,},
+      };
+}
+</code></pre><p>使用这个方法可以生成了一个比较简单的config，它把create,update,delete都实现了，属性只有type和property。</p>
+<p>此外LayoutAnimation还提供了3个写好的动画效果可以直接使用，它们是LayoutAnimation.easeInEaseOut, LayoutAnimation.linear, LayoutAnimation.spring,看源代码就很容易明白，它们其实就是写好了代码实现的configureNext方法，所以使用起来就是在setState之前直接调用即可</p>
+<pre><code>LayoutAnimation.easeInEaseOut();
+LayoutAnimation.linear();
+LayoutAnimation.spring();
+</code></pre><p>LayoutAnimation的底层实现是在native层，所以不会被js线程卡顿影响，比较适合做一些简单的动画，使用起来也很简单,但不太适合用来做组合动画。configureNext的第二个参数可以传入一个回调，通过这个回调函数可以开始新的动画，但只在ios平台才有效，如果需要实现复杂的动画，应该使用Animated类。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/15/js-mix-import/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/15/js-mix-import/" itemprop="url">js之import与export复合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-15T16:33:43+08:00">
+                2017-12-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在重构项目时有时会有这种需求，从一个文件内import进来然后export出去。这里总结一下一些写法，在<a href="http://es6.ruanyifeng.com/#docs/module" target="_blank" rel="noopener">ECMAScript6 入门</a>里有一段相关内容可做参考。内容很简单，基本就是语法规范而已。</p>
+<p>首先是导出文件a.js</p>
+<pre><code>//a.js
+let a = {&quot;a&quot;:1}
+export {a}
+</code></pre><p>b.js需要导入a.js再导出，有一种比较简单的写法</p>
+<pre><code>//b.js
+export {a} from &quot;./a&quot;
+</code></pre><p>在使用的时候</p>
+<pre><code>//index.js
+import {a} from &quot;./b&quot;
+</code></pre><p>跟从b.js内正常export出来的一样对待。</p>
+<p>还有一种写法效果一样，但有一点区别。就是</p>
+<pre><code>//b.js
+import {a} from &quot;./a&quot;
+export {a}
+</code></pre><p>这种写法的作用是<strong>在b.js内可以使用变量a</strong>，而前一种写法不能。</p>
+<p>如果a.js导出的比较多，一般会使用import * 来引用，也可以使用export * 来导出，例如</p>
+<pre><code>//b.js
+export * from &apos;./a&apos;
+export let b = {&quot;b&quot;:2}
+//index.js
+import * as B from &quot;./b&quot;
+console.log(B.a); 
+</code></pre><p>然后看一下export default的情况</p>
+<pre><code>//a.js
+export default a = {&quot;a&quot;:1}
+//b.js
+export a from &quot;./a&quot;                    //（1）
+
+export {default as a} from &quot;./a&quot;    //(2)
+
+import a from &quot;./a&quot;                    //(3)
+export {a}
+//index.js
+import {a} from &quot;./b&quot;
+</code></pre><p>第一种写法是错误的，第二种和第三种写法没问题，而且这两种写法在b.js内都可以正常使用变量a</p>
+<p>也可以把一个普通的export转换为export default，例如</p>
+<pre><code>//b.js
+export {a1 as default} from &quot;./a&quot;
+//index.js
+import a1 from &quot;./b&quot;
+</code></pre><p>但这种方法在b.js内不能使用变量名a1，如果要使用的话，下面这样写就可以了</p>
+<pre><code>//b.js
+import {a1} from &quot;./a&quot;
+export default a1
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/12/07/other-programmer-ability/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1521,301 +1887,6 @@ import &quot;react-native&quot;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/02/rn-run-release/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/02/rn-run-release/" itemprop="url">ReactNative之生成android debug安装包</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-02T20:18:36+08:00">
-                2017-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们使用react-native init创建一个空的项目，想要让它在android设备上跑起来，<a href="https://reactnative.cn/docs/0.43/running-on-device-android.html#content" target="_blank" rel="noopener">官网教程</a>给的方案就是使用react-native run-android命令开启联网调试，或者使用./gradlew assembleRelease来生成安装包。 前者必须依赖开发机开启联网服务，然后手机设置好服务器和端口并连接，否则要么屏幕一片空白，要么提示红屏报错。找到android/app/build/output/appDebug.apk可以看到安装包内没有Bundle等资源。后者需要配置签名。实际上如果我们想查看apk实际运行状况，可以很快生成一个debug安装包。</p>
-<h3 id="打包bundle"><a href="#打包bundle" class="headerlink" title="打包bundle"></a>打包bundle</h3><p>这是最重要的一步，在项目根目录下执行</p>
-<pre><code>react-native bundle --entry-file index.android.js --platform android --dev false --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-</code></pre><p>这里最重要的是指定–bundle-output和–assets-dest两个参数。首先是–bundle-output，它必须放在android/app/src/main/assets目录下，如果该目录不存在就创建。必须指定文件名为index.android.bundle。 所有的图片资源必须放在android/app/src/main/res下，否则会无法找到图片资源而不能显示。</p>
-<h3 id="安装运行"><a href="#安装运行" class="headerlink" title="安装运行"></a>安装运行</h3><p>到android目录下执行./gradlew installDebug即可</p>
-<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>在打包bundle那一步中，很多参数只是遵循默认的设置，比如bundle文件名叫index.android.bundle，位置在assets目录下，这些都可以按自己的需求来改，但前提是在java代码内也要做相应的调整，如果对这块不是很熟悉就按默认的来就行了。</p>
-<p>不过–assets-dest目录必须在res目录下这个一定要遵守，因为Android系统要使用安装包内的资源，必须先转换成res id，如果放到别的文件夹下，没法转换，最后肯定找不到资源，也就没法显示图片了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/21/rn-component-liftcycle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/21/rn-component-liftcycle/" itemprop="url">ReactNative中的Component的生命周期</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-21T19:15:36+08:00">
-                2017-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文介绍一下Component生命周期相关的一些函数，主要参考自<a href="https://reactjs.org/docs/react-component.html" target="_blank" rel="noopener">官方文档</a> </p>
-<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>render函数是必须实现的，它用来渲染界面。一般会由this.props和this.state来控制如何显示。在这个函数里不能调用setState，否则会导致死循环，因为setState会导致render被调用。<br>render函数返回true,false,null,undefined都是合法的jsx语法，但它们都不会产生渲染。render函数应该避免太复杂耗时的操作。另外注意一下<text></text>组件里如果想显示bool值,null,undefined时也需要显示转换成字符串才行。</p>
-<h2 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h2><h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p>构造函数是最早被调用的，构造函数的第一句应该是super(props)。 state的初始化应该放在构造函数里。当然还有声明类的成员变量。</p>
-<h3 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h3><p>当Component将要被加载时被调用，它在render之前被调用。在这个函数里执行setState的话，不会触发componentWillUpdate和render。因为render还没被调用，所以在这个函数里想通过ref获取子控件是不行的。componentWillMount为第一次render提供了准备数据的机会，我们可以放心的操作props和state。</p>
-<p>componentWillMount也适合用来注册事件监听，假如有的事件在渲染时触发，那么在render前就注册显然更合适。componentWillMount的父节点会早于子节点被调用。</p>
-<h3 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h3><p>当component已经被加载后调用，它在render之后被调用。所以在这个函数里执行setState会触发componentWillUpdate和render。对于同级节点，先渲染的componentDidMount会先被调用，对于父子节点，子节点的componentDidMount会比父节点先调用。前面说到render不应该调用setState来触发re-render，而componentWillMount调用setState又不会触发re-render，显然componentDidMount则完全没问题了，比如我们有一个component的尺寸未知，取决于另一个component的已知尺寸，就可以在componentDidMount里获取数据，计算好后setState来重新render。</p>
-<h3 id="constructor，componentWillMount和componentDidMount分别适合做什么事情"><a href="#constructor，componentWillMount和componentDidMount分别适合做什么事情" class="headerlink" title="constructor，componentWillMount和componentDidMount分别适合做什么事情"></a>constructor，componentWillMount和componentDidMount分别适合做什么事情</h3><p>constructor显然适合做初始化，比如初始化state,成员变量，绑定成员函数等。而componentWillMount和componentDidMount的主要区别就是一个在render前，一个在render后。如果需要处理原始props和state，就应该放到componentWillMount中，比如使用props给state赋值，此外注册监听适合放在componentWillMount内。除此之外，大多数情况下的操作应该放到componentDidMount里，比如发起异步请求，开启计时器等等。</p>
-<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><h3 id="componentWillReceiveProps-nextProps"><a href="#componentWillReceiveProps-nextProps" class="headerlink" title="componentWillReceiveProps(nextProps)"></a>componentWillReceiveProps(nextProps)</h3><p>当component的props被更新时被调用，但需要注意的是，update流程的所有回调触发的前提都是有update，也就是我们在父控件代码中改变子控件props但不触发update的话，这个回调也不会被调用的。例子很简单，比如</p>
-<pre><code>render(){
-    return (&lt;View&gt;
-        &lt;TestComponent num=this._num&gt;
-        &lt;Button onPress={()=&gt;{this._num=999}}&gt;
-    &lt;/View&gt;)
-}
-</code></pre><p>点击按钮改变了this._num，而this._num又作为TestComponent的props传递进去了，但因为并没有触发update，所以TestComponent的任何update回调都不会被触发。</p>
-<p>另外需要注意，该回调被调用时，不一定props发生了变化，这里的没有发生变化有两种情形，一种是父控件没有改变子控件的props，例如父组件代码内调用setState刷新界面，此时子控件的componentWillReceiveProps也会被调用，但props没有发生变化。还有就是父控件传递过去的props是一个复杂数据类型，所以实际上是个引用，即使props发生了变化，this.props和nextProps也是相同的。</p>
-<p>什么时候会用到这个回调呢？就是如果我们的state受props影响时，当传入的props发生了变化，我们在这里去修改state。在这里可以放心去执行setState</p>
-<h3 id="shouldComponentUpdate-nextProps-nextState"><a href="#shouldComponentUpdate-nextProps-nextState" class="headerlink" title="shouldComponentUpdate(nextProps, nextState)"></a>shouldComponentUpdate(nextProps, nextState)</h3><p>通过这个回调函数返回true还是false来决定是否re-render。如果不重写的话会使用源代码的默认实现。默认实现可以参考源代码，它使用了fbjs/lib/shallowEqual.js内的shallowEqual方法来比较新旧props和state，只要props和state有一个改变了，就会触发re-render。 从shallowEqual代码看，首先是===强等判断，所以如果是同一个引用，那么不管内容怎么变，都认为是不变。例如</p>
-<pre><code>let old = this.state;
-old.num=999;
-this.setState(old);
-</code></pre><p>这样不会触发re-render。然后是比较key-value，value的比较也是===强等。举个例子</p>
-<pre><code>this.state = {num:1};
-...
-this.setState({num:1});
-</code></pre><p>这里虽然setState时将state变成了一个新的对象，但因为key-value完全一致，所以也不会导致re-render。如果value是复杂数据类型同理，例如</p>
-<pre><code>this.state = {obj:{num:1}}
-...
-let old = this.state.obj;
-old.num = 999;
-this.setState({obj:old})
-</code></pre><p>这里虽然num变了，但并不会触发re-render。</p>
-<p>以上是源代码中的默认实现，如果需要的话就重写通过限制一些re-render的触发条件，可以起到优化性能的作用。</p>
-<h3 id="componentWillUpdate-nextProps-nextState"><a href="#componentWillUpdate-nextProps-nextState" class="headerlink" title="componentWillUpdate(nextProps, nextState)"></a>componentWillUpdate(nextProps, nextState)</h3><p>这个方法在每次re-render之前都会被调用，因为是在render之前，所以有点类似于componentWillMount，我们在这个回调里为下次render做好准备，通过this.props和this.state可以获取到当前的props和state，通过传进来的nextProps和nextState参数可以获得新的props和state。与componentWillMount不一样的是，在这里我们是可以操作UI的，但并不建议这么做，因为此时操作的是上次渲染的UI，它们有可能在下次render时就失效了。我们也不应该在这里调用setState，因为setState又会触发componentWillUpdate,这就造成了死循环，当然如果通过对nextProps或者nextState做判断是可以杜绝进入死循环的，但最好还是避免这样操作。</p>
-<h3 id="componentDidUpdate-prevProps-prevState"><a href="#componentDidUpdate-prevProps-prevState" class="headerlink" title="componentDidUpdate(prevProps, prevState)"></a>componentDidUpdate(prevProps, prevState)</h3><p>正如前面说的componentWillUpdate对应componentWillMount，这里componentDidUpdate就对应着componentDidMount。它在render之后被调用，在这里就可以放心的获取和操作UI了。它的参数prevProps和prevState对应着componentWillUpdate里的this.props和this.state，而这个函数里的this.props和this.state就是当前的props和state，也就是componentWillUpdate里的nextProps和nextState。子节点的回调先于父节点被调用。在这里调用setState也需要非常小心，很可能会造成无限循环，如果确实需要的话，应该配合shouldComponentUpdate加以限制。如果我们需要对UI进行交互，比如获取某个UI的尺寸位置，这里是最合适的位置。</p>
-<h2 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h2><p>当一个component不再被渲染时会被调用。例如</p>
-<pre><code>constructor(props){
-    super(props);
-    this.state={bVisible:true};
-}
-
-render(){
-    return (&lt;View&gt;
-        {this.state.bVisible ? &lt;MyComponent /&gt; : null} 
-        &lt;Button onPress={()=&gt;{
-            this.setState({bVisible:false})
-        }}&gt;
-    &lt;/View&gt;)
-}
-</code></pre><p>这个demo起始时MyComponent显示，点击按钮后不显示。不要误以为MyComponent只是被隐藏了，实际上它被销毁了，它所占用的内存都会被回收，此时它的componentWillUnmount会被调用。我们在componentWillMount或者componentDidMount里如果注册了一些监听，就需要在这里注销掉。与componentDidMount相反，父控件的componentWillUnmount会比子控件的先被调用。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1866,7 +1937,7 @@ render(){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

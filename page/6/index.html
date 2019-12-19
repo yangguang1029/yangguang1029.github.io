@@ -259,6 +259,301 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/11/02/rn-run-release/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/02/rn-run-release/" itemprop="url">ReactNative之生成android debug安装包</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-02T20:18:36+08:00">
+                2017-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们使用react-native init创建一个空的项目，想要让它在android设备上跑起来，<a href="https://reactnative.cn/docs/0.43/running-on-device-android.html#content" target="_blank" rel="noopener">官网教程</a>给的方案就是使用react-native run-android命令开启联网调试，或者使用./gradlew assembleRelease来生成安装包。 前者必须依赖开发机开启联网服务，然后手机设置好服务器和端口并连接，否则要么屏幕一片空白，要么提示红屏报错。找到android/app/build/output/appDebug.apk可以看到安装包内没有Bundle等资源。后者需要配置签名。实际上如果我们想查看apk实际运行状况，可以很快生成一个debug安装包。</p>
+<h3 id="打包bundle"><a href="#打包bundle" class="headerlink" title="打包bundle"></a>打包bundle</h3><p>这是最重要的一步，在项目根目录下执行</p>
+<pre><code>react-native bundle --entry-file index.android.js --platform android --dev false --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+</code></pre><p>这里最重要的是指定–bundle-output和–assets-dest两个参数。首先是–bundle-output，它必须放在android/app/src/main/assets目录下，如果该目录不存在就创建。必须指定文件名为index.android.bundle。 所有的图片资源必须放在android/app/src/main/res下，否则会无法找到图片资源而不能显示。</p>
+<h3 id="安装运行"><a href="#安装运行" class="headerlink" title="安装运行"></a>安装运行</h3><p>到android目录下执行./gradlew installDebug即可</p>
+<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>在打包bundle那一步中，很多参数只是遵循默认的设置，比如bundle文件名叫index.android.bundle，位置在assets目录下，这些都可以按自己的需求来改，但前提是在java代码内也要做相应的调整，如果对这块不是很熟悉就按默认的来就行了。</p>
+<p>不过–assets-dest目录必须在res目录下这个一定要遵守，因为Android系统要使用安装包内的资源，必须先转换成res id，如果放到别的文件夹下，没法转换，最后肯定找不到资源，也就没法显示图片了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/21/rn-component-liftcycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/21/rn-component-liftcycle/" itemprop="url">ReactNative中的Component的生命周期</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-21T19:15:36+08:00">
+                2017-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文介绍一下Component生命周期相关的一些函数，主要参考自<a href="https://reactjs.org/docs/react-component.html" target="_blank" rel="noopener">官方文档</a> </p>
+<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>render函数是必须实现的，它用来渲染界面。一般会由this.props和this.state来控制如何显示。在这个函数里不能调用setState，否则会导致死循环，因为setState会导致render被调用。<br>render函数返回true,false,null,undefined都是合法的jsx语法，但它们都不会产生渲染。render函数应该避免太复杂耗时的操作。另外注意一下<text></text>组件里如果想显示bool值,null,undefined时也需要显示转换成字符串才行。</p>
+<h2 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h2><h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p>构造函数是最早被调用的，构造函数的第一句应该是super(props)。 state的初始化应该放在构造函数里。当然还有声明类的成员变量。</p>
+<h3 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h3><p>当Component将要被加载时被调用，它在render之前被调用。在这个函数里执行setState的话，不会触发componentWillUpdate和render。因为render还没被调用，所以在这个函数里想通过ref获取子控件是不行的。componentWillMount为第一次render提供了准备数据的机会，我们可以放心的操作props和state。</p>
+<p>componentWillMount也适合用来注册事件监听，假如有的事件在渲染时触发，那么在render前就注册显然更合适。componentWillMount的父节点会早于子节点被调用。</p>
+<h3 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h3><p>当component已经被加载后调用，它在render之后被调用。所以在这个函数里执行setState会触发componentWillUpdate和render。对于同级节点，先渲染的componentDidMount会先被调用，对于父子节点，子节点的componentDidMount会比父节点先调用。前面说到render不应该调用setState来触发re-render，而componentWillMount调用setState又不会触发re-render，显然componentDidMount则完全没问题了，比如我们有一个component的尺寸未知，取决于另一个component的已知尺寸，就可以在componentDidMount里获取数据，计算好后setState来重新render。</p>
+<h3 id="constructor，componentWillMount和componentDidMount分别适合做什么事情"><a href="#constructor，componentWillMount和componentDidMount分别适合做什么事情" class="headerlink" title="constructor，componentWillMount和componentDidMount分别适合做什么事情"></a>constructor，componentWillMount和componentDidMount分别适合做什么事情</h3><p>constructor显然适合做初始化，比如初始化state,成员变量，绑定成员函数等。而componentWillMount和componentDidMount的主要区别就是一个在render前，一个在render后。如果需要处理原始props和state，就应该放到componentWillMount中，比如使用props给state赋值，此外注册监听适合放在componentWillMount内。除此之外，大多数情况下的操作应该放到componentDidMount里，比如发起异步请求，开启计时器等等。</p>
+<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><h3 id="componentWillReceiveProps-nextProps"><a href="#componentWillReceiveProps-nextProps" class="headerlink" title="componentWillReceiveProps(nextProps)"></a>componentWillReceiveProps(nextProps)</h3><p>当component的props被更新时被调用，但需要注意的是，update流程的所有回调触发的前提都是有update，也就是我们在父控件代码中改变子控件props但不触发update的话，这个回调也不会被调用的。例子很简单，比如</p>
+<pre><code>render(){
+    return (&lt;View&gt;
+        &lt;TestComponent num=this._num&gt;
+        &lt;Button onPress={()=&gt;{this._num=999}}&gt;
+    &lt;/View&gt;)
+}
+</code></pre><p>点击按钮改变了this._num，而this._num又作为TestComponent的props传递进去了，但因为并没有触发update，所以TestComponent的任何update回调都不会被触发。</p>
+<p>另外需要注意，该回调被调用时，不一定props发生了变化，这里的没有发生变化有两种情形，一种是父控件没有改变子控件的props，例如父组件代码内调用setState刷新界面，此时子控件的componentWillReceiveProps也会被调用，但props没有发生变化。还有就是父控件传递过去的props是一个复杂数据类型，所以实际上是个引用，即使props发生了变化，this.props和nextProps也是相同的。</p>
+<p>什么时候会用到这个回调呢？就是如果我们的state受props影响时，当传入的props发生了变化，我们在这里去修改state。在这里可以放心去执行setState</p>
+<h3 id="shouldComponentUpdate-nextProps-nextState"><a href="#shouldComponentUpdate-nextProps-nextState" class="headerlink" title="shouldComponentUpdate(nextProps, nextState)"></a>shouldComponentUpdate(nextProps, nextState)</h3><p>通过这个回调函数返回true还是false来决定是否re-render。如果不重写的话会使用源代码的默认实现。默认实现可以参考源代码，它使用了fbjs/lib/shallowEqual.js内的shallowEqual方法来比较新旧props和state，只要props和state有一个改变了，就会触发re-render。 从shallowEqual代码看，首先是===强等判断，所以如果是同一个引用，那么不管内容怎么变，都认为是不变。例如</p>
+<pre><code>let old = this.state;
+old.num=999;
+this.setState(old);
+</code></pre><p>这样不会触发re-render。然后是比较key-value，value的比较也是===强等。举个例子</p>
+<pre><code>this.state = {num:1};
+...
+this.setState({num:1});
+</code></pre><p>这里虽然setState时将state变成了一个新的对象，但因为key-value完全一致，所以也不会导致re-render。如果value是复杂数据类型同理，例如</p>
+<pre><code>this.state = {obj:{num:1}}
+...
+let old = this.state.obj;
+old.num = 999;
+this.setState({obj:old})
+</code></pre><p>这里虽然num变了，但并不会触发re-render。</p>
+<p>以上是源代码中的默认实现，如果需要的话就重写通过限制一些re-render的触发条件，可以起到优化性能的作用。</p>
+<h3 id="componentWillUpdate-nextProps-nextState"><a href="#componentWillUpdate-nextProps-nextState" class="headerlink" title="componentWillUpdate(nextProps, nextState)"></a>componentWillUpdate(nextProps, nextState)</h3><p>这个方法在每次re-render之前都会被调用，因为是在render之前，所以有点类似于componentWillMount，我们在这个回调里为下次render做好准备，通过this.props和this.state可以获取到当前的props和state，通过传进来的nextProps和nextState参数可以获得新的props和state。与componentWillMount不一样的是，在这里我们是可以操作UI的，但并不建议这么做，因为此时操作的是上次渲染的UI，它们有可能在下次render时就失效了。我们也不应该在这里调用setState，因为setState又会触发componentWillUpdate,这就造成了死循环，当然如果通过对nextProps或者nextState做判断是可以杜绝进入死循环的，但最好还是避免这样操作。</p>
+<h3 id="componentDidUpdate-prevProps-prevState"><a href="#componentDidUpdate-prevProps-prevState" class="headerlink" title="componentDidUpdate(prevProps, prevState)"></a>componentDidUpdate(prevProps, prevState)</h3><p>正如前面说的componentWillUpdate对应componentWillMount，这里componentDidUpdate就对应着componentDidMount。它在render之后被调用，在这里就可以放心的获取和操作UI了。它的参数prevProps和prevState对应着componentWillUpdate里的this.props和this.state，而这个函数里的this.props和this.state就是当前的props和state，也就是componentWillUpdate里的nextProps和nextState。子节点的回调先于父节点被调用。在这里调用setState也需要非常小心，很可能会造成无限循环，如果确实需要的话，应该配合shouldComponentUpdate加以限制。如果我们需要对UI进行交互，比如获取某个UI的尺寸位置，这里是最合适的位置。</p>
+<h2 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h2><p>当一个component不再被渲染时会被调用。例如</p>
+<pre><code>constructor(props){
+    super(props);
+    this.state={bVisible:true};
+}
+
+render(){
+    return (&lt;View&gt;
+        {this.state.bVisible ? &lt;MyComponent /&gt; : null} 
+        &lt;Button onPress={()=&gt;{
+            this.setState({bVisible:false})
+        }}&gt;
+    &lt;/View&gt;)
+}
+</code></pre><p>这个demo起始时MyComponent显示，点击按钮后不显示。不要误以为MyComponent只是被隐藏了，实际上它被销毁了，它所占用的内存都会被回收，此时它的componentWillUnmount会被调用。我们在componentWillMount或者componentDidMount里如果注册了一些监听，就需要在这里注销掉。与componentDidMount相反，父控件的componentWillUnmount会比子控件的先被调用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/10/16/rn-reducer-pure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1554,355 +1849,6 @@ void CatalystInstanceImpl::jniLoadScriptFromAssets(
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/06/16/rn-connect/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/16/rn-connect/" itemprop="url">Redux中的Provider和connect</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-16T11:15:36+08:00">
-                2017-06-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>redux里有不少概念，一时半会看不明白，这里讲下我理解的provider和connect。我们知道使用Reudx，数据作为state被存储在一个单独的store中。我们在渲染时从state获取数据，需要修改数据时，dispatch一个action即可。provider和connect的作用，是为了更方便的存取state数据。</p>
-<p>如果不使用provider和connect，也是完全没问题的，这样的话我们需要把store传入到Component中以便使用，例如需要这么写：</p>
-<pre><code>index.android.js:    //此代码缺少action和reducer的实现，并不能直接运行，只是用以描述
-
-let store = createStore(reducer);
-export default class testrn extends Component{
-    render(){
-        &lt;NoConnect store={store}/&gt;
-    }
-}
-
-NoConnect.js:
-
-export default class NoConnect extends Component{
-    constructor(props){
-        super(props);
-        this.state = this.props.store.getState();
-    }
-    render(){
-        return (&lt;View&gt;
-            &lt;Text&gt;this.state.prop1&lt;/Text&gt;
-            &lt;Button title=&quot;click&quot; onPress={()=&gt;{
-                this.props.store.dispatch(action);
-                this.setState(this.props.store.getState());
-            }}&gt;
-        &lt;/View&gt;)
-    }
-}
-</code></pre><p>从上面可以看出来，我们主要是通过把store传入Component，然后利用它的getState和dispatch接口进行存取数据，数据需要保存为自身的state，在dispatch后需要通过setState来刷新界面。</p>
-<p>如果使用provider和connect，就可以大大简化代码了。例如</p>
-<pre><code>index.android.js:
-
-let store = createStore(reducer);
-export default class testrn extends Component{
-    render(){
-        &lt;Provider store={store}&gt;
-        &lt;TestContainer  /&gt;
-        &lt;/Provider&gt;
-    }
-}
-
-testContainer.js:
-import { connect } from &apos;react-redux&apos;;
-class testContainer extends Component{
-    render(){
-        return (&lt;View&gt;
-            &lt;Text&gt;this.props.text1&lt;/Text&gt;
-            &lt;Button title=&quot;click&quot; onPress={()=&gt;{
-                this.props.change1(&quot;123&quot;);
-            }}&gt;
-        &lt;/View&gt;)
-    }
-}
-
-const mapStateToProps = (state, ownProps)=&gt;{
-    return {
-        text1:state.prop1
-    }
-}
-
-const mapDispatchToProps = {
-    change1:Actions.createAction1
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(testContainer)
-</code></pre><p>从上面代码可以看出来，在Component里不再需要使用store变量，代码简化了。只要被Provider包含着的组件及其子组件，都可以使用connect方法，就不需要到处传递store变量了。</p>
-<p>mapStateToProps的作用，就是把state内的值转换成Component的props的值，这样在Component内使用时，不需要通过store.getState来获取并存为自己的state了。每当state发生变化时，这个方法就会被调用，这样Component的props就被修改了，于是就不用再通过setState来通知页面刷新。</p>
-<p>mapStateToProps是一个方法，它的第一个参数就是state，第二个参数ownProps是传递给Component的props。在上述代码中就是<code>&lt;TestContainer /&gt;</code>处传递的props</p>
-<p>mapDispatchToProps的作用，就是把创建action的方法，绑定在Component的props上，这样就不需要通过store.dispatch来更改state。</p>
-<p>上述代码中mapDispatchToProps是一个Object，它的values就是创建action的方法，keys绑定为Component的props属性，这样在testContainer中调用this.props.change1就创建并发布了一个action。</p>
-<p>mapDispatchToProps也可以是一个方法，它的第一个参数是store的dispatch方法，第二个参数是ownProps。用方法实现比起用Object实现，可以做更多的注入操作，代码如下</p>
-<pre><code>const mapDispatchToProps = (dispatch, ownProps) {
-    return {
-        change1:(data)=&gt;{
-            console.log(&quot;dispatch action1.....&quot;);
-            dispatch(Actions.createAction1(data));
-        }
-    }
-}
-</code></pre><p>可以看到如果用方法来实现，在change1里就可以做很灵活的操作了。同时Redux提供了一个很简便的接口bindActionCreators(Actions, dispatch)，使用它相当于使用Object实现，并且key和创建action的方法名一致。</p>
-<p>上面代码里用到的Actions，是创建action的接口</p>
-<p>除了上面提到的mapStateToProps和mapDispatchToProps外，connect方法后面还可以再带两个参数</p>
-<p>mergeprops</p>
-<p>options:</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2017/06/15/es6-import/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/15/es6-import/" itemprop="url">ES6中合并import</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-15T20:08:14+08:00">
-                2017-06-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近打算优化一下ReactNative项目的代码，项目中有个公共模块文件夹utils，里面有不少文件，使用的也很频繁，这就导致了在很多js文件里都有这么一大段代码</p>
-<pre><code>import * as A from &quot;./utils/a&quot; 
-import * as B from &quot;./utils/b&quot; 
-...
-import * as G from &quot;./utils/g&quot; 
-import * as H from &quot;./utils/h&quot; 
-</code></pre><p>于是我就打算把整个utils内的文件做个汇总，具体实现方案是，在utils文件夹内添加一个index.js，其内容为</p>
-<pre><code>import * as A from &quot;./utils/a&quot; 
-import * as B from &quot;./utils/b&quot; 
-...
-import * as G from &quot;./utils/g&quot; 
-import * as H from &quot;./utils/h&quot;
-export {A, B, ... G, H}
-</code></pre><p>然后原来每个import utils内文件的地方，就改成了</p>
-<pre><code>import {A, B, ... G, H} from &quot;./utils/index&quot;
-</code></pre><p>我总结一下这样改的优劣。</p>
-<p>好处是</p>
-<ol>
-<li>暴露一个唯一的接口，可以保持一致。原来在不同的文件里import同一个接口，可能取不同的名字，在这个文件里是<code>import * as A from &#39;./utils/a&#39;</code>，另一个文件里就可能是<code>import * as B from &#39;./utils/a&#39;</code>了，文件多了容易导致混乱，但我们统一成一个接口，除非特意使用as重命名，否则每个文件里都是一致的</li>
-<li>可以看出来用新的方法减少了一定的代码量，看起来舒服一些。RN本身也是这种风格，例如<code>import {Text, Button} from &#39;react-native&#39;</code>。这样汇总尤其适合用于对外暴露接口。</li>
-</ol>
-<p>当然也有一些不好的地方</p>
-<ol>
-<li>多维护了一个文件，当utils内新加文件时，需要到这个index.js内添加。</li>
-<li>被汇总的文件，要么只export default一个接口，要么以import *的方式被汇总。否则如果从这个文件里import若干个，再从另一个文件里import几个进来，然后汇总出去，就显得比较乱了，会分不清哪个接口是哪个文件的。</li>
-</ol>
-<h3 id="2017-12-15新加："><a href="#2017-12-15新加：" class="headerlink" title="2017/12/15新加："></a>2017/12/15新加：</h3><p>最近重构项目，把utils内一些文件挪到别的文件夹，这时才感受到汇总import再export最大的好处了，如果使用汇总的方案，那只需要改index.js一个文件，其余所有的都不用动。 但如果不进行汇总，那有多少个地方import了就需要改多少个地方，漏一个都报错。这应该是使用汇总方案最大的好处吧。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1953,7 +1899,7 @@ export {A, B, ... G, H}
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

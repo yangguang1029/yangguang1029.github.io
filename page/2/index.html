@@ -259,6 +259,265 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/03/09/other-tinygame-architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/09/other-tinygame-architecture/" itemprop="url">一个小游戏的通用架构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-09T15:50:39+08:00">
+                2019-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构</p>
+<h2 id="功能系统"><a href="#功能系统" class="headerlink" title="功能系统"></a>功能系统</h2><h3 id="消息分发系统"><a href="#消息分发系统" class="headerlink" title="消息分发系统"></a>消息分发系统</h3><p>它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。</p>
+<p>监听者模式是代码解耦的一大神器，应用也非常普遍，所以第一个想到的就是它，当然它的缺点就是不利于流程的跟踪。</p>
+<h3 id="UI管理系统"><a href="#UI管理系统" class="headerlink" title="UI管理系统"></a>UI管理系统</h3><p>游戏中一般场景scene并不多，大多数都是在scene上面分布着各种弹窗界面，例如弹出提示框，获得奖励框，各种二级界面等等。如果没有一个管理系统，很容易混乱，要么zorder设置起来累的要死，要么弹窗覆盖导致界面丑陋不堪。</p>
+<p>UI管理系统一般提供的接口就是弹出界面和关闭界面，默认会自动设置zorder，并且关闭的界面一般不做销毁，而是从父节点移除后留作下次备用，以提高性能。如果实现的简单，就直接弹出窗口，设置最高zorder即可，复杂些的话可以进行分类管理，哪些节点可被覆盖，哪些不可以，支持什么弹出动画等等。</p>
+<h3 id="数据管理系统"><a href="#数据管理系统" class="headerlink" title="数据管理系统"></a>数据管理系统</h3><p>前端页面如何展示，依赖于后端传递的数据，这些数据最好使用一个管理系统来全局存储，而不是存在UI类中，这样更有利于解耦。</p>
+<p>后端传回的数据现在经常是json格式，可以直接拿来使用，但最好还是解析为model，这样做的一个好处是即使没有协议文档，也很容易明白协议格式，而且可以在model层封装一些特定的接口比如getDataByType等。另外还有一个好处，就是前端代码最终很可能会被深度混淆，如果直接使用json，处处要小心使用[‘xxx’]而不是.xxx的格式，但解析为model后就不用担心了。</p>
+<h2 id="具体代码模块"><a href="#具体代码模块" class="headerlink" title="具体代码模块"></a>具体代码模块</h2><h3 id="Model模块"><a href="#Model模块" class="headerlink" title="Model模块"></a>Model模块</h3><p>前面提到过，后端获得的数据转为model来使用，本地的配置信息等也可以，取决于实际需求</p>
+<h3 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h3><p>包括两部分，一部分是和各个UI界面的实现（在cocos creator上则是绑定在各个界面的脚本），作用是控制UI界面的各个组件显示，实现一些交互逻辑。按层级可以分为scene和window, component等级别。<br>另一部分是做组件封装，例如给按钮增加防快速点击的功能，给弹窗增加吞触摸事件的背景等等</p>
+<p>看到model和UI，就知道项目其实还是MVC这个万金油结构，这里提到了model和view,上面提到的数据管理系统就可以当做controller了。</p>
+<h3 id="网络模块"><a href="#网络模块" class="headerlink" title="网络模块"></a>网络模块</h3><p>实现网络通信功能，一般都需要保持长连接，在浏览器中使用websock，或者在原生端封装tcp。一般就是实现open, onConnect, onDisconnect, onMessage, send这几个接口。</p>
+<p>这里需要提到的就是最好在网络模块中实现一个比较完善的mock系统，它可以和真正的网络模块无缝切换，接口完全一致，唯一的区别就是在send函数里，对需要mock的接口使用mock的数据回调onMessage，其它接口走真正的网络请求。这样非常灵活，使用方便，功能比单纯在代码中mock一下数据要强大很多。</p>
+<h3 id="Utils模块"><a href="#Utils模块" class="headerlink" title="Utils模块"></a>Utils模块</h3><p>只要比较独立的代码，都往里面扔就是了，一般Constants,Global,Enums三大巨头就够用了，要继续细分也可以，比如EventName啥的</p>
+<h3 id="manager模块"><a href="#manager模块" class="headerlink" title="manager模块"></a>manager模块</h3><p>就是上面提到的消息监听，数据管理，ui管理三大功能系统的实现，它们可以适用于任何项目，实现一套后要么直接搬来用，要么封装成公共sdk都可以</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般的小游戏，有这样的框架，绝对够应付的来了，在这个框架的基础上可以继续细分，但跑不掉还是这些。不论是新建一个项目，还是重构已有项目，都可以按这个结构来。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/01/16/rn-add-perf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/16/rn-add-perf/" itemprop="url">ReactNative之一个监控组件刷新次数的实现方案</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T21:15:36+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在做RN开发中，检测是否有多余的重复渲染是做性能监控的重要手段，在React16.0之前，官方有一个工具叫做<a href="https://reactjs.org/docs/perf.html" target="_blank" rel="noopener">perf</a>，对应的在RN中，也可以使用Libraries/Performance/RCTRenderingPerf中提供的PerfMonitor类，它们提供了监控组件渲染次数的功能，借此发现是否有不必要的渲染。可惜这个工具在React16.0和ReactNative0.45以后就不再提供了，官方仓库有个<a href="https://github.com/facebook/react-native/issues/15371" target="_blank" rel="noopener">issue</a>提到了这个问题，然后就没有然后了……</p>
+<p>官方的Perf功能看起来比较强大，它的printWasted可以把渲染前后没有任何变化的组件打印出来，很直观的看到哪些组件发生了重复渲染，不过我们可以参照类似的API自己做一个简化版的，把组件的刷新次数变化打印出来，因为我们自己是明白哪些组件需要刷新哪些不需要刷新的，所以用这个数据可以自己找出是否有多余的渲染。代码我放到了<a href="https://github.com/yangguang1029/MyReactNative/tree/master/perf" target="_blank" rel="noopener">github仓库里</a></p>
+<p>在addPerf.js里，给Component和PureComponent注入三个回调函数，在componentDidMount里，如果发现组件有tag成员属性，就把这个组件注册起来，记录其更新次数，在componentWillUnmount里取消注册，在componentWillUpdate里添加更新次数。如果想要监控某个组件的渲染次数，就必须在构造函数里添加tag成员属性，注意：<strong>这个tag必须是每个组件实例唯一。</strong>然后如果这个组件实现了这三个函数，需要使用super来调用基类的实现，例如super.componentDidMount()。ps:tag这个属性名太普遍，容易跟实际代码中的属性名重复，但我比较懒，不想再取个属性名，有需要的话，自己想个属性名吧</p>
+<p>在index.js里，renderCountDict以tag为key存储每个组件实例的渲染次数，perfDataDict则存储每次perf起始时的renderCountDict快照，调用startPerf传入一个key开始一次记录，调用stopPerf传入对应的key来完成一次记录，然后会自动打印出开始和结束时renderCountDict的变化。</p>
+<p>testPerf是一个用例，界面有一个flatlist和一个button，每次点击按钮，会给flatlist添加一个单元行，单元行组件Cell继承自Component并且拥有成员属性tag，所以会被记录刷新次数。我们在页面的componentWillUpdate里开始一次监控，在componentDidUpdate里结束这次监控，就可以看到页面刷新时，单元行组件的刷新状况。如果单元行组件Cell继承自Component，那么每次添加单元行时，原有的单元行也都跟着刷新了一次，但实际上它们的渲染内容没有任何变化，所以它们是重复渲染。而一旦我们让Cell继承自PureComponent，就会发现每次增加单元行时，只变化了新增的那个，这就比之前的方案要更优化。</p>
+<p>上面是一个很简单的例子，但用这个方法，可以很方便的监控两个时间点之间的组件刷新次数，比较重要的是选择好开始和停止的时间点，并且自己先明白有哪些组件需要刷新，那些不需要刷新但也发生刷新了的组件，就是我们需要优化的对象了。以上只是一个思路，实现上如果有更巧妙的方案，或者有大牛可以实现官方perf那样，能对比出组件渲染前后是否发生了变化，还请不吝赐教，谢谢~</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/12/20/rn-improve-flatlist/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1485,255 +1744,6 @@ public boolean canOverrideExistingModule() {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/08/29/js-class-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/29/js-class-function/" itemprop="url">javaScript之类的成员函数和箭头函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-29T11:44:45+08:00">
-                2018-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近发现有的地方在使用ES6的class时，使用箭头函数来声明方法，例如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">  func1(num)&#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">  func2 = (num) =&gt; &#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">var t = new Test()</span><br></pre></td></tr></table></figure>
-<p>这两种方案是有区别的，区别就是func1是protoType上的属性，而func2是实例上的属性，我们用console.dir(t)在chrome dev tool上一看就知道了。根据prototype的原理，func1对于所有的实例只有一份，func2对每个实例都有一份。</p>
-<p>所以对于需要bind的函数，例如要用在闭包里，那使用箭头函数或者bind没有区别，bind也会生成一个新的函数对象赋给this。但如果是不需要bind的函数，写成箭头函数就会造成内存浪费了，应该避免。</p>
-<p>对于属性property，在constructor内声明还是在类中声明则没有区别，两者都是实例属性。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2018/08/23/rn-flex-size/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/rn-flex-size/" itemprop="url">ReactNative之组件自适应尺寸</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-23T19:15:36+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>组件如果不设定尺寸的话，会按照一定的规则，随着父组件和子组件的尺寸自适应。首先我们确定一个前提，父组件和子组件都是有尺寸的。除非明确设定尺寸为0，否则一个组件肯定是有尺寸的，对于根组件，它的父组件实际上是整个屏幕大小flexDirection为column的一个组件。</p>
-<p>首先是适应父组件的规则，当一个组件不设置尺寸且没有子组件，它的尺寸取决于父组件的尺寸和flexDirection。如果flexDirection为row，那么它的宽度为0，高度为父组件的高度。如果flexDirection为column，那么高度为0，宽度为父组件的宽度。因为宽或者高为0，所以不会显示。</p>
-<p>然后是适应子组件的规则，当一个组件不设置尺寸且有子组件，那么它会适应子组件的宽高。例如父组件flexDirection为row，那么它的宽度为子组件的宽度，高度为父组件的高度。如果flexDirection为column，那么高度为子组件的高度，宽度为父组件的宽度。</p>
-<p>当给组件设置了尺寸，但只有宽或者高，那么缺少的那个会按照上面的规则来自适应，例如父组件flexDirection为row，那么给它设置高度，就会按此高度显示，否则就按父组件高度显示，如果设置宽度，则按此宽度显示，否则由子组件宽度决定。</p>
-<p>以上三条规则，可以自己写个简单demo验证测试。熟悉了这些规则，在实际开发中，对于尺寸不固定的组件，布局起来就不容易出问题了。</p>
-<p>顺便提一下，原生组件在原生层设置尺寸是不会生效的，组件大小完全取决于js层设置style。在iOS平台，RN给UIView加了一个category  UIView (React)，里面有一个reactSetFrame方法，我们可以给原生组件view实现这个方法来监听它的尺寸，验证上面的规则。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1784,7 +1794,7 @@ public boolean canOverrideExistingModule() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -259,6 +259,266 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/18/rn-new-architecture2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/18/rn-new-architecture2/" itemprop="url">ReactNative新架构简介之二（JSI and JSC）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-18T19:18:36+08:00">
+                2019-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在这篇中，我们将讨论开发者写出的代码是如何被ReactNative使用的，以及新的架构做了什么改变。</p>
+<p>首先在一个原生移动移动中，JavaScript代码是需要一个引擎来解释执行的。ReactNative当前的架构直接使用了JavaScriptCore(JSC)，这符合苹果iOS开发指南中的规则：应当使用WebKit框架和WebKit JavaScript引擎(WebKit使用的就是JSC)。</p>
+<p>为了实现本篇将要介绍的新架构功能点，ReactNative团队对打包和压缩后的JavaScript代码（注：通常被称为bundle）进行了拆分，再交给JS引擎使用，这是通过一个叫做JavaScript Interface(JSI)的第三方组件来实现的。</p>
+<p>JSI本身和ReactNative并没有什么关系——它是一个标准的、轻量的、理论上通用于任何JavaScript引擎的功能，但在这次ReactNative新架构中使用后，带来了很重要的改进。</p>
+<p>首先是很直观的一点：有了JSI之后，底层的JSC就可以很容易地替换成其它JavaScript引擎，例如微软的ChakraCore或者Google的V8，或者进行引擎版本升级，例如RN0.59所做的。</p>
+<p>接下来的一个改进，几乎可以被称为“整个新架构的基石”。那就是：有了JSI之后，JavaScript可以持有C++层对象实例的引用并调用它们的方法。这意味着我们解决了<a href="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/">前一篇</a>中提到的一个核心问题，JavaScript端和Native端<strong>真正</strong>了解了彼此，从此再也不用通过序列化的JSON消息来进行通信了，容易产生拥堵的桥从此成为了历史（下一篇中我们会更加详细介绍）。</p>
+<p>这是一个非常激动人心的变化，一直以来C++都是实现Android和iOS共用代码且不用依赖JavaScript的技术方案之一。Android的底层代码使用C和C++实现的（Java和Kotlin可以通过Java Native Interface与C++通信），而iOS则默认支持C++(实际上Objective-C本身就是C的一个超集)。</p>
+<p>所以ReactNative新架构中的这部分内容，不仅给现有的结构带来了很大变化，而且支持开发者更多使用C++，以实现更多可能的功能。</p>
+<p>那么前文中ReactNative架构图的第二部分，在新架构中就会变成这样</p>
+<p><img src="rn-new-architecture1/new-2.png" alt="img"></p>
+<p>第二部分的内容就到此结束了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/18/rn-new-architecture3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/12/18/rn-new-architecture3/" itemprop="url">ReactNative新架构简介之三（Fabric and TurboModules）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-18T19:18:36+08:00">
+                2019-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本篇我们要讨论新架构中最”干货“的部分，可能所有ReactNative开发者都听过的概念：Fabric和TurboModules。</p>
+<p>在前两篇中我们提到，React允许延迟渲染，而JSI则允许JavaScript代码和Native代码可以直接交互。</p>
+<p>为了更加便于理解，我们将之前架构中的桥简化成下图所示：</p>
+<p><img src="rn-new-architecture1/old-3.png" alt="img"></p>
+<p>这张图描述了ReactNative运行期间我们使用JavaScript代码做的两件事情：UI应该如何渲染和交互（通过shadow Tree）以及管理原生模块（通过Native Modules）。之前曾经提到，这是通过使用序列化的JSON信息，异步、分批次进行的双向通信，由于通信只在一个通道内，所以可能发生堵塞并影响用户体验。因此Facebook的团队决定将这个庞大的桥拆分成了两个角色：Fabric是对UI manager的新架构，而TurboModules则是JavaScript与原生端交互的一种新的实现方式。</p>
+<p>Fabric的宗旨是让ReactNative的渲染层更加先进，在目前的实现方案中，所有的UI渲染最终都是由一系列跨线程的步骤来完成。（React到Shadow Tree再到Native UI）。而新的实现方案则允许UIManager在C++中直接创建Shadow Tree，得利于JSI中C++可以和JavaScript以及原生代码在同一线程直接交互的能力，这样避免了跨线程的操作，从而大大提高了效率，极大地提高了UI的响应速度，例如列表滚动，navigation或者手势等功能，都会变得更加流畅。<br>（注：原文这一段并没有提到线程，而是使用了realm（端）这个词，又说的太绕，我就按自己的理解来表达了）</p>
+<p>在现有的架构实现中，JavaScript端使用的Native Modules需要在应用启动时全部完成初始化，即使是没用到的模块，这是我们第一篇中提到过的“JavaScript和Native端彼此互不知情”导致的。而新的TurboModules则允许开发者在JavaScript代码中使用某个模块时才去加载，且能持有这个模块的引用，这能显著提高应用的启动速度。并且使用TurboModules时，JavaScript端和Native端的通信不需要再借助桥来传递JSON数据，而是可以直接互相调用方法。</p>
+<p>本篇中提到的Fabric和TurboModules之所以能实现，完全依赖于上一篇中提到的JSI。到目前为止，ReactNative的新架构图将变成如下所示：</p>
+<p><img src="rn-new-architecture1/new-5.png" alt="img"></p>
+<p>第三篇的内容就是这些，接下来只剩下最后一篇了。</p>
+<p>最后加几句笔者的感慨，这篇中间三段只有短短的几百个字，花了好几个小时，还是翻的无比别扭，很多时候看一些外文的技术博客都有这种感觉，中文几句话就可以说清楚的事情，英文花几百个单词翻来覆去的说，我反倒觉得绕来绕去的还不准确。上次试图翻译(how-are-function-components-different-from-classes)[<a href="https://overreacted.io/how-are-function-components-different-from-classes/]时也是这感觉，原文看完一遍觉得都明白了，但翻译的时候，越到后面越痛苦，作者大神是React的开发成员，能力绝对毋庸置疑，所以我只能觉得是自己英文水平还不够，不知道别人是否也有一样的感觉……" target="_blank" rel="noopener">https://overreacted.io/how-are-function-components-different-from-classes/]时也是这感觉，原文看完一遍觉得都明白了，但翻译的时候，越到后面越痛苦，作者大神是React的开发成员，能力绝对毋庸置疑，所以我只能觉得是自己英文水平还不够，不知道别人是否也有一样的感觉……</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/12/17/rn-new-architecture1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1355,265 +1615,6 @@ const myMiddleware = ({getState, dispatch}) =&gt; next =&gt; action =&gt; next(a
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/03/09/other-tinygame-architecture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/09/other-tinygame-architecture/" itemprop="url">一个小游戏的通用架构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-09T15:50:39+08:00">
-                2019-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构</p>
-<h2 id="功能系统"><a href="#功能系统" class="headerlink" title="功能系统"></a>功能系统</h2><h3 id="消息分发系统"><a href="#消息分发系统" class="headerlink" title="消息分发系统"></a>消息分发系统</h3><p>它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。</p>
-<p>监听者模式是代码解耦的一大神器，应用也非常普遍，所以第一个想到的就是它，当然它的缺点就是不利于流程的跟踪。</p>
-<h3 id="UI管理系统"><a href="#UI管理系统" class="headerlink" title="UI管理系统"></a>UI管理系统</h3><p>游戏中一般场景scene并不多，大多数都是在scene上面分布着各种弹窗界面，例如弹出提示框，获得奖励框，各种二级界面等等。如果没有一个管理系统，很容易混乱，要么zorder设置起来累的要死，要么弹窗覆盖导致界面丑陋不堪。</p>
-<p>UI管理系统一般提供的接口就是弹出界面和关闭界面，默认会自动设置zorder，并且关闭的界面一般不做销毁，而是从父节点移除后留作下次备用，以提高性能。如果实现的简单，就直接弹出窗口，设置最高zorder即可，复杂些的话可以进行分类管理，哪些节点可被覆盖，哪些不可以，支持什么弹出动画等等。</p>
-<h3 id="数据管理系统"><a href="#数据管理系统" class="headerlink" title="数据管理系统"></a>数据管理系统</h3><p>前端页面如何展示，依赖于后端传递的数据，这些数据最好使用一个管理系统来全局存储，而不是存在UI类中，这样更有利于解耦。</p>
-<p>后端传回的数据现在经常是json格式，可以直接拿来使用，但最好还是解析为model，这样做的一个好处是即使没有协议文档，也很容易明白协议格式，而且可以在model层封装一些特定的接口比如getDataByType等。另外还有一个好处，就是前端代码最终很可能会被深度混淆，如果直接使用json，处处要小心使用[‘xxx’]而不是.xxx的格式，但解析为model后就不用担心了。</p>
-<h2 id="具体代码模块"><a href="#具体代码模块" class="headerlink" title="具体代码模块"></a>具体代码模块</h2><h3 id="Model模块"><a href="#Model模块" class="headerlink" title="Model模块"></a>Model模块</h3><p>前面提到过，后端获得的数据转为model来使用，本地的配置信息等也可以，取决于实际需求</p>
-<h3 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h3><p>包括两部分，一部分是和各个UI界面的实现（在cocos creator上则是绑定在各个界面的脚本），作用是控制UI界面的各个组件显示，实现一些交互逻辑。按层级可以分为scene和window, component等级别。<br>另一部分是做组件封装，例如给按钮增加防快速点击的功能，给弹窗增加吞触摸事件的背景等等</p>
-<p>看到model和UI，就知道项目其实还是MVC这个万金油结构，这里提到了model和view,上面提到的数据管理系统就可以当做controller了。</p>
-<h3 id="网络模块"><a href="#网络模块" class="headerlink" title="网络模块"></a>网络模块</h3><p>实现网络通信功能，一般都需要保持长连接，在浏览器中使用websock，或者在原生端封装tcp。一般就是实现open, onConnect, onDisconnect, onMessage, send这几个接口。</p>
-<p>这里需要提到的就是最好在网络模块中实现一个比较完善的mock系统，它可以和真正的网络模块无缝切换，接口完全一致，唯一的区别就是在send函数里，对需要mock的接口使用mock的数据回调onMessage，其它接口走真正的网络请求。这样非常灵活，使用方便，功能比单纯在代码中mock一下数据要强大很多。</p>
-<h3 id="Utils模块"><a href="#Utils模块" class="headerlink" title="Utils模块"></a>Utils模块</h3><p>只要比较独立的代码，都往里面扔就是了，一般Constants,Global,Enums三大巨头就够用了，要继续细分也可以，比如EventName啥的</p>
-<h3 id="manager模块"><a href="#manager模块" class="headerlink" title="manager模块"></a>manager模块</h3><p>就是上面提到的消息监听，数据管理，ui管理三大功能系统的实现，它们可以适用于任何项目，实现一套后要么直接搬来用，要么封装成公共sdk都可以</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般的小游戏，有这样的框架，绝对够应付的来了，在这个框架的基础上可以继续细分，但跑不掉还是这些。不论是新建一个项目，还是重构已有项目，都可以按这个结构来。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2019/01/16/rn-add-perf/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/16/rn-add-perf/" itemprop="url">ReactNative之一个监控组件刷新次数的实现方案</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-16T21:15:36+08:00">
-                2019-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在做RN开发中，检测是否有多余的重复渲染是做性能监控的重要手段，在React16.0之前，官方有一个工具叫做<a href="https://reactjs.org/docs/perf.html" target="_blank" rel="noopener">perf</a>，对应的在RN中，也可以使用Libraries/Performance/RCTRenderingPerf中提供的PerfMonitor类，它们提供了监控组件渲染次数的功能，借此发现是否有不必要的渲染。可惜这个工具在React16.0和ReactNative0.45以后就不再提供了，官方仓库有个<a href="https://github.com/facebook/react-native/issues/15371" target="_blank" rel="noopener">issue</a>提到了这个问题，然后就没有然后了……</p>
-<p>官方的Perf功能看起来比较强大，它的printWasted可以把渲染前后没有任何变化的组件打印出来，很直观的看到哪些组件发生了重复渲染，不过我们可以参照类似的API自己做一个简化版的，把组件的刷新次数变化打印出来，因为我们自己是明白哪些组件需要刷新哪些不需要刷新的，所以用这个数据可以自己找出是否有多余的渲染。代码我放到了<a href="https://github.com/yangguang1029/MyReactNative/tree/master/perf" target="_blank" rel="noopener">github仓库里</a></p>
-<p>在addPerf.js里，给Component和PureComponent注入三个回调函数，在componentDidMount里，如果发现组件有tag成员属性，就把这个组件注册起来，记录其更新次数，在componentWillUnmount里取消注册，在componentWillUpdate里添加更新次数。如果想要监控某个组件的渲染次数，就必须在构造函数里添加tag成员属性，注意：<strong>这个tag必须是每个组件实例唯一。</strong>然后如果这个组件实现了这三个函数，需要使用super来调用基类的实现，例如super.componentDidMount()。ps:tag这个属性名太普遍，容易跟实际代码中的属性名重复，但我比较懒，不想再取个属性名，有需要的话，自己想个属性名吧</p>
-<p>在index.js里，renderCountDict以tag为key存储每个组件实例的渲染次数，perfDataDict则存储每次perf起始时的renderCountDict快照，调用startPerf传入一个key开始一次记录，调用stopPerf传入对应的key来完成一次记录，然后会自动打印出开始和结束时renderCountDict的变化。</p>
-<p>testPerf是一个用例，界面有一个flatlist和一个button，每次点击按钮，会给flatlist添加一个单元行，单元行组件Cell继承自Component并且拥有成员属性tag，所以会被记录刷新次数。我们在页面的componentWillUpdate里开始一次监控，在componentDidUpdate里结束这次监控，就可以看到页面刷新时，单元行组件的刷新状况。如果单元行组件Cell继承自Component，那么每次添加单元行时，原有的单元行也都跟着刷新了一次，但实际上它们的渲染内容没有任何变化，所以它们是重复渲染。而一旦我们让Cell继承自PureComponent，就会发现每次增加单元行时，只变化了新增的那个，这就比之前的方案要更优化。</p>
-<p>上面是一个很简单的例子，但用这个方法，可以很方便的监控两个时间点之间的组件刷新次数，比较重要的是选择好开始和停止的时间点，并且自己先明白有哪些组件需要刷新，那些不需要刷新但也发生刷新了的组件，就是我们需要优化的对象了。以上只是一个思路，实现上如果有更巧妙的方案，或者有大牛可以实现官方perf那样，能对比出组件渲染前后是否发生了变化，还请不吝赐教，谢谢~</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1664,7 +1665,7 @@ const myMiddleware = ({getState, dispatch}) =&gt; next =&gt; action =&gt; next(a
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

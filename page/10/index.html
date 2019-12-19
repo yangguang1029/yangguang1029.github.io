@@ -259,6 +259,263 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/17/svnignore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/17/svnignore/" itemprop="url">svn忽略文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-17T11:28:59+08:00">
+                2016-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在svn项目中，对于不需要加入版本管理的文件，可以使用svn propedit svn:ignore来进行设置</p>
+<p>在执行这句之前，需要先设置好SVN_EDITOR环境变量，例如在~/.bash_profile内添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export SVN_EDITOR=emacs</span><br></pre></td></tr></table></figure>
+<p>然后执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn propedit svn:ignore .</span><br></pre></td></tr></table></figure>
+<p>这里的.表示对当前目录进行设置，此时会打开你指定的编辑器界面，在里面写上你需要忽略的文件名或者正则表达式即可.<br>但这句命令，只会影响你指定的路径的子文件及文件夹，而不会递归影响到更深层次。例如在编辑界面填上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dir1</span><br><span class="line">dir2/dir21/dir211</span><br></pre></td></tr></table></figure>
+<p>这里dir1会被忽略，而dir211不会，如果需要忽略dir211，要么在当前目录下执行svn propedit svn:ignore dir2/dir21 要么切换到dir2/dir21目录下执行svn propedit svn:ignore . 然后填写的内容都是dir211</p>
+<p>在网上看到一个解释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Each and every directory in Subversion can be thought of its own</span><br><span class="line">module, so there&apos;s no real way for Subversion to know that</span><br><span class="line">foo/bar/barfoo is a directory in module /foo/bar, or a another</span><br><span class="line">separate module module.</span><br><span class="line"></span><br><span class="line">That means there&apos;s no way for Subversion to know how to handle</span><br><span class="line">properties that can affect an entire directory tree. Plus, it would be</span><br><span class="line">difficult to know exactly what parent directory is affecting a child</span><br><span class="line">directory.</span><br></pre></td></tr></table></figure>
+<p>最后提醒一下，只有还没有被加入版本管理的文件会被忽略，如果文件已经加入了版本管理，那设置了忽略也没用。其次，设置了忽略的文件，仍然可以被添加进版本管理中。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/16/cocos屏幕适配策略/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yangguang1029">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="杨光的笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/16/cocos屏幕适配策略/" itemprop="url">cocos屏幕适配策略</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-16T21:51:39+08:00">
+                2016-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>cocos的屏幕适配包括两个方面，一个涉及到屏幕的宽高比，一个涉及到缩放因子。</p>
+<h3 id="宽高比"><a href="#宽高比" class="headerlink" title="宽高比"></a>宽高比</h3><p>我打算尽量用通俗的语言来说这件事情，cocos处理不同宽高比的适配，使用了设计分辨率这么个东西，就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void GLView::setDesignResolutionSize(float width, float height, ResolutionPolicy resolutionPolicy)</span><br></pre></td></tr></table></figure>
+<p>resolutionPolicy有好几种选择，但我们通常只使用FIXED_HEIGHT和FIXED_WIDTH。</p>
+<p>设计分辨率的意义就是：你不用管实际上屏幕是什么样，你通过代码或者工具给一个node设定尺寸和坐标时，都只想象它是放在设计分辨率的屏幕里，然后给他设计尺寸和坐标，最后显示在实际屏幕上时，引擎会进行适当的比例缩放。</p>
+<p>我们一般在项目中使用的ResolutionPolicy是FIXED_HEIGHT和FIXED_WIDTH，前者一般用于手机横屏，后者用于手机竖屏。我们拿FIXED_WIDTH举例，使用这个模式，意味着采用宽度的缩放比例，那么UI节点的x坐标和width就不用担心了，系统会帮你完美适配好来，y坐标和height则必须使用屏幕高度的百分比来进行设置，只要在需要适配的宽高比最大（通俗说就是最“扁”）的屏幕上不会发生冲突即可。FIXED_HEIGHT也是类似的道理，因为使用了高度的缩放比例，那么x坐标和width必须使用屏幕宽度的百分比来进行设置，保证在需要适配的宽高比最小的屏幕上不发生冲突即可。当然实际中我们对不管xy坐标还是width,height都习惯性采用百分比坐标。这两种方案的适用情况不能靠死记硬背，只要明白了原理，其实很容易理解。</p>
+<h3 id="缩放因子"><a href="#缩放因子" class="headerlink" title="缩放因子"></a>缩放因子</h3><p>缩放因子可以理解为图片资源尺寸与设计分辨率的比值。一般我们的资源都是配合设计分辨率而出的，但如果不是，就需要设置缩放因子了，比如一种情况就是，同样是1024*768的设计分辨率，我们有一套1024*768的资源，这套资源在2048*1536的屏幕上会被拉伸两倍显示，可能效果就不好了，那我们再准备一套2048*1536的资源，因为设计分辨率还是1024*768，所以就需要将缩放因子设为2了。</p>
+<p>设置缩放因子的接口是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Director::setContentScaleFactor(float scaleFactor)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/11/14/autorelease/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1301,268 +1558,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/NDK开发之java调用C++/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/NDK开发之java调用C++/" itemprop="url">NDK开发之java调用C++</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:27:43+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>首先创建一个空的android项目，默认生成的MainActivity，修改如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends Activity &#123;</span><br><span class="line"></span><br><span class="line">	static &#123;</span><br><span class="line">        System.loadLibrary(&quot;learnNDK&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">		super.onCreate(savedInstanceState);</span><br><span class="line">		setContentView(R.layout.activity_main);</span><br><span class="line">		</span><br><span class="line">		TextView t = (TextView)this.findViewById(R.id.textview);</span><br><span class="line">		t.setText(&quot;&quot; + hello(1));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public boolean onCreateOptionsMenu(Menu menu) &#123;</span><br><span class="line">		// Inflate the menu; this adds items to the action bar if it is present.</span><br><span class="line">		getMenuInflater().inflate(R.menu.main, menu);</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static native int hello(int num);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里通过System.loadLibrary(“learnNDK”);来加载咱们等下要生成的动态库leanNDK</p>
-<p>通过public static native int hello(int num);来声明一个C++层可以供我们调用的方法，返回值为int，函数名hello，接受一个形参int num</p>
-<p>在项目根目录创建一个jni文件夹，执行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javah -d jni -classpath bin/classes/ com.example.learnndk.MainActivity</span><br></pre></td></tr></table></figure>
-<p>关于javah的详细参数介绍请参考<a href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javah.html" target="_blank" rel="noopener">javah</a></p>
-<p>这里简单介绍一下，-d 表示输出的头文件目录，-classpath表示class文件的路径</p>
-<p>然后就可以在jni目录下看到生成的文件com_example_learnndk_MainActivity.h</p>
-<p>我们新建一个cpp文件来实现这个hello方法，新建一个learnNDK.cpp内容如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;com_example_learnndk_MainActivity.h&gt;</span><br><span class="line"></span><br><span class="line">JNIEXPORT jint JNICALL Java_com_example_learnndk_MainActivity_hello</span><br><span class="line">  (JNIEnv *, jclass, jint) &#123;</span><br><span class="line">  		return 99;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p>然后在jni目录下，我们新建个Android.mk文件，内容如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line">LOCAL_MODULE := learnNDK</span><br><span class="line">LOCAL_SRC_FILES := learnNDK.cpp</span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure>
-<p>然后使用ndk编译</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ndk-build clean</span><br><span class="line">ndk-build</span><br></pre></td></tr></table></figure>
-<p>成功之后，运行这个android程序，就可以看到结果了。</p>
-<p>实际中Android.mk可以编写很复杂，也可能需要在jni目录下通过Application.mk来设定一些参数，如果不正确设定可能导致编译出错。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangguang1029.github.io/2016/08/15/使用closureCompiler深度混淆的一个坑/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yangguang1029">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="杨光的笔记">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/15/使用closureCompiler深度混淆的一个坑/" itemprop="url">使用closureCompiler深度混淆的一个坑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-15T20:25:30+08:00">
-                2016-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>混淆命令为:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js a.js --js_output_file b.js</span><br></pre></td></tr></table></figure>
-<p>混淆前代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function test(result)&#123;</span><br><span class="line">	console.log(result.fuck.text);</span><br><span class="line">	console.log(result.text.fuck);</span><br><span class="line">	console.log(result.color.colour);</span><br><span class="line">	var tmp = &#123;</span><br><span class="line">		test1:Math.random(),</span><br><span class="line">		&quot;test2&quot;:Math.random()</span><br><span class="line">	&#125;</span><br><span class="line">	for(var i = 0; i &lt; result.length; i++) &#123;</span><br><span class="line">		console.log(result[i].text);</span><br><span class="line">		console.log(result[i].text.text1.text2.text3);</span><br><span class="line">		tmp.test1 += 1;</span><br><span class="line">		tmp.test2 += 2;</span><br><span class="line">		console.log(tmp.test1);</span><br><span class="line">		console.log(tmp.test1.test11.test111);</span><br><span class="line">		console.log(tmp.test2);</span><br><span class="line">	&#125;</span><br><span class="line">	result.tmp = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>混淆后代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function d(b) &#123;</span><br><span class="line">	console.log(b.b.text);</span><br><span class="line">	console.log(b.text.b);</span><br><span class="line">	console.log(b.color.d);</span><br><span class="line">	for (var a = &#123;</span><br><span class="line">			a: Math.random(),</span><br><span class="line">			test2: Math.random()</span><br><span class="line">		&#125;, c = 0; c &lt; b.length; c++) console.log(b[c].text), console.log(b[c].text.c.j.k), a.a += 1, a.b += 2, console.log(a.a), console.log(a.a.h.i), console.log(a.b);</span><br><span class="line">	b.l = a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>目前可以看到 text和color，在深度混淆中不会被混淆。是否还有别的一些关键字不被混淆，还不确定。比如colour就会被混淆= =</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1613,7 +1608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">103</span>
+                  <span class="site-state-item-count">105</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

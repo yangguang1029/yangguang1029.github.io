@@ -130,6 +130,8 @@
 <p>在深入之前，我们来回顾一下基础知识：ReactNative是一个开源的跨平台移动应用开发解决方案，它让我们可以用React以及JavaScript来开发一个完全原生的移动应用。不光是创造和发展它的Facebook公司在使用ReactNative，其它公司例如亚马逊和微软，以及很多初创公司都在使用它。</p>
 <p>为了帮助更好地理解ReactNative的工作原理，我们准备了下面这张图</p>
 <p><img src="/rn-new-architecture1/old-diagram-full.png" alt="img"></p>
+<span id="more"></span>
+
 <p>如图所示，ReactNative结构上有四个核心部分：React代码部分，由代码翻译而来的JavaScript部分，一系列统称为”桥”的部分，以及原生部分。</p>
 <p>ReactNative当前架构的一个关键点是：它的两个端——JavaSvript端和Native端，彼此并不了解对方的情况，这意味着，它们的通信必须依赖“桥”传递JSON信息。消息被发到原生端后，寄希望于能收到返回数据，但这无法得到保证。</p>
 <p>为了克服ReactNative当前存在的各种限制，Facebook的开发团队决定重新思考这个异步信息传递的方案，并着手开发一套新的架构。在新的架构中，前文所述的四个核心部分都分别进行了改进。这篇我们就将讲述第一个核心部分：React。</p>

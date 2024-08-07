@@ -1,258 +1,1096 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/04/06/js-promise/">ES6之Promise</a>
-    <div class="post-item-summary">
-      Promise是对异步操作做的封装，它解决的是回调嵌套的问题，它的实现仍然是注册和调用回调函数。
-构造和使用使用Promise很简单，例如
-12345678910111213141516var p = new Promise(function(resolve, reject)&#123;	//do some asynchronous thing	if(xxx) &#123;		console.log(&quot;resolve ...&quot;)		resolve();	&
-      <a class="read-more" href="/2017/04/06/js-promise/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.04.06</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/03/23/js-this/">javaScript之this</a>
-    <div class="post-item-summary">
-      js中的this，很容易让刚接触的人摸不着头脑，但其实主要明白了怎么回事，也不会很复杂。函数里的this指向什么，跟它的当前执行环境有关。
-我们从简单到复杂，通过一些例子来说明
-1234var A = function()&#123;	console.log(this);&#125;var a = new A();
-这个很简单，因为A是作为一个构造函数来使用的，所以这时的this指向的是a
-1234var A = function()&#123;	console.log(th
-      <a class="read-more" href="/2017/03/23/js-this/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.03.23</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/03/21/cocos-scheduler/">cocos之定时器scheduler</a>
-    <div class="post-item-summary">
-      游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。
-使用使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。
-1Scheduler::schedule(SEL_SCHEDULE selector, Ref *target, f
-      <a class="read-more" href="/2017/03/21/cocos-scheduler/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.03.21</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/03/10/cpp-function-obj/">c++之函数对象</a>
-    <div class="post-item-summary">
-      std::function是一个类模板，定义于头文件&lt;functional&gt;。我们主要关注下它的几种生成方式。
 
-直接指向函数。例如
-
-123456bool func(int item) &#123;	return item % 2 == 0;&#125;std::function&lt;bool(int)&gt; f = func;
+      <div class="outer">
+        <section id="main">
+  <article id="post-js-promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/04/06/js-promise/">ES6之Promise</a>
+    </h1>
+  
 
 
-使用lambda表达式。例如
-
-1234int t = 3;std::function&lt;bool(int)&gt; f1
-      <a class="read-more" href="/2017/03/10/cpp-function-obj/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.03.10</div>
-      <div class="tags">
-        
-        <div class="tag-item">c++</div>
-        
-      </div>
-    </div>
-  </section>
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-04-06T12:14:39.000Z" itemprop="datePublished">2017年04月06日</time>
+</span>
+      
+      
+      
+<a href="/2017/04/06/js-promise/#comments" class="article-comment-link">
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/03/10/cpp-lambda/">c++11之lambda简单使用</a>
-    <div class="post-item-summary">
-      lambda是C++11新增的功能，因为不是很熟，碰到需要回调的时候，我都是使用std::bind来绑定函数指针，但lambda有它使用方便的地方，尤其是闭包可以调用函数内的局部变量的特性，非常灵活，所以用简单的笔记记录下怎么使用，详细可以参考官方文档
-语法1234[ capture-list ] ( params ) mutable(可选) constexpr(可选)(C++17) exception attribute -&gt; ret &#123; body &#12
-      <a class="read-more" href="/2017/03/10/cpp-lambda/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.03.10</div>
-      <div class="tags">
-        
-        <div class="tag-item">c++</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/03/03/leet-kmp/">leetcode之kmp算法</a>
-    <div class="post-item-summary">
-      kmp算法用于查找子字符串，阮老师有一篇介绍的很细致的博客基本上一遍就能看懂
-整个流程可以概括为两步
-
-生成子字符串的部分匹配表，它是一个数组，对应子字符串上每个位置上的部分匹配值。 “部分匹配值”就是”前缀”和”后缀”的最长的共有元素的长度。”前缀”指除了最后一个字符以外，一个字符串的全部头部组合；”后缀”指除了第一个字符以外，一个字符串的全部尾部组合。
-匹配子字符串，如果子字符串匹配完，则查找成功，否则需要将匹配位置后移，后移的步数就是当前已匹配字符数量，减去最后一个匹配
-      <a class="read-more" href="/2017/03/03/leet-kmp/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.03.03</div>
-      <div class="tags">
-        
-        <div class="tag-item">leetcode</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/02/19/dp-in-project/">开发中使用到的设计模式</a>
-    <div class="post-item-summary">
-      单例模式 SINGLETON单例在实际中使用很多，它保证一个类只有一个实例，并提供一个它的全局访问点。不论在cocos引擎还是自己的项目代码中，都有大量单例类的存在，但一般用于工厂类或者管理类，例如FileUtils, TextureCache等。保存一个全局变量并确保运行中只有一个实例，也可以看做是单例模式，比如在棋牌游戏中只会存在一个牌桌对象。
-简单工厂模式 FACTORY它在《设计模式》中叫做参数化工厂方法，它定义一个用于创建对象的接口，以一个参数作为标识符，来实例化对
-      <a class="read-more" href="/2017/02/19/dp-in-project/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.02.19</div>
-      <div class="tags">
-        
-        <div class="tag-item">设计模式</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/02/18/js-arguments/">javaScript中的arguments</a>
-    <div class="post-item-summary">
-      argumentsjs中的每一个函数，都有一个默认的局部变量arguments，通过它可以获取到传给函数的所有实参，直接用序号获取即可，例如
-1234567function test()&#123;	console.log(arguments.length);	//2	console.log(arguments[0]);	//1	console.log(arguments[1]);	//haha	console.log(arguments[2]);	//undefined&#
-      <a class="read-more" href="/2017/02/18/js-arguments/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.02.18</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/02/13/cocos-assetsManager/">cocos之使用AssetsManager实现热更新</a>
-    <div class="post-item-summary">
-      cocos提供了AssetsManager类进行热更新。这里大概介绍下它的使用方法和内部原理，引擎使用的是v3.13。首先是一段简单的代码
-1234567891011121314151617string url = &quot;https://.....test.zip&quot;;string vurl = &quot;https://.../version&quot;;string root = CCFileUtils::getInstance()-&gt;getWrit
-      <a class="read-more" href="/2017/02/13/cocos-assetsManager/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.02.13</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/02/04/cocos-transitionScene/">cocos之Scene的切换</a>
-    <div class="post-item-summary">
-      场景切换，牵涉到的是老scene善后处理和新scene的初始化，如果对各个函数调用的先后顺序不明的话，可能就会出问题(例如注册监听和取消监听，一般都写在onEnter和onExit方法内)
-涉及到scene切换的方法，都在director内,常用的为
-12void Director::runWithScene(Scene *scene)void Director::replaceScene(Scene *scene)
-Director内通过_scenesStack， _run
-      <a class="read-more" href="/2017/02/04/cocos-transitionScene/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.02.04</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
 
 
-<div class="paginator">
-  <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
-</div>
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Promise是对异步操作做的封装，它解决的是回调嵌套的问题，它的实现仍然是注册和调用回调函数。</p>
+<h3 id="构造和使用"><a href="#构造和使用" class="headerlink" title="构造和使用"></a>构造和使用</h3><p>使用Promise很简单，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var p = new Promise(function(resolve, reject)&#123;</span><br><span class="line">	//do some asynchronous thing</span><br><span class="line">	if(xxx) &#123;</span><br><span class="line">		console.log(&quot;resolve ...&quot;)</span><br><span class="line">		resolve();</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		console.log(&quot;reject....&quot;)</span><br><span class="line">		reject();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br><span class="line">p.then(function()&#123;</span><br><span class="line">		console.log(&quot;in resolve callback&quot;);</span><br><span class="line">	&#125;, function()&#123;</span><br><span class="line">		console.log(&quot;in reject callback&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
-  </main>
-  <footer class="footer">
+<p>在构造时，传入一个函数作为参数，在这个函数里做我们需要做的事情，比如某个异步操作，然后在恰当的时候，调用resolve或者reject。</p>
+<p>一个Promise对象有三种状态，pending（进行中）, resolved（已解决）, rejected（已失败），初始是pending状态,当resolve或者reject函数被调用时进入resolved或者rejected状态，我们通过then方法，分别指定resolved和rejected的回调，当状态变化时，相应的回调就会被调用。</p>
+<p>需要注意的是Promise对象在创建时传入的函数，会立即执行，但它的回调，则在当前脚本所有同步任务都执行完成后，才会开始执行。所以对于下面的代码，输出是132，而不是123</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var p = new Promise((resolve, reject)=&gt;&#123;</span><br><span class="line">	console.log(&quot;1&quot;);	</span><br><span class="line">	resolve()</span><br><span class="line">&#125;)</span><br><span class="line">p.then(()=&gt;&#123;</span><br><span class="line">	console.log(&quot;2&quot;);</span><br><span class="line">&#125;)</span><br><span class="line">console.log(&quot;3&quot;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Promise-resolve-Promise-reject"><a href="#Promise-resolve-Promise-reject" class="headerlink" title="Promise.resolve, Promise.reject"></a>Promise.resolve, Promise.reject</h3><p>这两个是Promise类的静态方法，通过它可以生成一个Promise对象，它的状态已经是resolved或者rejected，实际上下面这两种方式是等同的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var p = Promise.resolve(123);</span><br><span class="line">var p = new Promise(function(resolve, reject)&#123;</span><br><span class="line">	resolve(123);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这两个方法还可以接受thenable对象，将其转换成Promise对象,一个thenable对象就是具有then方法的对象，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">	then(resolve, reject) &#123;</span><br><span class="line">		if (resolve) &#123;</span><br><span class="line">			resolve();</span><br><span class="line">		&#125;</span><br><span class="line">		if (reject) &#123;</span><br><span class="line">			reject();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let t = new Test();</span><br><span class="line">t.then(() =&gt; &#123;</span><br><span class="line">	console.log(&quot;resolved....&quot;);</span><br><span class="line">&#125;)</span><br><span class="line">let p = Promise.resolve(t);</span><br></pre></td></tr></table></figure>
+
+<h3 id="promise-chain"><a href="#promise-chain" class="headerlink" title="promise chain"></a>promise chain</h3><p>then函数返回的是一个新的Promise对象，而不是我们在resolve或者reject回调里return的值，所以我们可以在then函数后面继续接then函数，形成一个promise链，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var p = Promise.resolve(1);</span><br><span class="line">p.then((v1)=&gt;&#123;</span><br><span class="line">	console.log(&quot;resolve 1....&quot;+v1);</span><br><span class="line">	//throw new Error();</span><br><span class="line">	//return Promise.reject();</span><br><span class="line">	//return Promise.resolve();</span><br><span class="line">	/*</span><br><span class="line">	return new Promise(function(resolve, reject)&#123;</span><br><span class="line">		setTimeout(()=&gt;&#123;</span><br><span class="line">			resolve();</span><br><span class="line">		&#125;, 5000)</span><br><span class="line">	&#125;)</span><br><span class="line">	*/</span><br><span class="line">	return 2*v1;</span><br><span class="line">&#125;).then((v2)=&gt;&#123;</span><br><span class="line">	console.log(&quot;resolve2....&quot; + v2)</span><br><span class="line">&#125;, (reason)=&gt;&#123;</span><br><span class="line">	console.log(&quot;reject2...&quot;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如果我们在then的回调函数里return了一个pending状态的Promise对象，则等待这个对象状态变化后进入下一个then的相应回调中。如果返回一个rejected状态的Promise对象，或者抛出了一个错误，那么会立刻进入下一个then的reject回调中，否则立刻进入下一个then的resolve回调中。如果return的不是Promise对象，则return的值会作为下个then里回调的参数值。</p>
+<h3 id="promise对象作为resolve或者reject参数"><a href="#promise对象作为resolve或者reject参数" class="headerlink" title="promise对象作为resolve或者reject参数"></a>promise对象作为resolve或者reject参数</h3><p>当我们调用一个Promise对象a的resolve函数时，如果参数是另一个promise对象b，那么只有当b的状态发生改变，a的状态才会改变。且a的状态取决于b的状态</p>
+<p>当我们调用一个Promise对象a的reject函数时，如果参数是另一个promise对象b，则a的状态不需等待b的状态，且a的状态不受b影响，一定是rejected。以下是实验代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		setTimeout(() =&gt; &#123;</span><br><span class="line">			// console.log(&quot;resolve p1....&quot;);</span><br><span class="line">			// resolve();</span><br><span class="line">			console.log(&quot;reject p1....&quot;);</span><br><span class="line">			reject();</span><br><span class="line">		&#125;, 5000)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		setTimeout(() =&gt; &#123;</span><br><span class="line">			// console.log(&quot;resolve p2...&quot;);</span><br><span class="line">			// resolve(p1);</span><br><span class="line">			console.log(&quot;reject p2....&quot;);</span><br><span class="line">			reject(p1);</span><br><span class="line">		&#125;, 1000)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">p2.then(function(value) &#123;</span><br><span class="line">		console.log(&quot;in p2 resolve callback&quot;);</span><br><span class="line">	&#125;, function(error) &#123;</span><br><span class="line">		console.log(&quot;in p2 reject callback&quot;);</span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">		console.log(&quot;in p1 resolve callback&quot;);</span><br><span class="line">	&#125;, function(error) &#123;</span><br><span class="line">		console.log(&quot;in p1 reject callback&quot;);</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>输出为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">resolve(p1), p1 resolve</span><br><span class="line"></span><br><span class="line">resolve p2...</span><br><span class="line">resolve p1...	//4秒后</span><br><span class="line">in p1 resolve callback</span><br><span class="line">in p2 resolve callback</span><br><span class="line">/**************************************/</span><br><span class="line">resolve(p1), p1 reject</span><br><span class="line"></span><br><span class="line">resolve p2...</span><br><span class="line">reject p1...	//4秒后</span><br><span class="line">in p1 reject callback</span><br><span class="line">in p2 reject callback</span><br><span class="line">/**************************************/</span><br><span class="line">reject(p1), p1 resolve</span><br><span class="line"></span><br><span class="line">reject p2...</span><br><span class="line">in p2 reject callback</span><br><span class="line">resolve p1	// 4秒后</span><br><span class="line">in p1 resolve callback</span><br><span class="line">/**************************************/</span><br><span class="line">reject(p1), p1 reject</span><br><span class="line"></span><br><span class="line">reject p2...</span><br><span class="line">in p2 reject callback</span><br><span class="line">reject p1	//4秒后</span><br><span class="line">in p1 reject callback</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Promise-all-Promise-race"><a href="#Promise-all-Promise-race" class="headerlink" title="Promise.all Promise.race"></a>Promise.all Promise.race</h3><p>它们都接收一个Promise数组作为参数，并返回一个新的Promise。</p>
+<p>对于all来说，只有当数组里每个Promise对象状态都变成resolved，新对象的状态才变成resolved，它在then的resolve回调函数参数为一个数组，包含所有Promise的返回值。但只要有一个Promise对象状态变为rejected，那么新对象的状态马上变为rejected。此时reject的参数被传递给then的reject回调</p>
+<p>对于race，只要有一个Promise对象状态发生了变化，新对象的状态就马上跟着改变。第一个改变状态的对象的返回值作为新对象回调的参数。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-this" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <span>Copyright © 2024 typo</span>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/03/23/js-this/">javaScript之this</a>
+    </h1>
   
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-03-23T07:50:39.000Z" itemprop="datePublished">2017年03月23日</time>
+</span>
+      
+      
+      
+<a href="/2017/03/23/js-this/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>js中的this，很容易让刚接触的人摸不着头脑，但其实主要明白了怎么回事，也不会很复杂。函数里的this指向什么，跟它的当前执行环境有关。</p>
+<p>我们从简单到复杂，通过一些例子来说明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">&#125;</span><br><span class="line">var a = new A();</span><br></pre></td></tr></table></figure>
+<p>这个很简单，因为A是作为一个构造函数来使用的，所以这时的this指向的是a</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);</span><br><span class="line">&#125;</span><br><span class="line">A();</span><br></pre></td></tr></table></figure>
+<p>这里A是作为一个普通函数被调用的，当函数被作为一个普通函数调用时this指向全局变量，即使在嵌套了很多层的复杂情况也是如此。</p>
+<p>然后再看一个情况:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">	func:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">a.func();</span><br></pre></td></tr></table></figure>
+<p>这里func是作为一个对象a的成员方法被调用的，所以this指向的是对象a本身。</p>
+<p>我们不考虑通过bind和apply设定this的情况，则不论代码多么复杂，最终都可以归结为上面的三种情况，然后分析属于哪种就行了。</p>
+<p>比如写个复杂点的例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	console.log(this);	//1</span><br><span class="line">	var B = (function()&#123;</span><br><span class="line">		console.log(this);	//2</span><br><span class="line">		return function()&#123;</span><br><span class="line">			console.log(this);	//3</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)();</span><br><span class="line">	this.cb = function()&#123;</span><br><span class="line">		console.log(this);	//4</span><br><span class="line">		B();	//43</span><br><span class="line">	&#125;</span><br><span class="line">	B();	//53</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var a = new A();</span><br><span class="line">a.cb();</span><br></pre></td></tr></table></figure>
+<p>这里1很简单，this就是a，因为A作为一个构造函数。 2这里是在一个闭包里，这个立即执行函数是被直接调用的，所以这里的this也是global。3这里会被执行两次，分别为43和53，但这两种情况都是直接执行函数，所以this也都是global。至于4，它被调用时是a.cb()的形式，cb作为a的成员函数被调用，所以this时a本身。</p>
+<p>至于bind和apply，使用它们给一个函数绑定了什么对象，这个函数被调用时，this就是什么对象。举个简单的例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var a = &#123;</span><br><span class="line">	func:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;,</span><br><span class="line">	func1:function()&#123;</span><br><span class="line">		console.log(this);</span><br><span class="line">	&#125;.bind(this)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.func();		//1</span><br><span class="line">a.func1();	//2</span><br></pre></td></tr></table></figure>
+<p>1这里this就是a本身，2这里则是global。2这里往func1绑定的this，是在定义a时环境的this，而不是a本身，需要注意，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var A = function()&#123;</span><br><span class="line">	var a = &#123;</span><br><span class="line">		func:function()&#123;</span><br><span class="line">			console.log(this);</span><br><span class="line">		&#125;,</span><br><span class="line">		func1:function()&#123;</span><br><span class="line">			console.log(this);</span><br><span class="line">		&#125;.bind(this)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	a.func();		//1</span><br><span class="line">	a.func1();	//2</span><br><span class="line">&#125;</span><br><span class="line">var tmp = new A();</span><br></pre></td></tr></table></figure>
+<p>这时1的this仍然是a, 而2的this就是就是tmp</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos-scheduler" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/03/21/cocos-scheduler/">cocos之定时器scheduler</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-03-21T09:51:53.000Z" itemprop="datePublished">2017年03月21日</time>
+</span>
+      
+      
+      
+<a href="/2017/03/21/cocos-scheduler/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scheduler::schedule(SEL_SCHEDULE selector, Ref *target, float interval, unsigned int repeat, float delay, bool paused)</span><br></pre></td></tr></table></figure>
+
+<p>此外还有一个接口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void scheduleUpdate(T *target, int priority, bool paused)</span><br></pre></td></tr></table></figure>
+<p>它可以设定优先级priority，优先级越低，越早被调用。注册的对象target的update方法会被调用。</p>
+<p>在CCNode里预先封装了一个函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::scheduleUpdate()</span><br></pre></td></tr></table></figure>
+<p>它就是通过上面scheduleUpdate实现的，其priority为0。如果我们调用它,则Node内的update方法会每帧被调用一次。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>定时器scheduler的实现原理很简单，它的update方法每帧都会被调用，此时查看所有注册了的定时器，如果满足触发条件，则触发一次，然后触发次数加1，触发次数达到注册时的次数，则结束并销毁这个定时器。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li>schedule方法，定时器的回调次数比参数repeat多1，也就是说如果希望只回调一次，repeat应该设为0.以此内推</li>
+<li>通过schedule方法，同一个类注册的定时器，先注册者先回调</li>
+<li>通过schedule方法，不同类注册的定时器，每个类的定时器会按上一条规则全部执行完，然后再执行下一个类的全部回调。不同类之间按照注册时先后顺序来，先注册的类先回调</li>
+<li>通过scheduleUpdate注册的定时器，根据priority排序，priority越小越先被调用</li>
+<li>定时器的回调都有一个参数float t，它表示当前与上一次回调的时间间隔，引擎无法确保两次回调的间隔一定是我们在schedule时设定的间隔，或者我们预计的每帧间隔。</li>
+<li>如果需要将定时器加速或者减速，可以使用Scheduler::setTimeScale方法。设一个小于1的值，回调频率将会变慢，设一个大于1的值，回调频率会变快，但需要注意回调时参数t不会改变</li>
+</ol>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cpp-function-obj" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/03/10/cpp-function-obj/">c++之函数对象</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-03-10T11:32:37.000Z" itemprop="datePublished">2017年03月10日</time>
+</span>
+      
+      
+      
+<a href="/2017/03/10/cpp-function-obj/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>std::function是一个类模板，定义于头文件&lt;functional&gt;。我们主要关注下它的几种生成方式。</p>
+<ul>
+<li>直接指向函数。例如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bool func(int item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f = func;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用lambda表达式。例如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int t = 3;</span><br><span class="line">std::function&lt;bool(int)&gt; f1 = [t](int item) &#123;</span><br><span class="line">	return item % t == 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用函数对象。例如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Func()&#123;</span><br><span class="line">	private:</span><br><span class="line">		int t;</span><br><span class="line">	public:</span><br><span class="line">		Func(int _t):t(_t)&#123;&#125;</span><br><span class="line">		bool operator()(int item) &#123;</span><br><span class="line">			return item % t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">std::function&lt;bool(int)&gt; f2 = Func(3);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用std::bind绑定。例如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Func1()&#123;</span><br><span class="line">	public:</span><br><span class="line">		bool func(int item) &#123;</span><br><span class="line">			return item % 2 == 0;</span><br><span class="line">		&#125;</span><br><span class="line">		bool func1(int _t, int item) &#123;</span><br><span class="line">			return item % _t == 0;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line">func1 f1;</span><br><span class="line">std::function&lt;bool(int)&gt; f3 = std::bind(&amp;Func1::func, f1, std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; f4 = std::bind(&amp;Func1::func, f1, 3, std::placeholders::_1);</span><br><span class="line"></span><br><span class="line">bool func(in item) &#123;</span><br><span class="line">	return item % 2 == 0;</span><br><span class="line">&#125;</span><br><span class="line">bool func1(int _t, int item) &#123;</span><br><span class="line">	return item % _t == 0;</span><br><span class="line">&#125;</span><br><span class="line">std::function&lt;bool(int)&gt; fp5 = std::bind(func,  std::placeholders::_1);</span><br><span class="line">std::function&lt;bool(int)&gt; fp6 = std::bind(func1, 3,  std::placeholders::_1);</span><br></pre></td></tr></table></figure>
+
+<p>使用函数对象的地方有很多，一个很典型的场景就是STL里的算法，经常会用到Predicate,它就是一个函数对象。例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_InputIterator find_if(_InputIterator __first, _InputIterator __last, _Predicate __pred)</span><br></pre></td></tr></table></figure>
+<p>所以我们就可以直接拿上面的例子来使用，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vector&lt;int&gt; arr = &#123;1,3,5,7,9,2,4,6,8&#125;;</span><br><span class="line">auto iter5 = std::find_if(arr.begin(), arr.end(),fp5);</span><br><span class="line">cout &lt;&lt; *iter5 &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/" rel="tag">c++</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cpp-lambda" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/03/10/cpp-lambda/">c++11之lambda简单使用</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-03-10T09:28:10.000Z" itemprop="datePublished">2017年03月10日</time>
+</span>
+      
+      
+      
+<a href="/2017/03/10/cpp-lambda/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>lambda是C++11新增的功能，因为不是很熟，碰到需要回调的时候，我都是使用std::bind来绑定函数指针，但lambda有它使用方便的地方，尤其是闭包可以调用函数内的局部变量的特性，非常灵活，所以用简单的笔记记录下怎么使用，详细可以参考<a target="_blank" rel="noopener" href="http://zh.cppreference.com/w/cpp/language/lambda">官方文档</a></p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ capture-list ] ( params ) mutable(可选) constexpr(可选)(C++17) exception attribute -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) &#123; body &#125;</span><br><span class="line">[ capture-list ] &#123; body &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>mutable的作用是允许body修改按复制捕获的参数，及调用其非const成员函数，但修改只在lambda内起作用，不会真正改变外面的值。</li>
+<li>可以省略-&gt; ret指定返回值类型，返回类型为void。但有一个例外，若body只由单条带表达式return语句组成，而不含其它内容，则返回类型是被返回表达式的类型（在左值到右值、数组到指针，或函数到指针隐式转换后）</li>
+<li>省略参数列表，等同于参数列表为()</li>
+<li>参数列表和普通函数的写法一样，但C++14之前不允许使用默认参数和auto类型。</li>
+<li>若隐式或显式地以引用捕获一个实体，且在该实体的生存期结束后调用闭包对象的函数调用运算符，则发生未定义行为。C++闭包不会延长被捕获引用的生存期。同样的规则应用于被捕获的this指针所指向对象的生存期</li>
+<li>lambda表达式是一个纯右值表达式，它可以被赋值给std::function类型的变量</li>
+</ol>
+<h3 id="捕获列表规则"><a href="#捕获列表规则" class="headerlink" title="捕获列表规则"></a>捕获列表规则</h3><ul>
+<li>[a,&amp;b] 其中a以值捕获而b以引用捕获。</li>
+<li>[this] 以值捕获this指针</li>
+<li>[&amp;] 以引用捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
+<li>[&#x3D;] 以值捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
+<li>[] 无捕获</li>
+</ul>
+<p>随便写个简单的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::for_each(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        cout &lt;&lt; item &lt;&lt; endl;</span><br><span class="line">    &#125;);</span><br><span class="line">std::find_if(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        return item %2 == 0;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/" rel="tag">c++</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-leet-kmp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/03/03/leet-kmp/">leetcode之kmp算法</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-03-03T09:33:56.000Z" itemprop="datePublished">2017年03月03日</time>
+</span>
+      
+      
+      
+<a href="/2017/03/03/leet-kmp/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>kmp算法用于查找子字符串，阮老师有一篇介绍的很细致的<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/05/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm.html">博客</a>基本上一遍就能看懂</p>
+<p>整个流程可以概括为两步</p>
+<ol>
+<li>生成子字符串的部分匹配表，它是一个数组，对应子字符串上每个位置上的部分匹配值。 “部分匹配值”就是”前缀”和”后缀”的最长的共有元素的长度。”前缀”指除了最后一个字符以外，一个字符串的全部头部组合；”后缀”指除了第一个字符以外，一个字符串的全部尾部组合。</li>
+<li>匹配子字符串，如果子字符串匹配完，则查找成功，否则需要将匹配位置后移，后移的步数就是当前已匹配字符数量，减去最后一个匹配成功位置的部分匹配值</li>
+</ol>
+<p>阮老师的文章里只讲了概念，没有算法，生成匹配表的算法，如果完全按照前后缀的概念去写，虽然能正确生成，但性能比较低。比如我写了一个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//算出一个字符串的匹配值</span><br><span class="line">   var getNext = function(str) &#123;</span><br><span class="line">   	var len = str.length;</span><br><span class="line">   	if(len === 1) &#123;</span><br><span class="line">   		return 0;</span><br><span class="line">   	&#125;</span><br><span class="line">   	var max = 0;</span><br><span class="line">   	for(var i = 1; i &lt; len; i++) &#123;</span><br><span class="line">   		if(str.slice(0, i) === str.slice(len-i)) &#123;</span><br><span class="line">   			max = i;</span><br><span class="line">   		&#125;</span><br><span class="line">   	&#125;</span><br><span class="line">   	return max;</span><br><span class="line">   &#125;</span><br><span class="line">   //算出needle的部分匹配表</span><br><span class="line">   var nexts = [];</span><br><span class="line">   for(var i = 0; i &lt; nlen; i++) &#123;</span><br><span class="line">   	nexts[i] = getNext(needle.slice(0, i+1));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>实际使用的算法如下，又比较难理解。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var nexts = [-1, 0];</span><br><span class="line">   var j = 0;</span><br><span class="line">   for(var i = 1; i &lt; nlen; i++) &#123;</span><br><span class="line">   	while(j &gt; 0 &amp;&amp; needle[j] !== needle[i]) &#123;</span><br><span class="line">           j = nexts[j];</span><br><span class="line">       &#125;</span><br><span class="line">       if(needle[j] === needle[i]) &#123;</span><br><span class="line">           j += 1;</span><br><span class="line">       &#125;</span><br><span class="line">       nexts[i+1] = j;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>它的思路是这样的，因为我们是依次填充nexts，假设已经填充到ababa，此时nexts是[0, 0, 0, 1, 2, 3]，已经得到的最长共同前后缀分别是””, “”, “a”&#x3D;”a”, “ab”&#x3D;”ab”, “aba”&#x3D;”aba”，此时i&#x3D;5，我们需要求next[5]，如果needle[5] &#x3D;&#x3D; needle[next[5]],也就是b，那我们就在前一个最长next值上加1就可以了，这个很好理解。但如果不是b，那我们就要在已有的对称’aba’&#x3D;’aba’里找它的最长公共前后缀，然后比较，在这个例子里我们可以看清楚的看到是’a’&#x3D;’a’，我们需要拿’a’后面的’b’与needle[i]比较，也就是needle[next[next[5]]]和needle[i]比较，这样直到找到0为止，这时表示没找到可用的对称，只好用needle[0]和needle[i]比较，如果相同，那么next[i]&#x3D;1，否则为0。</p>
+<p>这里nexts数组比needle多了1个长度，有的地方是这样，有的地方跟needle一样长，我觉得都可以，只是使用时候的区别。如果不是的话，欢迎指正。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-dp-in-project" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/02/19/dp-in-project/">开发中使用到的设计模式</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-02-19T03:08:14.000Z" itemprop="datePublished">2017年02月19日</time>
+</span>
+      
+      
+      
+<a href="/2017/02/19/dp-in-project/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="单例模式-SINGLETON"><a href="#单例模式-SINGLETON" class="headerlink" title="单例模式 SINGLETON"></a>单例模式 SINGLETON</h3><p>单例在实际中使用很多，它保证一个类只有一个实例，并提供一个它的全局访问点。不论在cocos引擎还是自己的项目代码中，都有大量单例类的存在，但一般用于工厂类或者管理类，例如FileUtils, TextureCache等。保存一个全局变量并确保运行中只有一个实例，也可以看做是单例模式，比如在棋牌游戏中只会存在一个牌桌对象。</p>
+<h3 id="简单工厂模式-FACTORY"><a href="#简单工厂模式-FACTORY" class="headerlink" title="简单工厂模式 FACTORY"></a>简单工厂模式 FACTORY</h3><p>它在《设计模式》中叫做参数化工厂方法，它定义一个用于创建对象的接口，以一个参数作为标识符，来实例化对象。实际项目中有一个叫做WindowsManager::createWindow的方法，它根据传入的参数，创建出各种类型的弹出消息窗口。</p>
+<h3 id="外观模式-FACADE"><a href="#外观模式-FACADE" class="headerlink" title="外观模式 FACADE"></a>外观模式 FACADE</h3><p>这个模式也很好理解，它为复杂的子系统提供一个高层接口，以使子系统更加容易使用。举个很简单的例子，牌桌上收到某人出牌的消息，需要做很多事情，刷新他的剩余手牌数，展示他打出的牌，播放语音等等。我们把这些操作集合成一个接口，这样使用起来更方便，而且屏蔽了接口的内部实现，实现解耦合。但我们在写这个功能时，实际上并不一定需要创建一个facade类，而只是简单地封装一个函数就可以，只要理解这个概念就可以了。</p>
+<h3 id="观察者模式-OBSERVER"><a href="#观察者模式-OBSERVER" class="headerlink" title="观察者模式 OBSERVER"></a>观察者模式 OBSERVER</h3><p>它定义了一种一对多的依赖关系，这个模式中的关键对象是目标(subject)和订阅者(observer)。这个模式不管是在cocos引擎内还是实际项目中都用到了。例如cocos引擎内，给一个Node添加触摸事件 就是订阅者向目标执行注册，当触摸事件发生时，目标会通知所有注册了的Node。它可以实现目标和订阅者的松耦合。</p>
+<h3 id="组合模式-COMPOSITE"><a href="#组合模式-COMPOSITE" class="headerlink" title="组合模式 COMPOSITE"></a>组合模式 COMPOSITE</h3><p>将对象组合成树形结构，使得用户对单个对象和组合对象的使用具有一致性。 说到树形结构，第一反应就是cocos引擎的UI树了，它也确实是这个模式的应用，作为容器的类 Scene, Layer, Node，本身也是一个Node，使用起来就很方便。</p>
+<h3 id="适配器模式-ADAPTER"><a href="#适配器模式-ADAPTER" class="headerlink" title="适配器模式 ADAPTER"></a>适配器模式 ADAPTER</h3><p>它将已有的接口转换成实际需要的接口。在《设计模式》中分为类适配器和对象适配器。在实际项目中，最明显的用到的地方，就是对不同平台sdk的封装，项目在接入各个平台时，他们的sdk功能都一样，无外乎登录，支付等等，但接口却不可能一样，我们通过构造一个adapter，把各种登录接口统一成一个，各种支付接口统一成一个，实际调用的时候就只需要调用这个统一的接口了。它的实现有两种方案：类适配器和对象适配器，前者使用继承，后者使用组合。</p>
+<h3 id="中介者模式-MEDIATOR"><a href="#中介者模式-MEDIATOR" class="headerlink" title="中介者模式 MEDIATOR"></a>中介者模式 MEDIATOR</h3><p>它用一个中介对象来封装一系列对象的交互，使得各对象不用显示的相互引用。在cocos引擎内，CCDirector就是一个中介者，通过它可以获取很多对象，比如getTextureCache, getActionManager等等，这些对象要交互的时候，彼此不需要持有引用，通过中介来获取就行了。实际项目中我将tableController作为一个中介者，牌桌上的各个子系统比如cardsController, operateController等等，都可以彼此不持有引用。</p>
+<h3 id="代理模式-PROXY"><a href="#代理模式-PROXY" class="headerlink" title="代理模式 PROXY"></a>代理模式 PROXY</h3><p>这个模式可以这样解释：我们想要一个实体subject，但出于某些原因，我们使用了一个代理proxy来代替它，为了能正常使用，显然我们构造的这个代理，必须与subject的接口保持一致。</p>
+<p>在项目中有过一个例子，我们有一个通用的类soundManager，它有两个接口playMusic和playEffect。在不同的插件游戏中，播放声音和音效都是调用的这两个接口，但不同插件游戏中有不同的要求，A游戏要求播音乐时静音，B游戏要求播音效时静音，我们在不同插件中就构造不同的proxy类，它只为了代替soundManager而存在，同时也通过代替soundManager来实现了自定义的功能。当然proxy还适用于别的一些需要的场景。</p>
+<h3 id="享元模式-FLYWEIGHT"><a href="#享元模式-FLYWEIGHT" class="headerlink" title="享元模式 FLYWEIGHT"></a>享元模式 FLYWEIGHT</h3><p>享元模式不要误认为是缓存池的概念，享元模式是在设计对象结构时，将可以共享的部分抽象出来进行建模。以达到减少存储开销的目的。被共享的flyweight不应直接实例化，而是通过FlyweightFactory来查找以保证共享。</p>
+<h3 id="装饰模式-DECORATOR"><a href="#装饰模式-DECORATOR" class="headerlink" title="装饰模式 DECORATOR"></a>装饰模式 DECORATOR</h3><p>装饰模式用于动态的给对象添加额外的职责。因为装饰对象decorator要代替原组件component使用，所以接口要保持一致，在C++中通过公共父类的方式实现。装饰模式比使用继承更灵活，也避免在层次结构高层的类有太多特性。但decorator还是和component不是一样，decorator只是一个包装。</p>
+<h3 id="桥接模式-BRIDGE"><a href="#桥接模式-BRIDGE" class="headerlink" title="桥接模式 BRIDGE"></a>桥接模式 BRIDGE</h3><p>桥接模式将抽象部分与它的实现部分分离，使它们可以独立变化。分离接口和实现部分有助于更好的结构化，比使用继承更为灵活。桥接模式适合用于分离不同维度的变化。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-arguments" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/02/18/js-arguments/">javaScript中的arguments</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-02-18T03:44:45.000Z" itemprop="datePublished">2017年02月18日</time>
+</span>
+      
+      
+      
+<a href="/2017/02/18/js-arguments/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>js中的每一个函数，都有一个默认的局部变量arguments，通过它可以获取到传给函数的所有实参，直接用序号获取即可，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function test()&#123;</span><br><span class="line">	console.log(arguments.length);	//2</span><br><span class="line">	console.log(arguments[0]);	//1</span><br><span class="line">	console.log(arguments[1]);	//haha</span><br><span class="line">	console.log(arguments[2]);	//undefined</span><br><span class="line">&#125;</span><br><span class="line">test(1, &quot;haha&quot;);</span><br></pre></td></tr></table></figure>
+<p>虽然它有length属性和通过下标获取，但它并不是数组，它没有数组的其他属性和方法。如果想把它转成Array来使用，可以使用以下方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var args = Array.prototype.slice.call(arguments);</span><br><span class="line">var args = [].slice.call(arguments);</span><br><span class="line">var args = Array.from(arguments); (ES2015)</span><br><span class="line">var args = [...arguments]; (ES2015)</span><br></pre></td></tr></table></figure>
+<p>一般我们在定义一个函数时，会设定参数的数量，但它可能与实际传入的参数数量不一致，在上面这个例子里，前者可以通过test.length获取到，后者则是arguments.length。 所以使用arguments的主要目的就是在不确定实际传入的参数数量的时候。</p>
+<h3 id="arguments与实参"><a href="#arguments与实参" class="headerlink" title="arguments与实参"></a>arguments与实参</h3><p>arguments元素的值和实际参数的值，在没有<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">rest parameters</a>, <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters">default parameters</a> 和<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment">destructured parameters</a>时，是会相互影响的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function test(a, b) &#123;</span><br><span class="line">	console.log(&quot;a is &quot; + a);	// a is 1;</span><br><span class="line">	arguments[0] = 10;</span><br><span class="line">	console.log(&quot;a is &quot; + a);	// a is 10;</span><br><span class="line">	</span><br><span class="line">	console.log(&quot;arguments[1] is &quot; + arguments[1])	//arguments[1] is 2</span><br><span class="line">	b=10;</span><br><span class="line">	console.log(&quot;arguments[1] is &quot; + arguments[1])	//arguments[1] is 10</span><br><span class="line">&#125;</span><br><span class="line">test(1, 2);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>否则就不会影响，上面例子改成 test(a, b, c&#x3D;100) ,因为有了个参数c是default parameter，就导致arguments和实参互相不影响，结果就是显示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a is 1</span><br><span class="line">a is 1</span><br><span class="line">arguments[1] is 2</span><br><span class="line">arguments[1] is 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="arguments-callee"><a href="#arguments-callee" class="headerlink" title="arguments.callee"></a>arguments.callee</h3><p>callee是arguments的一个属性，它指向当前执行的函数。如果在一个没有函数名的闭包函数里，使用它可以实现递归，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3, 4, 5].map(function(n) &#123;</span><br><span class="line">    return !(n &gt; 1) ? 1 : arguments.callee(n - 1) * n;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>但是在ES5的严格模式里，是禁止使用callee的，而现在的很多主流浏览器，都实施了部分严格模式，所以要避免使用。</p>
+<p>arguments.caller属性已经被废弃，不被支持了，可以使用Function.caller来代替，它指向调用当前函数的函数，如果值为null，则说明是global调用的。它虽然能被主流浏览器支持，但并没有进入标准，所以用的时候也要小心。以下是使用它实现记录当前调用栈</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function stackTrace()&#123;</span><br><span class="line">	var f = stackTrace.caller;</span><br><span class="line">	var s = &quot;stack Trace:\n&quot;;</span><br><span class="line">	while(f) &#123;</span><br><span class="line">		s += f.name;</span><br><span class="line">		s += &quot;\n&quot;;</span><br><span class="line">		f = f.caller;</span><br><span class="line">	&#125;</span><br><span class="line">	return s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos-assetsManager" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/02/13/cocos-assetsManager/">cocos之使用AssetsManager实现热更新</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-02-13T13:12:32.000Z" itemprop="datePublished">2017年02月13日</time>
+</span>
+      
+      
+      
+<a href="/2017/02/13/cocos-assetsManager/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>cocos提供了AssetsManager类进行热更新。这里大概介绍下它的使用方法和内部原理，引擎使用的是v3.13。首先是一段简单的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">string url = &quot;https://.....test.zip&quot;;</span><br><span class="line">string vurl = &quot;https://.../version&quot;;</span><br><span class="line">string root = CCFileUtils::getInstance()-&gt;getWritablePath();</span><br><span class="line">string path =root + &quot;test/&quot;;</span><br><span class="line"></span><br><span class="line">FileUtils::getInstance()-&gt;createDirectory(path);</span><br><span class="line"></span><br><span class="line">AssetsManager* am = AssetsManager::create(url.c_str(), vurl.c_str(), path.c_str(), [](int a)&#123;</span><br><span class="line">    CCLOG(&quot;update failed %d&quot;, a);</span><br><span class="line">&#125;, [](int b)&#123;</span><br><span class="line">    CCLOG(&quot;update progress %d&quot;, b);</span><br><span class="line">&#125;, []()&#123;</span><br><span class="line">    CCLOG(&quot;update success&quot;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">am-&gt;retain();	</span><br><span class="line">am-&gt;checkUpdate();</span><br></pre></td></tr></table></figure>
+<p>这里有两个地方特别需要需要注意：</p>
+<ul>
+<li>AssetsManager继承自Node，所以它的实例需要retain，否则无法正常工作</li>
+<li>更新包的存储路径，必须是已存在的路径，否则会导致拷贝失败而报错</li>
+</ul>
+<p>可以看到使用还是很简单的，构造的参数包括更新包url地址，返回最新版本号的url地址，更新包存储路径，下载成功回调，下载失败回调，下载进度回调。 然后调用checkUpdate就开始了整个更新流程，我们按照流程看一下源代码。</p>
+<p>AssetsManager内部通过一个_downloader来实现下载的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cocos2d::network::Downloader* _downloader = new Downloader();</span><br></pre></td></tr></table></figure>
+<p>它在构造函数里初始化，并设定好onTaskError, onTaskProgress, onDataTaskSuccess, onFileTaskSuccess四个回调。 </p>
+<ol>
+<li>当我们调用checkUpdate开始一次热更任务时，它使用_downloader创建一个下载任务，根据_versionFileUrl来获取需要更新资源的版本号。如果获取成功，会进入onDataTaskSuccess回调中，这里会获取本地存储的版本号，与之进行比较，如果相等，说明本地已经是最新版本，不需要更新。然后检查一下本地已下载版本，如果等于获取的版本号，说明更新包已经下载但尚未解压，直接执行解压操作。否则创建一个下载任务开始下载。</li>
+<li>在下载进度回调中，获取到当前下载的百分比</li>
+<li>zip下载完成后，进行解压缩，如果失败，则把已下载成功的版本号记录在本地，避免再次下载。如果成功，则解压缩在我们设定的存储目录下，将本地版本目录更新至当前版本。删除已下载的zip文件，将存储目录添加到searchPath的最前面。</li>
+</ol>
+<p>关于searchPath，它是一个队列，实现位于CCFileUtils内。cocos引擎在使用某个资源时，如果指定的资源路径不是绝对路径，就会依次使用searchPath内的路径合成一个绝对路径，如果找到了文件，就直接使用这个文件，所以我们热更新后的目录，设为searchPath的第一个，就可以实现替换掉老资源的功能。当然如果想节省空间，在下载成功的回调里，删除掉上个版本的目录就可以了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos-transitionScene" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/02/04/cocos-transitionScene/">cocos之Scene的切换</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-02-04T07:44:35.000Z" itemprop="datePublished">2017年02月04日</time>
+</span>
+      
+      
+      
+<a href="/2017/02/04/cocos-transitionScene/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>场景切换，牵涉到的是老scene善后处理和新scene的初始化，如果对各个函数调用的先后顺序不明的话，可能就会出问题(例如注册监听和取消监听，一般都写在onEnter和onExit方法内)</p>
+<p>涉及到scene切换的方法，都在director内,常用的为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void Director::runWithScene(Scene *scene)</span><br><span class="line">void Director::replaceScene(Scene *scene)</span><br></pre></td></tr></table></figure>
+<p>Director内通过_scenesStack， _runningScene，_nextScene进行管理。每帧都会调用drawScene方法，这个方法里，有一段代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/* to avoid flickr, nextScene MUST be here: after tick and before draw.</span><br><span class="line">    */</span><br><span class="line">   if (_nextScene)</span><br><span class="line">   &#123;</span><br><span class="line">       setNextScene();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这里还有一些注释，说明了切换scene的操作，在老scene的事件都处理完了之后，渲染新scene之前。这里setNextScene就是执行了切换scene的逻辑。</p>
+<p>scene的切换分为有渐变和没有渐变两种情况</p>
+<ul>
+<li>没有渐变的时候，切换的回调会直接调用,具体可以看源代码。顺序为</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_runningScene-&gt;onExitTransitionDidStart();</span><br><span class="line">_runningScene-&gt;onExit();</span><br><span class="line">//此时_runningScene已经指向了新scene</span><br><span class="line">_runningScene-&gt;onEnter();</span><br><span class="line">_runningScene-&gt;onEnterTransitionDidFinish();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>有渐变的情况其实也简单，渐变的效果是通过TransitionScene类来实现的，它将新scene存为_inScene, 需要被替换掉的老scene存为_outScene，然后它的draw函数会同时渲染这两个scene。为了将逻辑与视觉效果相符，新旧scene的执行回调也发生了变化，老scene的onExit延迟到新scene进场完毕后才调用</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_outScene-&gt;onExitTransitionDidStart();</span><br><span class="line">_inScene-&gt;onEnter();</span><br><span class="line"></span><br><span class="line">_outScene-&gt;onExit();</span><br><span class="line">_inScene-&gt;onEnterTransitionDidFinish();</span><br></pre></td></tr></table></figure>
+<p>关于TransitionScene的一些细节:</p>
+<ul>
+<li>TransitionScene的各个子类,都只是实现了进场动画，并没有哪个实现有离场动画</li>
+<li>TransitionScene的finish回调中会执行director-&gt;replaceScene(_inScene);设置真正的新scene。Director::setNextScene方法里，runningIsTransition只有在这时候才可能为true,否则如果老scene是个TransitionScene，意味着进场动画还没有结束，node的_running为true,此时不运行进行切换的,强制切换会触发assert。</li>
+<li>不要妄想使用连环Transition，原因和上面一样，进场动画还没执行完就切换scene，例如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TransitionFade* fade = TransitionFade::create(2, scene, Color3B::GREEN);</span><br><span class="line">TransitionFade* fade1 = TransitionFade::create(2, fade, Color3B::GREEN);</span><br><span class="line">TransitionFade* fade2 = TransitionFade::create(2, fade1, Color3B::GREEN);</span><br><span class="line">Director::getInstance()-&gt;replaceScene(fade2);</span><br></pre></td></tr></table></figure>
+
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/7/index.html">http://yangguang1029.github.io/page/7/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/page/6/">Vorheriger</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

@@ -1,258 +1,1075 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/28/cocos-jpgmaskpng2/">cocos之使用jpg+mask合成png实现方式（二）</a>
-    <div class="post-item-summary">
-      第二种方式就是使用shader，这种方式的优点是不需要修改源代码，但性能上不如第一种方式。
-编写shader涉及到顶点着色器和片断着色器，前者使用sprite默认的即可。sprite使用哪个着色器，只要看一下CCSprite.cpp里这句就找到了
-1setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP
-      <a class="read-more" href="/2016/11/28/cocos-jpgmaskpng2/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.28</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/28/cocos-jpgmaskpng/">cocos之使用jpg+mask合成png实现方式（一）</a>
-    <div class="post-item-summary">
-      第一种方式，在CCImage内读取图片数据后，合并起来使用。改写Image类，增加initWithJpgAndPng方法
-代码如下
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859bool Image::initWithJpgAndPng(const std::string&amp; jpgpath, con
-      <a class="read-more" href="/2016/11/28/cocos-jpgmaskpng/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.28</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/25/cocos-render/">cocos3.x 渲染机制简述</a>
-    <div class="post-item-summary">
-      cocos2dx-3.x对绘制部分进行了重构，将绘制从UI树的遍历中分离了出来。首先进行UI树的遍历给每个元素生成一个绘制命令。等遍历完之后，render开始执行栈中所有renderCommand。
-遍历UI树遍历UI树很简单，就是调用每个Node的visit函数，这是个虚函数，除了部分类做了重写(目前源代码里只有三个类重写了，分别是CCAttachNode, CCBillBoard, CCSprite3D)，其余就沿用了Node的实现。通过
-1void Node::visi
-      <a class="read-more" href="/2016/11/25/cocos-render/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.25</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/25/cocos-addImageAsync/">cocos-addImageAsync解析</a>
-    <div class="post-item-summary">
-      当我们在cocos内需要做一些比较耗性能的事情时，我们可以一些很巧妙地方案，例如开启多线程，以及将任务分解到每一帧完成一部分。在TextureCache的addImageAsync方法里，就同时用到了这两种办法，把这部分源码看明白，对自己实现能有很大的帮助
-类TextureCache维护一个队列_asyncStructQueue，它存放需要执行的任务，这些任务将在异步线程执行，加载生成Image类
-1std::queue&lt;AsyncStruct*&gt;* _async
-      <a class="read-more" href="/2016/11/25/cocos-addImageAsync/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.25</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/24/cocos%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E5%8A%A0%E5%AF%86/">cocos图片资源加密</a>
-    <div class="post-item-summary">
-      无意中看到hnliu’sblog上的方案，看完思路后，自己也照着写了一个，虽然不复杂，但是也花了将近两个小时。
-python代码如下
-12345678910111213141516171819202122232425262728293031323334353637383940414243import osimport randomENCRYPTBYTE = random.randint(1,255)	#不能随机到0，否则等于没加密FIRSTBYTE = 0x12SECONDB
-      <a class="read-more" href="/2016/11/24/cocos%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E5%8A%A0%E5%AF%86/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.24</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/24/js-object/">javaScript中的proto</a>
-    <div class="post-item-summary">
-      __proto__js的原型链继承很简单，对任意一个object，都有__proto__属性，当获取这个对象的属性或者方法时，现在对象本身去查找，如果不存在，则往它的__proto__上查找，因为__proto__本身也是一个object，所以如果没找到，则往__proto__的__proto__上查找，跟沿着一条链条走一样，直到找到返回，或者__proto__为null或undefined找到了尽头。
-原型链不可能无止尽的延伸，所以js中有一个默认的object，它的__p
-      <a class="read-more" href="/2016/11/24/js-object/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.24</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF2/">js对象与继承(二)</a>
-    <div class="post-item-summary">
-      类继承与原型继承先分别举个例子吧，首先是原型继承
-1234567var proto = &#123;&quot;a&quot;:1,&quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;var f1 = function()&#123;&#125;var f2 = function()&#123;&#125;f1.prototype = protof2.prototype = protovar t1 = new f1()var t2 =
-      <a class="read-more" href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF2/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.18</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF/">js对象与继承(一)</a>
-    <div class="post-item-summary">
-      大家都知道在js中创建一个对象的一种很基本的方式
-1234function f()&#123;	this.a = 1;&#125;var test = new f();
 
-当执行new的时候，系统实际做的事情分了几步
-
-var obj &#x3D; Object.create(f.prototype)
-var result &#x3D; f.call(obj)
-result &amp;&amp; typeof result &#x3D;&#x3D;&#x3D; ‘object
-      <a class="read-more" href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.18</div>
-      <div class="tags">
+      <div class="outer">
+        <section id="main">
+  <article id="post-cocos-jpgmaskpng2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/17/svnignore/">svn忽略文件</a>
-    <div class="post-item-summary">
-      在svn项目中，对于不需要加入版本管理的文件，可以使用svn propedit svn:ignore来进行设置
-在执行这句之前，需要先设置好SVN_EDITOR环境变量，例如在~&#x2F;.bash_profile内添加
-1export SVN_EDITOR=emacs
-
-然后执行
-1svn propedit svn:ignore .
-这里的.表示对当前目录进行设置，此时会打开你指定的编辑器界面，在里面写上你需要忽略的文件名或者正则表达式即可.但这句命令，只会影响你指定的路
-      <a class="read-more" href="/2016/11/17/svnignore/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.17</div>
-      <div class="tags">
-        
-        <div class="tag-item">svn</div>
-        
-      </div>
-    </div>
-  </section>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/28/cocos-jpgmaskpng2/">cocos之使用jpg+mask合成png实现方式（二）</a>
+    </h1>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/16/cocos%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D%E7%AD%96%E7%95%A5/">cocos屏幕适配策略</a>
-    <div class="post-item-summary">
-      cocos的屏幕适配包括两个方面，一个涉及到屏幕的宽高比，一个涉及到缩放因子。
-宽高比我打算尽量用通俗的语言来说这件事情，cocos处理不同宽高比的适配，使用了设计分辨率这么个东西，就是
-1void GLView::setDesignResolutionSize(float width, float height, ResolutionPolicy resolutionPolicy)
-resolutionPolicy有好几种选择，但我们通常只使用FIXED_HEIGHT和FI
-      <a class="read-more" href="/2016/11/16/cocos%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D%E7%AD%96%E7%95%A5/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.16</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
 
 
-<div class="paginator">
-  <a class="extend prev" rel="prev" href="/page/8/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/">下一页</a>
-</div>
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-28T09:47:08.000Z" itemprop="datePublished">2016年11月28日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/28/cocos-jpgmaskpng2/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
 
-  </main>
-  <footer class="footer">
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>第二种方式就是使用shader，这种方式的优点是不需要修改源代码，但性能上不如第一种方式。</p>
+<p>编写shader涉及到顶点着色器和片断着色器，前者使用sprite默认的即可。sprite使用哪个着色器，只要看一下CCSprite.cpp里这句就找到了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP, texture));</span><br></pre></td></tr></table></figure>
+
+<p>然后我们稍微改动一下片断着色器，如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#ifdef GL_ES</span><br><span class="line">precision lowp float;</span><br><span class="line">#endif</span><br><span class="line">                                                          </span><br><span class="line">varying vec4 v_fragmentColor;</span><br><span class="line">varying vec2 v_texCoord;</span><br><span class="line"></span><br><span class="line">uniform sampler2D mask;</span><br><span class="line">                                                          </span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    gl_FragColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);</span><br><span class="line">    gl_FragColor.a = texture2D(mask, v_texCoord).a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们通过代码将mask作为一个Texture传进来，然后取它的每个像素的alpha值拿来用。</p>
+<p>使用代码为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GLProgram *gp = GLProgram::createWithFilenames(&quot;res/test.vert&quot;, &quot;res/test.frag&quot;);</span><br><span class="line">GLProgramState* gs = GLProgramState::create(gp);</span><br><span class="line"></span><br><span class="line">Image* img = new Image();</span><br><span class="line">img-&gt;initWithImageFile(&quot;res/zjz_pop_word_title_zhanji.png&quot;);</span><br><span class="line">Texture2D* t1 = new Texture2D();</span><br><span class="line">t1-&gt;initWithImage(img);</span><br><span class="line"></span><br><span class="line">gs-&gt;setUniformTexture(&quot;mask&quot;, t1);</span><br><span class="line"></span><br><span class="line">Sprite* s = Sprite::create(&quot;res/splash_tuyoo_m.jpg&quot;);</span><br><span class="line">s-&gt;setGLProgramState(gs);</span><br><span class="line">s-&gt;setPosition(480,320);</span><br><span class="line">this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
+
+<p>这里只需要小心一点不要把s-&gt;setGLProgramState(gs);写成s-&gt;setGLProgram(gp);就行，node上同时提供了这两个接口，但使用后者会创建一个新的GLProgramState，我们已经创建的gs也就失去了作用了</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos-jpgmaskpng" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <span>Copyright © 2024 typo</span>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/28/cocos-jpgmaskpng/">cocos之使用jpg+mask合成png实现方式（一）</a>
+    </h1>
   
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-28T08:11:09.000Z" itemprop="datePublished">2016年11月28日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/28/cocos-jpgmaskpng/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>第一种方式，在CCImage内读取图片数据后，合并起来使用。改写Image类，增加initWithJpgAndPng方法</p>
+<p>代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithJpgAndPng(const std::string&amp; jpgpath, const std::string&amp; pngpath) &#123;</span><br><span class="line">    bool ret = false;</span><br><span class="line">    unsigned char* jd = nullptr;</span><br><span class="line">    do&#123;</span><br><span class="line">        std::string jp = FileUtils::getInstance()-&gt;fullPathForFilename(jpgpath);</span><br><span class="line">        Data jpgdata = FileUtils::getInstance()-&gt;getDataFromFile(jp);</span><br><span class="line">        </span><br><span class="line">        unsigned char* jdata = jpgdata.getBytes();</span><br><span class="line">        ssize_t jsize = jpgdata.getSize();</span><br><span class="line">        </span><br><span class="line">        ret = initWithJpgData(jdata, jsize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int jwidth = _width;</span><br><span class="line">        int jheight = _height;</span><br><span class="line">        </span><br><span class="line">        ssize_t jlen = _dataLen;</span><br><span class="line">        jd = static_cast&lt;unsigned char*&gt;(malloc(jlen * sizeof(unsigned char)));</span><br><span class="line">        memcpy(jd, _data, jlen * sizeof(unsigned char));	//将jpg数据暂存起来</span><br><span class="line">        </span><br><span class="line">        std::string pp = FileUtils::getInstance()-&gt;fullPathForFilename(pngpath);</span><br><span class="line">        Data pngdata = FileUtils::getInstance()-&gt;getDataFromFile(pp);</span><br><span class="line">        unsigned char* pdata = pngdata.getBytes();</span><br><span class="line">        ssize_t psize = pngdata.getSize();</span><br><span class="line">        ret = initWithPngData(pdata, psize);</span><br><span class="line">        if(!ret) &#123;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pwidth = _width;</span><br><span class="line">        int pheight = _height;</span><br><span class="line">        if(pwidth != jwidth || pheight != jheight) &#123;</span><br><span class="line">            break;	//要求长宽必须严格相同</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        int pindex = 0;</span><br><span class="line">        int jindex = 0;</span><br><span class="line">        </span><br><span class="line">        for(int index = 0; index &lt; pwidth * pheight; index++) &#123;</span><br><span class="line">            unsigned char alpha =*(_data+(pindex+3));</span><br><span class="line">            </span><br><span class="line">            *(_data+pindex) = *(jd + jindex) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+1)) = *(jd + jindex+1) * alpha / 255;</span><br><span class="line">            *(_data+(pindex+2)) = *(jd + jindex+2) * alpha / 255;</span><br><span class="line">            </span><br><span class="line">            pindex += 4;</span><br><span class="line">            jindex += 3;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;while(0);</span><br><span class="line">    </span><br><span class="line">    if(jd) &#123;</span><br><span class="line">        CC_SAFE_FREE(jd);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    return ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>tips:</p>
+<ol>
+<li>这里为了验证思路，找了个RBGA8888的png做mask图，如果使用的mask图不是该格式，则需要修改_renderFormat, _fileType等属性。</li>
+<li>因为cocos默认png图片是pre_multi_alpha的，所以我们在加入alpha数据时，需要同时将alpha乘到rgb上</li>
+</ol>
+<p>使用时代码如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Image* image = new Image();</span><br><span class="line">    image-&gt;initWithJpgAndPng(&quot;res/test1.jpg&quot;, &quot;res/test2.png&quot;);</span><br><span class="line">    </span><br><span class="line">    Texture2D* t = new Texture2D();</span><br><span class="line">    t-&gt;initWithImage(image);</span><br><span class="line">    Sprite* s = Sprite::createWithTexture(t);</span><br><span class="line">    s-&gt;setPosition(480,320);</span><br><span class="line">    this-&gt;addChild(s);</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos-render" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/25/cocos-render/">cocos3.x 渲染机制简述</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-25T07:49:25.000Z" itemprop="datePublished">2016年11月25日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/25/cocos-render/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>cocos2dx-3.x对绘制部分进行了重构，将绘制从UI树的遍历中分离了出来。首先进行UI树的遍历给每个元素生成一个绘制命令。等遍历完之后，render开始执行栈中所有renderCommand。</p>
+<h3 id="遍历UI树"><a href="#遍历UI树" class="headerlink" title="遍历UI树"></a>遍历UI树</h3><p>遍历UI树很简单，就是调用每个Node的visit函数，这是个虚函数，除了部分类做了重写(目前源代码里只有三个类重写了，分别是CCAttachNode, CCBillBoard, CCSprite3D)，其余就沿用了Node的实现。通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::visit(Renderer* renderer, const Mat4 &amp;parentTransform, uint32_t parentFlags)</span><br></pre></td></tr></table></figure>
+<p>我们可以看到</p>
+<ol>
+<li>如果一个Node是不可见(_visible为false)，则不会生成渲染命令，因此隐藏的节点不会增加渲染负担，只会占用内存消耗。</li>
+<li>在遍历时，会对所有子节点以localZorder从小到大进行排序，如果localZorder相同，则以_orderOfArrival从小到大排序，这个子节点被添加的先后顺序。排序后先执行所有localZorder小于0的子节点的visit，再执行自己的draw，再执行所有localZorder大于0的子节点的visit。</li>
+</ol>
+<p>draw函数为虚函数，且Node内的实现为空，具体实现在各个子类中，它的作用就是生成RenderCommand</p>
+<h3 id="RenderCommand"><a href="#RenderCommand" class="headerlink" title="RenderCommand"></a>RenderCommand</h3><p>RenderCommand有以下类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">enum class Type</span><br><span class="line">    &#123;</span><br><span class="line">        /** Reserved type.*/</span><br><span class="line">        UNKNOWN_COMMAND,</span><br><span class="line">        /** Quad command, used for draw quad.*/</span><br><span class="line">        QUAD_COMMAND,</span><br><span class="line">        /**Custom command, used for calling callback for rendering.*/</span><br><span class="line">        CUSTOM_COMMAND,</span><br><span class="line">        /**Batch command, used for draw batches in texture atlas.*/</span><br><span class="line">        BATCH_COMMAND,</span><br><span class="line">        /**Group command, which can group command in a tree hierarchy.*/</span><br><span class="line">        GROUP_COMMAND,</span><br><span class="line">        /**Mesh command, used to draw 3D meshes.*/</span><br><span class="line">        MESH_COMMAND,</span><br><span class="line">        /**Primitive command, used to draw primitives such as lines, points and triangles.*/</span><br><span class="line">        PRIMITIVE_COMMAND,</span><br><span class="line">        /**Triangles command, used to draw triangles.*/</span><br><span class="line">        TRIANGLES_COMMAND</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>在CCRender.cpp的processRenderCommand函数里，有各个类型command的具体处理。例如 CUSTOM_COMMAND就是执行设定的回调函数</p>
+<p>通过这里可以了解cocos2dx-3.x的autoBatch机制，Sprite使用的是TrianglesCommand，在处理时，会先统一放在队列里，在遍历队列时，比较每个Command的materialID,如果相同则统一处理。决定materialID的有glProgram， _textureID，_blendType。此外不同globalZorder的精灵因为不在一批处理，所以不会自动autoBatch，不同父节点，不同localZOrder则不会影响，会自动autoBatch</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos-addImageAsync" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/25/cocos-addImageAsync/">cocos-addImageAsync解析</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-25T03:44:28.000Z" itemprop="datePublished">2016年11月25日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/25/cocos-addImageAsync/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>当我们在cocos内需要做一些比较耗性能的事情时，我们可以一些很巧妙地方案，例如开启多线程，以及将任务分解到每一帧完成一部分。在TextureCache的addImageAsync方法里，就同时用到了这两种办法，把这部分源码看明白，对自己实现能有很大的帮助</p>
+<p>类TextureCache维护一个队列_asyncStructQueue，它存放需要执行的任务，这些任务将在异步线程执行，加载生成Image类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;AsyncStruct*&gt;* _asyncStructQueue;</span><br></pre></td></tr></table></figure>
+<p>一个双向队列_imageInfoQueue,他存放加载好的Image，这些加载好的图片资源就会每帧从队列中获取一个，用来生成纹理Texture2D，生成好的纹理就可以在游戏内直接使用了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;ImageInfo*&gt;* _imageInfoQueue;</span><br></pre></td></tr></table></figure>
+<p>这两个队列都是先进先出的操作，我也不是很明白为什么要用deque，有知道的可以告诉我一下。然后这两个队列因为都需要在异步线程操作，所以操作时需要用锁锁住。</p>
+<p>使用一个_asyncRefCount来记录当前任务的数量，当往_asyncStructQueue添加一个任务asyncStruct时，计数+1，当一个纹理生成完成，销毁该任务asyncStruct，计数-1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int _asyncRefCount;</span><br></pre></td></tr></table></figure>
+
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>需要异步加载一个图片时，首先调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::addImageAsync(const std::string &amp;path, const std::function&lt;void(Texture2D*)&gt;&amp; callback)</span><br></pre></td></tr></table></figure>
+<p>首先判断一下这个path对应的texture是否已经在缓存里，如果在，则直接返回。否则如果_asyncStructQueue还未初始化，则执行初始化，然后生成一个AsyncStruct加入队列_asyncStructQueue中。</p>
+<h3 id="异步线程"><a href="#异步线程" class="headerlink" title="异步线程"></a>异步线程</h3><p>类TextureCache维护一个异步线程，这个线程在_asyncStructQueue初始化时开启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::thread* _loadingThread;</span><br></pre></td></tr></table></figure>
+<p>在这个线程执行的函数是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::loadImage()</span><br></pre></td></tr></table></figure>
+<p>这个线程通过std::condition_variable _sleepCondition来唤醒和休眠，当有任务加入任务队列_asyncStructQueue时，唤醒线程执行loadImage函数，在这个函数里发现_asyncStructQueue被清空时，休眠这个线程。</p>
+<p>在执行loadImage时，会先看一下需要加载的图片是否已经在处理队列_imageInfoQueue中了。如果不在，则生成一个新的Image，执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image-&gt;initWithImageFileThreadSafe(filename)</span><br></pre></td></tr></table></figure>
+<p>如果initWithImageFileThreadSafe返回true，则表示这张图片资源加载成功了，用这个image生成一个imageInfo放到_imageInfoQueue里。</p>
+<h3 id="定时回调"><a href="#定时回调" class="headerlink" title="定时回调"></a>定时回调</h3><p>这个定时回调每帧都会被调用一次，它将上一步生成的image变成Texture2D。当_asyncRefCount从0变为1时，表示开始有任务需要完成，开启这个定时器，当_asyncRefCount变为0时表示任务全部完成，这个定时器会被关闭。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Director::getInstance()-&gt;getScheduler()-&gt;schedule(CC_SCHEDULE_SELECTOR(TextureCache::addImageAsyncCallBack), this, 0, false);</span><br></pre></td></tr></table></figure>
+<p>定时执行的函数就是addImageAsyncCallBack了，在这个函数里，通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">texture-&gt;initWithImage(image);</span><br></pre></td></tr></table></figure>
+<p>生成Texture2d，并存在缓存里，每次通过TextureCache加载纹理的时候，都会先看看是否已经存在缓存里了。<br>到这里，这个任务就完成了，执行下回调函数，然后把_asyncRefCount减一，搞定了</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos图片资源加密" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/24/cocos%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E5%8A%A0%E5%AF%86/">cocos图片资源加密</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-24T10:30:23.000Z" itemprop="datePublished">2016年11月24日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/24/cocos%E5%9B%BE%E7%89%87%E8%B5%84%E6%BA%90%E5%8A%A0%E5%AF%86/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>无意中看到<a target="_blank" rel="noopener" href="http://blog.csdn.net/liuhannan111/article/details/52472012">hnliu’sblog</a>上的方案，看完思路后，自己也照着写了一个，虽然不复杂，但是也花了将近两个小时。</p>
+<p>python代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">ENCRYPTBYTE = random.randint(1,255)	#不能随机到0，否则等于没加密</span><br><span class="line">FIRSTBYTE = 0x12</span><br><span class="line">SECONDBYTE = 0X34</span><br><span class="line">THIRDBYTE = 0x56</span><br><span class="line"></span><br><span class="line">print(&quot;encrypt key is &quot; + str(ENCRYPTBYTE))</span><br><span class="line"></span><br><span class="line">def getNewFileName(path):</span><br><span class="line">	arr = os.path.split(path)</span><br><span class="line">	dirname = arr[0]</span><br><span class="line">	filename = arr[1]</span><br><span class="line">	nameArr = filename.split(&quot;.&quot;)</span><br><span class="line">	return os.path.join(dirname, nameArr[0]+&quot;-en.&quot; + nameArr[1])</span><br><span class="line"></span><br><span class="line">def encrypt(path):</span><br><span class="line">	rf = open(path, &quot;r&quot;)</span><br><span class="line">	newpath = getNewFileName(path)</span><br><span class="line"></span><br><span class="line">	wf = open(newpath, &quot;w&quot;)</span><br><span class="line"></span><br><span class="line">	bytes = bytearray(rf.read())</span><br><span class="line">	if bytes[0] == FIRSTBYTE and bytes[1] == SECONDBYTE and bytes[2] == THIRDBYTE:</span><br><span class="line">		print &quot;encrypted already, return&quot;</span><br><span class="line">	else:</span><br><span class="line">		index = 4</span><br><span class="line">		newarr = bytearray(len(bytes) + 4)</span><br><span class="line">		newarr[0]= FIRSTBYTE</span><br><span class="line">		newarr[1]= SECONDBYTE</span><br><span class="line">		newarr[2]= THIRDBYTE</span><br><span class="line">		newarr[3]= ENCRYPTBYTE</span><br><span class="line">		for byte in bytes:</span><br><span class="line">			newb = byte ^ ENCRYPTBYTE</span><br><span class="line">			newarr[index] = newb</span><br><span class="line">			index += 1</span><br><span class="line">		wf.write(newarr)</span><br><span class="line">		wf.close()</span><br><span class="line">	rf.close()</span><br><span class="line">	</span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">	encrypt(&quot;/Users/yangguang/project/test/test_cocosx/Resources/HelloWorld.png&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>cocos端解析代码为把原来的initWithImageData改名为initWithImageDataInternal，然后重写initWithImageData方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithImageData(const unsigned char *data, ssize_t dataLen) &#123;</span><br><span class="line">    char first = *data;</span><br><span class="line">    char second = *(data+1);</span><br><span class="line">    char third = *(data+2);</span><br><span class="line">    if(first == 0x12 &amp;&amp; second == 0x34 &amp;&amp; third == 0x56) &#123;</span><br><span class="line">        char key = *(data+3);</span><br><span class="line">        unsigned char newarr[dataLen - 4];</span><br><span class="line">        ssize_t pos = 4;</span><br><span class="line">        while(pos &lt; dataLen) &#123;</span><br><span class="line">            char old = *(data+pos);</span><br><span class="line">            newarr[pos - 4] = old ^ key;</span><br><span class="line">            pos += 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return initWithImageDataInternal((const unsigned char*)(&amp;newarr) , dataLen - 4);</span><br><span class="line">    &#125;</span><br><span class="line">    return initWithImageDataInternal(data, dataLen);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>中间出了一个比较土的问题，就是python代码中newarr[index] &#x3D; newb这句，用了newarr.append()，因为newarr初始化了大小，导致newarr前面全是0，数据都被添加到后面去了</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-object" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/24/js-object/">javaScript中的proto</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-24T02:45:21.000Z" itemprop="datePublished">2016年11月24日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/24/js-object/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="proto"><a href="#proto" class="headerlink" title="__proto__"></a>__proto__</h3><p>js的原型链继承很简单，对任意一个object，都有__proto__属性，当获取这个对象的属性或者方法时，现在对象本身去查找，如果不存在，则往它的__proto__上查找，因为__proto__本身也是一个object，所以如果没找到，则往__proto__的__proto__上查找，跟沿着一条链条走一样，直到找到返回，或者__proto__为null或undefined找到了尽头。</p>
+<p>原型链不可能无止尽的延伸，所以js中有一个默认的object，它的__proto__就是undefined，除非我们强制打断原型链，否则最终都会查找到这个object上，它是长这个样子的,可以看到它是没有__proto__属性的</p>
+<p><img src="/js-object/42F976BA-0D05-4C76-ABBD-BA28C1627E46.png" alt="image"></p>
+<p>我们可以对一个object的__proto__属性随意赋值，但如果赋成null或者undefined，则它的__proto__属性变成了undefined，如果赋成基础数据类型，并不会改变其__proto__属性</p>
+<h3 id="proto-来源"><a href="#proto-来源" class="headerlink" title="__proto__来源"></a>__proto__来源</h3><p>如果我们没对object的__proto__赋值，则它的__proto__来源于使用Object.create方法调用时传给他的参数，虽然构造一个object有好几种写法，例如</p>
+<pre><code>var a = &#123;&#125;
+var b = new f();
+var c = Object.create(proto)
+</code></pre>
+<p>但它们实际上都是执行了Object.create，例如var a &#x3D; {}和var a &#x3D; Object.create(Object.prototype)是一模一样的，而var b &#x3D; new f()则基本可以认为等同于var b &#x3D; Object.create(f.prototype)。所以上面例子里，a的__proto__是Object.prototype, b的__proto__是f.prototype, c的__proto__是proto</p>
+<h3 id="function的prototype"><a href="#function的prototype" class="headerlink" title="function的prototype"></a>function的prototype</h3><p>我们经常通过function来构造一个object,这种情况使用了该function的prototype来作为Object.create的参数，如果我们没有给function指定一个prototype，则它默认的prototype是这样的</p>
+<p><img src="/js-object/08078187-DE71-479F-93B2-5E40B8C12934.png" alt="img"></p>
+<p>可以看到，function默认的prototype有一个属性constructor指向函数自己，它的__proto__就是我们前面提到的原型链尽头的那个object（真该给他取个什么名字才好），当然我们可以给function指定一个prototype，而不使用它默认的，那就是我们在js中实现继承的办法。</p>
+<p>function本身也是一个对象，所以上图里f也有__proto__属性，它的__proto__就是Function.prototype。Function是javascript解释器提供的实现，就不用再去追究它的prototype是什么了。</p>
+<h3 id="使用原型链实现继承"><a href="#使用原型链实现继承" class="headerlink" title="使用原型链实现继承"></a>使用原型链实现继承</h3><p>知道原型链是什么东西之后，就可以开始实现继承了。ES6开始有了class和extends关键字，就可以不用手动实现继承，但在ES6之前，我们需要自己来实现，例如</p>
+<pre><code>var base = &#123;
+    prop1:1,
+    prop2:&#123;
+        a:1
+    &#125;,
+    func:function()&#123;
+        console.log(&quot;in base...&quot;);
+    &#125;
+&#125;
+
+function Derived()&#123;
+
+&#125;
+
+Derived.prototype = base;
+Derived.prototype.constructor = Derived;
+
+var d1 = new Derived();
+var d2 = new Derived();
+
+d1.func();
+d2.func();
+
+console.log(d1.prop2.a);
+d1.prop2.a = 2;
+console.log(d2.prop2.a);
+</code></pre>
+<p>上面代码里，d1,d2是子类Derived的实例，它们继承了base里的属性和方法，所以可以直接调用d1.func()，也可以直接获取和设置d1.prop2.a的值，但也很容易发现问题，就是我们修改了d1.prop2.a的值，结果d2.prop2.a的值也改变了。prototype上的属性和方法，对于子类的实例是公共的，这是需要注意，容易出问题的地方。</p>
+<p>这里顺便牵扯到一个问题，我们都知道object的constructor属性指向它的构造函数，所以在设定prototype时，必须再将prototype.constructor指向构造函数。就是上面代码里的</p>
+<pre><code>Derived.prototype.constructor = Derived;
+</code></pre>
+<p>如果没有注释掉的那句，则d1.constructor就不是Derived，而是变成了function Object(){[native code]}了</p>
+<p>因为ES6之前没有原生的继承机制，很多地方都使用了John Resig的一种<a target="_blank" rel="noopener" href="https://johnresig.com/blog/simple-javascript-inheritance/">简单实现方式</a>，使用25行代码实现了extends功能。</p>
+<h3 id="缩短原型链"><a href="#缩短原型链" class="headerlink" title="缩短原型链"></a>缩短原型链</h3><p>如果原型链过长，可能会带来性能问题。所以需要注意的是尽量不要去扩展内置类型的原型。直接获取属性和for in函数都会查询原型链，如果想避免查询原型链，可以使用hasOwnProperty方法来判断</p>
+<p>使用var a &#x3D; Object.create(null) 代替 var a &#x3D; {}的区别，前者明确将__proto__设置为null，查找属性时就不会再往原型链上查找了，后者__proto__其实是Object.prototype</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js对象与继承2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF2/">js对象与继承(二)</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-18T08:33:43.000Z" itemprop="datePublished">2016年11月18日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF2/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="类继承与原型继承"><a href="#类继承与原型继承" class="headerlink" title="类继承与原型继承"></a>类继承与原型继承</h3><p>先分别举个例子吧，首先是原型继承</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var proto = &#123;&quot;a&quot;:1,&quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f1 = function()&#123;&#125;</span><br><span class="line">var f2 = function()&#123;&#125;</span><br><span class="line">f1.prototype = proto</span><br><span class="line">f2.prototype = proto</span><br><span class="line">var t1 = new f1()</span><br><span class="line">var t2 = new f2()</span><br></pre></td></tr></table></figure>
+<p>其次是类继承</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var proto = function()&#123;</span><br><span class="line">		this.a = 1;</span><br><span class="line">		this.b = &#123;&quot;c&quot;:2&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">var f1 = function()&#123;&#125;</span><br><span class="line">var f2 = function()&#123;&#125;</span><br><span class="line">f1.prototype = new proto()</span><br><span class="line">f2.prototype = new proto()</span><br><span class="line">var t1 = new f1()</span><br><span class="line">var t2 = new f2()</span><br></pre></td></tr></table></figure>
+<p>它们的区别就在于，类继承先定义了一个基类proto，在继承时，子类构造函数的prototype是根据这个基类new出来的一个对象。</p>
+<p>这两种方式各有优劣:</p>
+<p>正如上一篇说到的，如果执行代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t1.b.c = 12</span><br><span class="line">console.log(t2.b.c)</span><br></pre></td></tr></table></figure>
+<p>对于原型继承，因为proto被改变了，所以t2.b.c也变成了12，而对于类继承则不会有问题，这对于不够熟悉js的人来说绝对是个坑。</p>
+<p>不过原型继承实现起来比类继承要更灵活，因为不需要做抽象基类的工作，但如果随意地使用原型继承，例如用作prototype的对象是一个非常庞大复杂的对象，那显然会产生问题。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js对象与继承" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF/">js对象与继承(一)</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-18T03:24:32.000Z" itemprop="datePublished">2016年11月18日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/18/js%E5%AF%B9%E8%B1%A1%E4%B8%8E%E7%BB%A7%E6%89%BF/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>大家都知道在js中创建一个对象的一种很基本的方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function f()&#123;</span><br><span class="line">	this.a = 1;</span><br><span class="line">&#125;</span><br><span class="line">var test = new f();</span><br></pre></td></tr></table></figure>
+
+<p>当执行new的时候，系统实际做的事情分了几步</p>
+<ol>
+<li>var obj &#x3D; Object.create(f.prototype)</li>
+<li>var result &#x3D; f.call(obj)</li>
+<li>result &amp;&amp; typeof result &#x3D;&#x3D;&#x3D; ‘object’ ? return result : return obj</li>
+</ol>
+<p>用语言描述就是，首先用f.prototype构造一个Object，这里命名为obj，然后将obj作为参数this去调用构造函数f，返回值为result，如果result是一个对象，则返回它，也就意味着test &#x3D; result，否则 test &#x3D; obj。</p>
+<p>然后再看prototype是什么东西吧，举个例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var p = &#123;&quot;a&quot;:1, &quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f = function()&#123;this.d = 3&#125;</span><br><span class="line">f.prototype = p</span><br><span class="line">var t = new f()</span><br><span class="line">console.log(t.d)</span><br><span class="line">console.log(t.a)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里p是一个对象，f是一个构造函数，将f的prototype设为p，当使用f构造出一个对象t出来时，t会有一个属性__proto__,它就指向了p</p>
+<p>当我们获取t.d时，t是有d属性的，这个没问题<br>当我们获取t.a时，t没有a属性，此时会沿着它的原型链往上查找，也就是查找它的__proto__，也就是p，p是有a属性的，所以将a的值返回。我们可以使用Object类上的一个方法hasOwnProperty来判断一个属性或方法是对象本身的，还是原型链上的。例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(t.hasOwnProperty(&quot;a&quot;))	//false</span><br><span class="line">console.log(t.hasOwnProperty(&quot;d&quot;))	//true</span><br></pre></td></tr></table></figure>
+<p>上面说的是取值，赋值的时候就稍微复杂些，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.a = 11;</span><br><span class="line">t.b.c = 12</span><br></pre></td></tr></table></figure>
+<p>执行第一句话，也就是对于基础数据类型，在chrome控制台上可以看到t的属性列表里出现了a并且值为11，而p的a仍然是1不变。也就是对原型上的基础数据类型赋值，不会影响原型，而是自身多了一个这样的属性。但使用hasOwnProperty看，仍然为false，这应该是js的一些不完善的地方吧。</p>
+<p>执行第二句话，可以看到p的b变成了{“c”:12}，也就是修改原型链上的非基础数据类型，会改变原型链本身。这也是javascript中使用类继承比使用原型继承更好的原因之一。下篇再分别讲这两种继承方式</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-svnignore" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/17/svnignore/">svn忽略文件</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-17T03:28:59.000Z" itemprop="datePublished">2016年11月17日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/17/svnignore/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在svn项目中，对于不需要加入版本管理的文件，可以使用svn propedit svn:ignore来进行设置</p>
+<p>在执行这句之前，需要先设置好SVN_EDITOR环境变量，例如在~&#x2F;.bash_profile内添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export SVN_EDITOR=emacs</span><br></pre></td></tr></table></figure>
+
+<p>然后执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn propedit svn:ignore .</span><br></pre></td></tr></table></figure>
+<p>这里的.表示对当前目录进行设置，此时会打开你指定的编辑器界面，在里面写上你需要忽略的文件名或者正则表达式即可.<br>但这句命令，只会影响你指定的路径的子文件及文件夹，而不会递归影响到更深层次。例如在编辑界面填上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dir1</span><br><span class="line">dir2/dir21/dir211</span><br></pre></td></tr></table></figure>
+<p>这里dir1会被忽略，而dir211不会，如果需要忽略dir211，要么在当前目录下执行svn propedit svn:ignore dir2&#x2F;dir21 要么切换到dir2&#x2F;dir21目录下执行svn propedit svn:ignore . 然后填写的内容都是dir211</p>
+<p>在网上看到一个解释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Each and every directory in Subversion can be thought of its own</span><br><span class="line">module, so there&#x27;s no real way for Subversion to know that</span><br><span class="line">foo/bar/barfoo is a directory in module /foo/bar, or a another</span><br><span class="line">separate module module.</span><br><span class="line"></span><br><span class="line">That means there&#x27;s no way for Subversion to know how to handle</span><br><span class="line">properties that can affect an entire directory tree. Plus, it would be</span><br><span class="line">difficult to know exactly what parent directory is affecting a child</span><br><span class="line">directory.</span><br></pre></td></tr></table></figure>
+
+<p>最后提醒一下，只有还没有被加入版本管理的文件会被忽略，如果文件已经加入了版本管理，那设置了忽略也没用。其次，设置了忽略的文件，仍然可以被添加进版本管理中。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svn/" rel="tag">svn</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-cocos屏幕适配策略" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/16/cocos%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D%E7%AD%96%E7%95%A5/">cocos屏幕适配策略</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-16T13:51:39.000Z" itemprop="datePublished">2016年11月16日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/16/cocos%E5%B1%8F%E5%B9%95%E9%80%82%E9%85%8D%E7%AD%96%E7%95%A5/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>cocos的屏幕适配包括两个方面，一个涉及到屏幕的宽高比，一个涉及到缩放因子。</p>
+<h3 id="宽高比"><a href="#宽高比" class="headerlink" title="宽高比"></a>宽高比</h3><p>我打算尽量用通俗的语言来说这件事情，cocos处理不同宽高比的适配，使用了设计分辨率这么个东西，就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void GLView::setDesignResolutionSize(float width, float height, ResolutionPolicy resolutionPolicy)</span><br></pre></td></tr></table></figure>
+<p>resolutionPolicy有好几种选择，但我们通常只使用FIXED_HEIGHT和FIXED_WIDTH。</p>
+<p>设计分辨率的意义就是：你不用管实际上屏幕是什么样，你通过代码或者工具给一个node设定尺寸和坐标时，都只想象它是放在设计分辨率的屏幕里，然后给他设计尺寸和坐标，最后显示在实际屏幕上时，引擎会进行适当的比例缩放。</p>
+<p>我们一般在项目中使用的ResolutionPolicy是FIXED_HEIGHT和FIXED_WIDTH，前者一般用于手机横屏，后者用于手机竖屏。我们拿FIXED_WIDTH举例，使用这个模式，意味着采用宽度的缩放比例，那么UI节点的x坐标和width就不用担心了，系统会帮你完美适配好来，y坐标和height则必须使用屏幕高度的百分比来进行设置，只要在需要适配的宽高比最大（通俗说就是最“扁”）的屏幕上不会发生冲突即可。FIXED_HEIGHT也是类似的道理，因为使用了高度的缩放比例，那么x坐标和width必须使用屏幕宽度的百分比来进行设置，保证在需要适配的宽高比最小的屏幕上不发生冲突即可。当然实际中我们对不管xy坐标还是width,height都习惯性采用百分比坐标。这两种方案的适用情况不能靠死记硬背，只要明白了原理，其实很容易理解。</p>
+<h3 id="缩放因子"><a href="#缩放因子" class="headerlink" title="缩放因子"></a>缩放因子</h3><p>缩放因子可以理解为图片资源尺寸与设计分辨率的比值。一般我们的资源都是配合设计分辨率而出的，但如果不是，就需要设置缩放因子了，比如一种情况就是，同样是1024*768的设计分辨率，我们有一套1024*768的资源，这套资源在2048*1536的屏幕上会被拉伸两倍显示，可能效果就不好了，那我们再准备一套2048*1536的资源，因为设计分辨率还是1024*768，所以就需要将缩放因子设为2了。</p>
+<p>设置缩放因子的接口是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Director::setContentScaleFactor(float scaleFactor)</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/9/index.html">http://yangguang1029.github.io/page/9/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/page/8/">Vorheriger</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

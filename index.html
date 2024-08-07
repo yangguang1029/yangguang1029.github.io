@@ -1,243 +1,1090 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
-    <div class="post-item-summary">
-      前言在网上看到一个介绍ReactNative新架构的一个博客，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~
-ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。我们避免使用代码演示，尽可能让解释通俗易懂，并分享我们对这些新技术方案的激动心情
-      <a class="read-more" href="/2019/12/17/rn-new-architecture1/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.12.17</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
-    <div class="post-item-summary">
-      前言一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。
-今天突然想到，与其寄希望于一口气写出一篇集ReactNative性能优化之大成的文章来
-      <a class="read-more" href="/2019/12/02/rn-improve-performance1/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.12.02</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
-    <div class="post-item-summary">
-      首先抛出一个问题，这也是这篇博客产生的背景，在这个demo里，有两个render函数，他们的效果是一样的，就是初始渲染Com1和Com2组件，5秒后变成只渲染Com2组件，但实现代码不一样，我看到一篇文章里说第二种写法性能更高，因为第一种写法会有组件的销毁和重新创建，第二种写法没有。读者不妨停下来自己想一想是否认同这个观点，然后再继续看下去。
-我看到这个观点时，首先想到的是：这两种情况下最终渲染结果是一模一样的，所以我推断它们生成的virtual dom也是一样的，而组件（实
-      <a class="read-more" href="/2019/10/09/rn-reconciliation-discussion/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.10.09</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
-    <div class="post-item-summary">
-      这篇文章是翻译的medium上的React Native Performance: Do and Don’t，本来是想拿来做内部技术周刊的投稿，但没有被选中，既然花费了时间和精力去翻译，就不想浪费掉，所以放到博客中来。原文的发表时间是2019年5月31日，所以还算比较新，也有4300个赞，所以质量还算可以，但这篇文章和很多技术博客（尤其是我的……哈哈）一样有个问题，讲了一些偏细节的点，但没有提炼出本质。当然，如果说到RN性能的本质，我觉得只有一个：避免重复渲染。这是后话，以后
-      <a class="read-more" href="/2019/10/08/rn-performance-do-and-dont/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.10.08</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
-    <div class="post-item-summary">
-      在JavaScript中，unhandled promise rejection问题有两种场景，一个是promise没有写catch，但是又变成了rejected状态，另一种是promise写了catch，但是catch中又抛出了异常，例如：
-123456// 场景一Promise.reject().then()// 场景二Promise.reject().catch(err =&gt; &#123;  throw new Error()&#125;)
 
-在这篇文档里提到：如
-      <a class="read-more" href="/2019/09/25/js-uncatched-promise/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.09.25</div>
-      <div class="tags">
+      <div class="outer">
+        <section id="main">
+  <article id="post-rn-new-architecture1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/07/29/rn-redux-source-code2/">ReactNative之Redux源码阅读(applyMiddleware,compose)</a>
-    <div class="post-item-summary">
-      去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。
-applyMiddleware在ReactNative之Redux源码阅读(createStore)里提到了enhancer函数，applyMiddleware就是redux内置的一个enhancer。en
-      <a class="read-more" href="/2019/07/29/rn-redux-source-code2/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.07.29</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+    </h1>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/07/28/rn-redux-source-code1/">ReactNative之Redux源码阅读(combineReducers&amp;bindActionCreators)</a>
-    <div class="post-item-summary">
-      闲话少叙，直接开始看另外两个文件
-combineReducers照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。
-直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有了解的同学应该不难理解，每个reducer函数都会返回一个state，这些sta
-      <a class="read-more" href="/2019/07/28/rn-redux-source-code1/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.07.28</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>
-    <div class="post-item-summary">
-      很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。
-这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已经有足够了解的同学，如果不是很了解，建议仔细把官方文档再看一
-      <a class="read-more" href="/2019/07/24/rn-redux-source-code/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.07.24</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/03/09/other-tinygame-architecture/">一个小游戏的通用架构</a>
-    <div class="post-item-summary">
-      最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构
-功能系统消息分发系统它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。
-监听者模式是代码解耦的一大神
-      <a class="read-more" href="/2019/03/09/other-tinygame-architecture/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.03.09</div>
-      <div class="tags">
-        
-        <div class="tag-item">其它</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2019/01/16/rn-add-perf/">ReactNative之一个监控组件刷新次数的实现方案</a>
-    <div class="post-item-summary">
-      在做RN开发中，检测是否有多余的重复渲染是做性能监控的重要手段，在React16.0之前，官方有一个工具叫做perf，对应的在RN中，也可以使用Libraries&#x2F;Performance&#x2F;RCTRenderingPerf中提供的PerfMonitor类，它们提供了监控组件渲染次数的功能，借此发现是否有不必要的渲染。可惜这个工具在React16.0和ReactNative0.45以后就不再提供了，官方仓库有个issue提到了这个问题，然后就没有然后了……
-官
-      <a class="read-more" href="/2019/01/16/rn-add-perf/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2019.01.16</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
 
 
-<div class="paginator">
-  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
-</div>
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-12-17T11:18:36.000Z" itemprop="datePublished">2019年12月17日</time>
+</span>
+      
+      
+      
+<a href="/2019/12/17/rn-new-architecture1/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
 
-  </main>
-  <footer class="footer">
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在网上看到一个介绍ReactNative新架构的一个<a target="_blank" rel="noopener" href="https://formidable.com/blog/2019/react-codegen-part-1/">博客</a>，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~</p>
+<p>ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。我们避免使用代码演示，尽可能让解释通俗易懂，并分享我们对这些新技术方案的激动心情。</p>
+<h3 id="React-and-Codegen"><a href="#React-and-Codegen" class="headerlink" title="React and Codegen"></a>React and Codegen</h3><p>作为这个系列的第一篇，我们将讨论这次重构中切实影响写代码的一个方面：新的React特性以及一个叫做Codegen的工具。</p>
+<p>在深入之前，我们来回顾一下基础知识：ReactNative是一个开源的跨平台移动应用开发解决方案，它让我们可以用React以及JavaScript来开发一个完全原生的移动应用。不光是创造和发展它的Facebook公司在使用ReactNative，其它公司例如亚马逊和微软，以及很多初创公司都在使用它。</p>
+<p>为了帮助更好地理解ReactNative的工作原理，我们准备了下面这张图</p>
+<p><img src="/rn-new-architecture1/old-diagram-full.png" alt="img"></p>
+<p>如图所示，ReactNative结构上有四个核心部分：React代码部分，由代码翻译而来的JavaScript部分，一系列统称为”桥”的部分，以及原生部分。</p>
+<p>ReactNative当前架构的一个关键点是：它的两个端——JavaSvript端和Native端，彼此并不了解对方的情况，这意味着，它们的通信必须依赖“桥”传递JSON信息。消息被发到原生端后，寄希望于能收到返回数据，但这无法得到保证。</p>
+<p>为了克服ReactNative当前存在的各种限制，Facebook的开发团队决定重新思考这个异步信息传递的方案，并着手开发一套新的架构。在新的架构中，前文所述的四个核心部分都分别进行了改进。这篇我们就将讲述第一个核心部分：React。</p>
+<p>React核心库开发人员的工作成果，对ReactNative团队的帮助非常大。这意味着ReactNative将具备React在ReactConf2018(<a target="_blank" rel="noopener" href="https://reactjs.org/blog/2018/11/13/react-conf-recap.html">概述</a>)上宣布的所有新特性，尤其是Andrew Clark展示的并发模式和同步事件回调的概念，这些特性从React16.6起开始支持，支撑了一些很重要的底层功能实现，我们将在第三篇中再做介绍。</p>
+<p>在这次重构中，会影响到ReactNative代码开发的React的新特性有：使用Suspense来实现组件延迟渲染，以及通过ReactHooks来使用函数组件代替类组件。</p>
+<p>ReactNative团队在代码静态检查（Flow或者TypeScript）上也很重视，尤其是：他们正在开发一款叫做CodeGen的工具来自动生成JS和原生端的接口代码，借助于类型化JavaScript的可信任性，这个生成工具可以用来生成Fabric和TurboModules(新架构中的功能点，将在第三节中介绍)所需要的接口文件，从而实现更可靠的端之间数据传递。这种自动化也可以提高端之间数据传递的效率，因为可以避免每次都验证数据的合法性。</p>
+<p>总之，在上面ReactNative的架构图上，使用新的架构来描述第一个部分，应该是这个样子：</p>
+<p><img src="/rn-new-architecture1/new-1.png" alt="img"></p>
+<p>这就是ReactNative新架构简介的第一部分，其它内容将在接下来的二三四篇中继续介绍。这次ReactNative的架构升级，可以让开发者在少修改甚至不修改代码的基础上，在很多方面都带来极大提高，非常值得期待。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-improve-performance1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <span>Copyright © 2024 typo</span>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+    </h1>
   
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-12-02T12:18:36.000Z" itemprop="datePublished">2019年12月02日</time>
+</span>
+      
+      
+      
+<a href="/2019/12/02/rn-improve-performance1/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。</p>
+<p>今天突然想到，与其寄希望于一口气写出一篇集ReactNative性能优化之大成的文章来，不如想到多少写多少，先写了再说，这才是正确的做事方式，所以先来个最简单的开篇吧。</p>
+<h3 id="包体积"><a href="#包体积" class="headerlink" title="包体积"></a>包体积</h3><p>所谓包，就是我们在执行react-native bundle命令生成的产物的统称，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native bundle --entry-file ./index.js --platform ios --dev false --bundle-output ./dist/index.ios.bundle --assets-dest ./dist</span><br></pre></td></tr></table></figure>
+<p>就会在dist目录下生成一个index.ios.bundle文件，以及图片资源也放在dist目录下，这样我们可以把dist目录打一个压缩包，预置在安装包内，或者拿去下发做热更新。</p>
+<p>为什么要优化包体积？首先它会影响到安装包的体积，尤其是预置的情况，安装包体积过大，会影响用户下载应用的体验，各大APP也都在想办法压缩安装包的体积，其次是会影响加载效率，ReactNative需要加载bundle才能运行起来，bundle体积越大，则加载越慢，体验也就更加不好，而如果图片资源体积过大，则影响运行时的图片加载效率，也会影响体验</p>
+<p>既然包是由bundle和资源两大块组成的，我们就分别给出它们的优化策略。</p>
+<h3 id="图片压缩"><a href="#图片压缩" class="headerlink" title="图片压缩"></a>图片压缩</h3><p>资源有很多种，例如图片，音频，视频等，但图片是最普遍的一种，所以我们就只介绍图片压缩。</p>
+<p>图片压缩首先有一个非常简单的方案：<strong>使用JPEG格式</strong>。如果一张图片没有透明度的需要，那么就改成使用jpeg格式，体积比png体积要小很多。</p>
+<p>其次是png图片的压缩，业界有非常多也非常成熟的方案可以选择，如果图片数量不多又想省事，可以直接使用<a target="_blank" rel="noopener" href="https://tinypng.com/">tinypng.com</a>，它也对外开放了API可供脚本调用，但每个月只能免费压缩500张。如果更专业一些，可以使用<a target="_blank" rel="noopener" href="https://pngquant.org/">pngquant</a>，它功能更加强大，可以自定义压缩系数，避免压缩系数过大导致失真，或者压缩系数过小导致压缩率不高，它可以下载工具，或者使用命令行调用。</p>
+<p>使用工具对png图片进行有损压缩，根据不同图片具体情况，压缩比一般能在20%-60%左右，是效果非常显著的。</p>
+<h3 id="bundle压缩"><a href="#bundle压缩" class="headerlink" title="bundle压缩"></a>bundle压缩</h3><p>bundle其实是纯js代码，它包含了ReactNative的JavaScript层源码，第三方库，我们自己的业务代码，要优化它的体积，首先我们需要知道bundle里哪些东西占了多少体积，然后再去针对他们做优化，有一个工具叫<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/react-native-bundle-visualizer">react-native-bundle-visualizer</a>，使用它可以看到bundle内的详细情况，它的底层是使用了<br><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/source-map-explorer">source-map-explorer</a>，所以我们用source-map-explorer也可以。或者如果我们使用了webpack打包，那么可以使用<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/webpack-bundle-analyzer">webpack-bundle-analyzer</a>插件。</p>
+<p>下面是一张网上找到的示例图：</p>
+<p><img src="/rn-improve-performance1/1_Tzo7ki8deVX0ADRFCm1E7Q.png" alt="img"></p>
+<p>知道bundle里什么东西占地方的话，就想办法去优化，例如很典型的是moment.js，很多时候我们发现它的locate占了很大一块，实际上又没用到，那我们可以参考<a target="_blank" rel="noopener" href="https://github.com/jmblog/how-to-optimize-momentjs-with-webpack">how-to-optimize-momentjs-with-webpack</a>，或者简单点<strong>直接使用moment.min.js</strong>不要locate功能，或者换成其它的替代库。例如lodash，我们只使用了它的几个方法，却引入了一整个库，我们就可以想办法使用<strong>局部引用</strong>的写法。其次就是如果使用的多个第三方库依赖了同一个库的不同版本，导致了存在同一个库的多份代码，则可以考虑升级其中的一些库来避免这种情况。最后是咱们自己业务的代码，要避免机械的拷贝粘贴，否则同样的代码在bundle里存在多份，就导致了bundle体积的增加。</p>
+<h3 id="分包"><a href="#分包" class="headerlink" title="分包"></a>分包</h3><p>将bundle拆分成基础包和业务包，也是减少包体积的一个有效方案，但实现起来稍微复杂一些，需要改动ReactNative的源码，修改加载流程，对团队的技术能力有一定要求，但也不用担心，技术方案早就已经很成熟，我在两年前就写过相关的<a target="_blank" rel="noopener" href="http://guangy.coding.me/2017/11/03/rn-split-bundle2/">介绍</a>可供参考。因为说起来话题就比较大，暂时不做展开了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>新开了个大坑，这是第一篇，如果能够按照上面的做法，将安装包体积减少，就迈开了性能优化的第一步，这一步虽然不难，但效果会非常显著，如果还没做，不妨立即试一下。</p>
+<p>希望这个ReactNative性能优化系列能填完，也希望整理的东西对大家有实际的帮助，有任何问题，欢迎随时沟通~</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-reconciliation-discussion" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-10-09T13:15:36.000Z" itemprop="datePublished">2019年10月09日</time>
+</span>
+      
+      
+      
+<a href="/2019/10/09/rn-reconciliation-discussion/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先抛出一个问题，这也是这篇博客产生的背景，在<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/MyReactNative/blob/master/testReconciliation.js">这个demo</a>里，有两个render函数，他们的效果是一样的，就是初始渲染Com1和Com2组件，5秒后变成只渲染Com2组件，但实现代码不一样，我看到一篇文章里说第二种写法性能更高，因为第一种写法会有组件的销毁和重新创建，第二种写法没有。读者不妨停下来自己想一想是否认同这个观点，然后再继续看下去。</p>
+<p>我看到这个观点时，首先想到的是：这两种情况下最终渲染结果是一模一样的，所以我推断它们生成的virtual dom也是一样的，而组件（实际上是组件对应的原生view）的销毁创建，完全取决于virtual dom的布局，既然virtual dom一样，那这两种方案就没有区别，不存在后者性能更优的说法。于是我就去找作者讨论，作者使用ReactDevTools观察过这两种情况下的render数据，指出在第一种写法中，Com2组件重新构造了，render次数为1，而第二种情况下，Com2组件的render次数在增加，没有重新构造，这个可以在Com1和Com2的构造函数里打一句log，可以很容易验证。但我觉得这也很好解释，第一种情况下原来Com1位置变成了Com2，所以刷新时会卸载Com1和Com2然后装载Com2，这样来生成virtual dom，在这期间，类组件的实例化代价是非常非常小的，几乎不会造成任何性能差别。</p>
+<p>本来以为讨论已经结束，结果作者观察后发现两种情况下virtual dom并不一致。两种情况下刷新前的渲染是完全一致的，但刷新后，第一种情况下根View下只有一个子节点Com2，而第二种情况下根View下有两个子节点，分别是null和Com2。于是我赶紧去翻了下React的<a target="_blank" rel="noopener" href="https://reactjs.org/docs/react-component.html#render">官方文档</a></p>
+<blockquote>
+<p>Booleans or null. Render nothing. (Mostly exists to support return test &amp;&amp; <Child /> pattern, where test is boolean.)</p>
+</blockquote>
+<p>这里提到bool值和null不会渲染任何内容，但可没有说不会有virtual dom节点，而且实际观察确实有，于是前面得出的两种情况下virtual dom一样的这个结论就站不住脚了。（顺便说一下，这时我发现我前面因为实际渲染内容一样就推断virtual dom一样是很蠢的，因为搞错了因果关系，是virtual dom决定渲染内容，而不能由渲染内容来推断virtual dom）。不过虽然同意两种情况下virtual dom不一致，我仍然在做负隅顽抗，因为我脑子里揪住“两种情况的渲染结果一样”这个点不放，所以想是不是React在对virtual dom做diff时，忽略掉了这个null节点，这样即使virtual dom不一样，反应到原生端view时还是一样的，接着我就想，如果React能做到忽略掉null节点，那么在第一种情况下，它就不会笨笨的先卸载Com1和Com2然后装载Com2，而是通过virtual dom树的比较，发现Com2节点还在，所以复用Com2节点。</p>
+<p>到这里，我觉得我的脑子已经不清醒了，第一种情况下Com2节点并没有被复用，是很明显的，React对virtual dom树的diff算法其实也并没有多深奥和复杂，官方在<a target="_blank" rel="noopener" href="https://reactjs.org/docs/reconciliation.html">Reconciliation</a>这一节介绍的也很清楚。所以很快我也就放弃了“React会很智能地帮我们安排好最高效的刷新方案”这个观点，应该靠事实说话，而不是盲目崇拜和迷信权威。</p>
+<p>既然能实际观察到第一种情况下Com2销毁和创建了，第二种情况下没有，接下来我就开始思考是什么原因导致的，脑子不清醒的我又迅速掉入了一个坑，我想第一种情况下，return的两个js view不一样，是否导致它们在原生端绑定的不是同一个view呢？我不知道是否有人会觉得这句话很可笑，好在我自己迅速反应过来了：JSX只是语法糖，返回的js view并不代表任何意义！React的render原理是这样的：一个类组件要渲染时，调用它实例的render方法，得到virtual dom节点，进行diff，然后反映到原生view上。所以第一种情况下，return的是不是同一个js view根本没任何影响。</p>
+<p>再次跳出坑之后，文章作者跟我说，第二种情况下Com2在父组件内的index没变，第一种情况下变化了，可能跟这个有关系。一句话点醒梦中人，我才突然明白过来，原来真相就是这么简单！React在对virtual dom做diff时，是按顺序一个一个来比较的，除非对组件给出key这个props，diff前后如果key相同，就会认为组件可以复用，这是Reconciliation中的一个重要内容。所以第一种情况下，刷新前后是Com1变成Com2，Com2销毁。而第二种情况下是Com1变成null从而销毁，Com2不变（当然位置变了，但组件不会销毁和创建）。</p>
+<p>整个问题的讨论持续了有2个多小时，我原本以为自己对reconciliation非常了解了，但还出现“渲染结果一致所以virtual dom一致”这种低级错误，真的非常不应该，虽然得出结论后发现问题其实很简单，但整个思考过程还是挺有意思的，于是记录下来。</p>
+<p>最后，在做demo验证时我发现一个很奇怪的问题，如下所示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">  return this.state.visible ? (</span><br><span class="line">    &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">      &#123;false&#125;</span><br><span class="line">      &lt;Com1 /&gt;</span><br><span class="line">    &lt;/View&gt;</span><br><span class="line">  ) : (</span><br><span class="line">    &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">    &lt;Com1 /&gt;</span><br><span class="line">    &lt;/View&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>刷新组件从false Com1变成Com1，理论上来说应该有一次Com1的销毁和创建，但实际上并没有，当增加子组件的个数，例如从false Com1  Com2变成Com1 Com2时，就和预期的一样了，所以为什么只有一个Com1时，没有发生组件的销毁和创建呢？这个我暂时没有答案，希望有大牛帮忙解答。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-performance-do-and-dont" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-10-08T11:18:36.000Z" itemprop="datePublished">2019年10月08日</time>
+</span>
+      
+      
+      
+<a href="/2019/10/08/rn-performance-do-and-dont/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章是翻译的medium上的<a target="_blank" rel="noopener" href="https://medium.com/hackernoon/react-native-performance-do-and-dont-1198e97b730a">React Native Performance: Do and Don’t</a>，本来是想拿来做内部技术周刊的投稿，但没有被选中，既然花费了时间和精力去翻译，就不想浪费掉，所以放到博客中来。原文的发表时间是2019年5月31日，所以还算比较新，也有4300个赞，所以质量还算可以，但这篇文章和很多技术博客（尤其是我的……哈哈）一样有个问题，讲了一些偏细节的点，但没有提炼出本质。当然，如果说到RN性能的本质，我觉得只有一个：<strong>避免重复渲染</strong>。这是后话，以后再叙吧，以下就是翻译全文，这算是第一次写翻译稿，还请轻拍。</p>
+<p>这篇文章是作者基于两年时间开发Nelio的经验写作而成，Nelio是一个使用React Native开发的跨平台移动应用。阅读本文需要具备一些React或者React Native的开发经验。当然，本文所讲的内容并不完全局限于React Native，很多建议也适用于普通的React应用。此外，本文也不能将所有关于性能的方面进行非常全面的阐述，所以如果你遵循了本文的所有建议，但仍然存在性能问题，也请不要苛责：）</p>
+<p>Nelio是一家总部位于巴黎的初创公司，致力于高端优质食品的派送。这家公司也比较「追求质量」，体现在很多个方面，其中就包括了代码编写。性能对移动应用来说，是非常重要的方面，它直接影响到用户对其提供服务的感受。坦白而言，能够满足自己和客户的期待，在很多时候都非常的不容易，所以这篇文章总结了他们在开发阶段所有的那些经历：学习到的知识、犯过的错误、碰到的问题及其解决方案。希望本文对大家能够有所启发。</p>
+<h3 id="React和React-Native的性能"><a href="#React和React-Native的性能" class="headerlink" title="React和React Native的性能"></a>React和React Native的性能</h3><p>对于React开发者来说，React Native非常容易入门，因为React Native和React具备相同的架构。但在实际开发中，React Native需要深入理解的内容也很多，就像一个专业的React Web开发者需要去深入了解浏览器的知识一样。</p>
+<p>首先需要说明的是：</p>
+<blockquote>
+<p>所有React性能相关的知识，都适用于ReactNative</p>
+</blockquote>
+<p>如果要了解React Native性能相关的内容，第一步可以去看看<a target="_blank" rel="noopener" href="https://reactjs.org/docs/optimizing-performance.html">React的官方文档</a>，然后再看下官方的<a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/performance">React Native性能相关文档</a>，这些资料非常有用，不过本文在这里不再复述，而着重于在实际开发中为了提升性能采用了什么解决方案，避免了什么问题。本文也不会花费太多时间去讨论React Native引擎自身性能是否足够好，是否需要考虑转向使用Flutter或者原生开发，市面上有很多表现优异的React Native应用，而我们的目标就是努力成为其中之一。</p>
+<h3 id="切记提供UI反馈"><a href="#切记提供UI反馈" class="headerlink" title="切记提供UI反馈"></a>切记提供UI反馈</h3><p>性能更多体现在用户的感知层面，而不是精确测量一个函数的运行时间，而且相对于关心「卡了多长时间」，你应该更关心「为什么卡」和「什么时候卡」。一个广泛的共识是：你应该在用户操作后的100毫秒内给予反馈，请在脑海中牢记这一红线，记住：尽可能早地给予用户反馈。</p>
+<p>给予用户反馈的方法有很多种，在React Native中，有一个实用而且简单的方案就是多使用<a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/touchableopacity">TouchOpacity组件</a>，它能够在用户交互时让用户感受到变化，从而明白自己的操作得到了响应。</p>
+<p>在打开一个新页面时，你需要考虑数据加载的问题。一个比较好的方案，是先尽快打开页面，展示那些已有的能够渲染的数据，然后在正在加载内容的地方使用一个loading组件或者placeholder组件，这种做法也被叫做<a target="_blank" rel="noopener" href="https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a?gi=333c21cddca9">skeleton screens</a>。</p>
+<p>如果点击会产生一些其它效果，例如增加数据、点赞、发送聊天信息等，这些行为都伴随着与服务器通信。在这种场景下，你不应该等收到服务器消息后再刷新页面，而应该提前让客户端表现得像已经成功收到了服务器消息，这种叫做<a target="_blank" rel="noopener" href="https://uxplanet.org/optimistic-1000-34d9eefe4c05?gi=215ed6a60438">optimistic ui</a>的技术方案目前已经被广泛使用。</p>
+<p>在Nelio开发中，我们使用GraphQL和ReactApollo，ReactApollo通过<a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/react/features/optimistic-ui">optimisticResponse</a>可以很方便地实现这种技术方案，当然通过别的方式也可以实现，例如Redux。</p>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p>对一个React Native应用来说，图片加载是体现性能和可用性的一个重要方面。这对于Web开发者来说，可能会感到有些奇怪，但仔细想想，这其实是浏览器帮忙做了大量的工作，例如下载、缓存、解码、缩放以及展示这一整套工作流，但在React Native开发中，这些就需要自己去想办法了。</p>
+<h4 id="使用缓存策略"><a href="#使用缓存策略" class="headerlink" title="使用缓存策略"></a>使用缓存策略</h4><p>React Native官方提供了<a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/image">Image组件</a>，用来展示单张图片时基本毫无压力，但如果需要同时展示大量图片就略显吃力了，例如会出现闪烁或者停止加载的现象，为此我们选择了使用react-native-fast-image组件。值得一提的是，该组件有非常庞大的使用群体，从npm上的周下载数据来看，占据了react-native下载量的12%，和Expo的下载量几乎一样大。</p>
+<p><img src="/rn-performance-do-and-dont/194558643.png" alt="img"></p>
+<h4 id="只加载需要尺寸的图片"><a href="#只加载需要尺寸的图片" class="headerlink" title="只加载需要尺寸的图片"></a>只加载需要尺寸的图片</h4><p>React-native-fast-image组件能解决很多问题，但我们发现应用在运行中仍然会随机出现一些图片相关的Crash。在进行调研后，我们发现此时应用在同时下载、缓存和缩放数十张尺寸为几百K的图片，我们尝试直接从源头上解决该问题，就是限制用户上传图片的尺寸，但这个解决方案并不是最优的。在任何时候，<strong>都要时刻注意展示图片的数量和尺寸</strong>，判断会否会对设备造成很大的压力。比较好的方案是，将大部分工作提前做好，而不是留到用户设备上去做。即使在展示图片时还不存在内存问题，也最好能将图片剪辑成真正需要展示的尺寸，这样可以减轻用户的设备压力。</p>
+<p>我们选择使用了一个图片缩放CDN的解决方案，它能支持用户下载准确符合展示尺寸的图片。准确来说，我们选择使用的是<a target="_blank" rel="noopener" href="https://www.cloudimage.io/">CloudImage</a>，它能支持在请求图片数据时指定尺寸信息。实际接入时，我们修改了GraphQL接口，将图片URL转换成CloudImage所需的格式，当然也可以在客户端代码中修改。除了CloudImage之外，也有其它的选择方案，例如<a target="_blank" rel="noopener" href="https://cloudinary.com/">Cloudinary</a>，或者采用一些开源的方案例如<a target="_blank" rel="noopener" href="https://github.com/imgproxy/imgproxy">imgProxy</a>或者<a target="_blank" rel="noopener" href="https://github.com/thumbor/thumbor">Thumbor</a>等等。</p>
+<h4 id="合理使用PureComponent"><a href="#合理使用PureComponent" class="headerlink" title="合理使用PureComponent"></a>合理使用PureComponent</h4><p>正如之前所说，React Native应用本质上也是React应用，所以适用于React应用的大多数优化建议，也同样适用React Native应用。而在所有React性能优化建议中，也许提到最多的就是：是否要使用PureComponent（或者<a target="_blank" rel="noopener" href="https://reactjs.org/docs/react-api.html#reactmemo">React.memo()</a>）。简单来说，通常在React应用中，重复渲染并不是很大的问题，但在一个复杂的移动应用中，就会变得严重了。</p>
+<p>PureComponent能够减少重复渲染，它只有在props发生了变化时才刷新，更准确地说，是在shouldComponentUpdate方法中对props进行浅比较来进行判断。有的人认为不管什么情况都使用PureComponent就好了，但作者认为这种做法弊大于利，这实际上是一种典型的<a target="_blank" rel="noopener" href="http://wiki.c2.com/?PrematureOptimization">过早优化</a>的做法。</p>
+<p>在使用PureComponent时，如果想要减少重复渲染，那么你需要做的是：<strong>在其父组件render方法里，不要创建新的props变量</strong>。</p>
+<p>在创建新的props变量的写法中，主要是使用新的object和新的function作为props，另外还有使用新组件作为children props的示例，但从本质上讲，JSX实现的组件对象最终还是一个JS Object，如下图所示：</p>
+<p><img src="/rn-performance-do-and-dont/194743405.png" alt="img"></p>
+<p>另外还需要注意：array也是Object，如果我们写一些函数式的代码，需要注意，很多时候是得到一个新的数组对象，例如下面例子中，item.filter每次都会生成一个新的数组对象：</p>
+<p><img src="/rn-performance-do-and-dont/194694233.png" alt="img"></p>
+<p>另外，在开发中经常会用到一个技术方案叫<a target="_blank" rel="noopener" href="https://reactjs.org/docs/render-props.html">renderProps</a>，它将一个能够返回组件的render函数作为props，既然是函数，就需要小心：不要在render时创建一个新的。</p>
+<p>在Nelio中，我们还没开始使用React Hooks，它是从React Native 0.59版本起才开始支持，如果你还没使用，可以考虑去尝试一下，我们使用了<a target="_blank" rel="noopener" href="https://github.com/acdlite/recompose">recompose</a>。recompose对React hooks有很大的启发，其中Pure、withHandlers和withPropsOnChange等功能接口，对项目开发中代码质量的保障和性能提高，都起到了非常大的作用。</p>
+<h3 id="不要滥用高阶组件"><a href="#不要滥用高阶组件" class="headerlink" title="不要滥用高阶组件"></a>不要滥用高阶组件</h3><p>随着应用复杂度的提升，逐渐会有在组件间共享逻辑的需求，这时通常会选择使用<a target="_blank" rel="noopener" href="https://reactjs.org/docs/higher-order-components.html">高阶组件</a>。高阶组件本身是个不错的技术方案，虽然它也确实增加了组件层级和代码复杂度，而真正需要注意的是：<strong>不要滥用高阶组件，尤其是在render函数里</strong>。因为每次调用高阶组件函数，都会生成一个新的组件，在render函数内使用，会导致重复渲染的问题，而且整个高阶组件结点树的所有生命周期函数可能也会重新执行，如下图所示：</p>
+<p><img src="/rn-performance-do-and-dont/194891533.png" alt="img"></p>
+<p>记得在开发中一次错误的使用场景，我们在混合使用了RenderProps和高阶组件时出了问题，作为ReactApollo的使用者，我们频繁使用了<a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/react/essentials/queries/#basic">Apollo Query Component</a>来从后端获取数据，同时我们的代码风格是尽可能使用recompose，所以最初的实现方案是使用高阶组件fromRenderProps来包装一个Apollo Query组件，如下图DontMixHOCAndRenderProps中所示，但这个方案只适用于不需要动态参数的场景，一旦需要动态参数就行不通了。因为<a target="_blank" rel="noopener" href="https://github.com/acdlite/recompose/issues/702">fromRenderProps不支持传入额外的参数</a>，为了解决这个问题，我们找了两个解决方案，第一个是不使用Recompose HOC，而是使用普通的组件；第二个方案是使用<a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/react/api/react-apollo/#graphql">Appolo graphQL HOC</a>，因为它能够满足我们的需求，所以就采用了这个方案。</p>
+<p><img src="/rn-performance-do-and-dont/194548340.png" alt="img"></p>
+<p>另外一个高阶组件的使用场景，是基于特定props来构造高阶组件实例，例如这个<a target="_blank" rel="noopener" href="https://repl.it/repls/VividOrangePipeline">demo</a>，我们在项目中有类似的实现方案，在经过考虑后全部删除了，改成使用renderProps或者直接使用组件作为props的方式。</p>
+<h3 id="避免庞大的reducer函数"><a href="#避免庞大的reducer函数" class="headerlink" title="避免庞大的reducer函数"></a>避免庞大的reducer函数</h3><p>如果你没有使用GraphQL，那么很可能你使用了<a target="_blank" rel="noopener" href="https://redux.js.org/">Redux</a>，而我们两者都使用了，虽然我通常并不推荐这么做。如果你没有使用<a target="_blank" rel="noopener" href="https://github.com/paularmstrong/normalizr">normalizr</a>或者<a target="_blank" rel="noopener" href="https://rematch.gitbooks.io/rematch/#getting-started">rematch</a>来配合Redux，或者需要手动实现reducer函数，请一定谨记<strong>只修改发生了变化的state</strong>，如果你认真了解过<a target="_blank" rel="noopener" href="https://redux.js.org/basics/reducers#designing-the-state-shape">Redux基础教程</a>， 那你应该已经注意到了这点，但如果没有，就再去仔细阅读一下吧：）</p>
+<p>如果你像我们一样偶尔匆匆赶代码，那么有可能当你从后端获取一组数据然后存储到state里时，你会很快写出以下代码：</p>
+<p><img src="/rn-performance-do-and-dont/196038917.png" alt="img"></p>
+<p>如果这么写，而且在刷新列表时出现了性能问题，那你需要改进的就是：只更新state里真正发生了改变的部分。更准确地说，是更新它们的引用，如果一个数据的实际内容和之前相比没有发生变化，那你就不要在Redux内让它指向一个新的引用，否则将会导致使用它的组件发生多余的重复刷新：组件展示的内容没有任何变化，但销毁了老组件并创建了新组件。</p>
+<h3 id="不要轻易复用函数"><a href="#不要轻易复用函数" class="headerlink" title="不要轻易复用函数"></a>不要轻易复用函数</h3><p>如果使用了Redux，那么调用connect函数时，你一定会用到mapStateToProps函数。随着工程复杂度的提高，mapStateToProps也越来越庞大复杂，可能mapStateToProps内充满了复杂的计算，而且出现了很多重复渲染，这有点出乎意料，<a target="_blank" rel="noopener" href="https://redux.js.org/faq/react-redux#why-is-my-component-re-rendering-too-often">因为mapStateToProps返回的对象是进行了浅比较来判断是否发生了变化的</a>。这个问题本质上和前面PureComponent提到的问题是一样的，在父组件每次渲染时给PureComponent组件提供了一个新的props，就会导致重新渲染，所以这里需要做的就是：<strong>在mapStateToProps里对state没有发生变化的部分，就让其生成的props也不要发生改变</strong>。</p>
+<p>明白问题所在之后，只要使用<a target="_blank" rel="noopener" href="https://github.com/reduxjs/reselect">reselect</a>库就可以解决这个问题了，虽然它会增加一些代码复杂度，但却是非常值得的。不过也要小心，<strong>错误地使用reselect可能也会导致性能问题</strong>。尤其是在项目的不同地方或者不同组件之间共享reducer函数时，reselect提供了缓存功能，但对一个函数，cache也只有一个，Reselect官方考虑到了这个问题并提供了<a target="_blank" rel="noopener" href="https://github.com/reduxjs/reselect#sharing-selectors-with-props-across-multiple-component-instances">解决方案</a>，简单来说就是给每个需要的组件创建各自的selector对象，其它库例如<a target="_blank" rel="noopener" href="https://github.com/toomuchdesign/re-reselect">re-reselect</a>使用其它方案也解决了这个问题。</p>
+<p>总之：在不同组件或者组件实例间复用函数时，都要谨慎对待。</p>
+<h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>在移动应用开发过程中，想要一次性解决性能问题是不太现实的，通常都需要持续的投入，下面介绍一些我们正在尝试的一些改进方案。</p>
+<h4 id="升级React-Native到0-59版本"><a href="#升级React-Native到0-59版本" class="headerlink" title="升级React Native到0.59版本"></a>升级React Native到0.59版本</h4><p>如前面所说，React Native 0.59版本引入了React Hooks的功能，使用hooks可以避免使用recompose库，因为recompose库目前已经不再维护了。此外React Native 0.59版本还升级了Android端的JavaScriptCore引擎，新的JavaScriptCore引擎能带来大概25%左右的性能提高，而且支持64位CPU架构，可以满足<a target="_blank" rel="noopener" href="https://developer.android.com/distribute/best-practices/develop/64-bit">Google应用商店从2019年8月1日起开始对所有App的强制要求</a>。</p>
+<h4 id="FlatList优化"><a href="#FlatList优化" class="headerlink" title="FlatList优化"></a>FlatList优化</h4><p>在渲染列表时，应该选择基于<a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/virtualizedlist">VirtualizedList</a>实现的组件，例如<a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/flatlist">FlatList</a>或者<a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/sectionlist">SectionList</a>，根据列表的单元行数量，列表组件的复杂度和尺寸等情况，尽可能地优化其props的使用，因为列表组件会对页面的性能产生直接影响。</p>
+<h4 id="使用工具检测性能问题"><a href="#使用工具检测性能问题" class="headerlink" title="使用工具检测性能问题"></a>使用工具检测性能问题</h4><p>为了更好理解性能问题，你需要了解组件被装载和渲染的次数，使用<a target="_blank" rel="noopener" href="https://reactjs.org/blog/2018/09/10/introducing-the-react-profiler.html">React Profiler</a>可以帮你发现卡顿问题的来源。还有<a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/blob/0ee5f68929610106ee6864baa04ea90be0fc5160/Libraries/BatchedBridge/MessageQueue.js#L88">spying the queue</a>，它是React Native引擎在JavaScript代码和原生代码之间传递数据的通道，在寻找卡顿原因时会很有帮助，可以点击<a target="_blank" rel="noopener" href="https://blog.callstack.io/reactnative-how-to-check-what-passes-through-your-bridge-e435571ffd85">这里</a>了解更多。假如应用在交互时只响应了一部分，例如scrollView可以正常滚动，按钮点击会变化透明度，但是JavaScript回调却没被调用，这意味着原生代码被执行了，但JavaScript代码没有，那么这种情况下，我们需要去查看一下数据通道是否因为太过繁忙而被堵塞。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-uncatched-promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-09-25T12:44:45.000Z" itemprop="datePublished">2019年09月25日</time>
+</span>
+      
+      
+      
+<a href="/2019/09/25/js-uncatched-promise/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在JavaScript中，unhandled promise rejection问题有两种场景，一个是promise没有写catch，但是又变成了rejected状态，另一种是promise写了catch，但是catch中又抛出了异常，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 场景一</span><br><span class="line">Promise.reject().then()</span><br><span class="line">// 场景二</span><br><span class="line">Promise.reject().catch(err =&gt; &#123;</span><br><span class="line">  throw new Error()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在<a target="_blank" rel="noopener" href="https://javascript.info/promise-error-handling#unhandled-rejections">这篇文档</a>里提到：如果在promise内发生异常，而这个promise又没有catch，那么这个promise会变成rejected状态，然后系统会抛出一个全局异常，原文是</p>
+<blockquote>
+<p>JavaScript engine tracks such rejections and generates a global error</p>
+</blockquote>
+<p>但经过google和实际观察，我发现这并不准确。这篇文章里一直在拿“普通异常未做catch”和“unhandled promise rejection”做类比，但我感觉这二者其实没很多共通的地方，也许作者只是为了便于读者理解吧。</p>
+<p>那么实际上会发生什么呢？目前来看，发生unhandled promise rejection不会抛出异常，也就不会导致JavaScript运行中断（写个demo验证下就知道了）。在浏览器中，我们可以在控制台看到有个红色的Uncaught (in promise)报错，同时系统会抛出一个unhandledrejection事件，我们使用window.addEventListener来监听到，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">window.addEventListener(&#x27;unhandledrejection&#x27;, function(event) &#123;</span><br><span class="line">  // the event object has two special properties:</span><br><span class="line">  console.log(event.promise); // [object Promise] - the promise that generated the error</span><br><span class="line">  console.log(event.reason); // Error: Whoops! - the unhandled error object</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在nodejs环境中，可以看到一个UnhandledPromiseRejectionWarning警告，同时系统也会抛出一个unhandledRejection事件，使用process.on(‘unhandledRejection’）来统一监听。在未来的版本中可能会抛出异常，总之完全取决于JavaScript解释器如何处理。</p>
+<p>我们在实际代码中，显然不能依赖于监听unhandledrejection事件来统一处理的方式，更靠谱的办法是养成好的编码习惯，首先是使用promise时都配备catch函数，即使给个空函数都可以，其次是在最终的catch函数里，最好使用try-catch包装，避免继续抛出异常。当然，使用监听unhandledrejection来做兜底方案也是很有必要的。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-redux-source-code2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/29/rn-redux-source-code2/">ReactNative之Redux源码阅读(applyMiddleware,compose)</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-07-29T13:15:36.000Z" itemprop="datePublished">2019年07月29日</time>
+</span>
+      
+      
+      
+<a href="/2019/07/29/rn-redux-source-code2/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。</p>
+<h3 id="applyMiddleware"><a href="#applyMiddleware" class="headerlink" title="applyMiddleware"></a>applyMiddleware</h3><p>在<a href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>里提到了enhancer函数，applyMiddleware就是redux内置的一个enhancer。enhencer函数都接受createStore函数作为参数，然后返回新的createStore函数。</p>
+<p>老样子，先看一下代码注释，然后看具体的代码实现，applyMiddleware接受的参数是middlewares数组，在它返回的createStore函数里，先调用createStore得到store，然后拿middlewares加工store.dispatch方法，最后返回store和加工后的dispatch函数。</p>
+<pre><code>const middlewareAPI = &#123;
+  getState: store.getState,
+  dispatch: (...args) =&gt; dispatch(...args)
+&#125;
+const chain = middlewares.map(middleware =&gt; middleware(middlewareAPI))
+dispatch = compose(...chain)(store.dispatch)
+</code></pre>
+<p>从这里可以看到，每个middleware函数接受middlewareAPI参数，其中包含getState和dispatch两个属性，并返回一个函数，返回的函数通过compose组合起来（详见<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux/blob/master/src/compose.js">compose.js</a>内的代码注释），所以这个返回函数接受的参数是上一个middleware函数的返回值(也是dispatch函数)，并返回dispatch函数（会成为下一个middleware的参数）。也就是middleware函数的定义是</p>
+<pre><code>function myMiddleware(&#123;getState, dispatch&#125;) &#123;
+    return function(next) &#123;
+        return function(action) &#123;
+            return next(action);
+        &#125;
+    &#125;
+&#125;
+// 箭头函数写法
+const myMiddleware = (&#123;getState, dispatch&#125;) =&gt; next =&gt; action =&gt; next(action)
+</code></pre>
+<p>建议看一下<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux-thunk/blob/master/src/index.js">redux-thunk的代码实现</a>加深一下理解。</p>
+<p>整个redux的源码到这里就结束了，到这里就会发现真的没太多内容，接下来再看一下React-redux的代码，因为一般redux都会配合React-redux来使用，而且它的代码也不复杂。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-redux-source-code1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/28/rn-redux-source-code1/">ReactNative之Redux源码阅读(combineReducers&amp;bindActionCreators)</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-07-28T13:15:36.000Z" itemprop="datePublished">2019年07月28日</time>
+</span>
+      
+      
+      
+<a href="/2019/07/28/rn-redux-source-code1/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>闲话少叙，直接开始看另外两个文件</p>
+<h3 id="combineReducers"><a href="#combineReducers" class="headerlink" title="combineReducers"></a>combineReducers</h3><p>照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。</p>
+<p>直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有了解的同学应该不难理解，每个reducer函数都会返回一个state，这些state就以这些key组合起来），在前一篇<a href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>里也提到，使用combineReducers时如果有preloadState，两者结构需要保持一致。</p>
+<p>接下来开始看源码，前面的类型检验看完就可以跳过，首先需要注意一下assertReducerShape，它对每个reducer函数先做一次校验，传递一个ActionTypes.INIT以及一个随机字符串type进去，看是否返回合法值，这就要求reducer函数中state必须要有初始值，而且必须能响应任意action返回合法值，在实际操作中我们都是通过switch case的default来返回原始state，如果不这么做会抛出异常，就是这块代码实现的。</p>
+<p>接下来可以看到combineReducers返回的combination仍然是一个reducer函数（接收state和action，返回state），这样前一篇提到createStore的第一个参数可以是combineReducers函数的返回值，就很好理解了。</p>
+<p>接下来看combination的实现，首先是debug模式下使用getUnexpectedStateShapeWarningMessage进行一下校验，例如reducers不能是空object，state必须是plain object，以及state和reducers结构必须一致，校验不通过会发出黄屏警告。</p>
+<p>接下来它把接收的action交给每个reducer处理，然后把返回的state组合起来生成一个新的state.如果某个reducer函数不需要处理这个action，按照我们reducer函数的实现方案，它会返回原state。这里使用了一个临时变量hasChanged做标记，如果所有reducer函数响应该action后都没有发生变化，combination这个聚合reducer函数就返回原state，而不会返回一个新对象，但只要有一个reducer函数响应后state发生变化了，combination就会返回一个新的state对象，从而触发刷新。</p>
+<h3 id="bindActionCreators"><a href="#bindActionCreators" class="headerlink" title="bindActionCreators"></a>bindActionCreators</h3><p>在这个文件初始有一个函数bindActionCreator，这个函数接受actionCreator函数和dispatch函数，返回一个新函数，它把actionCreator生成的action dispatch出去，我们调用这个新函数时，就是触发了dispatch，这个函数只是帮助开发者稍微简化一下代码。</p>
+<p>接下来看bindActionCreators的注释，它把一个object变成新的object，原object的每个value都是actionCreator函数，新object的key与原来一致，但value变成使用上面bindActionCreator封装之后的结果。函数的具体实现非常好看懂，其接受的第一个参数如果是object，就退化成bindActionCreator，否则就如上面所说，把每个value转换一次。</p>
+<p>这个辅助函数会用于react-redux中，我们通过this.props.actionCreator来dispatch一个action，就是使用它来简化了代码，以后分析到react-redux时再看</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-redux-source-code" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-07-24T13:15:36.000Z" itemprop="datePublished">2019年07月24日</time>
+</span>
+      
+      
+      
+<a href="/2019/07/24/rn-redux-source-code/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。</p>
+<p>这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已经有足够了解的同学，如果不是很了解，建议仔细把<a target="_blank" rel="noopener" href="https://www.redux.org.cn/">官方文档</a>再看一看。话不多说，进入Redux在github上的<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux/tree/master/src">仓库</a>，可以看到文件数量只有几个，我们一个一个的讲</p>
+<h3 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h3><p>我们要看一个js库的源码，首当其冲就是<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux/blob/master/src/index.js">index.js</a>，这里展示了对外暴露的接口，我们可以看到熟悉的createStore, combineReducers, bindActionCreators以及applyMiddleware。这就过去一个文件了，有没有信心满满呢？哈哈</p>
+<h3 id="createStore-js"><a href="#createStore-js" class="headerlink" title="createStore.js"></a>createStore.js</h3><p>然后是<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux/blob/master/src/createStore.js">createStore.js</a>，最顶上的注释把大部分的内容都介绍到了，先看完注释再看源码，会轻松很多。createStore顾名思义是用来创建store，redux的<a target="_blank" rel="noopener" href="https://www.redux.org.cn/docs/introduction/ThreePrinciples.html">三大原则</a>第一条是单一数据源，所以整个App只会创建一个store。</p>
+<p>createStore接受的第一个参数是reducer函数，第二个是可选参数preloadState，第三个是可选参数enhancer。其中reducer函数不用多说，它可以是一个普通函数，或者使用combineReducer生成的函数。preloadState是state的初始值，如果需要设置初始state则传入这个参数，需要注意如果使用了combineReducers，那么preloadState和combineReducers的结构也就是keys需要一致。enhancer参数用来加强redux的能力，Redux自带的applyMiddleware就是一个enhancer。combineReducer和applyMiddleware后面都会看到它们的源码。</p>
+<p>然后再看一下返回值，它返回的是一个object，内容是</p>
+<pre><code>return &#123;
+    dispatch,
+    subscribe,
+    getState,
+    replaceReducer,
+    [$$observable]: observable
+&#125;
+</code></pre>
+<p>我们直接看这4个返回的方法都做啥，createStore函数最开始那些参数的校验之类的可以快速跳过。</p>
+<h4 id="dispatch"><a href="#dispatch" class="headerlink" title="dispatch"></a>dispatch</h4><p>先看dispatch方法，dispatch方法就是发出一个action，这个action会被reducer函数处理，生成新的state，然后通知所有注册了监听的组件。它接受一个参数action，action必须是一个plain object，而且必须有type值。</p>
+<p>然后是一个开关变量isDispatching，在reducer函数还没执行完之前，是不允许又接收一个action来执行reducer函数的，所以使用这个变量来做开关。</p>
+<p>接着currentState &#x3D; currentReducer(currentState, action)就是调用reducer函数来得到新的state并赋值，之后可以看到遍历了所有的listeners。</p>
+<h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>subscribe用来注册一个监听，前面dispatch修改了state之后，会通知所有的监听者，监听者就是通过subscribe来注册的。</p>
+<p>这里的细节是维护了两个listeners队列：currentListeners和nextListeners，在dispatch方法里，先把nextListeners赋值给currentListeners，然后遍历currentListeners，然后在subscribe时，通过ensureCanMutateNextListeners函数拷贝一份currentListeners给nextListeners，然后修改nextListeners。虽然听起来有点绕，但并不难理解，在遍历listeners期间如果注册监听和取消监听，肯定不能修改正在遍历中的数组，所以需要维护两个，一个用来遍历，另一个用来修改。</p>
+<p>subscribe函数返回一个unsubscribe函数，这也是js库里常见的一种设计，用来取消注册监听，代码非常好看懂。</p>
+<h4 id="observable"><a href="#observable" class="headerlink" title="observable"></a>observable</h4><p>这里代码不是很好看懂，它用了一个第三方库<a target="_blank" rel="noopener" href="https://github.com/zenparsing/es-observable">symbol-observable</a>，但大概可以看明白这个函数做了什么，它对外暴露了一个subscribe接口，内部实际上是调用上面的subscribe进行注册监听，对外暴露的subscribe需要接受一个observer object。在react-redux中应该能看到这个接口的实际应用。</p>
+<h4 id="getState和replaceReducer"><a href="#getState和replaceReducer" class="headerlink" title="getState和replaceReducer"></a>getState和replaceReducer</h4><p>这两个比较简单，一起带过，前者是获取到state值。后者是整体替换掉reducer，实际中用到的不多。</p>
+<h4 id="dispatch-type-ActionTypes-INIT"><a href="#dispatch-type-ActionTypes-INIT" class="headerlink" title="dispatch({ type: ActionTypes.INIT })"></a>dispatch({ type: ActionTypes.INIT })</h4><p>createStore函数在return之前，dispatch了这么一个action，reducer函数可以用这个action来做初始化工作，当然我们一般都是在reducer函数中用默认值来做初始化，所以这个action实际中很少会用到，但了解这个细节其实会很有用的。</p>
+<h4 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h4><p>写到后面发现如果把所有源码阅读写成一篇会太长了，所以就做成系列吧，接下来再陆续把剩下的写完。顺便感慨一下，读完源码加记完笔记用了俩小时，现在写这一篇就用了俩小时差不多，还写的很不咋的，语言和文字表达能力有点太堪忧，总是前言不搭后语，可见要写一篇好博客，真的很不容易啊……</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-other-tinygame-architecture" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/09/other-tinygame-architecture/">一个小游戏的通用架构</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-03-09T07:50:39.000Z" itemprop="datePublished">2019年03月09日</time>
+</span>
+      
+      
+      
+<a href="/2019/03/09/other-tinygame-architecture/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构</p>
+<h2 id="功能系统"><a href="#功能系统" class="headerlink" title="功能系统"></a>功能系统</h2><h3 id="消息分发系统"><a href="#消息分发系统" class="headerlink" title="消息分发系统"></a>消息分发系统</h3><p>它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。</p>
+<p>监听者模式是代码解耦的一大神器，应用也非常普遍，所以第一个想到的就是它，当然它的缺点就是不利于流程的跟踪。</p>
+<h3 id="UI管理系统"><a href="#UI管理系统" class="headerlink" title="UI管理系统"></a>UI管理系统</h3><p>游戏中一般场景scene并不多，大多数都是在scene上面分布着各种弹窗界面，例如弹出提示框，获得奖励框，各种二级界面等等。如果没有一个管理系统，很容易混乱，要么zorder设置起来累的要死，要么弹窗覆盖导致界面丑陋不堪。</p>
+<p>UI管理系统一般提供的接口就是弹出界面和关闭界面，默认会自动设置zorder，并且关闭的界面一般不做销毁，而是从父节点移除后留作下次备用，以提高性能。如果实现的简单，就直接弹出窗口，设置最高zorder即可，复杂些的话可以进行分类管理，哪些节点可被覆盖，哪些不可以，支持什么弹出动画等等。</p>
+<h3 id="数据管理系统"><a href="#数据管理系统" class="headerlink" title="数据管理系统"></a>数据管理系统</h3><p>前端页面如何展示，依赖于后端传递的数据，这些数据最好使用一个管理系统来全局存储，而不是存在UI类中，这样更有利于解耦。</p>
+<p>后端传回的数据现在经常是json格式，可以直接拿来使用，但最好还是解析为model，这样做的一个好处是即使没有协议文档，也很容易明白协议格式，而且可以在model层封装一些特定的接口比如getDataByType等。另外还有一个好处，就是前端代码最终很可能会被深度混淆，如果直接使用json，处处要小心使用[‘xxx’]而不是.xxx的格式，但解析为model后就不用担心了。</p>
+<h2 id="具体代码模块"><a href="#具体代码模块" class="headerlink" title="具体代码模块"></a>具体代码模块</h2><h3 id="Model模块"><a href="#Model模块" class="headerlink" title="Model模块"></a>Model模块</h3><p>前面提到过，后端获得的数据转为model来使用，本地的配置信息等也可以，取决于实际需求</p>
+<h3 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h3><p>包括两部分，一部分是和各个UI界面的实现（在cocos creator上则是绑定在各个界面的脚本），作用是控制UI界面的各个组件显示，实现一些交互逻辑。按层级可以分为scene和window, component等级别。<br>另一部分是做组件封装，例如给按钮增加防快速点击的功能，给弹窗增加吞触摸事件的背景等等</p>
+<p>看到model和UI，就知道项目其实还是MVC这个万金油结构，这里提到了model和view,上面提到的数据管理系统就可以当做controller了。</p>
+<h3 id="网络模块"><a href="#网络模块" class="headerlink" title="网络模块"></a>网络模块</h3><p>实现网络通信功能，一般都需要保持长连接，在浏览器中使用websock，或者在原生端封装tcp。一般就是实现open, onConnect, onDisconnect, onMessage, send这几个接口。</p>
+<p>这里需要提到的就是最好在网络模块中实现一个比较完善的mock系统，它可以和真正的网络模块无缝切换，接口完全一致，唯一的区别就是在send函数里，对需要mock的接口使用mock的数据回调onMessage，其它接口走真正的网络请求。这样非常灵活，使用方便，功能比单纯在代码中mock一下数据要强大很多。</p>
+<h3 id="Utils模块"><a href="#Utils模块" class="headerlink" title="Utils模块"></a>Utils模块</h3><p>只要比较独立的代码，都往里面扔就是了，一般Constants,Global,Enums三大巨头就够用了，要继续细分也可以，比如EventName啥的</p>
+<h3 id="manager模块"><a href="#manager模块" class="headerlink" title="manager模块"></a>manager模块</h3><p>就是上面提到的消息监听，数据管理，ui管理三大功能系统的实现，它们可以适用于任何项目，实现一套后要么直接搬来用，要么封装成公共sdk都可以</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般的小游戏，有这样的框架，绝对够应付的来了，在这个框架的基础上可以继续细分，但跑不掉还是这些。不论是新建一个项目，还是重构已有项目，都可以按这个结构来。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-add-perf" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/01/16/rn-add-perf/">ReactNative之一个监控组件刷新次数的实现方案</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-01-16T13:15:36.000Z" itemprop="datePublished">2019年01月16日</time>
+</span>
+      
+      
+      
+<a href="/2019/01/16/rn-add-perf/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在做RN开发中，检测是否有多余的重复渲染是做性能监控的重要手段，在React16.0之前，官方有一个工具叫做<a target="_blank" rel="noopener" href="https://reactjs.org/docs/perf.html">perf</a>，对应的在RN中，也可以使用Libraries&#x2F;Performance&#x2F;RCTRenderingPerf中提供的PerfMonitor类，它们提供了监控组件渲染次数的功能，借此发现是否有不必要的渲染。可惜这个工具在React16.0和ReactNative0.45以后就不再提供了，官方仓库有个<a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/issues/15371">issue</a>提到了这个问题，然后就没有然后了……</p>
+<p>官方的Perf功能看起来比较强大，它的printWasted可以把渲染前后没有任何变化的组件打印出来，很直观的看到哪些组件发生了重复渲染，不过我们可以参照类似的API自己做一个简化版的，把组件的刷新次数变化打印出来，因为我们自己是明白哪些组件需要刷新哪些不需要刷新的，所以用这个数据可以自己找出是否有多余的渲染。代码我放到了<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/MyReactNative/tree/master/perf">github仓库里</a></p>
+<p>在addPerf.js里，给Component和PureComponent注入三个回调函数，在componentDidMount里，如果发现组件有tag成员属性，就把这个组件注册起来，记录其更新次数，在componentWillUnmount里取消注册，在componentWillUpdate里添加更新次数。如果想要监控某个组件的渲染次数，就必须在构造函数里添加tag成员属性，注意：<strong>这个tag必须是每个组件实例唯一。</strong>然后如果这个组件实现了这三个函数，需要使用super来调用基类的实现，例如super.componentDidMount()。ps:tag这个属性名太普遍，容易跟实际代码中的属性名重复，但我比较懒，不想再取个属性名，有需要的话，自己想个属性名吧</p>
+<p>在index.js里，renderCountDict以tag为key存储每个组件实例的渲染次数，perfDataDict则存储每次perf起始时的renderCountDict快照，调用startPerf传入一个key开始一次记录，调用stopPerf传入对应的key来完成一次记录，然后会自动打印出开始和结束时renderCountDict的变化。</p>
+<p>testPerf是一个用例，界面有一个flatlist和一个button，每次点击按钮，会给flatlist添加一个单元行，单元行组件Cell继承自Component并且拥有成员属性tag，所以会被记录刷新次数。我们在页面的componentWillUpdate里开始一次监控，在componentDidUpdate里结束这次监控，就可以看到页面刷新时，单元行组件的刷新状况。如果单元行组件Cell继承自Component，那么每次添加单元行时，原有的单元行也都跟着刷新了一次，但实际上它们的渲染内容没有任何变化，所以它们是重复渲染。而一旦我们让Cell继承自PureComponent，就会发现每次增加单元行时，只变化了新增的那个，这就比之前的方案要更优化。</p>
+<p>上面是一个很简单的例子，但用这个方法，可以很方便的监控两个时间点之间的组件刷新次数，比较重要的是选择好开始和停止的时间点，并且自己先明白有哪些组件需要刷新，那些不需要刷新但也发生刷新了的组件，就是我们需要优化的对象了。以上只是一个思路，实现上如果有更巧妙的方案，或者有大牛可以实现官方perf那样，能对比出组件渲染前后是否发生了变化，还请不吝赐教，谢谢~</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/index.html">http://yangguang1029.github.io/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

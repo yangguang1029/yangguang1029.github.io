@@ -1,132 +1,532 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/06/14/oc-metaclass/">ObjectiveC之初解MetaClass</a>
-    <div class="post-item-summary">
-      MetaClass的概念是每一个进阶iOS开发者都需要了解的概念，因为有的地方看得不是很容易理解，所以配合例子介绍一下概念。
-在ObjectiveC中，每个类都对应着一个对象，我们把它叫做类对象，它其实是一个结构体struct objc_class。当这个类构造出一个实例后，实例的isa指针就指向了这个类对象。而类对象本身也有一个isa指针，它指向了这个类的元类MetaClass。元类也是一个struct objc_class，它也有一个isa指针，指向了NSObject的M
-      <a class="read-more" href="/2018/06/14/oc-metaclass/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.06.14</div>
-      <div class="tags">
-        
-        <div class="tag-item">ObjectiveC</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/05/28/rn-event-emitter/">ReactNative之EventEmitter</a>
-    <div class="post-item-summary">
-      官方文档推荐的原生往js层传递消息的方式，iOS端是继承RCTEventEmitter，然后调用sendEventWithName方法
-[self sendEventWithName:@&quot;EventReminder&quot; body:nil];
 
-Android端是
-getReactApplicationContext()
-            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitte
-      <a class="read-more" href="/2018/05/28/rn-event-emitter/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.05.28</div>
-      <div class="tags">
+      <div class="outer">
+        <section id="main">
+  <article id="post-oc-metaclass" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/05/23/rn-native-call-js/">ReactNative之快速实现native调用js</a>
-    <div class="post-item-summary">
-      在官方文档里推荐的原生调用js的方法是通过发送事件，也就是通过DeviceEventEmitter来发送事件，然后在js层监听。这样虽然可以实现，但毕竟感觉有点绕弯，实际上观察一下源代码就会发现原生层有直接调用js的接口。它们分别是：
-iOS端位于RCTBridge中
-- (void)enqueueJSCall:(NSString *)module method:(NSString *)method args:(NSArray *)args completion:(dispa
-      <a class="read-more" href="/2018/05/23/rn-native-call-js/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.05.23</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/14/oc-metaclass/">ObjectiveC之初解MetaClass</a>
+    </h1>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/05/22/rn-tableview/">ReactNative之封装TableView组件</a>
-    <div class="post-item-summary">
-      众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。
-封装tableView本身很简单，按官方教程走就行了。我们从js中传一个rowCount属性过来，用于给tableView的numbe
-      <a class="read-more" href="/2018/05/22/rn-tableview/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.05.22</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-06-14T12:18:36.000Z" itemprop="datePublished">2018年06月14日</time>
+</span>
+      
+      
+      
+<a href="/2018/06/14/oc-metaclass/#comments" class="article-comment-link">
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/04/04/rn-import-require/">ReactNative之两种模块管理方式</a>
-    <div class="post-item-summary">
-      在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如
-//ES6风格
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>MetaClass的概念是每一个进阶iOS开发者都需要了解的概念，因为有的地方看得不是很容易理解，所以配合例子介绍一下概念。</p>
+<p>在ObjectiveC中，每个类都对应着一个对象，我们把它叫做类对象，它其实是一个结构体struct objc_class。当这个类构造出一个实例后，实例的isa指针就指向了这个类对象。而类对象本身也有一个isa指针，它指向了这个类的元类MetaClass。元类也是一个struct objc_class，它也有一个isa指针，指向了NSObject的MetaClass，NSObject的MetaClass的isa指针指向了它自己。</p>
+<p>如果上面那句话看懂了，就可以结束了。接下来是举证时间。</p>
+<p>OC中，每个interface声明的类，最终基类都是NSObject，在NSObject中有一个静态方法class，它获取到的就是类对象的指针</p>
+<pre><code>@interface TestISA1
+@end
+
+@interface TestISA2 : TestISA1
+@end
+
+Class c1 = [TestISA1 class];
+Class c2 = [TestISA2 class];
+NSLog(@&quot;c1 : %p c2  %p &quot;, c1, c2);  //c1 : 0x109e59e08 c2  0x109e59e58
+</code></pre>
+<p>然后查看它们实例的isa指针</p>
+<pre><code>void printIsa (NSObject *c) &#123;
+  struct objc_object *f = (struct objc_object *)malloc(sizeof(struct objc_object));
+  memcpy(f, c, sizeof(struct objc_object));
+  NSLog(@&quot;isa is %p&quot;, f-&gt;isa);
+  delete f;
+&#125;
+
+TestISA1 *t1 = [TestISA1 new];
+TestISA1 *t11 = [TestISA1 new];
+TestISA2 *t2 = [TestISA2 new];
+printIsa(t1);   // isa is 0x109e59e08
+printIsa(t11);   // isa is 0x109e59e08
+printIsa(t2);   // isa is 0x109e59e58
+</code></pre>
+<p>  可以看到，实例的isa指针就是类对象的指针。</p>
+<p>  然后看看类对象的isa指针，也就是元类</p>
+<pre><code>Class o = [NSObject class];
+//c1 : 0x109e59e08 c2  0x109e59e58 o 0x10ae6eea8
+NSLog(@&quot;c1 : %p c2  %p o %p &quot;, c1, c2, o);
+//c1 isa : 0x109e59de0 c2 isa  0x109e59e30 o isa 0x10ae6ee58
+NSLog(@&quot;c1 isa : %p c2 isa  %p o isa %p&quot;, c1-&gt;isa, c2-&gt;isa, o-&gt;isa);
+//c1 isa isa : 0x10ae6ee58 c2 isa isa 0x10ae6ee58 o isa isa 0x10ae6ee58
+NSLog(@&quot;c1 isa isa : %p c2 isa isa %p o isa isa %p&quot;, c1-&gt;isa-&gt;isa, c2-&gt;isa-&gt;isa, o-&gt;isa-&gt;isa);
+</code></pre>
+<p>  可以证明前面的说法，c1, c2对应的是各自类对象的地址，它们的isa指向了各自MetaClass的地址，再下一层meta就都是NSObject的MetaClass了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-event-emitter" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/28/rn-event-emitter/">ReactNative之EventEmitter</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-05-28T12:18:36.000Z" itemprop="datePublished">2018年05月28日</time>
+</span>
+      
+      
+      
+<a href="/2018/05/28/rn-event-emitter/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>官方文档推荐的原生往js层传递消息的方式，<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/native-modules-ios.html#%E7%BB%99javascript%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6">iOS端</a>是继承RCTEventEmitter，然后调用sendEventWithName方法</p>
+<pre><code>[self sendEventWithName:@&quot;EventReminder&quot; body:nil];
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/native-modules-android.html#%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6%E5%88%B0javascript">Android端</a>是</p>
+<pre><code>getReactApplicationContext()
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(&quot;EventReminder&quot;, null);
+</code></pre>
+<p>Android端一眼就能看出来是通过RCTDeviceEventEmitter模块来交流的，所以在js层直接使用RCTDeviceEventEmitter来注册监听。例如</p>
+<pre><code>var emitter = require(&quot;RCTDeviceEventEmitter&quot;)
+emitter.addListener(&quot;EventReminder&quot;,(e)=&gt;&#123;
+  console.log(&quot;guangy get event in RCTDeviceEventEmitter&quot;)
+&#125;)
+</code></pre>
+<p>或者</p>
+<pre><code>import &#123;DeviceEventEmitter&#125; from &quot;react-native&quot;
+DeviceEventEmitter.addListener(&quot;EventReminder&quot;,(e)=&gt;&#123;
+  console.log(&quot;guangy get event in DeviceEventEmitter&quot;)
+&#125;)
+</code></pre>
+<p>但是在iOS端就会发现这两个回调都不管用了。实际上去RCTEventEmitter类里面看一下它的sendEventWithName方法，发送事件的代码是</p>
+<pre><code>if (_listenerCount &gt; 0) &#123;
+    [_bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
+                method:@&quot;emit&quot;
+                  args:body ? @[eventName, body] : @[eventName]
+            completion:NULL];
+&#125;
+</code></pre>
+<p>其实也是通过RCTDeviceEventEmitter发送的消息。但这里有个if判断，_listenerCount的初始值为0，下个断点就很快发现，没有进到if里去。使用NativeEventEmitter来注册监听，就可以收到了</p>
+<pre><code>const Test = NativeModules.TestNative;
+const testEmitter = new NativeEventEmitter(Test);
+const subscription = testEmitter.addListener(&#39;EventReminder&#39;,
+    ()=&gt;&#123;
+        console.log(&quot;guangy get event in NativeEventEmitter&quot;);
+    &#125;
+);
+</code></pre>
+<p>看一下NativeEventEmitter的代码很快就能找到原因，在它的addListener方法里，有</p>
+<pre><code>if (this._nativeModule != null) &#123;
+  this._nativeModule.addListener(eventType);
+&#125;
+</code></pre>
+<p>这是调了原生模块的addListener方法，在RCTEventEmitter类中它的实现就是让_listenerCount加1。所以在iOS端，因为原生代码中通过继承RCTEventEmitter类来发送消息，js层就必须使用NativeEventEmitter来注册监听，否则的话，原生层连消息都不会发出去。但是在Android端，因为底层实现就是直接给RCTDeviceEventEmitter发消息，不像iOS端有RCTEventEmitter类的那一套逻辑，所以三种注册监听的方式都一样，构造NativeEventEmitter实例时，也可以不传递NativeModule参数。</p>
+<p>如果iOS的原生层不使用RCTEventEmitter，那么就和Android端一样可以直接使用RCTDeviceEventEmitter监听，例如</p>
+<pre><code>[self.bridge.eventDispatcher sendDeviceEventWithName:@&quot;EventReminder&quot; body:nil];
+</code></pre>
+<p>但这个接口已经被废弃了，所以不建议使用。要么直接套用sendEventWithName的if里面的实现</p>
+<pre><code>[self.bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
+              method:@&quot;emit&quot;
+                args:@[@&quot;EventReminder&quot;]
+          completion:NULL];
+</code></pre>
+<p>这样也可以直接使用RCTDeviceEventEmitter来监听。</p>
+<p>到这里结论就清楚了，<strong>我们在js层应该使用NativeEventEmitter，这是双端统一的事件传递接口</strong>。</p>
+<p>我们再看一下NativeEventEmitter.js里的实现，它的构造函数里有一句</p>
+<pre><code>super(RCTDeviceEventEmitter.sharedSubscriber);
+</code></pre>
+<p>这就很明显了，虽然我们在js层可以给每个模块都new一个NativeEventEmitter，但实际上它们都是交给了RCTDeviceEventEmitter来处理，这也跟原生代码中是通过调用RCTDeviceEventEmitter模块的emit来发送消息是一致的。js层所有的注册都在EventSubscriptionVendor.js中进行管理，实现也很简单，就是通过字典存储事件名和回调函数列表。</p>
+<p>在js层还有一个类RCTNativeAppEventEmitter，不过已经被声明废弃了，所以忽略掉。</p>
+<p>最后我稍微想了一下，如果不使用NativeEventEmitter的话，其实代码更简单，不用考虑remove取消监听，双端也是统一的。但为什么iOS平台废弃掉直接发送事件的接口，然后统一使用NativeEventEmitter呢？我能想到的优点就是原生层可以通过startObserving和stopObserving来监听某个事件的监听状况，然后虽然本质上事件仍然都是扔到了RCTDeviceEventEmitter来处理，但至少从代码上进行了隔离，将事件和模块绑定起来，避免了混杂。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-native-call-js" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/23/rn-native-call-js/">ReactNative之快速实现native调用js</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-05-23T12:18:36.000Z" itemprop="datePublished">2018年05月23日</time>
+</span>
+      
+      
+      
+<a href="/2018/05/23/rn-native-call-js/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在官方文档里推荐的原生调用js的方法是通过发送事件，也就是通过DeviceEventEmitter来发送事件，然后在js层监听。这样虽然可以实现，但毕竟感觉有点绕弯，实际上观察一下源代码就会发现原生层有直接调用js的接口。它们分别是：</p>
+<p>iOS端位于RCTBridge中</p>
+<pre><code>- (void)enqueueJSCall:(NSString *)module method:(NSString *)method args:(NSArray *)args completion:(dispatch_block_t)completion;
+</code></pre>
+<p>Android端位于CatalystInstance中</p>
+<pre><code>void callFunction(String module, String method, NativeArray arguments);
+</code></pre>
+<p>可以看到要调用js代码，都需要一个模块名和方法名，然后是传入的参数。被原生调用的接口，需要在js代码中进行注册，注册的代码例如：</p>
+<pre><code>const BatchedBridge = require(&#39;BatchedBridge&#39;);
+BatchedBridge.registerCallableModule(&#39;hello&#39;, &#123;
+    world:function()&#123;
+        console.log(&quot;hello world&quot;);
+    &#125;
+&#125;);
+</code></pre>
+<p>这样在调用时，module就是”hello”，而method就是”world”了，当然调用前要先想办法获取到RCTBridge和CatalystInstance实例，这个对于RN有一定了解程度的同学来说肯定不是什么难事了，RCTBridge可以在初始化时存起来，CatalystInstance在初始化时通过ReactInstanceManager可以获取到。试试看吧，是不是感觉比发送事件监听事件要方便很多呢，不用再想着应该什么时候注册监听，什么时候取消监听了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-tableview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/22/rn-tableview/">ReactNative之封装TableView组件</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-05-22T12:18:36.000Z" itemprop="datePublished">2018年05月22日</time>
+</span>
+      
+      
+      
+<a href="/2018/05/22/rn-tableview/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>众所周知，ReactNative中的列表组件，不论是老版的ListView还是新版的FlatList，都不是对原生列表的封装，只是在JavaScript层在ScrollView的基础上实现的，如果能基于原生列表组件进行封装，就真正实现了单元行的复用，最近尝试了下对iOS平台tableView的封装，demo已经运行正常了，这里把思路整理一下。</p>
+<p>封装tableView本身很简单，按<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/native-component-ios.html#content">官方教程</a>走就行了。我们从js中传一个rowCount属性过来，用于给tableView的numberOfRowsInSection回调使用。对tableView来说，最重要的就是每个tableViewCell怎么渲染了。因为每个单元行渲染的内容需要从js端传过来，如果能够在原生层捕获到这个js中渲染的组件，然后放到每个TableViewCell里去作为它的subview，当这个TableViewCell被重用时，获取到这个subview，然后通知js端刷新这个组件的内容即可。</p>
+<p>从原生捕获js组件的方案就是，在js层的tableView里，给它添加子控件，然后在对应的原生tableview代码中，通过</p>
+<pre><code>- (void)insertReactSubview:(UIView *)subview atIndex:(NSInteger)atIndex &#123;
+
+&#125;
+</code></pre>
+<p>接口，可以获取到这个子控件。这些控件既然需要从原生层往js层发消息，那么理所当然也需要是原生封装的组件了，我们给它通过RCTBubblingEventBlock回调，就可以让它往js发消息了，这样当一个tableViewCell被重用时，我们已经知道它被重用到了哪个位置，把这个位置发到js层，js层刷新显示即可。</p>
+<p>在js层使用的时候，我们需要往tableView里添加子控件用于显示单元行内容，这些子控件在每次tableViewCell新建的时候都需要一个，所以理论上来说，这些子控件的数量应该保证至少能填满一个tableView的空间，像demo里tableview的高度是300，单元行高度是40，那么至少需要8个。但如果只放8个，就会发现在快速滑动时不够用了，导致可能个别单元行变成了空白。推测是快速滑动时，部分tableViewCell还没来得及进入回收队列，所以需要新建，所以在demo里我就放了两屏的数量，也就是16个，就没有再出现问题了。</p>
+<p>以上就是实现思路，具体代码可以查看<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview">demo</a></p>
+<p>updated on 2018-06-11</p>
+<p>在原基础上，实现了单元行可变高度的功能。demo代码也做了一些优化，</p>
+<ol>
+<li>给TableViewCell设定{ position: ‘absolute’,left: 0,top: 0 }的style，代替原来在原生层getUnusedCell方法中获取到TableCell后setFrame的方案，因为当单元行高度可变时，js层的单元行组件会频繁的需要重新布局，位置就会变乱了，设定一个(0,0)的绝对坐标，目的是防止单元行位置变乱</li>
+<li>js层的TableCell不再负责渲染，转为交给TableView的props的renderRow接口。</li>
+<li>在js层指定每个单元行的type然后传入到原生层，作为tableCell的Identifier，提高单元行复用时的效率。</li>
+</ol>
+<p>updated on 2018-06-25</p>
+<p>在原基础上，增加了下拉刷新功能。</p>
+<ol>
+<li>在MyTableView的init函数里是无法使用js层传过来的prop属性的，都是初始化数值。所以增加UIRefreshControl必须在收到enablePullRefresh属性时才去增加。</li>
+<li>要让js层主动调用原生的代码，改变props值就行，这样原生的set函数就会被调用。例如下拉刷新后js层获取网络数据结束，此时需要通过原生层关闭UIRefreshControl，这时把refreshing设置为false，则原生层的setRefreshing被调用，做相应的操作就可以了</li>
+</ol>
+<p>新版本代码<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/MyReactNative/tree/master/tableview2">见此</a></p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-import-require" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/04/04/rn-import-require/">ReactNative之两种模块管理方式</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-04-04T12:18:36.000Z" itemprop="datePublished">2018年04月04日</time>
+</span>
+      
+      
+      
+<a href="/2018/04/04/rn-import-require/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如</p>
+<pre><code>//ES6风格
 //a.js
 export let a = 1;
 export function adda()&#123;
@@ -136,43 +536,207 @@ export function adda()&#123;
 import &#123;a, adda&#125; from &quot;./a.js&quot;
 console.log(&quot;a is &quot; + a)
 adda();
-c
-      <a class="read-more" href="/2018/04/04/rn-import-require/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.04.04</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/03/12/rn-cached-view/">ReactNative之一个组件缓存的方案</a>
-    <div class="post-item-summary">
-      在实际开发中，我们经常会有这样的场景，一个组件需要根据条件来决定显示还是隐藏，我们一般都不假思索就可以写出这种方案
-this.state.isVisible ? &lt;MyComponent /&gt; : null
+console.log(&quot;after add a is &quot; + a)
 
-一般来说这样做都没什么问题，但假如这个MyComponent非常庞大，而显示隐藏又很频繁，这样做性能就很低，根据前面的一篇博文《ReactNative之VirtualDomTree的diff原理》，实际上我们把一个组件在不同的类型MyComponent和nu
-      <a class="read-more" href="/2018/03/12/rn-cached-view/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.03.12</div>
-      <div class="tags">
+//CommonJS风格
+//b.js
+let b = 1;
+function addb()&#123;
+    b += 1;
+&#125;
+module.exports = &#123;b, addb&#125;
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b is &quot; + B.b)
+B.addb();
+console.log(&quot;after add b is &quot; + B.b)
+</code></pre>
+<p>这两者模块管理风格有什么区别，在阮一峰老师的《ECMAScript6 入门》书中，有<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/module-loader">相关的章节</a>。例如ES6是静态导入，所以import必须位于顶层代码，任何位于非顶层代码的import都会报错，而require则可以位于任何位置。ES6风格因为是静态导入，import时模块名不能是动态的，而require可以是动态的。在导出时，ES6的导出是引用，而CommonJS的导出是拷贝，所以上面代码里，a会输出1和2，而b会输出两个1。</p>
+<p>回到项目中来，我们在RN项目中的js代码，都会经过babel编译成ES5标准，在ES5中是没有模块管理的，所以RN自己实现了模块管理的功能，</p>
+<p>先看导入，相关的源代码位于node_modules&#x2F;metro&#x2F;src&#x2F;lib&#x2F;polyfills&#x2F;require.js内。我们在代码里不论是写import还是写require，最终都会被翻译成这个require.js里的require方法。通过这个方法可以看到，不论我们执行多少次导入，模块本身只会被加载执行一次。对同一个模块，我们使用ES6和CommonJS两种方式来引用，得到的行为是一样的。对上面的a.js，结果都是1和2，对b.js，结果都是两个1。然后不论使用哪种风格，文件之间的依赖顺序在编译成bundle时都必须确定下来，使用require因为可以写在代码块里，不像import必须写在顶层代码中，所以一定程度上可以延迟模块被执行的时间，个人觉得这个区别还是很微小的，不会造成性能上的区别。</p>
+<p>然后是导出，前面说过这两种风格的导出结果，一个是拷贝，一个是引用。对上面的a.js和b.js，我们看一下他们在bundle内的代码就明白了</p>
+<pre><code>__d(function (global, _require, module, exports, _dependencyMap) &#123;
+    Object.defineProperty(exports, &quot;__esModule&quot;, &#123;
+        value: true
+    &#125;);
+    exports.adda = adda;
+    var a = exports.a = 1;
+    function adda() &#123;
+        exports.a = a += 1;
+    &#125;
+&#125;,337,[],&quot;js/testImport/a.js&quot;);
+__d(function (global, _require, module, exports, _dependencyMap) &#123;
+    var b = 1;
+    function addb() &#123;
+        b += 1;
+    &#125;
+    module.exports = &#123;
+        b: b,
+        addb: addb
+    &#125;;
+&#125;,338,[],&quot;js/testImport/b.js&quot;);
+</code></pre>
+<p>对于ES6风格的a.js，导出的属性直接加在了exports上，这个exports就是我们导入时获得的Object，所以它是直接持有了变量的引用。而对于CommonJS风格的b.js，导出的是一个新建的Object，它拷贝了变量b的值，既然是拷贝，就有浅拷贝和深拷贝之分，这里也完全取决于我们怎么实现，会有不同的行为，例如可以跑一下下面的代码试一下</p>
+<pre><code>//b.js
+let b = &#123;value:1&#125;
+function addb()&#123;
+    b.value += 1;
+&#125;
+module.exports = &#123;b1:b, addb, b2:&#123;value:b.value&#125;&#125;
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b1 is &quot; + B.b1.value)
+console.log(&quot;b2 is &quot; + B.b2.value)
+B.addb();
+console.log(&quot;after add b1 is &quot; + B.b1.value)
+console.log(&quot;after add b2 is &quot; + B.b2.value)
+</code></pre>
+<p>到这里基本上都明白了代码里的import, require, export, module.exports都有什么行为了。需要注意一下的就是，当import和require混合使用时，import一定会早于require被执行，这可能导致依赖顺序上发生问题，所以还是尽量避免混用。</p>
+
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-cached-view" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/03/07/js-const-var/">javaScript之let和var在闭包内的区别</a>
-    <div class="post-item-summary">
-      今天在解决一个bug时碰到的问题，经过层层抽象后，最终通过demo来测试，代码如下
-var functions = [];
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/03/12/rn-cached-view/">ReactNative之一个组件缓存的方案</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-03-12T12:18:36.000Z" itemprop="datePublished">2018年03月12日</time>
+</span>
+      
+      
+      
+<a href="/2018/03/12/rn-cached-view/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在实际开发中，我们经常会有这样的场景，一个组件需要根据条件来决定显示还是隐藏，我们一般都不假思索就可以写出这种方案</p>
+<pre><code>this.state.isVisible ? &lt;MyComponent /&gt; : null
+</code></pre>
+<p>一般来说这样做都没什么问题，但假如这个MyComponent非常庞大，而显示隐藏又很频繁，这样做性能就很低，根据前面的一篇博文<a target="_blank" rel="noopener" href="http://guangy.coding.me/2018/02/25/rn-reconciliation/">《ReactNative之VirtualDomTree的diff原理》</a>，实际上我们把一个组件在不同的类型MyComponent和null之间切换，是一定会导致MyComponent每次都被重建和销毁的。</p>
+<p>那我们就想办法实现一下缓存，根据实际测试，发现有一个比较简单的方案，当我们希望隐藏时，把MyComponent的尺寸设为0即可，例如组件是沿竖轴排列，只要调节MyComponent的高度即可，所以这个方案只适用于能确定尺寸的情况。</p>
+<p>使用这个方案，MyComponent在显示和隐藏之间切换时，组件本身不会被销毁，我们接下来就是尽量减少re-render的触发，以提高性能。当尺寸变化时，MyComponent无疑必须触发re-render，如果它的所有子组件都是普通Component的话，那么也会相应触发re-render。所以最简单的方案，我们把它的子组件改成PureComponent，这样只要MyComponent的尺寸没有通过props传递下去，子组件就不会re-render。如果要更加灵活的话，我们就实现子组件的shouldComponentUpdate即可。</p>
+<p>我们实际项目中有一个选择表情的组件，它包含了100多个小表情，当这个组件显示和隐藏时，原来都有一定延迟，通过使用这个优化方案，性能得到了很大提高。<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/MyReactNative/blob/master/testCacheView.js">如果不是很明白，可以参考一下我写的demo</a></p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-const-var" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/03/07/js-const-var/">javaScript之let和var在闭包内的区别</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-03-07T02:45:21.000Z" itemprop="datePublished">2018年03月07日</time>
+</span>
+      
+      
+      
+<a href="/2018/03/07/js-const-var/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>今天在解决一个bug时碰到的问题，经过层层抽象后，最终通过demo来测试，代码如下</p>
+<pre><code>var functions = [];
 let str = `
     var a = [1,2,3];
     functions.push(()=&gt;&#123;
@@ -182,90 +746,536 @@ let str = `
 eval(str);
 let str1 = `
     var a = [4,5,6];
-    functions
-      <a class="read-more" href="/2018/03/07/js-const-var/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.03.07</div>
-      <div class="tags">
+    functions.push(()=&gt;&#123;
+        console.log(JSON.stringify(a))
+    &#125;)
+`;
+eval(str1);
+
+for(var func of functions)&#123;
+    func();
+&#125;
+</code></pre>
+<p>因为原来碰到的问题是加载两个不同的bundle，所以对应的只能通过两次eval来模拟了。对于上面的代码，我预测的结果是输出两个[4,5,6]数组，因为第二次eval的时候，a被赋予了新值，当闭包执行时，它通过对外部变量a的引用，获取的是a的最新值，实际上的输出也确实是如此。但如果这样的话，就不应该产生bug才对，左思右想之下，突然发现源代码里不是var a，而是const a。于是赶紧改成const试一下，这次输出就是[1,2,3]和[4,5,6]了，const和let是一样的，换成let试一下，也是输出[1,2,3]和[4,5,6]</p>
+<p>通过这个表现，很容易推测到什么原理。在js中，是不允许对同一个变量名使用两次let的，但显然通过eval不受这个限制。当使用var时，两次eval执行后，仍然只有一个变量a。但当使用let和const时，再次eval，虽然变量名一样，但实际上不是同一个变量了，否则就会运行报错了，既然不是同一个变量，那么理所当然两个闭包持有的是各自对应的那个外部变量，所以就产生了不同的结果。</p>
+<p>我们在实际项目中虽然尽量避免使用eval，但解释器多次加载和执行代码是经常出现的，此时就要小心这种情况了。</p>
+
         
-        <div class="tag-item">javascript</div>
         
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/02/28/rn-props-children/">ReactNative之props.children</a>
-    <div class="post-item-summary">
-      在github上看react-native-on-layout的实现代码时，发现它把this.props.children当成一个函数使用，当时就奇怪了，我一直把this.props.children当做是一个object。然后去查了下官方文档，找到了相关的介绍，于是大概翻译过来。
-一般来说this.props.children会是以下几种类型
-字符串这是对于特定类型的component才有效，例如Text，写法也很简单
-&lt;Text&gt;i&#39;m props.c
-      <a class="read-more" href="/2018/02/28/rn-props-children/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.02.28</div>
-      <div class="tags">
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
         
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
+      
     </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/02/27/rn-manual-redux/">ReactNative之手动实现一个Redux</a>
-    <div class="post-item-summary">
-      最近我一直在考虑是否要移除项目中的redux使用，要做这个决定，首先是要搞明白redux的目的是什么，然后看看使用redux有哪些利弊。网上最适合了解redux的是redux中文文档。
-假设我们只有一个界面，那肯定不需要redux了，直接对this.state操作就行了，但如果有两个界面A和B，在A界面的操作需要改变B界面，在B界面的操作需要改变A界面，那么要么它们互相暴露接口，要么让它们把state放到共同的父组件里然后通过props传递下去，这样已经很复杂了，一旦有更多页
-      <a class="read-more" href="/2018/02/27/rn-manual-redux/"> ... </a>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
     </div>
-    <div class="post-item-extra">
-      <div class="date">2018.02.27</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/02/26/rn-android-communicate/">ReactNative之js与native通信流程（Android篇）</a>
-    <div class="post-item-summary">
-      这篇文章简要介绍一下android平台，js和java互相调用时，经过的流程。
-js调用java要从js端调用java代码，需要把java端能被调用的接口，在js代码中进行注册。这个实现在react-native&#x2F;Libraries&#x2F;BatchedBridge&#x2F;NativeModules.js文件中。
-看NativeModules.js内的代码里有：
-let NativeModules : &#123;[moduleName: string]: 
-      <a class="read-more" href="/2018/02/26/rn-android-communicate/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.02.26</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
 
 
-<div class="paginator">
-  <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
-</div>
 
-  </main>
-  <footer class="footer">
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-props-children" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <span>Copyright © 2024 typo</span>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/28/rn-props-children/">ReactNative之props.children</a>
+    </h1>
   
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-02-28T12:18:36.000Z" itemprop="datePublished">2018年02月28日</time>
+</span>
+      
+      
+      
+<a href="/2018/02/28/rn-props-children/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在github上看<a target="_blank" rel="noopener" href="https://github.com/shichongrui/react-native-on-layout">react-native-on-layout</a>的实现代码时，发现它把this.props.children当成一个函数使用，当时就奇怪了，我一直把this.props.children当做是一个object。然后去查了下<a target="_blank" rel="noopener" href="https://reactjs.org/docs/jsx-in-depth.html">官方文档</a>，找到了相关的介绍，于是大概翻译过来。</p>
+<p>一般来说this.props.children会是以下几种类型</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>这是对于特定类型的component才有效，例如Text，写法也很简单</p>
+<pre><code>&lt;Text&gt;i&#39;m props.children&lt;/Text&gt;
+</code></pre>
+<p>JSX语法中<code>In JSX expressions that contain both an opening tag and a closing tag, the content between those tags is passed as a special prop: props.children</code>，所以这个字符串其实就是props.children，只是我们一直没注意到而已。在这种情况下，字符串的首末空格会被忽略，空行会被忽略，换行符会被替换成空格。</p>
+<h2 id="JSX-Children"><a href="#JSX-Children" class="headerlink" title="JSX Children"></a>JSX Children</h2><p>使用Component作为children，这是最常用的包含子节点的方法。例如</p>
+<pre><code>&lt;MyContainer&gt;
+    &lt;MyFirstComponent /&gt;
+    &lt;MySecondComponent /&gt;
+&lt;/MyContainer&gt;
+</code></pre>
+<p>当然对于可以使用字符串作为children的特殊组件，是可以混合使用的，例如</p>
+<pre><code>&lt;Text&gt;123&lt;Text&gt;456&lt;/Text&gt;&lt;/Text&gt;
+</code></pre>
+<p>原文中在这一段提到，一个component可以直接写成组件数组的形式，而不用封装在容器里，例如</p>
+<pre><code>render()&#123;
+    return [&lt;Text&gt;1&lt;/Text&gt;,&lt;Text&gt;2&lt;/Text&gt;];
+&#125;
+</code></pre>
+<p>这个真的是有些震惊了，如果我们return一个非component对象，实际上会直接报错。这里不同于我们平时写的使用{}包起来的数组，后面会说到，那是使用代码块作为children。这里我猜测是JSX做了特殊处理而已，如果返回数组，则把每个元素解析成一个组件，我们在实际开发中还是应该避免写成这样。</p>
+<h2 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h2><p>这也是我们经常使用的一种方式，用{}把表达式包围起来，例如</p>
+<pre><code>&lt;Text&gt;123&lt;/Text&gt;
+&lt;Text&gt;&#123;&quot;123&quot;&#125;&lt;/Text&gt;
+</code></pre>
+<p>是一样的，所以如果想要Text显示带换行符的字符串，就可以这样</p>
+<pre><code>&lt;Text&gt;&#123;`123
+456`&#125;&lt;/Text&gt;
+</code></pre>
+<p>然后就是我们最常用的方式，实现组件数组，或者条件判断显示组件了，例如</p>
+<pre><code>&lt;View&gt;
+&#123;
+    [1,2,3].map((item)=&gt;&lt;Text&gt;&#123;item&#125;&lt;/Text&gt;)
+&#125;
+&#123;
+    Math.random() &gt; 0.5 ? &lt;Text&gt;123&lt;/Text&gt; : &lt;Text&gt;456&lt;/Text&gt;
+&#125;
+&lt;/View&gt;
+</code></pre>
+<p>它可以和其他几种类型混用，所以可以这么写</p>
+<pre><code>&lt;Text&gt;
+    123
+    &lt;Text&gt;456&lt;/Text&gt;
+    &#123;[&lt;Text&gt;789&lt;/Text&gt;,&lt;Text&gt;10&lt;/Text&gt;]&#125;
+&lt;/Text&gt;
+</code></pre>
+<p>当然实际开发中我们会尽量把代码结构写的工整一些。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>实际上props.children可以是任意类型，只是一般来说我们会以上面三种形式来使用它，但我们可以把它当做一个函数来使用，只要最后能形成一个合法的可渲染的组件，例如我们实现一个自定义组件</p>
+<pre><code>class MyComponent&#123;
+    render()&#123;
+        let num = this.props.children(1);
+        return &lt;Text&gt;&#123;num&#125;&lt;/Text&gt;
+    &#125;
+&#125;
+export default class Test extends Component&#123;
+    render()&#123;
+        return &lt;MyComponent&gt;
+        &#123;
+            (num)=&gt;num+1
+        &#125;
+        &lt;/MyComponent&gt;
+    &#125;
+&#125;
+</code></pre>
+<p>这里我们在使用MyComponent时，包含在里面的是一个函数，所以在MyComponent的实现中通过this.props.children来调用这个函数，react-native-on-layout这个库就是这样实现的。</p>
+<h2 id="Booleans-Null-Undefined"><a href="#Booleans-Null-Undefined" class="headerlink" title="Booleans, Null, Undefined"></a>Booleans, Null, Undefined</h2><p>true,false,null,undefined都是合法的，只是不渲染任何东西。我们经常用这种方式来控制一个组件是否显示，用的比较多的是null。 需要注意有的值虽然会被当做false，但不是bool值，所以会被渲染，例如数字0。然后就是如果想要渲染这些值，应该转换成字符串。对下面的例子：</p>
+<pre><code>&lt;Text&gt;&#123;false&#125;&lt;/Text&gt;
+&lt;Text&gt;false&lt;/Text&gt;
+&lt;Text&gt;&#123;&quot;false&quot;&#125;&lt;/Text&gt;
+</code></pre>
+<p>第一种情况没有显示，后两者情况是一样的</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-manual-redux" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/27/rn-manual-redux/">ReactNative之手动实现一个Redux</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-02-27T11:15:36.000Z" itemprop="datePublished">2018年02月27日</time>
+</span>
+      
+      
+      
+<a href="/2018/02/27/rn-manual-redux/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近我一直在考虑是否要移除项目中的redux使用，要做这个决定，首先是要搞明白redux的目的是什么，然后看看使用redux有哪些利弊。网上最适合了解redux的是<a target="_blank" rel="noopener" href="http://www.redux.org.cn/">redux中文文档</a>。</p>
+<p>假设我们只有一个界面，那肯定不需要redux了，直接对this.state操作就行了，但如果有两个界面A和B，在A界面的操作需要改变B界面，在B界面的操作需要改变A界面，那么要么它们互相暴露接口，要么让它们把state放到共同的父组件里然后通过props传递下去，这样已经很复杂了，一旦有更多页面，它们之间互相影响，那就是一场噩梦了。要解决这个问题，就需要把数据和UI分离，所有界面渲染所需要的state，都存在一个大仓库里，这就是redux里的store。每个界面从仓库里取自己需要的state来进行渲染，当A界面的操作需要修改B界面时，它直接去修改仓库里B界面需要的数据，然后通知一下B界面刷新。在redux里是通过dispatch一个action来通知store修改数据的，如何修改则在reducer里实现，当reducer修改好数据后，会通知绑定了相关数据的界面执行setState进行界面刷新，这是通过react-redux提供的connect函数实现的。这就是redux做的所有事情，就仅此而已，我们可以很容易的自己实现，只需要实现一个数据中心，提供修改数据的接口，然后给页面提供监听即可。</p>
+<p>为了避免描述不够清晰，以一个实际场景为例的话，我们有一些好友列表数据，那么我们实现一个FriendManager类，这个FriendManager做成全局单例对象，每个页面都可以调用它的接口。现在我们有个好友列表界面A，进入这个界面时还没有数据，我们需要显示loading界面，很简单，A界面直接来一个</p>
+<pre><code>this.state = &#123;isLoading:true, friends:[]&#125;
+</code></pre>
+<p>就行了，不用像使用redux时考虑哪些state放到store里管理，哪些自己管理。</p>
+<p>然后调用接口去像服务器请求数据，例如</p>
+<pre><code>FriendManager.requestData();
+</code></pre>
+<p>为了收到数据后能够刷新界面，我们需要注册监听事件，例如</p>
+<pre><code>NotificationCenter.addListener(UPDATE_FRIEND, this._updateFriend);
+</code></pre>
+<p>数据回来了，存储在FriendManager内，然后触发监听通知A界面</p>
+<pre><code>NotificationCenter.trigger(UPDATE_FRIEND, data);
+</code></pre>
+<p>在A界面的回调函数里</p>
+<pre><code>_updateFriend(data)&#123;
+    this.setState(&#123;isLoading:false, friends:data&#125;)
+&#125;
+</code></pre>
+<p>搞定，页面刷新了。现在我们有个好友详情界面B，在这个界面删除好友，这需要改变界面A，很简单，FriendManager提供一个接口</p>
+<pre><code>FriendManager.removeFriend=function(friendID)&#123;
+    this._friends.splice(...);
+    NotificationCenter.trigger(UPDATE_FRIEND, this._friends);
+&#125;
+</code></pre>
+<p>B界面调用这个接口，A界面就收到通知进行刷新了，不管AB界面隔得多遥远，也不管有多少个界面会互相影响，他们没有任何耦合。</p>
+<p>redux基于这个核心目的做了一些优化，例如使用action来代替直接调用FriendManager内的方法，这样可以更加清晰明了，开发者很明确要做一件什么事情。但抽象成action是有代价的，开发者需要理解action的概念，然后需要实现很多生成action的方法。像redux三大原则（单一数据源，state只读，reducer为纯函数），再加上middleware, sagas，immutable.js等等，很多人就晕头转向了，这就是我认为的使用redux的弊端吧，我们的项目一开始就引入了redux，但搭了个框架后，大家都不用，又要写action，又要写reducer，还要去connect，就算写了，也不考虑immutable原则。所以还是看项目的实际情况吧，如果确实不是很复杂的场景，例如上面举的好友列表数据管理方案，其实自己实现倒更直观。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-android-communicate" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/26/rn-android-communicate/">ReactNative之js与native通信流程（Android篇）</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-02-26T12:18:36.000Z" itemprop="datePublished">2018年02月26日</time>
+</span>
+      
+      
+      
+<a href="/2018/02/26/rn-android-communicate/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章简要介绍一下android平台，js和java互相调用时，经过的流程。</p>
+<h3 id="js调用java"><a href="#js调用java" class="headerlink" title="js调用java"></a>js调用java</h3><p>要从js端调用java代码，需要把java端能被调用的接口，在js代码中进行注册。这个实现在react-native&#x2F;Libraries&#x2F;BatchedBridge&#x2F;NativeModules.js文件中。</p>
+<p>看NativeModules.js内的代码里有：</p>
+<pre><code>let NativeModules : &#123;[moduleName: string]: Object&#125; = &#123;&#125;;
+if (global.nativeModuleProxy) &#123;
+    NativeModules = global.nativeModuleProxy;
+&#125; else &#123;
+    const info = genModule(config, moduleID);
+    NativeModules[info.name] = info.module;
+&#125;
+</code></pre>
+<p>这里把代码简化了一下，这段代码其实是说明了两种情况，当加载离线bundle时，genModule是从ReactCommon&#x2F;cxxreact&#x2F;JSCNativeModules.cpp里调进来的，否则是从ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;ProxyExecutor.cpp里把__fbBatchedBridgeConfig传进来然后解析的。具体的细节不用深究。总之java端有哪些接口可供调用，模块名函数名等信息传到js层，然后经过一层封装，实际调用了MessageQueue里的enqueueNativeCall方法。</p>
+<p>在enqueueNativeCall方法里我们可以看到一个细节，就是js对原生的调用是被存储在队列里的，每5毫秒把这些请求集中交给原生处理并清空一次队列。从js开始进入原生代码的入口是</p>
+<pre><code>global.nativeFlushQueueImmediate(queue);
+</code></pre>
+<p>这个方法定义在ReactCommon&#x2F;cxxreact&#x2F;JSCExecutor.cpp中。它的实现是</p>
+<pre><code>m_delegate-&gt;callNativeModules(*this, folly::parseJson(queueStr), false);
+</code></pre>
+<p>这个m_delegate如果一路跟踪的话，就会发现是一个JsToNativeBridge类实例，这个类定义在ReactCommon&#x2F;cxxreact&#x2F;NativeToJsBridge.cpp中。JsToNativeBridge的callNativeModules方法实现为</p>
+<pre><code>m_registry-&gt;callNativeMethod(call.moduleId, call.methodId, std::move(call.arguments), call.callId);
+</code></pre>
+<p>进入ModuleRegistry类的callNativeMethod方法中，发现执行的是NativeModule类的invoke方法，而继承自NativeModule类的有两个：一个是ReactCommon&#x2F;cxxreact&#x2F;CxxNativeModule.h，我们用它实现了js与C++的直接通信，这个以后有空再写。另一个是ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;JavaModuleWrapper.h里的JavaNativeModule。JavaNativeModule的invoke方法通过JNI调用了java方法。</p>
+<pre><code>static auto invokeMethod = wrapper_-&gt;getClass()-&gt;getMethod&lt;void(jint, ReadableNativeArray::javaobject)&gt;(&quot;invoke&quot;);
+</code></pre>
+<p>然后我们去寻找JavaNativeModule类在java层对应的什么类。回到前面跟踪的路线，JsToNativeBridge的实例来自于NativeToJsBridge类的构造函数，而NativeToJsBridge的实例来自于Instance.cpp的initializeBridge方法，然后跟踪到CatalystInstanceImpl.cpp里的initializeBridge方法，这是个JNI方法，java层传过来的javaModules就是在这个函数里，被封装成了JavaNativeModule类。我们找到ReactAndroid&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;facebook&#x2F;react&#x2F;bridge&#x2F;CatalystInstanceImpl.java里的initializeBridge方法，就知道C++中的JavaNativeModule对应了java中的JavaModuleWrapper类，这样最终我们就调用了JavaModuleWrapper类里的invoke方法。</p>
+<h3 id="java调用js"><a href="#java调用js" class="headerlink" title="java调用js"></a>java调用js</h3><p>源代码中有一个很好的从java调用js的例子，就是ReactRootView里的代码</p>
+<pre><code>String jsAppModuleName = getJSModuleName();
+catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, appParams);
+</code></pre>
+<p>从CatalystInstanceImpl.java的getJSModule方法里我们能看出，所有java能调用的js接口，都是继承自JavaScriptModule类，我们可以在项目中搜一下，就能默认有哪些类可以调用了，例如我们最常用的DeviceEventManagerModule。在JavaScriptModuleRegistry类中通过动态代理创建JavaScriptModule，这块我不太了解，所以只能跳过去了。实际我们调用的是JavaScriptModuleInvocationHandler类的invoke方法，它调用了CatalystInstanceImpl.java内的callFunction方法。然后通过PendingJSCall类的call方法，调用了</p>
+<pre><code>catalystInstance.jniCallJSFunction(mModule, mMethod, arguments);
+</code></pre>
+<p>这是一个JNI方法，于是进入到了ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;CatalystInstanceImpl.cpp内，然后来到ReactCommon&#x2F;cxxreact&#x2F;Instance.cpp的callJSFunction方法，然后是NativeToJsBridge的callFunction方法，再来到JSCExecutor的callFunction方法，在这里找到MessageQueue.js里的callFunctionReturnFlushedQueue方法调用。看messageQueue.js的__callFunction方法里，实现是</p>
+<pre><code>const moduleMethods = this.getCallableModule(module);
+</code></pre>
+<p>哪些模块能够被调用，来自于MessageQueue类的registerLazyCallableModule，在Libraries文件夹内搜一下，就能找到Libraries&#x2F;Core&#x2F;InitializeCore.js。到这里就顿时清楚了，这些类在Java层中以继承自JavaScriptModule的interface形式记录下来，在js层中具体实现，然后按照上述流程最终执行js代码。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/3/index.html">http://yangguang1029.github.io/page/3/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/page/2/">Vorheriger</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

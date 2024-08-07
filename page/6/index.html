@@ -1,162 +1,749 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
+
+      <div class="outer">
+        <section id="main">
+  <article id="post-rn-reducer-pure" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/10/16/rn-reducer-pure/">ReactNative中的reducer函数中的浅拷贝和深拷贝</a>
-    <div class="post-item-summary">
-      我们都知道reducer函数必须是纯函数，不能修改传入的state参数。先看一段示例代码
-export function updateData(state=[], action) &#123;
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/16/rn-reducer-pure/">ReactNative中的reducer函数中的浅拷贝和深拷贝</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-10-16T12:15:36.000Z" itemprop="datePublished">2017年10月16日</time>
+</span>
+      
+      
+      
+<a href="/2017/10/16/rn-reducer-pure/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们都知道reducer函数必须是纯函数，不能修改传入的state参数。先看一段示例代码</p>
+<pre><code>export function updateData(state=[], action) &#123;
     switch(action.type)&#123;
         case Actions.ADD:
             return state.concat(action.data);
         case Actions.UPDATE:
-            
-      <a class="read-more" href="/2017/10/16/rn-reducer-pure/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.10.16</div>
-      <div class="tags">
+            state[action.index] = action.data
+            return state
+        default:
+            return state;
+    &#125;
+&#125;
+</code></pre>
+<p>这里state是一个简单的数组，ADD操作返回的是一个新的state，因为concat函数会创建并返回一个新的array。而UPDATE操作是修改了原state后返回原state。在demo中的表现就是，当reducer收到ADD时，会触发render刷新界面。而当收到update时，不会触发render，但如果再次收到ADD触发render刷新界面时，能看到UPDATE操作的数据已经被更新了。</p>
+<p>结论就是</p>
+<ul>
+<li>只要返回的是原state，就不会触发render。这也正是我们default需要返回state本身的原因。即使state数据发生了变化，也不会触发render，但数据的变化被存储起来了。</li>
+<li>只要返回的是新state，就会触发render，即使数据完全不变</li>
+</ul>
+<p>如果希望上面的UPDATE生效的话也很简单，把return state改成return state.slice(0)就可以了。但这种操作是不对的，虽然通过返回一个新的state来让render触发了，但它修改了state，它会导致的问题就是在component的componentWillReceiveProps函数里，nextProps和原来的props完全一致。reducer的原则是每个action对应着一个state，如果在action操作前后state相同，那就失去了这个特性了。</p>
+<p>我们一般使用的Object.assign来构造一个新的state，Object.assign执行的就是浅拷贝而不是深拷贝，所以如果我们操作的state是一个比较复杂的结构，那么应该想办法手动执行深拷贝，否则使用浅拷贝的话，对应的内容就是同一份。</p>
+<pre><code>export function updateDeep(state=&#123;sth:[]&#125;, action) &#123;
+    let sth = state.sth;
+    switch(action.type)&#123;
+        case Actions.ADD:
+            sth.push(&#123;data:action.data&#125;);
+            return Object.assign(&#123;&#125;, &#123;sth:sth&#125;)
+        case Actions.DELETE:
+            sth.splice(action.index, 1);
+            return Object.assign(&#123;&#125;, &#123;sth:sth&#125;)
+        case Actions.UPDATE:
+            sth[action.index].data = action.data;
+            return Object.assign(&#123;&#125;, &#123;sth:sth&#125;)
+        default:
+            return state;
+    &#125;
+&#125;
+</code></pre>
+<p>这个reducer函数直接修改了state.sth，虽然使用Object.assign返回了一个新的state，触发了render进行了刷新，但如果在componentWillReceiveProps函数里观察，就会发现this.props里的sth和nextprops里的sth是一模一样的，也就是执行action操作前后的state没有区分开来。</p>
+<p>要解决上面的问题，可以有两种方案，一个是把reducer函数细分，确保在操作state时不会执行对对象进行浅拷贝。比如第二个例子的state改为[]，用combineReducer来合并细分后的reducer函数，但如果数组成员是Object，而不是简单数据类型，就仍然有浅拷贝的问题，所以可以用第二种方案，先把state深拷贝一份，然后修改这个拷贝后的state并返回，如果state是个很复杂的数据结构，深拷贝一次代价会比较大。所以实际中应该这两种方案结合起来。</p>
+
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-git-work-flow" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/10/11/git-work-flow/">一个比较好的git分支管理方案</a>
-    <div class="post-item-summary">
-      假如当前处于开发分支develop上，接到一个任务时，使用git的话，应该优先考虑开一个分支来做这件事情，假设我们开了一个分支b1，这个任务未必是可以一次开发完，可能中间去做了别的事情，导致写了一半的代码暂时提交上去，这样到这个任务完成时，这个分支有了commit1, commit2…..一系列的提交。但假设这是一件完整的单独的功能，我们需要让人review代码并作为一次完整的提交的时候，我们可以这么做：
-在b1分支上先git reset –soft回到开分支的节点去，这样我
-      <a class="read-more" href="/2017/10/11/git-work-flow/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.10.11</div>
-      <div class="tags">
-        
-        <div class="tag-item">git</div>
-        
-      </div>
-    </div>
-  </section>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/11/git-work-flow/">一个比较好的git分支管理方案</a>
+    </h1>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/10/11/rn_listview/">ReactNative中的listView使用介绍</a>
-    <div class="post-item-summary">
-      今天下午稍微把listView的js代码看了一遍，大致总结一下它的接口和使用，官方文档上的介绍太过简单。listView的js源代码位于node_modules\react-native\Libraries文件夹内。
-一个最简单的listView，代码如下
-&lt;ListView
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-10-11T12:22:43.000Z" itemprop="datePublished">2017年10月11日</time>
+</span>
+      
+      
+      
+<a href="/2017/10/11/git-work-flow/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>假如当前处于开发分支develop上，接到一个任务时，使用git的话，应该优先考虑开一个分支来做这件事情，假设我们开了一个分支b1，这个任务未必是可以一次开发完，可能中间去做了别的事情，导致写了一半的代码暂时提交上去，这样到这个任务完成时，这个分支有了commit1, commit2…..一系列的提交。但假设这是一件完整的单独的功能，我们需要让人review代码并作为一次完整的提交的时候，我们可以这么做：</p>
+<p>在b1分支上先git reset –soft回到开分支的节点去，这样我们在这个分支上所有的改动，都变成了待commit的状态，然后我们找人review并提交。之后回到develop分支上，用git cherry-pick把刚才那个提交搬到develop分支上来，在develop分支上就只会看到一个干干净净的提交节点了。然后我们删除本地分支b1就可以了。</p>
+<p>相比其它做法，比如在develop分支上使用merge来合并，它的缺点是查看develop分支的log时，会看到b1分支跟它交错，如果我们有很多个分支b1,b2….那develop分支的log看起来就会像蜘蛛网一样乱了。</p>
+<p>当然我们可以用git merge –no-ff或者git rebase来保持develop分支的干净，但这样也有缺陷，我们在b1分支上有很多临时提交节点，也全部在develop分支上显示了，明明只是一个单独的任务，却有很多个commit节点，在查看log的时候，也会比较麻烦。</p>
+<p>有的人不想临时提交，所以要做别的事情时，使用stash来暂存工作区，再次回到分支来时，使用stash pop恢复工作区，这是非常不可取的，一旦分支多了，在某个分支上stash，另一个分支上pop，就容易乱套了。所以还是尽量commit，但如果又不想让commit节点太多太乱的话，就可以用reset的办法来合并成一次提交，就干净了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn_listview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/11/rn_listview/">ReactNative中的listView使用介绍</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-10-11T11:15:36.000Z" itemprop="datePublished">2017年10月11日</time>
+</span>
+      
+      
+      
+<a href="/2017/10/11/rn_listview/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>今天下午稍微把listView的js代码看了一遍，大致总结一下它的接口和使用，<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.43/using-a-listview.html#content">官方文档</a>上的介绍太过简单。listView的js源代码位于node_modules\react-native\Libraries文件夹内。</p>
+<p>一个最简单的listView，代码如下</p>
+<pre><code>&lt;ListView
       dataSource=&#123;this.state.dataSource&#125;
-      renderRow=&#123;(rowData) =&gt; &lt;Text&
-      <a class="read-more" href="/2017/10/11/rn_listview/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.10.11</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/09/19/rn-image/">ReactNative之Image控件从js到java的追踪流程</a>
-    <div class="post-item-summary">
-      我们以image控件为例，简单的介绍下一个系统控件的实现，方便进行自定义，以及了解它的内部实现。
-我们要使用Image的话，第一步就是
-import &#123;Image&#125; from &quot;react-native&quot;
+      renderRow=&#123;(rowData) =&gt; &lt;Text&gt;&#123;rowData&#125;&lt;/Text&gt;&#125;
+ /&gt;
+</code></pre>
+<h3 id="dataSource"><a href="#dataSource" class="headerlink" title="dataSource"></a>dataSource</h3><p>dataSource顾名思义是为了给listView提供数据源，这个类的源代码为ListViewDataSource.js。这个类除了存储数据外，还提供了4个接口给listView调用，这4个接口我们都可以自定义实现，其中2个有默认实现，2个没有。这段源代码就是</p>
+<pre><code>this._rowHasChanged = params.rowHasChanged;
+this._getRowData = params.getRowData || defaultGetRowData;
+this._sectionHeaderHasChanged = params.sectionHeaderHasChanged;
+this._getSectionHeaderData =
+  params.getSectionHeaderData || defaultGetSectionHeaderData;
+</code></pre>
+<p>rowHasChanged是一定要实现的，用来区分两个row是否相同，如果没有特殊需求的话，使用下面的就可以了</p>
+<pre><code>rowHasChanged: (r1, r2) =&gt; r1 !== r2
+</code></pre>
+<p>sectionHeaderHasChanged是如果listView有分节，则必须要的，没有特殊需求的话可以直接</p>
+<pre><code>sectionHeaderHasChanged: (s1, s2) =&gt; s1 !== s2
+</code></pre>
+<p>getRowData这个源代码有提供默认的实现，它用来获取每行的需要显示的数据，没有特殊需求的话不用实现<br>getSectionHeaderData源代码也有默认实现，顾名思义它用来获取每节的数据。</p>
+<p>dataSource要拿来使用，除了实现必须的接口之外，还需要给它提供数据，这就用到了cloneWithRows和cloneWithRowsAndSections这两个方法，前者是后者的简化版，所以我们就拿最复杂的来举例说明。cloneWithRowsAndSections的函数声明为</p>
+<pre><code> cloneWithRowsAndSections(
+  dataBlob: any,
+  sectionIdentities: ?Array&lt;string&gt;,
+  rowIdentities: ?Array&lt;Array&lt;string&gt;&gt;): ListViewDataSource
+</code></pre>
+<p>它接受三个参数，并返回一个ListViewDataSource的实例对象。第一个参数dataBlob是传入的数据，它应该是一个Object，第二个参数是一个数组，它指定了一些key，也就是说dataBlob这个Object里，sectionIdentities里的keys对应的value才是需要显示的。rowIdentities则是一个二维数组，它指定了每节的数据中，哪些key对应的数据需要显示。前面我们说过，需要显示的数据是由getRowData和getSectionHeaderData来获取的，所以上面所说的是系统默认的实现，我们当然也可以自己去实现这两个接口，来自定义数据的获取行为。 以下是一段示例代码</p>
+<pre><code>let data=[[&quot;1&quot;,&quot;2&quot;, &quot;3&quot;],[&quot;4&quot;,&quot;5&quot;, &quot;6&quot;],[&quot;7&quot;,&quot;8&quot;, &quot;9&quot;]];
+const ds = new ListView.DataSource(&#123;
+    rowHasChanged: (r1, r2) =&gt; r1 !== r2, 
+    sectionHeaderHasChanged: (s1, s2) =&gt; s1 !== s2
+&#125;);
+&lt;ListView
+    dataSource=&#123;ds.cloneWithRowsAndSections(data, [&quot;0&quot;, &quot;2&quot;], [[0,1], [1,2]])&#125;
+/&gt;
+</code></pre>
+<p>这段代码的行为是显示两个section，第一个section显示1和2，第二个section会显示8和9。这个例子里dataBlob是一个数组，它只是比较特殊的Object，key是0123…，如果是普通的key-value也是一样处理。cloneWithRows同理但更为简单，它只有两个参数，第一个参数dataBlob是传入的数据，第二个参数是一个数组，指定需要显示的rowIdentities。</p>
+<p>对于这样一段代码</p>
+<pre><code>let data = [&quot;111&quot;, &quot;222&quot;, &quot;333&quot;]
+&lt;ListView
+    dataSource=&#123;ds.cloneWithRowsAndSections(data)&#125;
+/&gt;
+</code></pre>
+<p>显示效果会是有三个section，每个section有3个row，这是由于系统默认的getRowData和getSectionHeaderData实现方式决定的，思考一下就能明白了。</p>
+<h3 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h3><p>把dataSource弄明白之后，接下来看listView。从源代码的propTypes可以查看它能接收的props。</p>
+<ul>
+<li><p>dataSource就是我们上面说到的，给它传递一个dataSource实例即可</p>
+</li>
+<li><p>renderSeparator函数声明为(sectionID, rowID, adjacentRowHighlighted) &#x3D;&gt; renderable<br>这个函数可以不用实现，系统会有默认实现，它的作用是绘制listView里每节中各个行的分割线。adjacentRowHighlighted为bool值，它的值由renderRow函数指定。</p>
+</li>
+<li><p>renderRow函数声明为(rowData, sectionID, rowID, highlightRow) &#x3D;&gt; renderable，这是必须实现的，作用是绘制每个单元行，rowData就是从dataSource里获取来的数据，sectionID为所在节id，rowID为所在行的id。这三个数据都是dataSource传递过来的，所以像上面的那个dataSource例子，sectionID分别是”0”, “1”, “2”, rowID是0, 1, 2。最后的highlightRow参数是一个function，它可以在renderRow函数里适当的时候调用（比如按钮被点击），调用highlightRow(sectionID, rowID)可以让这个单元在上面的renderSeparator函数里接受到的adjacentRowHighlighted变为true。不要直接在renderRow函数里调用highlightRow函数，它会导致死循环然后调用栈溢出</p>
+</li>
+<li><p>renderSectionHeader函数声明为(sectionData, sectionID) &#x3D;&gt; renderable，如果listView有分节，则实现此函数来绘制每节的头部，返回null或者undefined则不会渲染。</p>
+</li>
+<li><p>initialListSize用来指定起始时渲染多少个单元行，如果不指定的话，系统默认是10个。但首次渲染的单元行数量不完全取决于此，还取决于一个属性值DEFAULT_SCROLL_RENDER_AHEAD &#x3D; 1000，这代表整个listView最多渲染多少个逻辑像素高，首次渲染的单元行数量取这两者中较大的那个。这是用来做性能优化的，如果确实碰到性能瓶颈时，需要将源代码完全看明白才能着手，所以建议在没完全看明白源代码之前没必要去碰这些参数。</p>
+</li>
+<li><p>scrollRenderAheadDistance这是一个数字，前面说过了，它参与限制首次渲染的单元行数量，默认值为1000，我们写一个demo，设置数据量比较大，然后让这个值为不同的值，可以看到首次渲染的单元行数量会不一样</p>
+</li>
+<li><p>onEndReached在整个listView滚动到最底部时会被调用的回调</p>
+</li>
+<li><p>onEndReachedThreshold是一个数字，指定当滑动了多少距离时会触发onEndReached事件</p>
+</li>
+<li><p>pageSize指定了每次事件循环时渲染的单元格数量</p>
+</li>
+<li><p>renderFooter和renderHeader函数声明为() &#x3D;&gt; renderable，它们渲染整个listView的头部和底部，头部和底部会随着listView滑动。</p>
+</li>
+<li><p>renderScrollComponent函数声明为(props) &#x3D;&gt; renderable，用来渲染装listView内容的容器，默认实现是直接返回了一个ScrollView</p>
+</li>
+<li><p>onChangeVisibleRows函数声明为(visibleRows, changedRows) &#x3D;&gt; void，它在当前正在显示哪些单元行发生变化时被调用，visibleRows是一个字典，形式为{ sectionID: { rowID: true }}，表示所有当前可见的单元行，changedRows也是一个字典，形式为{ sectionID: { rowID: true | false }}，表示visible发生了变化的单元行</p>
+</li>
+<li><p>removeClippedSubviews 这是一个bool值，默认是true，用来优化数据量很大时的显示性能</p>
+</li>
+<li><p>stickyHeaderIndices,这是一个数字数组，用来指定哪些单元行在listview滑动时固定在屏幕顶端，只在ios平台而且是竖直方向的listView上才生效</p>
+</li>
+<li><p>enableEmptySections,这是一个Bool值，用来指定当一个没有数据的节是否需要展示，例如dataSource数据为[[1,2],[],[3,4]]时，中间的那个节（包括sectionHead和rows）是否会展示，如果不指定的话这个值为undefined，就不会显示。</p>
+</li>
+</ul>
+<p>以上就是listView的所有props了，也就是说明白了上面的内容，使用listView来完成功能肯定没问题了，但如果希望了解更多的细节，还是需要查看源代码，包括js端以及native端的源码。react-native的最新版本提供了flatList组件，它是listView的升级版，应该优先考虑使用flatList。</p>
+<p>ps：当我们修改listView的数据源时，即使只是修改数组内的一项，也会导致整个listView都重新刷新，如果短时间内频繁更新数据源的话，可能导致性能瓶颈，应该优化为缓存数据后集中更新一次。</p>
 
-我们需要找到源文件export出Image的地方，它位于node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Image目录下。基本上RN的js源代码都在这个Libraries目录下。
-      <a class="read-more" href="/2017/09/19/rn-image/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.09.19</div>
-      <div class="tags">
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/08/07/rn-new-saga/">创建一个redux saga项目的简要流程</a>
-    <div class="post-item-summary">
-      我们先新建一个RN项目
-react-native init testrn
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
 
-然后安装redux
-cd testrn
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-image" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/19/rn-image/">ReactNative之Image控件从js到java的追踪流程</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-09-19T03:18:36.000Z" itemprop="datePublished">2017年09月19日</time>
+</span>
+      
+      
+      
+<a href="/2017/09/19/rn-image/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们以image控件为例，简单的介绍下一个系统控件的实现，方便进行自定义，以及了解它的内部实现。</p>
+<p>我们要使用Image的话，第一步就是</p>
+<pre><code>import &#123;Image&#125; from &quot;react-native&quot;
+</code></pre>
+<p>我们需要找到源文件export出Image的地方，它位于node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Image目录下。基本上RN的js源代码都在这个Libraries目录下。</p>
+<p>在Image.android.js里，文件结尾是</p>
+<pre><code>module.exports = Image;
+</code></pre>
+<p>证明我们使用的Image就是这里导出的。在这个文件的render函数里，可以看出来它使用了RKImage控件。然后查找RKImage的来源</p>
+<pre><code>var RKImage = requireNativeComponent(&#39;RCTImageView&#39;, Image, cfg);
+</code></pre>
+<p>可以看出来，RKImage是native的实现，所以我们到node_modules&#x2F;react-native&#x2F;ReactAndroid&#x2F;src&#x2F;main&#x2F;java目录下搜索关键字RCTImageView,找到在哪里注册的。</p>
+<p>观察一下搜索结果，可以看到有两个类RCTImageViewManager和ReactImageManager，他们都是导出到js层的类，且导出名字都是RCTImageView。</p>
+<p>我们找一下这两个类是在哪里注册的，如果对流程比较熟悉的话，看到它们继承自ViewManager也已经知道了。在node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\shell\MainReactPackage.java的createViewManagers方法里可以看到</p>
+<pre><code>if(useFlatUi) &#123;
+    viewManagers.add(new RCTImageViewManager());
+&#125;else&#123;
+    viewManagers.add(new ReactImageManager());
+&#125;
+</code></pre>
+<p>所以根据useFlatUi的值，Image控件的native实现,可能是node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\views\image\ReactImageView.java或者node_modules\react-native\ReactAndroid\src\main\java\com\facebook\react\flat\RCTImageView.java</p>
+<p>其余控件如果想追踪native实现，也可以按这个流程走就行了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-new-saga" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/08/07/rn-new-saga/">创建一个redux saga项目的简要流程</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-08-07T12:18:36.000Z" itemprop="datePublished">2017年08月07日</time>
+</span>
+      
+      
+      
+<a href="/2017/08/07/rn-new-saga/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们先新建一个RN项目</p>
+<pre><code>react-native init testrn
+</code></pre>
+<p>然后安装redux</p>
+<pre><code>cd testrn
 npm install --save redux
+</code></pre>
+<p>在动手之前确保自己已经理解了redux的概念 <a target="_blank" rel="noopener" href="http://cn.redux.js.org/">redux官方中文文档</a>。</p>
+<p>现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设计为</p>
+<pre><code>&#123;
+    &quot;subState1&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;,
+    &quot;subState2&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;
+&#125;
+</code></pre>
+<p>实际项目中的state肯定不会这么简单，可能会非常庞大，这就要求结构不能太草率，因为是树状结构，所以要掌握好分级的粒度，层级太少则可能单个子state过于复杂，因为一个reducer处理一个子state，则会导致reducer函数过于繁冗。层级太多则不易梳理结构，显得混乱。</p>
+<p>然后我们给这两个修改text的动作设定两个action</p>
+<pre><code>const CHANGE1 = &quot;change1&quot;;
+const CHANGE2 = &quot;change2&quot;;
+</code></pre>
+<p>然后根据这个结构来写reducer</p>
+<pre><code>function reducer1(state=&#123;&quot;text&quot;:&quot;&quot;&#125;, action) &#123;
+    if(action.type === CHANGE1) &#123;
+        return Object.assign(&#123;&#125;, state, &#123;&quot;text&quot;:&quot;hello&quot; + action.data&#125;);
+    &#125;
+    return state;
+&#125;
+function reducer2(state=&#123;&quot;text&quot;:&quot;&quot;&#125;, action) &#123;
+    if(action.type === CHANGE2) &#123;
+        return Object.assign(&#123;&#125;, state, &#123;&quot;text&quot;:&quot;world&quot; + action.data&#125;);
+    &#125;
+    return state;
+&#125;
+let reducer = combineReducers(&#123;&quot;subState1&quot;:reducer1, &quot;subState2&quot;:reducer2&#125;);
+</code></pre>
+<p>有的人在使用combineReducers时，习惯使用ES5的对象简写，例如</p>
+<pre><code>let reducer = combineReducers(&#123;reducer1, reducer2&#125;)
+</code></pre>
+<p>这样不是很好，这样写的话，state的实际内容就是</p>
+<pre><code>&#123;
+    &quot;reducer1&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;,
+    &quot;reducer2&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;
+&#125;
+</code></pre>
+<p>我们在使用state数据时，以reducer1为key，而reducer1本身又是reducer函数的名称，一不小心就容易搞糊涂。所以我们提倡在设计state时就想好子state的key，然后在combine时用key:reducer的形式。</p>
+<p>为了方便使用redux，我们还需要react-redux库</p>
+<pre><code>npm install --save react-redux
+</code></pre>
+<p>我们使用connect这个API，来简化触发和监听action的操作。我们开始把这个页面写出来</p>
+<pre><code>import &#123;Provider, connect&#125; from &quot;react-redux&quot;
 
-在动手之前确保自己已经理解了redux的概念 redux官方中文文档。
-现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设
-      <a class="read-more" href="/2017/08/07/rn-new-saga/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.08.07</div>
-      <div class="tags">
+class TestRN extends Component&#123;
+    render()&#123;
+        return (&lt;View&gt;
+            &lt;Text&gt;&#123;this.props.subState1.text&#125;&lt;/Text&gt;
+            &lt;Text&gt;&#123;this.props.subState2.text&#125;&lt;/Text&gt;
+            &lt;Button title=&quot;btn1&quot; onPress=&#123;()=&gt;&#123;
+                this.props.createSagaAction1();
+            &#125;&#125;/&gt;
+            &lt;Button title=&quot;btn2&quot; onPress=&#123;()=&gt;&#123;
+                this.props.createSagaAction2();
+            &#125;&#125;/&gt;
+        &lt;/View&gt;)
+    &#125;
+&#125;
+
+const mapStateToProps = (state, ownProps) =&gt;&#123;
+    return state;
+&#125;
+const mapDispatchToProps = (dispatch, ownProps)=&gt;&#123;
+    return bindActionCreators(&#123;createSagaAction1, createSagaAction2&#125;, dispatch);
+&#125;
+export default connect(mapStateToProps, mapDispatchToProps)(TestRN)
+</code></pre>
+<p>这段代码里，我们点击按钮后，并不是发出了CHANGE1和CHANGE2事件，而是createSagaAction1和createSagaAction2，这是因为我打算在接下来使用redux saga，让它收到而是createSagaAction1和createSagaAction2后，模拟一次异步操作，再由saga来发出CHANGE1和CHANGE2事件</p>
+<p>redux saga是用来处理异步操作的，所以我们先写个模拟异步的功能函数</p>
+<pre><code>function delay(cb, time) &#123;
+    return new Promise((resolve)=&gt;&#123;
+        setTimeout(()=&gt;&#123;
+            cb(parseInt(Math.random() * 100));
+            resolve();
+        &#125;, time);
+    &#125;)
+&#125;
+async function getNum()&#123;
+    let a;
+    await delay((num)=&gt;&#123;
+        a = num;
+    &#125;, 5000);
+    return a;
+&#125;
+</code></pre>
+<p>然后开始redux saga相关，首先是安装saga</p>
+<pre><code>npm install --save redux-saga
+</code></pre>
+<p>然后开始代码，我们把点击按钮要发出的两个action实现出来然后监听并处理</p>
+<pre><code>import regeneratorRuntime from &quot;regenerator-runtime&quot;;
+
+const SAGA_ACTION1 = &quot;sagaAction1&quot;;
+const SAGA_ACTION2 = &quot;sagaAction2&quot;;
+function createSagaAction1()&#123;
+    return &#123;&quot;type&quot;: SAGA_ACTION1&#125;;
+&#125;
+function createSagaAction2()&#123;
+    return &#123;&quot;type&quot;: SAGA_ACTION2&#125;;
+&#125;
+function* sagaFunc1()&#123;
+    while(true) &#123;
+        yield take(SAGA_ACTION1);
+        let a = yield call(getNum);
+        yield put(&#123;type:CHANGE1, data:a&#125;);
+    &#125;
+&#125;
+function* sagaFunc2()&#123;
+    while(true) &#123;
+        yield take(SAGA_ACTION2);
+        let a = yield call(getNum);
+        yield put(&#123;type:CHANGE2, data:a&#125;);
+    &#125;
+&#125;
+function* mySaga()&#123;
+    yield fork(sagaFunc1);
+    yield fork(sagaFunc2);
+&#125;
+</code></pre>
+<p>这里需要注意的就是saga函数必须是generators函数，不能用async, await。 sagaFunc1通过使用三个effect来进行操作，首先使用take来监听SAGA_ACTION1，然后使用call来阻塞调用异步函数，最后使用put来发出CHANGE1这个action，这时我们前面写的reducer收到CHANGE1这个action，就会修改state，从而让页面发生变化。</p>
+<p>然后就是不要忘了import regeneratorRuntime，否则项目是跑不起来的，会出现红屏错误，提示cannot read property ‘mark’ of undefined。这是babel处理generators函数所需要的。</p>
+<p>最后是创建store和使用provider了</p>
+<pre><code>let middle = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(middle));
+middle.run(mySaga);
+
+export default class TestRNContainer extends Component&#123;
+    render()&#123;
+        return (
+            &lt;Provider store = &#123;store&#125;&gt;
+            &lt;TestRN /&gt;
+            &lt;/Provider&gt;
+        )
+    &#125;
+&#125;
+</code></pre>
+<p>到此为止，一个新建项目使用redux saga就全部完成了</p>
+
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-ref" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/08/02/rn-ref/">ReactNative之ref赋值应使用成员函数</a>
-    <div class="post-item-summary">
-      在线上项目收集的js error里，发现有一个问题，有的ref成员变量可能变为null,然后就出了问题。先看下面的代码。
-class Test extends Component&#123;
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/08/02/rn-ref/">ReactNative之ref赋值应使用成员函数</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-08-02T12:18:36.000Z" itemprop="datePublished">2017年08月02日</time>
+</span>
+      
+      
+      
+<a href="/2017/08/02/rn-ref/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在线上项目收集的js error里，发现有一个问题，有的ref成员变量可能变为null,然后就出了问题。先看下面的代码。</p>
+<pre><code>class Test extends Component&#123;
     constructor(props) &#123;
         super(props);
         this._ref = null;
@@ -164,117 +751,665 @@ class Test extends Component&#123;
 
     render()&#123;
         return (&lt;View&gt;
-      
-      <a class="read-more" href="/2017/08/02/rn-ref/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.08.02</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/07/26/rn-pixelRatio/">ReactNative中的pixelRatio</a>
-    <div class="post-item-summary">
-      关于pixelRatio，官方文档有相关内容。通过
-PixelRatio.get()
+        &lt;MyComponent ref=&#123;component=&gt;this._ref=component&#125;/&gt;
+        &lt;Button onPress=&#123;this._onPress.bind(this)&#125;/&gt;
+        &lt;/View&gt;	
+        )
+    &#125;
 
-接口可以获取到设备的像素密度，但有的同学不清楚这个像素密度做什么用的，比如我发现在项目里，给图片设置尺寸时，都乘以了这个像素密度值，实际上这是不对的。
-手机屏幕像素是大家都知道的，比如1080*1920，他们指的是物理像素。除此之外还有一个参数叫做设备独立像素，在这里可以看到部分移动设备的相关参数。这个设备独立像素，我们用Dimensions API可以获取到
-import &#123;D
-      <a class="read-more" href="/2017/07/26/rn-pixelRatio/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.07.26</div>
-      <div class="tags">
+    _onPress()&#123;
+        this.setState(&#123;&#125;);
+        this._ref.test();
+    &#125;
+&#125;
+</code></pre>
+<p>当_onPress被调用时，this._ref就可能变为null。</p>
+<p>在facebook的<a target="_blank" rel="noopener" href="https://facebook.github.io/react/docs/refs-and-the-dom.html">官方文档</a>里，最后一段是一个警告信息</p>
+<blockquote>
+<p>If the ref callback is defined as an inline function, it will get called twice during updates, first with null and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. You can avoid this by defining the ref callback as a bound method on the class, but note that it shouldn’t matter in most cases.</p>
+</blockquote>
+<p>可以很清楚的看到，如果ref函数每次都是一个新函数，就可能导致当render函数被执行时，ref被赋值两次，第一次被赋值为null，第二次才被赋值为需要指定的component。上面例子里我们在_onPress函数里调用setState导致页面被重新渲染，然后_ref被重新赋值，有比较小的几率_ref会变为null，如果此时我们使用了_ref变量，就出现问题了。</p>
+<p>解决的办法很简单，我们不应该让ref赋值函数每次都是新的函数，而不管是箭头函数，还是bind方法，每次都是生成一个新函数。所以我们在constructor函数里先绑定好一个成员函数来，然后使用它就可以了。这里就不写代码了，相信对js熟练的同学肯定很快就能写出来。</p>
+
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-pixelRatio" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/07/03/rn-split-bundle/">ReactNative拆分bundle实践</a>
-    <div class="post-item-summary">
-      实践了一下最简单的ReactNative bundle拆分方案。将项目bundle拆分成RN源代码和业务代码，这样在热更新时不用每次都更新整个bundle。
-首先新建一个项目testrn，将index.android.js内代码注释掉，只保留两行import
-import React, &#123; Component &#125; from &#39;react&#39;;
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/07/26/rn-pixelRatio/">ReactNative中的pixelRatio</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-07-26T12:18:36.000Z" itemprop="datePublished">2017年07月26日</time>
+</span>
+      
+      
+      
+<a href="/2017/07/26/rn-pixelRatio/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>关于pixelRatio，<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.43/pixelratio.html#content">官方文档</a>有相关内容。通过</p>
+<pre><code>PixelRatio.get()
+</code></pre>
+<p>接口可以获取到设备的像素密度，但有的同学不清楚这个像素密度做什么用的，比如我发现在项目里，给图片设置尺寸时，都乘以了这个像素密度值，实际上这是不对的。</p>
+<p>手机屏幕像素是大家都知道的，比如1080*1920，他们指的是物理像素。除此之外还有一个参数叫做设备独立像素，在<a target="_blank" rel="noopener" href="https://material.io/devices/">这里</a>可以看到部分移动设备的相关参数。这个设备独立像素，我们用Dimensions API可以获取到</p>
+<pre><code>import &#123;Dimensions&#125; from &quot;react-native&quot;
+let size = Dimensions.get(&quot;window&quot;);
+console.log(&quot;width: &quot; size.width + &quot; height: &quot; + size.height);
+</code></pre>
+<p>而像素密度比pixelRatio，就是物理像素除以独立像素的值。比如我手里的坚果pro，它的物理像素是1080*1920，设备独立像素是360*640，所以它的像素密度是3。 在上面界面里也可以看到，例如ipad, GalaxyTab等平板一般像素密度是1，中断设备像素密度是2，高端些的设备像素密度就是3，当然也有一些设备像素密度是1.5或者2.5等。</p>
+<p>首先我们要明确一点，我们在给图片设置尺寸时，是不需要写单位的，实际上单位就是独立像素。</p>
+<p>假设有两个设备，它们的独立像素相同，都是360*640，那么我有一张图片，设置宽度为180，在这两个设备上都是占了一半屏幕宽。而如果有一个pad它的独立像素是768*1024，我们仍然希望它占一半屏幕的话，就需要把宽度设置为768*0.5&#x3D;384了。例如对于背景图片，显然需要在任何设备上都占满屏幕，所以给它设置尺寸直接就是设备独立像素的值，也就是Dimension.get(“window”)得到的值。有的时候我们不希望随着屏幕变，例如那张图片仍然设置宽度为180，那么它在pad上宽度只占了23.4%。所以我们可以得知，给图片设置尺寸时，只决定于它在不同的独立像素屏幕上，需要显示成什么效果。最简单的方案是两种，要么设为固定值，要么跟屏幕独立像素成比例。否则就根据不同的屏幕来细分了。</p>
+<p>那么这个像素密度拿来做什么用呢？</p>
+<p>仍然说那两个设备，它们独立像素都是360*640，A设备像素密度为1，B设备像素密度为3，很容易得知A设备物理像素为360*640，而B设备物理像素为1080*1920。我有一张图片，美术给的尺寸是360*360,现在我给它设的尺寸宽度为180*180，根据上面所说，在这两个设备上图片都占屏幕一半宽，但A设备屏幕一半的物理像素是180，对于图片物理像素宽度360来说，缩小了一半。B设备屏幕一半的物理像素是540，对于图片物理像素宽度360来说，放大了1.5倍。不论放大还是缩小，都会导致图片显示模糊。如果要达到最好的显示效果，就应该给A设备提供180*180尺寸的图片，给B设备提供540*540尺寸的图片，这就是像素密度的作用。</p>
+<p>是否要根据不同屏幕提供多套素材资源，取决于项目要求。我们在实际项目中可以使用pixelRation接口来实现物理像素和独立像素之间数值的转换，只要记住物理像素&#x3D;独立像素*像素密度这个公式即可。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-split-bundle" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/07/03/rn-split-bundle/">ReactNative拆分bundle实践</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-07-03T12:15:36.000Z" itemprop="datePublished">2017年07月03日</time>
+</span>
+      
+      
+      
+<a href="/2017/07/03/rn-split-bundle/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>实践了一下最简单的ReactNative bundle拆分方案。将项目bundle拆分成RN源代码和业务代码，这样在热更新时不用每次都更新整个bundle。</p>
+<p>首先新建一个项目testrn，将index.android.js内代码注释掉，只保留两行import</p>
+<pre><code>import React, &#123; Component &#125; from &#39;react&#39;;
 import &#123;
     AppRegistry,
     StyleSheet,
-   
-      <a class="read-more" href="/2017/07/03/rn-split-bundle/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.07.03</div>
-      <div class="tags">
+    Text,
+    View
+&#125; from &#39;react-native&#39;;
+</code></pre>
+<p>然后使用bundle命令打包成common.bundle，这就是RN源代码部分</p>
+<pre><code>react-native bundle --entry-file ./index.android.js --platform android --dev false --bundle-output ./output/common.bundle
+</code></pre>
+<p>这里dev可以选择true或者false，如果为了试验建议先设成true，正式使用时使用false</p>
+<p>然后我们将index.android.js内注释代码打开，再使用bundle命令打包成total.bundle</p>
+<p>我们在total.bundle内搜索项目名testrn，很容易找到这么一段代码:(或者使用软件例如compareBeyond对比)</p>
+<pre><code>__d(/* testrn/index.android.js */function(global, require, module, exports) &#123;Object.defineProperty(exports, &quot;__esModule&quot;, &#123;
+    value: true&#125;);
+    var _jsxFileName = &#39;F:\\test\\testrn\\index.android.js&#39;;
+
+    //中间代码省略...
+
+    _reactNative.AppRegistry.registerComponent(&#39;testrn&#39;, function () &#123;
+    return testrn;
+    &#125;);
+&#125;, 0, null, &quot;testrn/index.android.js&quot;);
+</code></pre>
+<p>其实这是整个的一句，从当前的__d到下个__d</p>
+<p>我们把这一段放到一个新建文件叫bussiness.bundle内，同时把common.bundle的最后两行剪切到bussiness.bundle的最后</p>
+<pre><code>;require(120);
+;require(0);
+</code></pre>
+<p>然后我们修改一下C++代码，加载bundle时改成读取common.bundle和bussiness.bundle并连接起来，就可以了。我的修改代码如下，已经测试运行正常：</p>
+<pre><code>//node_modules\react-native\ReactAndroid\src\main\jni\xreact\jni\CatalystInstanceImpl.cpp
+void CatalystInstanceImpl::jniLoadScriptFromAssets(
+    jni::alias_ref&lt;JAssetManager::javaobject&gt; assetManager, const std::string&amp; assetURL) &#123;
+    const int kAssetsLength = 9;  // strlen(&quot;assets://&quot;);
+    auto sourceURL = assetURL.substr(kAssetsLength);
+
+    auto manager = extractAssetManager(assetManager);
+    // auto script = loadScriptFromAssets(manager, &quot;index.android.bundle&quot;);
+    auto script1 = loadScriptFromAssets(manager, &quot;common.bundle&quot;);
+    auto script2 = loadScriptFromAssets(manager, &quot;diff.js&quot;);
+
+    auto script = folly::make_unique&lt;JSBigBufferString&gt;(script1-&gt;size()+script2-&gt;size());
+    memcpy(script-&gt;data(), script1-&gt;c_str(), script1-&gt;size());
+    memcpy(script-&gt;data() + script1-&gt;size(), script2-&gt;c_str(), script2-&gt;size());
+
+    if (JniJSModulesUnbundle::isUnbundle(manager, sourceURL)) &#123;instance_-&gt;loadUnbundle(
+        folly::make_unique&lt;JniJSModulesUnbundle&gt;(manager, sourceURL),
+        std::move(script),
+        sourceURL);
+        return;
+    &#125; else &#123;
+        instance_-&gt;loadScriptFromString(std::move(script), sourceURL);
+    &#125;
+&#125;
+</code></pre>
+
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-connect" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/06/16/rn-connect/">Redux中的Provider和connect</a>
-    <div class="post-item-summary">
-      redux里有不少概念，一时半会看不明白，这里讲下我理解的provider和connect。我们知道使用Reudx，数据作为state被存储在一个单独的store中。我们在渲染时从state获取数据，需要修改数据时，dispatch一个action即可。provider和connect的作用，是为了更方便的存取state数据。
-如果不使用provider和connect，也是完全没问题的，这样的话我们需要把store传入到Component中以便使用，例如需要这么写：
-ind
-      <a class="read-more" href="/2017/06/16/rn-connect/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.06.16</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/06/16/rn-connect/">Redux中的Provider和connect</a>
+    </h1>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2017/06/15/es6-import/">ES6中合并import</a>
-    <div class="post-item-summary">
-      最近打算优化一下ReactNative项目的代码，项目中有个公共模块文件夹utils，里面有不少文件，使用的也很频繁，这就导致了在很多js文件里都有这么一大段代码
-import * as A from &quot;./utils/a&quot; 
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-06-16T03:15:36.000Z" itemprop="datePublished">2017年06月16日</time>
+</span>
+      
+      
+      
+<a href="/2017/06/16/rn-connect/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>redux里有不少概念，一时半会看不明白，这里讲下我理解的provider和connect。我们知道使用Reudx，数据作为state被存储在一个单独的store中。我们在渲染时从state获取数据，需要修改数据时，dispatch一个action即可。provider和connect的作用，是为了更方便的存取state数据。</p>
+<p>如果不使用provider和connect，也是完全没问题的，这样的话我们需要把store传入到Component中以便使用，例如需要这么写：</p>
+<pre><code>index.android.js:	//此代码缺少action和reducer的实现，并不能直接运行，只是用以描述
+
+let store = createStore(reducer);
+export default class testrn extends Component&#123;
+    render()&#123;
+        &lt;NoConnect store=&#123;store&#125;/&gt;
+    &#125;
+&#125;
+
+NoConnect.js:
+
+export default class NoConnect extends Component&#123;
+    constructor(props)&#123;
+        super(props);
+        this.state = this.props.store.getState();
+    &#125;
+    render()&#123;
+        return (&lt;View&gt;
+            &lt;Text&gt;this.state.prop1&lt;/Text&gt;
+            &lt;Button title=&quot;click&quot; onPress=&#123;()=&gt;&#123;
+                this.props.store.dispatch(action);
+                this.setState(this.props.store.getState());
+            &#125;&#125;&gt;
+        &lt;/View&gt;)
+    &#125;
+&#125;
+</code></pre>
+<p>从上面可以看出来，我们主要是通过把store传入Component，然后利用它的getState和dispatch接口进行存取数据，数据需要保存为自身的state，在dispatch后需要通过setState来刷新界面。</p>
+<p>如果使用provider和connect，就可以大大简化代码了。例如</p>
+<pre><code>index.android.js:
+
+let store = createStore(reducer);
+export default class testrn extends Component&#123;
+    render()&#123;
+        &lt;Provider store=&#123;store&#125;&gt;
+        &lt;TestContainer  /&gt;
+        &lt;/Provider&gt;
+    &#125;
+&#125;
+
+testContainer.js:
+import &#123; connect &#125; from &#39;react-redux&#39;;
+class testContainer extends Component&#123;
+    render()&#123;
+        return (&lt;View&gt;
+            &lt;Text&gt;this.props.text1&lt;/Text&gt;
+            &lt;Button title=&quot;click&quot; onPress=&#123;()=&gt;&#123;
+                this.props.change1(&quot;123&quot;);
+            &#125;&#125;&gt;
+        &lt;/View&gt;)
+    &#125;
+&#125;
+
+const mapStateToProps = (state, ownProps)=&gt;&#123;
+    return &#123;
+        text1:state.prop1
+    &#125;
+&#125;
+
+const mapDispatchToProps = &#123;
+    change1:Actions.createAction1
+&#125;
+
+export default connect(mapStateToProps, mapDispatchToProps)(testContainer)
+</code></pre>
+<p>从上面代码可以看出来，在Component里不再需要使用store变量，代码简化了。只要被Provider包含着的组件及其子组件，都可以使用connect方法，就不需要到处传递store变量了。</p>
+<p>mapStateToProps的作用，就是把state内的值转换成Component的props的值，这样在Component内使用时，不需要通过store.getState来获取并存为自己的state了。每当state发生变化时，这个方法就会被调用，这样Component的props就被修改了，于是就不用再通过setState来通知页面刷新。</p>
+<p>mapStateToProps是一个方法，它的第一个参数就是state，第二个参数ownProps是传递给Component的props。在上述代码中就是<code>&lt;TestContainer /&gt;</code>处传递的props</p>
+<p>mapDispatchToProps的作用，就是把创建action的方法，绑定在Component的props上，这样就不需要通过store.dispatch来更改state。</p>
+<p>上述代码中mapDispatchToProps是一个Object，它的values就是创建action的方法，keys绑定为Component的props属性，这样在testContainer中调用this.props.change1就创建并发布了一个action。</p>
+<p>mapDispatchToProps也可以是一个方法，它的第一个参数是store的dispatch方法，第二个参数是ownProps。用方法实现比起用Object实现，可以做更多的注入操作，代码如下</p>
+<pre><code>const mapDispatchToProps = (dispatch, ownProps) &#123;
+    return &#123;
+        change1:(data)=&gt;&#123;
+            console.log(&quot;dispatch action1.....&quot;);
+            dispatch(Actions.createAction1(data));
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>可以看到如果用方法来实现，在change1里就可以做很灵活的操作了。同时Redux提供了一个很简便的接口bindActionCreators(Actions, dispatch)，使用它相当于使用Object实现，并且key和创建action的方法名一致。</p>
+<p>上面代码里用到的Actions，是创建action的接口</p>
+<p>除了上面提到的mapStateToProps和mapDispatchToProps外，connect方法后面还可以再带两个参数</p>
+<p>mergeprops</p>
+<p>options:</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-es6-import" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/06/15/es6-import/">ES6中合并import</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-06-15T12:08:14.000Z" itemprop="datePublished">2017年06月15日</time>
+</span>
+      
+      
+      
+<a href="/2017/06/15/es6-import/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近打算优化一下ReactNative项目的代码，项目中有个公共模块文件夹utils，里面有不少文件，使用的也很频繁，这就导致了在很多js文件里都有这么一大段代码</p>
+<pre><code>import * as A from &quot;./utils/a&quot; 
 import * as B from &quot;./utils/b&quot; 
 ...
 import * as G from &quot;./utils/g&quot; 
-import * as H from &quot;./u
-      <a class="read-more" href="/2017/06/15/es6-import/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2017.06.15</div>
-      <div class="tags">
+import * as H from &quot;./utils/h&quot; 
+</code></pre>
+<p>于是我就打算把整个utils内的文件做个汇总，具体实现方案是，在utils文件夹内添加一个index.js，其内容为</p>
+<pre><code>import * as A from &quot;./utils/a&quot; 
+import * as B from &quot;./utils/b&quot; 
+...
+import * as G from &quot;./utils/g&quot; 
+import * as H from &quot;./utils/h&quot;
+export &#123;A, B, ... G, H&#125;
+</code></pre>
+<p>然后原来每个import utils内文件的地方，就改成了</p>
+<pre><code>import &#123;A, B, ... G, H&#125; from &quot;./utils/index&quot;
+</code></pre>
+<p>我总结一下这样改的优劣。</p>
+<p>好处是</p>
+<ol>
+<li>暴露一个唯一的接口，可以保持一致。原来在不同的文件里import同一个接口，可能取不同的名字，在这个文件里是<code>import * as A from &#39;./utils/a&#39;</code>，另一个文件里就可能是<code>import * as B from &#39;./utils/a&#39;</code>了，文件多了容易导致混乱，但我们统一成一个接口，除非特意使用as重命名，否则每个文件里都是一致的</li>
+<li>可以看出来用新的方法减少了一定的代码量，看起来舒服一些。RN本身也是这种风格，例如<code>import &#123;Text, Button&#125; from &#39;react-native&#39;</code>。这样汇总尤其适合用于对外暴露接口。</li>
+</ol>
+<p>当然也有一些不好的地方</p>
+<ol>
+<li>多维护了一个文件，当utils内新加文件时，需要到这个index.js内添加。</li>
+<li>被汇总的文件，要么只export default一个接口，要么以import *的方式被汇总。否则如果从这个文件里import若干个，再从另一个文件里import几个进来，然后汇总出去，就显得比较乱了，会分不清哪个接口是哪个文件的。</li>
+</ol>
+<h3 id="2017-12-15新加："><a href="#2017-12-15新加：" class="headerlink" title="2017&#x2F;12&#x2F;15新加："></a>2017&#x2F;12&#x2F;15新加：</h3><p>最近重构项目，把utils内一些文件挪到别的文件夹，这时才感受到汇总import再export最大的好处了，如果使用汇总的方案，那只需要改index.js一个文件，其余所有的都不用动。 但如果不进行汇总，那有多少个地方import了就需要改多少个地方，漏一个都报错。这应该是使用汇总方案最大的好处吧。</p>
+
         
-        <div class="tag-item">javascript</div>
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/6/index.html">http://yangguang1029.github.io/page/6/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/page/5/">Vorheriger</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
         
       </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
     </div>
-  </section>
-  
-</div>
-
-
-<div class="paginator">
-  <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
-</div>
-
-  </main>
-  <footer class="footer">
-  
-  <span>Copyright © 2024 typo</span>
-  
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

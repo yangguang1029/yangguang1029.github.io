@@ -1,259 +1,1227 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/12/20/rn-improve-flatlist/">ReactNative之flatlist性能优化</a>
-    <div class="post-item-summary">
-      列表页是RN应用开发中非常常见的场景，如果单元行数量较多，单元行UI比较复杂，页面刷新比较频繁，很容易产生性能问题。本文将总结在使用flatlist组件过程中进行性能优化的方向
-减少组件本身的刷新首先我们需要知道，一旦flatlist刷新，它的所有renderItem就会被调用到，如果列表元素很多而且复杂，将会带来很大的性能损耗，所以我们第一件事就是避免flatlist组件本身不必要的刷新，这和所有组件避免重复刷新的做法是一样的，就是避免在props中使用临时成员变量。Fla
-      <a class="read-more" href="/2018/12/20/rn-improve-flatlist/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.12.20</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/12/18/rn-map-state-to-props/">ReactNative之mapStateToProps</a>
-    <div class="post-item-summary">
-      connect是react-redux库提供的一个辅助函数，它的第一个参数是mapStateToProps，官方文档对这个函数的介绍很清晰：
 
-如果定义该参数，组件将会监听 Redux store 的变化。任何时候，只要 Redux store 发生改变，mapStateToProps 函数就会被调用。该回调函数必须返回一个纯对象，这个对象会与组件的 props 合并。如果你省略了这个参数，你的组件将不会监听 Redux store。如果指定了该回调函数中的第二个参数 own
-      <a class="read-more" href="/2018/12/18/rn-map-state-to-props/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.12.18</div>
-      <div class="tags">
+      <div class="outer">
+        <section id="main">
+  <article id="post-rn-improve-flatlist" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/12/11/rn-red-screen/">ReactNative之红屏是如何产生的</a>
-    <div class="post-item-summary">
-      我们在开发RN项目时，红屏是司空见惯的事情，然后我发现很多人会问，调试时出现红屏，那应用发布后是否会红屏呢？要确定的知道答案，还得从源代码去看。
-在node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Core&#x2F;InitializeCore.js中有一段代码
-const handleError = (e, isFatal) =&gt; &#123;
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/20/rn-improve-flatlist/">ReactNative之flatlist性能优化</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-12-20T13:15:36.000Z" itemprop="datePublished">2018年12月20日</time>
+</span>
+      
+      
+      
+<a href="/2018/12/20/rn-improve-flatlist/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>列表页是RN应用开发中非常常见的场景，如果单元行数量较多，单元行UI比较复杂，页面刷新比较频繁，很容易产生性能问题。本文将总结在使用flatlist组件过程中进行性能优化的方向</p>
+<h3 id="减少组件本身的刷新"><a href="#减少组件本身的刷新" class="headerlink" title="减少组件本身的刷新"></a>减少组件本身的刷新</h3><p>首先我们需要知道，一旦flatlist刷新，它的所有renderItem就会被调用到，如果列表元素很多而且复杂，将会带来很大的性能损耗，所以我们第一件事就是避免flatlist组件本身不必要的刷新，这和所有组件避免重复刷新的做法是一样的，就是避免在props中使用临时成员变量。FlatList本身是继承自pureComponent，所以只要props或state进行浅比较不一致，就会刷新。例如下面的代码</p>
+<pre><code>&lt;FlatList
+  &#123;...this.props&#125;
+  style=&#123;&#123;width:100,height:100&#125;&#125;
+  data = &#123;this.state.data&#125;
+  extraData=&#123;this.extraData&#125;
+  keyExtractor=&#123;(item,index) =&gt; &#39;&#39; + index&#125;
+  renderItem=&#123;this.renderItem&#125;
+  ListFooterComponent=&#123;&lt;View style=&#123;&#123;width:100,height:20,backgroundColor:'red'&#125;&#125; /&gt;&#125;
+  onScroll=&#123;this.props.onScroll&#125;
+/&gt;
+</code></pre>
+<p>这段代码里就有很多使用不当的地方，首先是我发现很多人喜欢图方便使用{…this.props}，这是非常不合适的，不论在任何地方都要避免使用这种方式，因为把父组件的所有props原封不动拿来用，很难控制这个组件本身的props变化，从而产生不必要的刷新。onScroll和{…this.props}是一样，使用了其它地方传递来的props，尽量避免这样使用，一定要这么写的话，就去源头查看是否是临时变量，是否在每次render时都会发生变化。其次是style，keyExtractor以及ListFooterComponent，它们的本质都一样，就是使用了临时变量做props，这会导致只要父组件刷新，FlatList也必然刷新，而我们需要的绝不是这样，一个没有多余刷新的FlatList应该是只有data和extraData发生变化时才会进行刷新。改进的办法就是使用类成员变量或者类成员方法来作props，避免每次刷新时都是生成一个新的临时对象。</p>
+<h3 id="keyExtractor"><a href="#keyExtractor" class="headerlink" title="keyExtractor"></a>keyExtractor</h3><p>然后一个很重要的就是keyExtractor，FlatList的原理是往一个ScrollView里面放上所有的单元行组件作为子组件，如果了解React中的<a target="_blank" rel="noopener" href="https://reactjs.org/docs/reconciliation.html">Reconciliation</a>就知道，兄弟组件之间需要使用一个唯一的key来标记自身，keyExtractor就是给每个单元行一个唯一的标识，这里直接用index做标识的话，一旦列表顺序发生变化，例如往列表头插入数据，就会导致大量单元行的刷新，所以应该避免这样简单随意地实现keyExtractor函数，而应该使用每个单元行数据能确定的唯一标识。当然如果可以肯定列表数据的顺序一定不会发生变化，那也没什么问题，只要明白keyExtractor是做什么用就行。</p>
+<h3 id="单元行组件的刷新"><a href="#单元行组件的刷新" class="headerlink" title="单元行组件的刷新"></a>单元行组件的刷新</h3><p>当FlatList刷新之后，FlatList内的所有单元行组件的virtualDom会和之前的进行比较，来判断各个单元行组件是否需要刷新。这要求我们明确每个单元行组件什么时候需要刷新，什么时候不需要。如果不是很理解的话，可以写一个很简单的demo，每次刷新给列表增加一些数据，demo部分代码如下</p>
+<pre><code>renderItem = (&#123;item&#125;) =&gt; &#123;
+  return &lt;Cell data=&#123;item&#125; /&gt;
+&#125;
+
+class Cell extends Component &#123;  //换成PureComponent试试
+  return &lt;View style=&#123;&#123;width:300,height:50&#125;&#125;&gt;
+    &lt;Text&gt;&#123;this.props.data&#125;&lt;/Text&gt;
+  &lt;/View&gt;
+&#125;
+</code></pre>
+<p>如果单元行组件继承自Component，那么每次刷新，所有的单元行组件都会重新render，但如果继承自PureComponent，就会发现只有新增的单元行才会render。这是因为Component即使props没变也会刷新，所以FlatList刷新时所有的单元行组件也都进行了刷新，而PureComponent会进行props的浅比较，所以data没变的单元行就没有刷新。实际项目中，简单的情况可以直接用PureComponent，复杂的时候就需要实现shouldComponentUpdate。我做的一个功能，在界面刷新时，只有屏幕上显示的第一个单元行需要发生变化，其余单元行不变，就是通过实现单元行组件的shouldComponentUpdate来进行控制的，否则所有单元行都刷一遍，就产生多余的重复刷新而影响性能了。</p>
+<h3 id="getItemLayout"><a href="#getItemLayout" class="headerlink" title="getItemLayout"></a>getItemLayout</h3><p>最后需要提一下getItemLayout，在源码中注释里有</p>
+<blockquote>
+<p><code>getItemLayout</code> is the most efficient, and is easy to use if you have fixed height items.Adding <code>getItemLayout</code> can be a great performance boost for lists of several hundred items.</p>
+</blockquote>
+<p>如果单元行的高度是可知的，那么实现getItemLayout接口对于性能优化有很大的好处，因为不用在渲染时临时计算每个单元行的尺寸了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-map-state-to-props" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/18/rn-map-state-to-props/">ReactNative之mapStateToProps</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-12-18T13:15:36.000Z" itemprop="datePublished">2018年12月18日</time>
+</span>
+      
+      
+      
+<a href="/2018/12/18/rn-map-state-to-props/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>connect是react-redux库提供的一个辅助函数，它的第一个参数是mapStateToProps，官方文档对这个函数的介绍很清晰：</p>
+<blockquote>
+<p>如果定义该参数，组件将会监听 Redux store 的变化。任何时候，只要 Redux store 发生改变，mapStateToProps 函数就会被调用。该回调函数必须返回一个纯对象，这个对象会与组件的 props 合并。如果你省略了这个参数，你的组件将不会监听 Redux store。如果指定了该回调函数中的第二个参数 ownProps，则该参数的值为传递到组件的 props，而且只要组件接收到新的 props，mapStateToProps 也会被调用（例如，当 props 接收到来自父组件一个小小的改动，那么你所使用的 ownProps 参数，mapStateToProps 都会被重新计算）。</p>
+</blockquote>
+<p>首先有一个问题，这个函数只要state发生变化就会被调用，然后又返回了一个纯对象，会让人担心是否组件不关心的state部分变化了，也会导致自己刷新呢？答案显然是否定的，mapStateToProps返回的这个对象是拿去做了浅比较。如果浅比较发生不相等，就会导致组件刷新，否则不会（当然我们暂时忽略自定义了shouldComponentUpdate的情况）。我们说的浅比较，就是RN源代码里的shallowEqual,它的实现是浅比较两个对象的所有值。</p>
+<p>对下面这个简单的例子而言</p>
+<pre><code>const mapStateToProps = (state, ownProps) =&gt; &#123;
+  return &#123;
+    world: state.world[0]
+  &#125;
+&#125;
+</code></pre>
+<p>因为我们在这个函数里只关注了state.world，所以state的其它属性变化虽然也会导致这个函数被调用并返回了一个新对象，但因为返回的新对象浅比较相等，所以不会刷新组件。对于state.world来说，我们这里关注的是state.world[0]，而不是state.world本身，所以如果state.world本身发生了变化但是state.world[0]没变，那也不会刷新，如果state.world本身没变，但是state.world[0]通过发生了变化，那也会刷新组件。虽然说的绕口但只要记住它的原理就行，我们是拿这个函数里返回的这个纯对象去执行shallowEqual的。</p>
+<p>因为只要state发生了变化这个函数就一定会被调用，所以如果这个函数里有复杂的计算，就需要考虑memoization。实现的方式一个是通过<a target="_blank" rel="noopener" href="https://cn.redux.js.org/docs/recipes/ComputingDerivedData.html">reselect库</a>，另一个是在connect时，设置它的第四个参数options，这个参数的areStatesEqual属性是一个函数，返回true或者false来决定state是否发生了变化，从而决定mapStateToProps是否会被调用，而我们上面提到的mapStateToProps返回的纯对象是进行了浅比较，也是这里areStatePropsEqual属性决定的，它是一个函数，默认值是shallowEqual。了解options参数更多可以参见<a target="_blank" rel="noopener" href="https://medium.com/@ryansperzel/reduxs-connect-function-and-arestatesequal-option-adc97e00ee0">这篇博客</a></p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-red-screen" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/11/rn-red-screen/">ReactNative之红屏是如何产生的</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-12-11T11:15:36.000Z" itemprop="datePublished">2018年12月11日</time>
+</span>
+      
+      
+      
+<a href="/2018/12/11/rn-red-screen/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>我们在开发RN项目时，红屏是司空见惯的事情，然后我发现很多人会问，调试时出现红屏，那应用发布后是否会红屏呢？要确定的知道答案，还得从源代码去看。</p>
+<p>在node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Core&#x2F;InitializeCore.js中有一段代码</p>
+<pre><code>const handleError = (e, isFatal) =&gt; &#123;
   try &#123;
-    ExceptionsManager.
-      <a class="read-more" href="/2018/12/11/rn-red-screen/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.12.11</div>
-      <div class="tags">
+    ExceptionsManager.handleException(e, isFatal);
+  &#125; catch (ee) &#123;
+    console.log(&#39;Failed to print error: &#39;, ee.message);
+    throw e;
+  &#125;
+&#125;;
+const ErrorUtils = require(&#39;ErrorUtils&#39;);
+ErrorUtils.setGlobalHandler(handleError);
+</code></pre>
+<p>这是默认的异常处理函数。handleException的实现，在node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Core&#x2F;ExceptionsManager.js中</p>
+<pre><code>const &#123;ExceptionsManager&#125; = require(&#39;NativeModules&#39;);
+ExceptionsManager.reportFatalException
+ExceptionsManager.reportSoftException
+</code></pre>
+<p>然后就进入到了原生代码中。</p>
+<p>先看iOS中的RCTExceptionManager.m中的reportFatalException函数可以看到</p>
+<pre><code>[_bridge.redBox showErrorMessage:message withStack:stack];
+if (_delegate) &#123;
+  [_delegate handleFatalJSExceptionWithMessage:message stack:stack exceptionId:exceptionId];
+&#125;
+static NSUInteger reloadRetries = 0;
+if (!RCT_DEBUG &amp;&amp; reloadRetries &lt; _maxReloadAttempts) &#123;
+  reloadRetries++;
+  [_bridge reload];
+&#125; else &#123;
+  NSString *description = [@&quot;Unhandled JS Exception: &quot; stringByAppendingString:message];
+  NSDictionary *errorInfo = @&#123; NSLocalizedDescriptionKey: description, RCTJSStackTraceKey: stack &#125;;
+  RCTFatal([NSError errorWithDomain:RCTErrorDomain code:0 userInfo:errorInfo]);
+&#125;
+</code></pre>
+<p>这就是产生红屏的代码，可以看到，只要异常进入到原生层，都会出现红屏，不论是连本地webserver调试，还是加载包内或文件夹内bundle，更和打bundle时是否是dev模式无关。然后可以看到这里允许使用delegate在收到错误时进行额外处理，例如进行上报。如果是release模式且设置了maxReloadAttempts值（默认为0），就会进行reload重试，再进去RCTFatal函数可以看到它的实现是抛出了一个异常，但debug模式下会try catch住，避免应用崩溃，而release模式下则不会try catch，异常会继续抛出。</p>
+<p>android端要复杂一些，首先仍然是找到ExceptionManagerModule.java，它里面的实现是</p>
+<pre><code>if (mDevSupportManager.getDevSupportEnabled()) &#123;
+  mDevSupportManager.showNewJSError(title, details, exceptionId);
+&#125; else &#123;
+  throw new JavascriptException(JSStackTrace.format(title, details));
+&#125;
+</code></pre>
+<p>如果mDevSupportManager.getDevSupportEnabled返回true，那么就会调用showNewJSError处理，否则直接抛出异常，这会导致应用直接闪退。mDevSupportManager的来源是ReactInstanceManager的构造函数，通过源代码可以看到如果useDeveloperSupport为false,则使用的是DisabledDevSupportManager，否则是DevSupportManagerImpl。useDeveloperSupport又来自于ReactNativeHost的接口getUseDeveloperSupport，模板工程里它的实现是</p>
+<pre><code>public boolean getUseDeveloperSupport() &#123;
+  return BuildConfig.DEBUG;
+&#125;
+</code></pre>
+<p>所以对android端来说，release模式使用的DisabledDevSupportManager的getDevSupportEnabled返回false，所以在接到js层传来的异常时会直接抛出一个java异常，然后就结束了。debug模式使用的DevSupportManagerImpl，它的getDevSupportEnabled由ReactInstanceManager调用setDevSupportEnabled进行控制，它的showNewError就是产生红屏的具体实现代码。</p>
+<p>根据上面的一路跟踪，我们可以得出的结论是：</p>
+<ol>
+<li>如果不想出现红屏，最方便的办法就是在js层使用ErrorUtils.setGlobalHandler捕获异常，这样异常不会被传到原生层，也就不会导致红屏了</li>
+<li>如果异常被传到原生层，iOS端一定会出现红屏，release模式下可能闪退。Android端在release模式下不会红屏但可能会闪退，debug模式下则会红屏</li>
+</ol>
+
         
-        <div class="tag-item">ReactNative</div>
         
-      </div>
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
     </div>
-  </section>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-async-await" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/12/04/js-async-await/">javaScript之简单理解async函数</a>
-    <div class="post-item-summary">
-      async函数和generator函数这个东西，如果用到的不多，很容易看着犯怵，尤其是还搭配上promise，我自己就是这样，几个月前觉得明白这些概念，但因为用的不多，几个月后感觉又稀里糊涂了，所以尝试用最简单的方式来解释。
-首先是generator函数，它的函数声明比普通函数多了个星号，然后函数内容可以使用yield关键字
-function* generatorFunc() &#123;
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/04/js-async-await/">javaScript之简单理解async函数</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-12-04T12:50:39.000Z" itemprop="datePublished">2018年12月04日</time>
+</span>
+      
+      
+      
+<a href="/2018/12/04/js-async-await/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>async函数和generator函数这个东西，如果用到的不多，很容易看着犯怵，尤其是还搭配上promise，我自己就是这样，几个月前觉得明白这些概念，但因为用的不多，几个月后感觉又稀里糊涂了，所以尝试用最简单的方式来解释。</p>
+<p>首先是generator函数，它的函数声明比普通函数多了个星号，然后函数内容可以使用yield关键字</p>
+<pre><code>function* generatorFunc() &#123;
   console.log(0)
   yield 1
   console.log(1)
-      <a class="read-more" href="/2018/12/04/js-async-await/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.12.04</div>
-      <div class="tags">
+  yield 2
+  console.log(2)
+  yield 3
+  console.log(3)
+&#125;
+</code></pre>
+<p>执行generator函数会返回一个遍历器对象，使用它可以控制函数的执行，例如</p>
+<pre><code>let iter = generatorFunc()
+let result = iter.next()
+while(!result.done) &#123;
+  result = iter.next()
+&#125;
+</code></pre>
+<p>每次调用next，就会执行到下一个yield，直到函数结束，这是最简单的介绍，想了解更多的话请参考<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/generator">阮老师的ES6教程</a></p>
+<p>然后是async-await，它就是generator函数的语法糖，async相当于函数声明中的星号，await相当于yield，除此之外，async函数在执行后不是返回遍历器，而是自动执行完。例如</p>
+<pre><code>async function asyncFunc() &#123;
+  console.log(0)
+  await 1
+  console.log(1)
+  await 2
+  console.log(2)
+  await 3
+  console.log(3)
+&#125;
+let p = asyncFunc() // p是一个promise对象
+</code></pre>
+<p>这个函数一执行，就会立即输出0123，函数返回的是一个Promise对象，当我们在函数里return时，就会进入到这个promise的then回调，如果函数内抛出异常，就会进入到它的catch回调中。</p>
+<p>到上面为止，我们只看到async函数比generator函数用起来方便些，还看不出来它们的真正用途，所以我们把await后面的数字换成promise对象，先用一个promise来模拟一下异步操作</p>
+<pre><code>function getPromise() &#123;
+  return new Promise((resolve, reject) =&gt; &#123;
+    setTimeout(()=&gt;&#123;
+      let random = Math.floor(Math.random() * 100)
+      if(random &gt; 20) &#123;
+        resolve(random)
+      &#125;else &#123;
+        reject(random)
+      &#125;
+    &#125;, 1000)
+  &#125;)
+&#125;
+</code></pre>
+<p>这个函数很好理解，生成一个延迟1秒的promise，80%的几率resolve, 20%的几率reject，然后我们在async函数里使用它</p>
+<pre><code>async function asyncFunc() &#123;
+  let result = await getPromise()
+  console.log(result)
+  result = await getPromise()
+  console.log(result)
+  result = await getPromise()
+  console.log(result)
+&#125;
+</code></pre>
+<p>执行这个函数</p>
+<pre><code>asyncFunc().then(result=&gt;&#123;
+  console.log(&#39;result &#39; + result)
+&#125;).catch(error=&gt;&#123;
+  console.log(&#39;error &#39; + result)
+&#125;)
+</code></pre>
+<p>很容易理解，当await后面是一个promise时，会等待这个promise执行完，如果结果是resolve，值就会被返回给result，如果是reject，就会中断函数的执行，进入到返回promise的catch中。</p>
+<p>通常在async函数中，我们需要用try-catch来处理promise的reject情形，例如</p>
+<pre><code>async function asyncFunc() &#123;
+  try&#123;
+    let result =  await getPromise()
+    console.log(result)
+  &#125;catch(error) &#123;
+    console.log(&#39;error &#39; + error)
+  &#125;
+&#125;
+</code></pre>
+<p>这样我们就不用再对这个函数返回的promise来写then和catch了。如果不喜欢写try-catch，可以考虑做一些封装来改变形式，例如<a target="_blank" rel="noopener" href="https://blog.grossman.io/how-to-write-async-await-without-try-catch-blocks-in-javascript/">how-to-write-async-await-without-try-catch-blocks-in-javascript</a></p>
+<p>我们可以这样理解，await后面的参数其实都是promise对象，最开始例子中的await 1，其实是await了一个立即执行的promise对象。</p>
+<p>最后是看一下redux-saga内的generator函数，因为我自己就是从这里开始糊涂的，如果对redux-saga不了解就请直接忽略。在redux-saga内，我们通常是这么写</p>
+<pre><code>export default function* rootSaga()&#123;
+  yield all([
+    takeEvery(ActionTypes.SAGA1, helloSaga),
+  ])
+&#125;
+
+function* helloSaga()&#123;
+  console.log(&#39;helloSaga start&#39;)
+  try&#123;
+    yield g()
+    let a = yield p()
+    console.log(&#39;helloSaga &#39; + a)
+  &#125;catch(e) &#123;
+    console.log(&#39;error &#39; + e)
+  &#125;
+&#125;
+
+function *g() &#123;
+  console.log(&#39;g start&#39;)
+  let a = yield p()
+  console.log(&#39; g a &#39; + a)
+  a = yield p()
+  console.log(&#39; g a &#39; + a)
+&#125;
+</code></pre>
+<p>上面的代码在redux-saga环境下是可以运行的好好的，但如果不在redux-saga环境里，就别想它运行了，例如</p>
+<pre><code>let a = helloSaga()
+a.next()
+</code></pre>
+<p>这里就输出’helloSaga start’就没了，因为g()返回的是一个遍历器，这个遍历器并没有执行，除非我们把helloSaga内改成</p>
+<pre><code>let iter = g()
+iter.next()
+iter.next()
+</code></pre>
+<p>才能执行起g函数，然而此时g函数内输出的a都是undefined，而不像redux-saga环境内能够输出数字，这是因为yield的返回值，实际上是遍历器调用next时输入的值，具体可以去参考阮老师的ES6教程相关章节。</p>
+<p>上面这段啰里啰嗦，总结起来就是：redux-saga内部帮我们做了封装，所以在yield后面接一个promise，返回值是resolve的值，也可以接一个generator函数或者async函数，这个函数会被执行，且函数内yield promise也会返回其resolve值，但不要误以为generator函数就是可以这么用的，如果不在redux-saga环境中，这样写不会达到想要的效果，至于redux-saga内是怎么封装的，相信对generator函数充分理解后肯定能明白的。</p>
+
         
-        <div class="tag-item">javascript</div>
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-flex-styles" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/10/10/rn-flex-styles/">ReactNative之flex属性值</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-10-10T13:18:36.000Z" itemprop="datePublished">2018年10月10日</time>
+</span>
+      
+      
+      
+<a href="/2018/10/10/rn-flex-styles/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>之前就看过一个例子，是下面的这种情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;View style=&#123;&#123;width:200,height:200&#125;&#125;&gt;</span><br><span class="line">  &lt;View style=&#123;&#123;flex:1, height:150, backgroundColor:&#x27;red&#x27;&#125;&#125;/&gt;</span><br><span class="line">  &lt;View style=&#123;&#123;flex:1, height:150, backgroundColor:&#x27;blue&#x27;&#125;&#125;/&gt;</span><br><span class="line">&lt;/View&gt;</span><br></pre></td></tr></table></figure>
+<p>大家可以自己跑一下，就会发现这两个子组件最后各自高度是100。但如果把两个flex:1改成flexGrow:1，就会发现它们高度变成了150。读完以下的内容，就能知道是什么原因了。</p>
+<p>在RN开发中，我们可以设置flex为一个数值x，它实际上是一个简写，相当于flexGrow:x flexShrink:1 flexBasis:0。下面介绍一下这三个值，我们默认父容器的flexDirection为column，这样子元素是纵向排列，动态变化的就是高度height。</p>
+<p><strong>flexBasis</strong><br>它用于设置当前元素的尺寸，作用和height或者width一样，但优先级更高。flexBasis可以设置为数字，或者百分比字符串，也可以是auto。默认值为auto。当flexBasis和height之一为auto时，则另一个非auto值优先级更高。</p>
+<p><strong>flexGrow</strong><br>它用于当元素尺寸之和小于父容器尺寸时，动态分配父容器剩余空间，默认值为0。例如父容器高度200，两个子组件高度各为50，此时剩余空间为100，此时第一个组件设置flexGrow为1，则它会独占所有的剩余空间，高度为150。如果再将第二个组件设置flexGrow为3，那么剩余空间按1:3分配，两个组件高度为75和125。</p>
+<p><strong>flexShrink</strong><br>它和flexGrow相反，用于当元素尺寸之和大于父容器尺寸时，动态压缩自身大小，默认值为0。例如父容器高度为200，两个子组件高度各为150，此时需要压缩空间为100，如果第一个组件设置flexShrink为1，那么压缩空间都由它负责，高度变成了50，如果再将第二个组件设置flexShrink为1，那么压缩空间各负责一半，两个组件高度都为100。</p>
+<p>回到一开头的问题，就很清楚了，之所以设置flex为1时会两个子组件高度为100，是因为flex:1等于flexGrow:1,flexShrink:1,flexBasis:0，前面说过flexBasis优先级高于height，所以两个子组件设定的高度为0，那么就有200的剩余空间用于分配，因为flexGrow都为1，则各占一半。而将flex:1改为flexGrow:1，因为没有设置flexBasis，所以height:150将生效，又没有设置flexShrink，所以不会进行压缩，所以各自高度为150。</p>
+<p>另外需要注意一种特殊情况，就是flex设为0，它意味着组件inflexible，不再动态调节，而是按照width或height来显示。可以试着把上面的例子改成第一个组件flex:0，第二个组件flex:1，会发现第一个组件先占了150高度，然后第二个组件因为flexBasis为0，flexGrow为1，所以他会占掉全部剩余的50高度。</p>
+<p>还有就是flex为负数的情况，当flex设为负数时，会按照设定的width或者height来显示，如果父组件空间不够，则会压缩到minWidth或者minHeight尺寸。对此我们可以做一下实验，将第一个组件flex设为-10，height设为50，第二个组件flex设成1，height设为50，此时第一个组件按照50高度显示，而第二个组件因为flexGrow:1占用了所有的剩余空间，所以高度为150</p>
+<p>最后是列举一些测试用的例子，并分析原因</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;View style=&#123;&#123;width:200,height:200&#125;&#125;&gt;</span><br><span class="line">  &lt;View style=&#123;&#123;flex:-1, height:250, backgroundColor:&#x27;green&#x27;&#125;&#125;/&gt;</span><br><span class="line">  &lt;View style=&#123;&#123;flex:1, height:50,  backgroundColor:&#x27;black&#x27;&#125;&#125;/&gt;</span><br></pre></td></tr></table></figure>
+<p>第一个组件占用200高度，第二个组件看不见。因为第一个组件需要按照250高度显示，但被压缩到了minHeight:200，第二个组件flexBasis为0，flexGrow为1，因为没有了剩余空间，所以不显示。如果第一个组件添加minHeight:250，那么就不会被压缩，显示为250高度。（如果minHeight设为300，则占满了屏幕高度，显然是不正常的，但不做深究，毕竟设置minHeight&gt;height是不合理的）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;View style=&#123;&#123;width:200,height:200&#125;&#125;&gt;</span><br><span class="line">  &lt;View style=&#123;&#123;flex:-1, height:250, backgroundColor:&#x27;green&#x27;&#125;&#125;/&gt;</span><br><span class="line">  &lt;View style=&#123;&#123;flex:0, height:50,  backgroundColor:&#x27;black&#x27;&#125;&#125;/&gt;</span><br></pre></td></tr></table></figure>
+<p>两个组件都需要按照实际高度显示，但第二个组件flex为0优先级更高，它先占用了50的高度，然后第一个组件被压缩到了150的高度。如果给他设置minHeight，则会按照minHeight高度显示</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-native-view-method" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/27/rn-native-view-method/">ReactNative之原生UI导出方法</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-09-27T13:18:36.000Z" itemprop="datePublished">2018年09月27日</time>
+</span>
+      
+      
+      
+<a href="/2018/09/27/rn-native-view-method/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在官方文档的原生UI模块章节: (<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/native-components-ios/">IOS</a> <a target="_blank" rel="noopener" href="https://reactnative.cn/docs/native-components-android/">Android</a>)，我们可以学会如何导出原生UI组件，如何导出prop，如何设置事件回调等等，但是缺少一个内容，那就是如何导出方法。举个例子，我们在使用ScrollView组件时，如果想让它滚动，需要先获取到它的ref，然后调用它的scrollTo方法，这就是一个原生UI导出的方法。通过阅读源代码，我找到了如何实现的方案，这里介绍一下。</p>
+<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><p>iOS端直接在继承自RCTViewManager的类中提供接口。照着下面的模板写就可以了，将获取到的view转换成实际的View然后调用方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;React/RCTUIManager.h&gt;</span><br><span class="line"></span><br><span class="line">RCT_EXPORT_METHOD(scrollToIndexWithOffset:(nonnull NSNumber *)reactTag</span><br><span class="line">                  index:(NSInteger)index</span><br><span class="line">                  offset:(CGFloat)offset</span><br><span class="line">                  animated:(BOOL)animated)</span><br><span class="line">&#123;</span><br><span class="line">    [self.bridge.uiManager addUIBlock:</span><br><span class="line">     ^(__unused RCTUIManager *uiManager, NSDictionary&lt;NSNumber *, UIView *&gt; *viewRegistry)&#123;</span><br><span class="line">         UIView *view = viewRegistry[reactTag];</span><br><span class="line">         if([view class] == MyTableView.class) &#123;</span><br><span class="line">             MyTableView* table = (MyTableView*)view;</span><br><span class="line">             [table scrollToIndex:index offset:offset animated:animated];</span><br><span class="line">         &#125;else &#123;</span><br><span class="line">             RCTLogError(@&quot;tried to call scrollToIndexWithOffset on %@ &quot;</span><br><span class="line">                         &quot;with tag #%@&quot;, view, reactTag);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>android端处理方式不一样，我们在继承SimpleViewManager或者ViewGroupManager的类中需要重写getCommandsMap方法，提供暴露到js层的command命令。然后重写receiveCommand方法，通过commandId判断js层是想要调用什么方法，然后把参数转换好之后进行调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">    public @javax.annotation.Nullable</span><br><span class="line">    Map&lt;String, Integer&gt; getCommandsMap() &#123;</span><br><span class="line">        return MapBuilder.of(</span><br><span class="line">                &quot;scrollToIndexWithOffset&quot;,</span><br><span class="line">                COMMAND_SCROLL_TO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">    public void receiveCommand(</span><br><span class="line">            MyView scrollView,</span><br><span class="line">            int commandId,</span><br><span class="line">            @javax.annotation.Nullable ReadableArray args) &#123;</span><br><span class="line">        if(commandId == COMMAND_SCROLL_TO) &#123;</span><br><span class="line">            int index = Math.round(PixelUtil.toPixelFromDIP(args.getInt(0)));</span><br><span class="line">            float offset = Math.round(PixelUtil.toPixelFromDIP(args.getDouble(1)));</span><br><span class="line">            boolean animated = args.getBoolean(2);</span><br><span class="line">            scrollView.scrollTo(index, offset, animated);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="javaScript"><a href="#javaScript" class="headerlink" title="javaScript"></a>javaScript</h3><p>在js层调用的代码为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scrollToIndexWithOffset (index, offset, animated) &#123;</span><br><span class="line">  UIManager.dispatchViewManagerCommand(</span><br><span class="line">    ReactNative.findNodeHandle(this.tableRef),</span><br><span class="line">    UIManager.MyTableView.Commands.scrollToIndexWithOffset,</span><br><span class="line">    [index, offset, animated]</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的tableRef就是原生组件在js层使用ref获取到的。scrollToIndexWithOffset对应着原生暴露的方法名(iOS为RCT_EXPORT_METHOD之后的方法名，Android为getCommandsMap暴露的方法名)，后面三个参数数组一次是原生方法接受的参数。</p>
+<p>这就是原生组件封装方法到js层的全部流程了，这是基本的操作，实际开发中再注意下例如参数类型转换等小问题即可。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-duplicate-native-module" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/06/rn-duplicate-native-module/">ReactNative之原生模块重名的问题</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-09-06T13:18:36.000Z" itemprop="datePublished">2018年09月06日</time>
+</span>
+      
+      
+      
+<a href="/2018/09/06/rn-duplicate-native-module/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是</p>
+<ul>
+<li>iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类</li>
+<li>Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者ViewGroupManager类。</li>
+</ul>
+<p>iOS端使用RCT_EXPORT_MODULE宏来指定模块名，这个名字是禁止重复的，如果重复在运行时会红屏报错。报错信息为</p>
+<blockquote>
+<p>Attempted to register RCTBridgeModule class XXX for the name “xxx”, but name was already resgitered by class XXX</p>
+</blockquote>
+<p>这段错误提示位于RCTCxxBridge.mm的registerModulesForClasses方法内。所以iOS端就不用担心什么了，一旦有模块名重复，运行会直接报错。</p>
+<p>Android端通过重写getName方法来指定模块或者组件名，NativeModule是允许重名的，在BaseJavaModule类中有一个接口</p>
+<pre><code>@Override
+public boolean canOverrideExistingModule() &#123;
+  // TODO(t11394819): Make this final and use annotation
+  return false;
+&#125;
+</code></pre>
+<p>如果后注册的重名模块重写了这个接口返回true，那么模块名允许重复，后添加的模块会覆盖掉先添加的模块。如果不重写或者这个接口返回false，则不允许重名，一旦重名会报错，报错信息位于NativeModuleRegistryBuilder.java内，在这里做了检测。</p>
+<p>对于NativeComponent，虽然ViewManager也是继承自BaseJavaModule，但是它因为不走NativeModuleRegistryBuilder的流程，所以不会检测。不论是否重写canOverrideExistingModule接口，都允许重名，后添加的NativeComponent覆盖掉先添加的，这就是需要小心的地方，如果无意中写了两个重名的NativeComponent，先添加的就会被悄悄的覆盖了。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-assistance-lib" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/29/rn-assistance-lib/">ReactNative之辅助库选择</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-08-29T13:18:36.000Z" itemprop="datePublished">2018年08月29日</time>
+</span>
+      
+      
+      
+<a href="/2018/08/29/rn-assistance-lib/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>很多刚入门RN开发的同学面对着老鸟侃侃而谈什么redux,immutable,saga这些库是一脸懵逼的状态，拿不准自己开发的时候是否该用，这里我列举一下我自己的意见。为了篇幅和容易理解，不会说的太详细和深入，像服务器渲染这种就不提了（其实是因为我也不是很懂……）</p>
+<h3 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h3><p><strong>收益</strong></p>
+<ol>
+<li>单向数据流的方式有利于管理，不用到处传递prop了</li>
+<li>有利于解耦，使用redux的话天然就将model从view中解耦了出来</li>
+<li>有利于state跟踪和现场还原</li>
+</ol>
+<p><strong>代价</strong></p>
+<ol>
+<li>学习成本。action,reducer,store,middleware等概念，dispatch, connect等API接口</li>
+<li>增加代码量和操作复杂度，一个state要伴随着actionType, createAction, reducer, connect等等，涉及到至少三四个文件</li>
+</ol>
+<p><strong>是否会影响性能</strong></p>
+<p>有人担心使用redux会影响性能，不可否认，增加了这么多概念和接口，使用不当肯定会造成性能影响。但关键就是看你怎么用。有一篇文章<a target="_blank" rel="noopener" href="https://itnext.io/redux-ruins-you-react-app-performance-you-are-doing-something-wrong-82e28ec96cf5">redux-ruins-you-react-app-performance-you-are-doing-something-wrong</a>可以仔细看一下，举个例子，使用react-redux可以给组件绑定特定的一些state，只有这些state发生了变化才会re-render，相比使用传递prop的方案是有利于性能提高的，因为prop传递经过的中间组件可能产生了不必要的re-render，但如果mapStateToProp写的不好，里面有大量复杂的计算，就会导致性能产生问题，因为每个mapStateToProp函数在state发生了变化都会被调用，这时就需要使用reselect库来进行优化，或者在connect时使用areStatesEqual选项。总的来说，redux作为一个使用如此广泛的库，只要正确使用，肯定不用担心会影响性能。</p>
+<p><strong>state如何管理</strong></p>
+<p>网上有过一些争论，是否应该把所有的state都集中到store中管理。<a target="_blank" rel="noopener" href="https://redux.js.org/faq/organizingstate">官方文档</a>的说法是：没有对错，你自己看着办。把所有的state都集中到store中管理，这其实是一种比较理想的状态，所有的组件都是无状态组件，但这也导致state的规模变得臃肿和难维护。在实际开发中也没必要追求达到这种境界，一个state是否放到store里去，根据一些原则判断即可：</p>
+<ol>
+<li>是否需要持久存储</li>
+<li>是否需要公共使用</li>
+<li>是否需要场景还原</li>
+</ol>
+<p><strong>是否使用</strong></p>
+<p>redux的<a target="_blank" rel="noopener" href="https://cn.redux.js.org/">官方文档</a>推荐一篇文章<a target="_blank" rel="noopener" href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367">you-might-not-need-redux</a>，大概就是说redux本身只是一个辅助工具，用或者不用取决于你自己衡量得失，最重要的是理解它的思想。例如对于简单一些的项目，不使用redux也可以自己按照其思路写出redux风格的代码，我曾经就有过这样的想法：<a href="http://yangguang1029.github.io/2018/02/27/rn-manual-redux/">ReactNative之手动实现一个Redux</a></p>
+<h3 id="Immutable"><a href="#Immutable" class="headerlink" title="Immutable"></a>Immutable</h3><p>redux的三原则之一就是state不可变原则，使用immutable就是借助工具来保障，如果不使用，则需要靠开发人员自己保证，比如使用Object.assign</p>
+<p><strong>收益</strong></p>
+<ol>
+<li>不可变保障：其对外提供的API可以保证必然是生成新对象</li>
+<li>效率更高：对于深层次的局部更新，immutable库的内部实现效率更高</li>
+</ol>
+<p><strong>代价</strong></p>
+<ol>
+<li>新的API的学习和使用成本。如果不使用，直接操作的是js的原生API，使用immutable，只能使用库提供的API来操作array, object等</li>
+<li>immutable代码会扩散到整个项目。从state获取到的数据是immutable对象，所以immutable的API会扩散在整个项目中</li>
+</ol>
+<p><strong>是否使用</strong></p>
+<p>如果state结构比较扁平，那可以人为保障不可变性。如果state纵深结构比较复杂而且reducer拆分不够细，那最好还是使用，否则的话各种该刷新却不刷新，不该刷新却刷新的小问题就层出不穷了。如果使用的话一般会选择<a target="_blank" rel="noopener" href="https://github.com/rtfeldman/seamless-immutable">seamless-immutable</a></p>
+<h3 id="Redux-saga"><a href="#Redux-saga" class="headerlink" title="Redux-saga"></a>Redux-saga</h3><p>异步action的处理，有redux-thunk和redux-saga，redux-promise，redux-observable等多种方案，因为熟悉程度，所以本文只比较前两者。</p>
+<p><strong>收益</strong></p>
+<ol>
+<li>相比redux-thunk来说，saga使用的async,await语法可以让异步操作代码流畅易懂，避免promise地狱</li>
+<li>使用saga方便做单元测试</li>
+<li>redux提供throttle, 取消任务，监听未来action等多种高级功能，适合复杂场景</li>
+</ol>
+<p><strong>代价</strong></p>
+<ol>
+<li>学习成本。async和await本身就没那么普及，还多出来各种effect。</li>
+<li>redux-saga库压缩前59k，压缩后24k。要么通过拆分bundle方案放到基础bundle中，否则每个业务bundle中都有一份显然增加bundle体积。</li>
+</ol>
+<p><strong>是否使用</strong></p>
+<p>取决于异步操作流程的复杂度，例如一个向服务器获取数据的异步操作，需要先向原生层获取若干个数据，然后向服务器获取配置信息，然后才去请求数据，之后还要通过原生层做本地存储等等，一个流程有一系列的异步操作，那么使用saga绝对是值得的，代码看起来神清气爽。如果异步操作不多而且流程不是很复杂，一两个promise就结束了，那就别多费事了，毕竟码农主业是搬砖，不是炫技。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js-class-function" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/29/js-class-function/">javaScript之类的成员函数和箭头函数</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-08-29T03:44:45.000Z" itemprop="datePublished">2018年08月29日</time>
+</span>
+      
+      
+      
+<a href="/2018/08/29/js-class-function/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近发现有的地方在使用ES6的class时，使用箭头函数来声明方法，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">  func1(num)&#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">  func2 = (num) =&gt; &#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">var t = new Test()</span><br></pre></td></tr></table></figure>
+<p>这两种方案是有区别的，区别就是func1是protoType上的属性，而func2是实例上的属性，我们用console.dir(t)在chrome dev tool上一看就知道了。根据prototype的原理，func1对于所有的实例只有一份，func2对每个实例都有一份。</p>
+<p>所以对于需要bind的函数，例如要用在闭包里，那使用箭头函数或者bind没有区别，bind也会生成一个新的函数对象赋给this。但如果是不需要bind的函数，写成箭头函数就会造成内存浪费了，应该避免。</p>
+<p>对于属性property，在constructor内声明还是在类中声明则没有区别，两者都是实例属性。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-rn-flex-size" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/23/rn-flex-size/">ReactNative之组件自适应尺寸</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-08-23T11:15:36.000Z" itemprop="datePublished">2018年08月23日</time>
+</span>
+      
+      
+      
+<a href="/2018/08/23/rn-flex-size/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>组件如果不设定尺寸的话，会按照一定的规则，随着父组件和子组件的尺寸自适应。首先我们确定一个前提，父组件和子组件都是有尺寸的。除非明确设定尺寸为0，否则一个组件肯定是有尺寸的，对于根组件，它的父组件实际上是整个屏幕大小flexDirection为column的一个组件。</p>
+<p>首先是适应父组件的规则，当一个组件不设置尺寸且没有子组件，它的尺寸取决于父组件的尺寸和flexDirection。如果flexDirection为row，那么它的宽度为0，高度为父组件的高度。如果flexDirection为column，那么高度为0，宽度为父组件的宽度。因为宽或者高为0，所以不会显示。</p>
+<p>然后是适应子组件的规则，当一个组件不设置尺寸且有子组件，那么它会适应子组件的宽高。例如父组件flexDirection为row，那么它的宽度为子组件的宽度，高度为父组件的高度。如果flexDirection为column，那么高度为子组件的高度，宽度为父组件的宽度。</p>
+<p>当给组件设置了尺寸，但只有宽或者高，那么缺少的那个会按照上面的规则来自适应，例如父组件flexDirection为row，那么给它设置高度，就会按此高度显示，否则就按父组件高度显示，如果设置宽度，则按此宽度显示，否则由子组件宽度决定。</p>
+<p>以上三条规则，可以自己写个简单demo验证测试。熟悉了这些规则，在实际开发中，对于尺寸不固定的组件，布局起来就不容易出问题了。</p>
+<p>顺便提一下，原生组件在原生层设置尺寸是不会生效的，组件大小完全取决于js层设置style。在iOS平台，RN给UIView加了一个category  UIView (React)，里面有一个reactSetFrame方法，我们可以给原生组件view实现这个方法来监听它的尺寸，验证上面的规则。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/">Vorheriger</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
         
       </div>
-    </div>
-  </section>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/10/10/rn-flex-styles/">ReactNative之flex属性值</a>
-    <div class="post-item-summary">
-      之前就看过一个例子，是下面的这种情况
-1234&lt;View style=&#123;&#123;width:200,height:200&#125;&#125;&gt;  &lt;View style=&#123;&#123;flex:1, height:150, backgroundColor:&#x27;red&#x27;&#125;&#125;/&gt;  &lt;View style=&#123;&#123;flex:1, height:150, backgrou
-      <a class="read-more" href="/2018/10/10/rn-flex-styles/"> ... </a>
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
     </div>
-    <div class="post-item-extra">
-      <div class="date">2018.10.10</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/09/27/rn-native-view-method/">ReactNative之原生UI导出方法</a>
-    <div class="post-item-summary">
-      在官方文档的原生UI模块章节: (IOS Android)，我们可以学会如何导出原生UI组件，如何导出prop，如何设置事件回调等等，但是缺少一个内容，那就是如何导出方法。举个例子，我们在使用ScrollView组件时，如果想让它滚动，需要先获取到它的ref，然后调用它的scrollTo方法，这就是一个原生UI导出的方法。通过阅读源代码，我找到了如何实现的方案，这里介绍一下。
-iOSiOS端直接在继承自RCTViewManager的类中提供接口。照着下面的模板写就可以了，将
-      <a class="read-more" href="/2018/09/27/rn-native-view-method/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.09.27</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/09/06/rn-duplicate-native-module/">ReactNative之原生模块重名的问题</a>
-    <div class="post-item-summary">
-      在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是
-
-iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类
-Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者Vi
-      <a class="read-more" href="/2018/09/06/rn-duplicate-native-module/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.09.06</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/08/29/rn-assistance-lib/">ReactNative之辅助库选择</a>
-    <div class="post-item-summary">
-      很多刚入门RN开发的同学面对着老鸟侃侃而谈什么redux,immutable,saga这些库是一脸懵逼的状态，拿不准自己开发的时候是否该用，这里我列举一下我自己的意见。为了篇幅和容易理解，不会说的太详细和深入，像服务器渲染这种就不提了（其实是因为我也不是很懂……）
-Redux收益
-
-单向数据流的方式有利于管理，不用到处传递prop了
-有利于解耦，使用redux的话天然就将model从view中解耦了出来
-有利于state跟踪和现场还原
-
-代价
-
-学习成本。action,red
-      <a class="read-more" href="/2018/08/29/rn-assistance-lib/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.08.29</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/08/29/js-class-function/">javaScript之类的成员函数和箭头函数</a>
-    <div class="post-item-summary">
-      最近发现有的地方在使用ES6的class时，使用箭头函数来声明方法，例如
-123456789class Test &#123;  func1(num)&#123;    this.num = num  &#125;  func2 = (num) =&gt; &#123;    this.num = num  &#125;&#125;var t = new Test()
-这两种方案是有区别的，区别就是func1是protoType上的属性，而func2是实例上的属性，我们用co
-      <a class="read-more" href="/2018/08/29/js-class-function/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.08.29</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2018/08/23/rn-flex-size/">ReactNative之组件自适应尺寸</a>
-    <div class="post-item-summary">
-      组件如果不设定尺寸的话，会按照一定的规则，随着父组件和子组件的尺寸自适应。首先我们确定一个前提，父组件和子组件都是有尺寸的。除非明确设定尺寸为0，否则一个组件肯定是有尺寸的，对于根组件，它的父组件实际上是整个屏幕大小flexDirection为column的一个组件。
-首先是适应父组件的规则，当一个组件不设置尺寸且没有子组件，它的尺寸取决于父组件的尺寸和flexDirection。如果flexDirection为row，那么它的宽度为0，高度为父组件的高度。如果flexDir
-      <a class="read-more" href="/2018/08/23/rn-flex-size/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2018.08.23</div>
-      <div class="tags">
-        
-        <div class="tag-item">ReactNative</div>
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
-
-
-<div class="paginator">
-  <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
-</div>
-
-  </main>
-  <footer class="footer">
-  
-  <span>Copyright © 2024 typo</span>
-  
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

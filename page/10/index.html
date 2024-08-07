@@ -1,260 +1,1053 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
-  <title>
-    
-
-    typo
-  </title>
-
+  <meta charset="utf-8">
   
-  <link rel="shortcut icon" href="/icon.svg">
   
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <title>杨光的日记本</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-
-  <!-- 字体 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-
   
-<link rel="stylesheet" href="/css/root.css">
-
+  
+    <link rel="alternate" href="/atom.xml" title="杨光的日记本" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
   
 <link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/post.css">
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+  
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
-  <header class="header">
-  <section class="header-container">
-    <a class="logo" href="/">杨光的日记本</a>
-    <ul class="nav">
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">杨光的日记本</a>
+      </h1>
       
-      <li><a href="/archives">archives</a></li>
-      
-      <li><a href="/about">about</a></li>
-      
-    </ul>
-  </section>
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="Suche"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="/{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
 </header>
-  <main class="main">
-    <div class="post-list">
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/14/autorelease/">cocos tips 之autorelease</a>
-    <div class="post-item-summary">
-      首先autorelease是个怎么回事呢？引用计数的原理就不用说了，凡是继承自Ref的类new出得对象，都使用引用计数来进行内存管理。对象被new出来时，初始引用计数为1，每次被retain时，引用计数+1，被release时，引用计数-1。当引用计数降为0时，则执行析构函数，内存被回收。所以retain必须和release成对出现，才能避免内存泄漏(例如被加到父容器和从父容器移除时，就分别执行了retain和release)，而且最初的new也必须对应一次release，例
-      <a class="read-more" href="/2016/11/14/autorelease/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.14</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/11/14/jsbinding%E7%83%AD%E5%8A%A0%E8%BD%BD/">cocos tips之jsbinding热加载</a>
-    <div class="post-item-summary">
-      所谓热加载，就是运行时，不用重启模拟器而重新加载js文件，提高开发效率。要实现热加载，首先要找到ocos是怎么加载js代码的，入口就是ScriptingCore::runScript方法，包括在js代码内require，最终也是执行的这个方法。
-在ScriptingCore::compileScript这个方法里，有
-123if (getScript(path)) &#123;            return;    &#125;
-这么一段代码，它读取了已加载文件的缓存，
-      <a class="read-more" href="/2016/11/14/jsbinding%E7%83%AD%E5%8A%A0%E8%BD%BD/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.11.14</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/javaScript%E4%B8%AD%E7%9A%84%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6/">javaScript中的无符号右移运算符</a>
-    <div class="post-item-summary">
-      今天刷leetcode上的题目revert bits的时候，用到了js里的位移操作，然后就出现了问题。题目里给出的数字是32位无符号整数，但是js里默认的整数是32位有符号整数，所以在执行
-1var a = 1 &lt;&lt; 31
 
-时, a的值是-2147483648，而不是期望中的2147483648
-如果要得到正确的值，就需要用到另一个位操作符：无符号右移运算符 &gt;&gt;&gt;
-它与普通的右移运算符的区别只是在右移补位时只补0，而普通的右移操作符对有符号整
-      <a class="read-more" href="/2016/08/15/javaScript%E4%B8%AD%E7%9A%84%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
+      <div class="outer">
+        <section id="main">
+  <article id="post-autorelease" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/googleClosureCompiler%E4%BD%BF%E7%94%A8/">googleClosureCompiler使用</a>
-    <div class="post-item-summary">
-      官方文档在此
-最简单的使用命令如下
-1java -jar compiler.jar --js hello.js --js_output_file hello-compiled.js
-
-使用
-1java -jar compiler.jar -help
-
-可以显示帮助，通过它可以查询有哪些可配置参数，及它们的可选值，默认值
-这里再介绍一下其他的一些常用参数，像–charset这种不是很常用到的参数就不一一举例了，用help查看即可，需要注意的是，随着compiler.jar的版本
-      <a class="read-more" href="/2016/08/15/googleClosureCompiler%E4%BD%BF%E7%94%A8/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-        <div class="tag-item">google-closure-compiler</div>
-        
-      </div>
-    </div>
-  </section>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/14/autorelease/">cocos tips 之autorelease</a>
+    </h1>
   
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/addTouchToNode%E7%9A%84%E5%AE%9E%E7%8E%B0/">addTouchToNode的实现</a>
-    <div class="post-item-summary">
-      直接上代码
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546function addTouchToNode(node, touchEndCall, target, params) &#123; //给node添加触摸事件	var bTouchCanceled = false;	var s = node.getContentSize();	var rect = 
-      <a class="read-more" href="/2016/08/15/addTouchToNode%E7%9A%84%E5%AE%9E%E7%8E%B0/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/%E9%87%8D%E7%94%A8ccnode%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/">重用ccnode需要注意的触摸事件处理</a>
-    <div class="post-item-summary">
-      在使用cocos开发过程中，对node的重用非常常见，例如TableViewCell就是重用的，这些被重用的node会频繁的被添加到父节点以及从父节点中移除，当被移除时会调用
-1removeFromParent(cleanup)
-
-这个cleanup参数很关键，如果为true，会导致其cleanup方法被调用。如果不带此参数，则默认为true。
-123456cleanup: function () &#123;    this.stopAllActions();    thi
-      <a class="read-more" href="/2016/08/15/%E9%87%8D%E7%94%A8ccnode%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-        <div class="tag-item">cocos</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/js%E4%B8%AD%E7%9A%84string%E5%92%8Cunicode/">js中的string和unicode</a>
-    <div class="post-item-summary">
-      javaScript中的String是UTF-16字符集合，但是要注意，因为js中并没有一种类型叫“字符”，所以charAt() 方法返回的是一个字符串。而charCodeAt()方法，则返回的是0-65535之间的一个整数。fromCharCode()方法是把一个unicode编码转换成String对象，这里是例如
-1234&#x27;大&#x27;.charCodeAt(0)  -&gt;  22823&quot;🐄&quot;.charCodeAt(1)  -&gt;
-      <a class="read-more" href="/2016/08/15/js%E4%B8%AD%E7%9A%84string%E5%92%8Cunicode/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-        <div class="tag-item">javascript</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8BAndroid.mk%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/">NDK开发之Android.mk文件编写</a>
-    <div class="post-item-summary">
-      现在我们把android稍微写复杂些。在项目根目录下创建一个lib1文件夹
-结构如图：
-
-test10.h和test11.h很简单，就是声明了两个方法
-12int test10();int test11();
-
-我们先看这个lib1文件夹内的Android.mk文件
-123456789101112LOCAL_PATH := $(call my-dir)include $(CLEAR_VARS)LOCAL_MODULE := test1LOCAL_MODULE_FILENAME
-      <a class="read-more" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8BAndroid.mk%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-        <div class="tag-item">ndk</div>
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/">NDK开发之java调用C++</a>
-    <div class="post-item-summary">
-      首先创建一个空的android项目，默认生成的MainActivity，修改如下
-12345678910111213141516171819202122232425public class MainActivity extends Activity &#123;	static &#123;        System.loadLibrary(&quot;learnNDK&quot;);    &#125;		@Override	protected void onCreate(
-      <a class="read-more" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-      </div>
-    </div>
-  </section>
-  
-  <section class="post-item">
-    <a class="post-item-title" href="/2016/08/15/%E4%BD%BF%E7%94%A8closureCompiler%E6%B7%B1%E5%BA%A6%E6%B7%B7%E6%B7%86%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">使用closureCompiler深度混淆的一个坑</a>
-    <div class="post-item-summary">
-      混淆命令为:
-1java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js a.js --js_output_file b.js
-
-混淆前代码
-12345678910111213141516171819function test(result)&#123;	console.log(result.fuck.text);	console.log(result.text.fuck);	console.
-      <a class="read-more" href="/2016/08/15/%E4%BD%BF%E7%94%A8closureCompiler%E6%B7%B1%E5%BA%A6%E6%B7%B7%E6%B7%86%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/"> ... </a>
-    </div>
-    <div class="post-item-extra">
-      <div class="date">2016.08.15</div>
-      <div class="tags">
-        
-        <div class="tag-item">google-closure-compiler</div>
-        
-      </div>
-    </div>
-  </section>
-  
-</div>
 
 
-<div class="paginator">
-  <a class="extend prev" rel="prev" href="/page/9/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">下一页</a>
-</div>
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-14T13:03:49.000Z" itemprop="datePublished">2016年11月14日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/14/autorelease/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
 
-  </main>
-  <footer class="footer">
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先autorelease是个怎么回事呢？引用计数的原理就不用说了，凡是继承自Ref的类new出得对象，都使用引用计数来进行内存管理。对象被new出来时，初始引用计数为1，每次被retain时，引用计数+1，被release时，引用计数-1。当引用计数降为0时，则执行析构函数，内存被回收。<br>所以retain必须和release成对出现，才能避免内存泄漏(例如被加到父容器和从父容器移除时，就分别执行了retain和release)，而且最初的new也必须对应一次release，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Node* node = new Node();	//引用计数1</span><br><span class="line">this-&gt;addChild(node);	//引用计数2</span><br></pre></td></tr></table></figure>
+<p>之后在合适的时候移除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node-&gt;removeFromParent();	//引用计数1</span><br></pre></td></tr></table></figure>
+<p>可见，此时如果不再执行一次release的话，引用计数一直为1，内存得不到释放，内存就泄漏了。对于一个被引用了很多的对象，要找到最终执行release的时机，显然很难，autoRelease就是为了解决这个问题的，当执行autoRelease函数时，这个对象将会被加到一个autoreleasePool中（并不会执行retain），在这帧结束时，这个pool内所有Ref对象都会执行一次release，这次release就抵消掉了new时候的那个引用计数，因此只要保证其他引用它的地方retain和release成对，就可以保证内存不会泄露。</p>
+<p>除了使用系统自带的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PoolManager::getInstance()-&gt;getCurrentPool()</span><br></pre></td></tr></table></figure>
+<p>外，也可以自己新建一个autoRelease，因为要确保执行析构函数，所以不建议使用new来构造，直接在栈上创造一个即可，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AutoreleasePool p;</span><br><span class="line">p.addObject(obj)</span><br></pre></td></tr></table></figure>
+<p>当退出执行函数时，p会被析构，此时所有被加入的Ref对象都会被执行一次release。什么时候需要自己新建一个autoreleasePool来使用呢，例如一帧内生成了大量autorelease对象（通常在循环中），如果使用默认的autoreleasePool，则全部集中在这帧结束时释放，可能导致性能降低，此时可以手动创建一个autoreleasePool来进行管理。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-jsbinding热加载" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-  <span>Copyright © 2024 typo</span>
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/11/14/jsbinding%E7%83%AD%E5%8A%A0%E8%BD%BD/">cocos tips之jsbinding热加载</a>
+    </h1>
   
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-11-14T12:33:32.000Z" itemprop="datePublished">2016年11月14日</time>
+</span>
+      
+      
+      
+<a href="/2016/11/14/jsbinding%E7%83%AD%E5%8A%A0%E8%BD%BD/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>所谓热加载，就是运行时，不用重启模拟器而重新加载js文件，提高开发效率。要实现热加载，首先要找到ocos是怎么加载js代码的，入口就是<br>ScriptingCore::runScript方法，包括在js代码内require，最终也是执行的这个方法。</p>
+<p>在ScriptingCore::compileScript这个方法里，有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (getScript(path)) &#123;    </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这么一段代码，它读取了已加载文件的缓存，所以这几句必须注释掉，否则读取缓存的话，就没办法热加载了。</p>
+<p>做了这步以后，在开启模拟器调试时，修改js代码后，不重启模拟器，只需要重新require一下文件，就实现了热加载了（比如做一个按钮，点击后重新require）。</p>
+<p>然后如果你这么做，肯定会发现没有生效，原因是什么呢？那是因为我们在执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(&quot;a.js&quot;)</span><br></pre></td></tr></table></figure>
+<p>这句代码时，在模拟器上运行的时候，它实际加载的是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/yangguang/Library/Developer/CoreSimulator/Devices/A25124E2-3204-43C7-A9F9-638FDF466587/data/Containers/Bundle/Application/69FC175C-06EB-4868-85D4-89F008164167/xxx.app/a.js</span><br></pre></td></tr></table></figure>
+<p>这样的路径，而我们修改的是项目中的代码，除非把修改后的代码拷贝到这个文件夹去，否则重新require的也是老代码，那要怎么解决这个问题呢？我们仍然看源代码，在读取js代码时，会获取这个文件的全路径，相关代码为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">std::string FileUtils::fullPathForFilename(const std::string &amp;filename)</span><br><span class="line">&#123;</span><br><span class="line">    if (filename.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (isAbsolutePath(filename))</span><br><span class="line">    &#123;</span><br><span class="line">        return filename;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，如果文件路径写的是全路径，就不会再拼成模拟器应用所在路径了，所以解决的办法就出来了，我们将需要require的js文件的路径，在debug状态下设为开发目录下的全路径即可，在release状态下则为相对路径。</p>
+<p>对于其他资源，也可以采用类似的思路，只要去掉资源缓存，以及使用全路径加载，就可以很容易实现资源热加载，从而避免调试时频繁的启动模拟器</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-javaScript中的无符号右移运算符" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/javaScript%E4%B8%AD%E7%9A%84%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6/">javaScript中的无符号右移运算符</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:57:49.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/javaScript%E4%B8%AD%E7%9A%84%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>今天刷leetcode上的题目<a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-bits/">revert bits</a>的时候，用到了js里的位移操作，然后就出现了问题。题目里给出的数字是32位无符号整数，但是js里默认的整数是32位有符号整数，所以在执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a = 1 &lt;&lt; 31</span><br></pre></td></tr></table></figure>
+
+<p>时, a的值是-2147483648，而不是期望中的2147483648</p>
+<p>如果要得到正确的值，就需要用到另一个位操作符：无符号右移运算符 &gt;&gt;&gt;</p>
+<p>它与普通的右移运算符的区别只是在右移补位时只补0，而普通的右移操作符对有符号整数进行操作，当符号位为1时补1，符号位为0时补0</p>
+<p>当需要将一个有符号数转成无符号数时，使用 &gt;&gt;&gt; 0即可，将一个无符号数转成有符号数，使用&lt;&lt; 0即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a = 1 &lt;&lt; 31;	//a = -2147483648</span><br><span class="line">var b = a &gt;&gt;&gt; 0;	//b = 2147483648</span><br><span class="line">var c = b &lt;&lt; 0;		//c = -2147483648</span><br></pre></td></tr></table></figure>
+
+<p>知道了&gt;&gt;&gt;操作符之后，这个leetcode问题就很好解决了，顺便把我的答案附上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var reverseBits = function(n) &#123;</span><br><span class="line">    var m = 0;</span><br><span class="line">    var index = 31;</span><br><span class="line">    while(n) &#123;</span><br><span class="line">        var tmp = n &amp; 1;</span><br><span class="line">        if(tmp) &#123;</span><br><span class="line">            m = m | (tmp &lt;&lt; index);</span><br><span class="line">        &#125;</span><br><span class="line">        index -= 1;</span><br><span class="line">        n = n &gt;&gt;&gt; 1;	//注意，使用无符号右移</span><br><span class="line">    &#125;</span><br><span class="line">    return m&gt;&gt;&gt;0;	//m默认是有符号数，强制转换成无符号数</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-googleClosureCompiler使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/googleClosureCompiler%E4%BD%BF%E7%94%A8/">googleClosureCompiler使用</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:47:56.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/googleClosureCompiler%E4%BD%BF%E7%94%A8/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>官方文档<a target="_blank" rel="noopener" href="https://developers.google.com/closure/compiler/">在此</a></p>
+<p>最简单的使用命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar --js hello.js --js_output_file hello-compiled.js</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar -help</span><br></pre></td></tr></table></figure>
+
+<p>可以显示帮助，通过它可以查询有哪些可配置参数，及它们的可选值，默认值</p>
+<p>这里再介绍一下其他的一些常用参数，像–charset这种不是很常用到的参数就不一一举例了，用help查看即可，需要注意的是，随着compiler.jar的版本不一样，可选参数以及默认参数也可能会不一样，以help给出的文档为准即可</p>
+<ul>
+<li>–js指定输入文件名</li>
+<li>–js_output_file 指定输出文件名，如果不设置此参数，则默认输出到stdout</li>
+<li>–compilation_level 混淆级别，可选参数WHITESPACE_ONLY，SIMPLE_OPTIMIZATIONS，ADVANCED_OPTIMIZATIONS。默认值为SIMPLE_OPTIMIZATIONS。WHITESPACE_ONLY只会移除掉空格和注释，SIMPLE_OPTIMIZATIONS会简化局部变量名，ADVANCED_OPTIMIZATIONS通常称为深度混淆，他简化局部以及全局变量名，移除deadCode，并且对一些函数inlining。</li>
+<li>–externs 在使用深度混淆时，如果不希望一些变量名被混淆，则需要使用此参数。可以指定多个extern参数，但每个参数都需要使用一次–externs</li>
+<li>–language_in 可选值包括ECMASCRIPT3,ECMASCRIPT5,ECMASCRIPT5_STRICT，默认值是ECMASCRIPT3，所以如果需要混淆的代码中包含ECMASCRIPT5特性，则必须指定此参数，ECMASCRIPT5_STRICT会使用<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2013/01/javascript_strict_mode.html">严格模式</a></li>
+</ul>
+<p>使用SIMPLE_OPTIMIZATIONS没什么好说的，主要是使用ADVANCED_OPTIMIZATIONS时需要注意一些，避免被坑，建议详细阅读下<a target="_blank" rel="noopener" href="https://developers.google.com/closure/compiler/docs/api-tutorial3">官方文档</a></p>
+<p>简单而言：</p>
+<ol>
+<li>为了避免未调用方法被移除，可以进行一次调用，或者export出来</li>
+<li>对成员属性调用的方式有.key和[“key”]两种，因为字符串不会被混淆，所以对于不希望被混淆的变量名，应该采取第二种方式。而且对同一个成员属性，不应该两种方式混用，否则有的地方呗混淆，有的地方被保留，就肯定出错了。这里有个小细节，第一次赋值时使用.key的方式，key不会被混淆。</li>
+<li>因为深度混淆会简化全局变量名，所以必须将需要混淆的所有代码统一进行混淆，否则定义时的变量名被混淆成了a，使用时混淆为b</li>
+<li>混淆和未混淆代码的相互调用。这其中还包括一种隐藏的形式eval，因为eval内的代码是字符串形式所以不会被混淆。未混淆代码调用混淆代码，解决方案为混淆代码使用字符串为key的方式将接口导出。混淆代码调用未混淆代码，解决方案是使用extern参数</li>
+</ol>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-addTouchToNode的实现" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/addTouchToNode%E7%9A%84%E5%AE%9E%E7%8E%B0/">addTouchToNode的实现</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:41:48.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/addTouchToNode%E7%9A%84%E5%AE%9E%E7%8E%B0/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>直接上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">function addTouchToNode(node, touchEndCall, target, params) &#123; //给node添加触摸事件</span><br><span class="line">	var bTouchCanceled = false;</span><br><span class="line">	var s = node.getContentSize();</span><br><span class="line">	var rect = cc.rect(0, 0, s.width, s.height);</span><br><span class="line">	var listener = node._tyTouchListener = cc.EventListener.create(&#123;</span><br><span class="line">		event: cc.EventListener.TOUCH_ONE_BY_ONE,</span><br><span class="line">		swallowTouches: true,</span><br><span class="line">		onTouchBegan: function(touch, event) &#123;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode)) &#123;</span><br><span class="line">				bTouchCanceled = false;</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">			return false;</span><br><span class="line">		&#125;,</span><br><span class="line">		onTouchEnded: function(touch, event) &#123;</span><br><span class="line">			if (bTouchCanceled) &#123;</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode)) &#123;</span><br><span class="line">				if (touchEndCall) &#123;</span><br><span class="line">					touchEndCall.call(target, locationInNode, params);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		onTouchCancelled: function() &#123;</span><br><span class="line">			bTouchCanceled = true;</span><br><span class="line">		&#125;,</span><br><span class="line"></span><br><span class="line">		onTouchMoved: function(touch, event) &#123;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode) == false) &#123;</span><br><span class="line">				bTouchCanceled = true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">	cc.eventManager.addListener(listener, node);</span><br><span class="line">	node.onEnter = function()&#123;</span><br><span class="line">		node.__proto__.onEnter.call(this);</span><br><span class="line">		var listener = this._tyTouchListener;</span><br><span class="line">		if(listener._isRegistered() === false) &#123;</span><br><span class="line">			cc.eventManager.addListener(listener, this);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法经过了几次陆续的改进</p>
+<p>1 .刚开始只实现了onTouchBegan和onTouchEnded，而且在onTouchEnded的时候，没有判断坐标是否在区域内，产生的bug是在区域内点击后，移动到区域外松手，也产生了点击。于是增加了onTouchEnded内的区域判断<br>2. 增加了onTouchCancelled和onTouchMoved接口，当触摸移动出区域时，取消掉触摸事件，如果模拟按钮，此时应该将图片缩小回初始大小<br>3. 重写onEnter方法，在onEnter内重新添加事件。为了解决当它自身或者父容器被移除后，重新添加时触摸事件失效的问题</p>
+<p>经过这些完善后，基本上可以代替cc.MenuItemSprite来使用了，再稍微加上放大缩小的效果，就能当cc.ControlButton来使用。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-重用ccnode需要注意的触摸事件处理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/%E9%87%8D%E7%94%A8ccnode%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/">重用ccnode需要注意的触摸事件处理</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:39:37.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/%E9%87%8D%E7%94%A8ccnode%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在使用cocos开发过程中，对node的重用非常常见，例如TableViewCell就是重用的，这些被重用的node会频繁的被添加到父节点以及从父节点中移除，当被移除时会调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">removeFromParent(cleanup)</span><br></pre></td></tr></table></figure>
+
+<p>这个cleanup参数很关键，如果为true，会导致其cleanup方法被调用。如果不带此参数，则默认为true。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cleanup: function () &#123;</span><br><span class="line">    this.stopAllActions();</span><br><span class="line">    this.unscheduleAllCallbacks();</span><br><span class="line">    cc.eventManager.removeListeners(this);</span><br><span class="line">    this._arrayMakeObjectsPerformSelector(this._children, cc.Node._stateCallbackType.cleanup);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，所有被加到此节点上的eventListener都被清除掉了，同时还递归调用了所有子节点的cleanup方法，也就意味着<strong>一个node执行了cleanup的话，其自身以及所有子孙结点注册的eventListener都会被移除</strong>。在重用这个node时，很可能就会发现给它添加的eventListener不生效了。</p>
+<p>但cocos对一些node做了相应的功能完善，专门针对的是触摸事件。在其添加触摸事件时，用成员变量_touchListener保存起来，在onEnter时重新添加。这也是我们在碰到此类问题时的解决方案。cocos只对三个类做了这种实现，他们是cc.Control, cc.Menu, ccui.widget。理所当然的，继承自这三个类的也都有此功能，例如cc.ControlButton被重用时，它的触摸事件不会消失。</p>
+<p>有人会说，tableViewCell一直在被重用，也不继承自上面三个类，为什么对它的触摸回调tableCellTouched一直能生效呢？这是因为tableCellTouched并不是在tableViewCell上添加的触摸事件，而是在tableView上添加的，如果你尝试重用tableView或者其父容器，就会发现触摸失效了，我的解决方案是重用时调用一次tableview的setTouchEnable接口。</p>
+<p>总之在实现重用node时，要注意添加给它和它的子孙节点的事件，需要在onEnter时重新添加，例如某个节点的一个子孙节点是一个cc.TableView，那么在重用这个节点时，这个tableview的触摸肯定失效了，解决办法要么修改源代码在tableView的onEnter方法里重新添加，或者在重用时手动调用tableview的setTouchEnabled方法（这个方法继承自scrollview）</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos/" rel="tag">cocos</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-js中的string和unicode" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/js%E4%B8%AD%E7%9A%84string%E5%92%8Cunicode/">js中的string和unicode</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:37:25.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/js%E4%B8%AD%E7%9A%84string%E5%92%8Cunicode/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>javaScript中的String是UTF-16字符集合，但是要注意，因为js中并没有一种类型叫“字符”，所以charAt() 方法返回的是一个字符串。而charCodeAt()方法，则返回的是0-65535之间的一个整数。fromCharCode()方法是把一个unicode编码转换成String对象，这里是例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27;大&#x27;.charCodeAt(0)  -&gt;  22823</span><br><span class="line">&quot;🐄&quot;.charCodeAt(1)  -&gt;  56324</span><br><span class="line">String.fromCharCode(22823) -&gt; 大</span><br><span class="line">String.fromCharCode(667736) -&gt; じ</span><br></pre></td></tr></table></figure>
+
+<p>因为string是utf-16字符的合集，所以也可以直接用UTF-16编码来组成字符串，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a = &#x27;\u0061\u5927&#x27; -&gt; a大</span><br></pre></td></tr></table></figure>
+
+<p>如果这个utf-16字符是4个字节的，则它在length中反应的长度为2，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var a = &quot;🐄&quot;;</span><br><span class="line">console.log(a.length) -&gt;2</span><br><span class="line">a.charCodeAt(0) -&gt; 55357</span><br><span class="line">a.charCodeAt(1) -&gt; 56324</span><br></pre></td></tr></table></figure>
+
+<p>这里顺便提一下utf-16的编码方式，如果是两个字节，则直接用两个字节表示，这其中0xD800到0xDFFF的字段，是被永久保留不被映射字符的，被用来做标记。超过两个字节，则把codePoint减去0x10000，得到一个长度为20bit的值，这个值的高10位被加上0xD800后，范围为0xD800到0xDBFF。后10位加上0xDC00后，范围为0xDC00到0xDFFF。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-NDK开发之Android.mk文件编写" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8BAndroid.mk%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/">NDK开发之Android.mk文件编写</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:32:06.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8BAndroid.mk%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>现在我们把android稍微写复杂些。在项目根目录下创建一个lib1文件夹</p>
+<p>结构如图：</p>
+<p><img src="/../images/CB15E4FA-DF13-428F-A62B-B7C483DE4277.png" alt="img"></p>
+<p>test10.h和test11.h很简单，就是声明了两个方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int test10();</span><br><span class="line">int test11();</span><br></pre></td></tr></table></figure>
+
+<p>我们先看这个lib1文件夹内的Android.mk文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := test1</span><br><span class="line">LOCAL_MODULE_FILENAME := libtest1</span><br><span class="line"></span><br><span class="line">LOCAL_SRC_FILES := test1.cpp</span><br><span class="line">LOCAL_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line">LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line"></span><br><span class="line">include $(BUILD_STATIC_LIBRARY)</span><br></pre></td></tr></table></figure>
+
+<p>这里LOCAL_MODULE是外面引用这个库时候需要用到的名字，LOCAL_MODULE_FILENAME不写也可以，默认就是在LOCAL_MODULE前面加上lib</p>
+<p>LOCAL_SRC_FILES和LOCAL_C_INCLUDES分别表示需要编译的源文件，以及头文件路径，像这里只使用了当前目录为头文件查找目录，所以test1.cpp里写法就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;test10.h&gt;</span><br><span class="line">#include &lt;test1/test11.h&gt;</span><br><span class="line"></span><br><span class="line">int test10()&#123;</span><br><span class="line">	return 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int test11()&#123;</span><br><span class="line">	return 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>LOCAL_EXPORT_C_INCLUDES是对外提供的头文件搜索路径，他决定了外面在引用这个头文件时的搜索相对路径。它跟LOCAL_C_INCLUDES完全可以不一样。</p>
+<p>知道LOCAL_C_INCLUDES和LOCAL_EXPORT_C_INCLUDES的作用，编译时出现No such file or directory错误就完全不用害怕了，哪个文件找不到，去看一下这两个路径是否对就可以了。</p>
+<p>再来看看jni目录下Android.mk</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := learnNDK</span><br><span class="line"></span><br><span class="line">LOCAL_SRC_FILES := learnNDK.cpp</span><br><span class="line">LOCAL_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line"></span><br><span class="line">LOCAL_STATIC_LIBRARIES := test1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br><span class="line"></span><br><span class="line">$(call import-module, lib1)</span><br></pre></td></tr></table></figure>
+
+<p>比原来就多了两行，LOCAL_STATIC_LIBRARIES :&#x3D; test1 表示引用名字为test1的库，这个名字就是上个文件里的LOCAL_MODULE，$(call import-module, lib1)这里指定了搜索引用库的Android.mk的路径，它是相对于NDK_MODULE_PATH，我们可以在ndk-build命令中指定这个参数，多个路径间使用:分隔</p>
+<p>之后我们增加一个库lib2，它依赖于lib1，<br>它的cpp文件为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;test20.h&gt;</span><br><span class="line">#include &lt;test11.h&gt;</span><br><span class="line"></span><br><span class="line">int test20()&#123;</span><br><span class="line">	return test11() + 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它的Android.mk如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := test2</span><br><span class="line"></span><br><span class="line">LOCAL_SRC_FILES := test2.cpp</span><br><span class="line">LOCAL_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line">LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line"></span><br><span class="line">LOCAL_STATIC_LIBRARIES := test1</span><br><span class="line"></span><br><span class="line">include $(BUILD_STATIC_LIBRARY)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$(call import-module, lib1)</span><br></pre></td></tr></table></figure>
+
+<p>加上对lib1的引用即可。</p>
+<p>jni目录下的Android.mk加上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(call import-module, lib2)</span><br></pre></td></tr></table></figure>
+
+<p>同时修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_STATIC_LIBRARIES := test2 test1</span><br></pre></td></tr></table></figure>
+
+<p>这里记住<strong>依赖顺序为从左到右，被依赖的基础库必须往后放</strong></p>
+<p>最后是执行的ndk-build命令，正确指定NDK_MODULE_PATH即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ndk-build NDK_MODULE_PATH=/Users/imac-0003/Documents/workspace/learnNDK</span><br></pre></td></tr></table></figure>
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ndk/" rel="tag">ndk</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-NDK开发之java调用C++" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/">NDK开发之java调用C++</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:27:43.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先创建一个空的android项目，默认生成的MainActivity，修改如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends Activity &#123;</span><br><span class="line"></span><br><span class="line">	static &#123;</span><br><span class="line">        System.loadLibrary(&quot;learnNDK&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">		super.onCreate(savedInstanceState);</span><br><span class="line">		setContentView(R.layout.activity_main);</span><br><span class="line">		</span><br><span class="line">		TextView t = (TextView)this.findViewById(R.id.textview);</span><br><span class="line">		t.setText(&quot;&quot; + hello(1));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public boolean onCreateOptionsMenu(Menu menu) &#123;</span><br><span class="line">		// Inflate the menu; this adds items to the action bar if it is present.</span><br><span class="line">		getMenuInflater().inflate(R.menu.main, menu);</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static native int hello(int num);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里通过System.loadLibrary(“learnNDK”);来加载咱们等下要生成的动态库leanNDK</p>
+<p>通过public static native int hello(int num);来声明一个C++层可以供我们调用的方法，返回值为int，函数名hello，接受一个形参int num</p>
+<p>在项目根目录创建一个jni文件夹，执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javah -d jni -classpath bin/classes/ com.example.learnndk.MainActivity</span><br></pre></td></tr></table></figure>
+
+<p>关于javah的详细参数介绍请参考<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javah.html">javah</a></p>
+<p>这里简单介绍一下，-d 表示输出的头文件目录，-classpath表示class文件的路径</p>
+<p>然后就可以在jni目录下看到生成的文件com_example_learnndk_MainActivity.h</p>
+<p>我们新建一个cpp文件来实现这个hello方法，新建一个learnNDK.cpp内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;com_example_learnndk_MainActivity.h&gt;</span><br><span class="line"></span><br><span class="line">JNIEXPORT jint JNICALL Java_com_example_learnndk_MainActivity_hello</span><br><span class="line">  (JNIEnv *, jclass, jint) &#123;</span><br><span class="line">  		return 99;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在jni目录下，我们新建个Android.mk文件，内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line">LOCAL_MODULE := learnNDK</span><br><span class="line">LOCAL_SRC_FILES := learnNDK.cpp</span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure>
+
+<p>然后使用ndk编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ndk-build clean</span><br><span class="line">ndk-build</span><br></pre></td></tr></table></figure>
+
+<p>成功之后，运行这个android程序，就可以看到结果了。</p>
+<p>实际中Android.mk可以编写很复杂，也可能需要在jni目录下通过Application.mk来设定一些参数，如果不正确设定可能导致编译出错。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-使用closureCompiler深度混淆的一个坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/%E4%BD%BF%E7%94%A8closureCompiler%E6%B7%B1%E5%BA%A6%E6%B7%B7%E6%B7%86%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">使用closureCompiler深度混淆的一个坑</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:25:30.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/%E4%BD%BF%E7%94%A8closureCompiler%E6%B7%B1%E5%BA%A6%E6%B7%B7%E6%B7%86%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>混淆命令为:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js a.js --js_output_file b.js</span><br></pre></td></tr></table></figure>
+
+<p>混淆前代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function test(result)&#123;</span><br><span class="line">	console.log(result.fuck.text);</span><br><span class="line">	console.log(result.text.fuck);</span><br><span class="line">	console.log(result.color.colour);</span><br><span class="line">	var tmp = &#123;</span><br><span class="line">		test1:Math.random(),</span><br><span class="line">		&quot;test2&quot;:Math.random()</span><br><span class="line">	&#125;</span><br><span class="line">	for(var i = 0; i &lt; result.length; i++) &#123;</span><br><span class="line">		console.log(result[i].text);</span><br><span class="line">		console.log(result[i].text.text1.text2.text3);</span><br><span class="line">		tmp.test1 += 1;</span><br><span class="line">		tmp.test2 += 2;</span><br><span class="line">		console.log(tmp.test1);</span><br><span class="line">		console.log(tmp.test1.test11.test111);</span><br><span class="line">		console.log(tmp.test2);</span><br><span class="line">	&#125;</span><br><span class="line">	result.tmp = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>混淆后代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function d(b) &#123;</span><br><span class="line">	console.log(b.b.text);</span><br><span class="line">	console.log(b.text.b);</span><br><span class="line">	console.log(b.color.d);</span><br><span class="line">	for (var a = &#123;</span><br><span class="line">			a: Math.random(),</span><br><span class="line">			test2: Math.random()</span><br><span class="line">		&#125;, c = 0; c &lt; b.length; c++) console.log(b[c].text), console.log(b[c].text.c.j.k), a.a += 1, a.b += 2, console.log(a.a), console.log(a.a.h.i), console.log(a.b);</span><br><span class="line">	b.l = a</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>目前可以看到 text和color，在深度混淆中不会被混淆。是否还有别的一些关键字不被混淆，还不确定。比如colour就会被混淆&#x3D; &#x3D;</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/10/index.html">http://yangguang1029.github.io/page/10/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+
+    <nav id="page-nav">
+
+<a class="extend prev" rel="prev" href="/page/9/">Vorheriger</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">Nächster</a>
+</nav>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> Letzte</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">Sitemap</a>
+        <span> | </span><a href="/atom.xml">Abonnieren Sie diese Site</a>
+        <span> | </span><a href="/about/">Kontaktieren Sie den Blogger</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
 </footer>
+
+    </div>
+  </div>
   
-<script src="/js/theme.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+
 
 </body>
-
 </html>

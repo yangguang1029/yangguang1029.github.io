@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <div class="post-list">
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/12/20/rn-improve-flatlist/">ReactNative之flatlist性能优化</a>
+    <div class="post-item-summary">
+      列表页是RN应用开发中非常常见的场景，如果单元行数量较多，单元行UI比较复杂，页面刷新比较频繁，很容易产生性能问题。本文将总结在使用flatlist组件过程中进行性能优化的方向
+减少组件本身的刷新首先我们需要知道，一旦flatlist刷新，它的所有renderItem就会被调用到，如果列表元素很多而且复杂，将会带来很大的性能损耗，所以我们第一件事就是避免flatlist组件本身不必要的刷新，这和所有组件避免重复刷新的做法是一样的，就是避免在props中使用临时成员变量。Fla
+      <a class="read-more" href="/2018/12/20/rn-improve-flatlist/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.12.20</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/12/18/rn-map-state-to-props/">ReactNative之mapStateToProps</a>
+    <div class="post-item-summary">
+      connect是react-redux库提供的一个辅助函数，它的第一个参数是mapStateToProps，官方文档对这个函数的介绍很清晰：
+
+如果定义该参数，组件将会监听 Redux store 的变化。任何时候，只要 Redux store 发生改变，mapStateToProps 函数就会被调用。该回调函数必须返回一个纯对象，这个对象会与组件的 props 合并。如果你省略了这个参数，你的组件将不会监听 Redux store。如果指定了该回调函数中的第二个参数 own
+      <a class="read-more" href="/2018/12/18/rn-map-state-to-props/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.12.18</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/12/11/rn-red-screen/">ReactNative之红屏是如何产生的</a>
+    <div class="post-item-summary">
+      我们在开发RN项目时，红屏是司空见惯的事情，然后我发现很多人会问，调试时出现红屏，那应用发布后是否会红屏呢？要确定的知道答案，还得从源代码去看。
+在node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Core&#x2F;InitializeCore.js中有一段代码
+const handleError = (e, isFatal) =&gt; &#123;
+  try &#123;
+    ExceptionsManager.
+      <a class="read-more" href="/2018/12/11/rn-red-screen/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.12.11</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/12/04/js-async-await/">javaScript之简单理解async函数</a>
+    <div class="post-item-summary">
+      async函数和generator函数这个东西，如果用到的不多，很容易看着犯怵，尤其是还搭配上promise，我自己就是这样，几个月前觉得明白这些概念，但因为用的不多，几个月后感觉又稀里糊涂了，所以尝试用最简单的方式来解释。
+首先是generator函数，它的函数声明比普通函数多了个星号，然后函数内容可以使用yield关键字
+function* generatorFunc() &#123;
+  console.log(0)
+  yield 1
+  console.log(1)
+      <a class="read-more" href="/2018/12/04/js-async-await/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.12.04</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/10/10/rn-flex-styles/">ReactNative之flex属性值</a>
+    <div class="post-item-summary">
+      之前就看过一个例子，是下面的这种情况
+1234&lt;View style=&#123;&#123;width:200,height:200&#125;&#125;&gt;  &lt;View style=&#123;&#123;flex:1, height:150, backgroundColor:&#x27;red&#x27;&#125;&#125;/&gt;  &lt;View style=&#123;&#123;flex:1, height:150, backgrou
+      <a class="read-more" href="/2018/10/10/rn-flex-styles/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.10.10</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/09/27/rn-native-view-method/">ReactNative之原生UI导出方法</a>
+    <div class="post-item-summary">
+      在官方文档的原生UI模块章节: (IOS Android)，我们可以学会如何导出原生UI组件，如何导出prop，如何设置事件回调等等，但是缺少一个内容，那就是如何导出方法。举个例子，我们在使用ScrollView组件时，如果想让它滚动，需要先获取到它的ref，然后调用它的scrollTo方法，这就是一个原生UI导出的方法。通过阅读源代码，我找到了如何实现的方案，这里介绍一下。
+iOSiOS端直接在继承自RCTViewManager的类中提供接口。照着下面的模板写就可以了，将
+      <a class="read-more" href="/2018/09/27/rn-native-view-method/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.09.27</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/09/06/rn-duplicate-native-module/">ReactNative之原生模块重名的问题</a>
+    <div class="post-item-summary">
+      在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是
+
+iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类
+Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者Vi
+      <a class="read-more" href="/2018/09/06/rn-duplicate-native-module/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.09.06</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/08/29/rn-assistance-lib/">ReactNative之辅助库选择</a>
+    <div class="post-item-summary">
+      很多刚入门RN开发的同学面对着老鸟侃侃而谈什么redux,immutable,saga这些库是一脸懵逼的状态，拿不准自己开发的时候是否该用，这里我列举一下我自己的意见。为了篇幅和容易理解，不会说的太详细和深入，像服务器渲染这种就不提了（其实是因为我也不是很懂……）
+Redux收益
+
+单向数据流的方式有利于管理，不用到处传递prop了
+有利于解耦，使用redux的话天然就将model从view中解耦了出来
+有利于state跟踪和现场还原
+
+代价
+
+学习成本。action,red
+      <a class="read-more" href="/2018/08/29/rn-assistance-lib/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.08.29</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/08/29/js-class-function/">javaScript之类的成员函数和箭头函数</a>
+    <div class="post-item-summary">
+      最近发现有的地方在使用ES6的class时，使用箭头函数来声明方法，例如
+123456789class Test &#123;  func1(num)&#123;    this.num = num  &#125;  func2 = (num) =&gt; &#123;    this.num = num  &#125;&#125;var t = new Test()
+这两种方案是有区别的，区别就是func1是protoType上的属性，而func2是实例上的属性，我们用co
+      <a class="read-more" href="/2018/08/29/js-class-function/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.08.29</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/08/23/rn-flex-size/">ReactNative之组件自适应尺寸</a>
+    <div class="post-item-summary">
+      组件如果不设定尺寸的话，会按照一定的规则，随着父组件和子组件的尺寸自适应。首先我们确定一个前提，父组件和子组件都是有尺寸的。除非明确设定尺寸为0，否则一个组件肯定是有尺寸的，对于根组件，它的父组件实际上是整个屏幕大小flexDirection为column的一个组件。
+首先是适应父组件的规则，当一个组件不设置尺寸且没有子组件，它的尺寸取决于父组件的尺寸和flexDirection。如果flexDirection为row，那么它的宽度为0，高度为父组件的高度。如果flexDir
+      <a class="read-more" href="/2018/08/23/rn-flex-size/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.08.23</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+</div>
+
+
+<div class="paginator">
+  <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
+</div>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

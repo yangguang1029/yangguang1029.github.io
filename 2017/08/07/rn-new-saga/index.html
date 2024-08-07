@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    创建一个redux saga项目的简要流程 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">创建一个redux saga项目的简要流程</div>
+  <div class="post-meta">
+    <div class="date">2017 August 7th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>我们先新建一个RN项目</p>
+<pre><code>react-native init testrn
+</code></pre>
+<p>然后安装redux</p>
+<pre><code>cd testrn
+npm install --save redux
+</code></pre>
+<p>在动手之前确保自己已经理解了redux的概念 <a target="_blank" rel="noopener" href="http://cn.redux.js.org/">redux官方中文文档</a>。</p>
+<p>现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设计为</p>
+<pre><code>&#123;
+    &quot;subState1&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;,
+    &quot;subState2&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;
+&#125;
+</code></pre>
+<p>实际项目中的state肯定不会这么简单，可能会非常庞大，这就要求结构不能太草率，因为是树状结构，所以要掌握好分级的粒度，层级太少则可能单个子state过于复杂，因为一个reducer处理一个子state，则会导致reducer函数过于繁冗。层级太多则不易梳理结构，显得混乱。</p>
+<p>然后我们给这两个修改text的动作设定两个action</p>
+<pre><code>const CHANGE1 = &quot;change1&quot;;
+const CHANGE2 = &quot;change2&quot;;
+</code></pre>
+<p>然后根据这个结构来写reducer</p>
+<pre><code>function reducer1(state=&#123;&quot;text&quot;:&quot;&quot;&#125;, action) &#123;
+    if(action.type === CHANGE1) &#123;
+        return Object.assign(&#123;&#125;, state, &#123;&quot;text&quot;:&quot;hello&quot; + action.data&#125;);
+    &#125;
+    return state;
+&#125;
+function reducer2(state=&#123;&quot;text&quot;:&quot;&quot;&#125;, action) &#123;
+    if(action.type === CHANGE2) &#123;
+        return Object.assign(&#123;&#125;, state, &#123;&quot;text&quot;:&quot;world&quot; + action.data&#125;);
+    &#125;
+    return state;
+&#125;
+let reducer = combineReducers(&#123;&quot;subState1&quot;:reducer1, &quot;subState2&quot;:reducer2&#125;);
+</code></pre>
+<p>有的人在使用combineReducers时，习惯使用ES5的对象简写，例如</p>
+<pre><code>let reducer = combineReducers(&#123;reducer1, reducer2&#125;)
+</code></pre>
+<p>这样不是很好，这样写的话，state的实际内容就是</p>
+<pre><code>&#123;
+    &quot;reducer1&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;,
+    &quot;reducer2&quot;:&#123;&quot;text&quot;:&quot;&quot;&#125;
+&#125;
+</code></pre>
+<p>我们在使用state数据时，以reducer1为key，而reducer1本身又是reducer函数的名称，一不小心就容易搞糊涂。所以我们提倡在设计state时就想好子state的key，然后在combine时用key:reducer的形式。</p>
+<p>为了方便使用redux，我们还需要react-redux库</p>
+<pre><code>npm install --save react-redux
+</code></pre>
+<p>我们使用connect这个API，来简化触发和监听action的操作。我们开始把这个页面写出来</p>
+<pre><code>import &#123;Provider, connect&#125; from &quot;react-redux&quot;
+
+class TestRN extends Component&#123;
+    render()&#123;
+        return (&lt;View&gt;
+            &lt;Text&gt;&#123;this.props.subState1.text&#125;&lt;/Text&gt;
+            &lt;Text&gt;&#123;this.props.subState2.text&#125;&lt;/Text&gt;
+            &lt;Button title=&quot;btn1&quot; onPress=&#123;()=&gt;&#123;
+                this.props.createSagaAction1();
+            &#125;&#125;/&gt;
+            &lt;Button title=&quot;btn2&quot; onPress=&#123;()=&gt;&#123;
+                this.props.createSagaAction2();
+            &#125;&#125;/&gt;
+        &lt;/View&gt;)
+    &#125;
+&#125;
+
+const mapStateToProps = (state, ownProps) =&gt;&#123;
+    return state;
+&#125;
+const mapDispatchToProps = (dispatch, ownProps)=&gt;&#123;
+    return bindActionCreators(&#123;createSagaAction1, createSagaAction2&#125;, dispatch);
+&#125;
+export default connect(mapStateToProps, mapDispatchToProps)(TestRN)
+</code></pre>
+<p>这段代码里，我们点击按钮后，并不是发出了CHANGE1和CHANGE2事件，而是createSagaAction1和createSagaAction2，这是因为我打算在接下来使用redux saga，让它收到而是createSagaAction1和createSagaAction2后，模拟一次异步操作，再由saga来发出CHANGE1和CHANGE2事件</p>
+<p>redux saga是用来处理异步操作的，所以我们先写个模拟异步的功能函数</p>
+<pre><code>function delay(cb, time) &#123;
+    return new Promise((resolve)=&gt;&#123;
+        setTimeout(()=&gt;&#123;
+            cb(parseInt(Math.random() * 100));
+            resolve();
+        &#125;, time);
+    &#125;)
+&#125;
+async function getNum()&#123;
+    let a;
+    await delay((num)=&gt;&#123;
+        a = num;
+    &#125;, 5000);
+    return a;
+&#125;
+</code></pre>
+<p>然后开始redux saga相关，首先是安装saga</p>
+<pre><code>npm install --save redux-saga
+</code></pre>
+<p>然后开始代码，我们把点击按钮要发出的两个action实现出来然后监听并处理</p>
+<pre><code>import regeneratorRuntime from &quot;regenerator-runtime&quot;;
+
+const SAGA_ACTION1 = &quot;sagaAction1&quot;;
+const SAGA_ACTION2 = &quot;sagaAction2&quot;;
+function createSagaAction1()&#123;
+    return &#123;&quot;type&quot;: SAGA_ACTION1&#125;;
+&#125;
+function createSagaAction2()&#123;
+    return &#123;&quot;type&quot;: SAGA_ACTION2&#125;;
+&#125;
+function* sagaFunc1()&#123;
+    while(true) &#123;
+        yield take(SAGA_ACTION1);
+        let a = yield call(getNum);
+        yield put(&#123;type:CHANGE1, data:a&#125;);
+    &#125;
+&#125;
+function* sagaFunc2()&#123;
+    while(true) &#123;
+        yield take(SAGA_ACTION2);
+        let a = yield call(getNum);
+        yield put(&#123;type:CHANGE2, data:a&#125;);
+    &#125;
+&#125;
+function* mySaga()&#123;
+    yield fork(sagaFunc1);
+    yield fork(sagaFunc2);
+&#125;
+</code></pre>
+<p>这里需要注意的就是saga函数必须是generators函数，不能用async, await。 sagaFunc1通过使用三个effect来进行操作，首先使用take来监听SAGA_ACTION1，然后使用call来阻塞调用异步函数，最后使用put来发出CHANGE1这个action，这时我们前面写的reducer收到CHANGE1这个action，就会修改state，从而让页面发生变化。</p>
+<p>然后就是不要忘了import regeneratorRuntime，否则项目是跑不起来的，会出现红屏错误，提示cannot read property ‘mark’ of undefined。这是babel处理generators函数所需要的。</p>
+<p>最后是创建store和使用provider了</p>
+<pre><code>let middle = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(middle));
+middle.run(mySaga);
+
+export default class TestRNContainer extends Component&#123;
+    render()&#123;
+        return (
+            &lt;Provider store = &#123;store&#125;&gt;
+            &lt;TestRN /&gt;
+            &lt;/Provider&gt;
+        )
+    &#125;
+&#125;
+</code></pre>
+<p>到此为止，一个新建项目使用redux saga就全部完成了</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

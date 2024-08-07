@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative中的pixelRatio 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative中的pixelRatio</div>
+  <div class="post-meta">
+    <div class="date">2017 July 26th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>关于pixelRatio，<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.43/pixelratio.html#content">官方文档</a>有相关内容。通过</p>
+<pre><code>PixelRatio.get()
+</code></pre>
+<p>接口可以获取到设备的像素密度，但有的同学不清楚这个像素密度做什么用的，比如我发现在项目里，给图片设置尺寸时，都乘以了这个像素密度值，实际上这是不对的。</p>
+<p>手机屏幕像素是大家都知道的，比如1080*1920，他们指的是物理像素。除此之外还有一个参数叫做设备独立像素，在<a target="_blank" rel="noopener" href="https://material.io/devices/">这里</a>可以看到部分移动设备的相关参数。这个设备独立像素，我们用Dimensions API可以获取到</p>
+<pre><code>import &#123;Dimensions&#125; from &quot;react-native&quot;
+let size = Dimensions.get(&quot;window&quot;);
+console.log(&quot;width: &quot; size.width + &quot; height: &quot; + size.height);
+</code></pre>
+<p>而像素密度比pixelRatio，就是物理像素除以独立像素的值。比如我手里的坚果pro，它的物理像素是1080*1920，设备独立像素是360*640，所以它的像素密度是3。 在上面界面里也可以看到，例如ipad, GalaxyTab等平板一般像素密度是1，中断设备像素密度是2，高端些的设备像素密度就是3，当然也有一些设备像素密度是1.5或者2.5等。</p>
+<p>首先我们要明确一点，我们在给图片设置尺寸时，是不需要写单位的，实际上单位就是独立像素。</p>
+<p>假设有两个设备，它们的独立像素相同，都是360*640，那么我有一张图片，设置宽度为180，在这两个设备上都是占了一半屏幕宽。而如果有一个pad它的独立像素是768*1024，我们仍然希望它占一半屏幕的话，就需要把宽度设置为768*0.5&#x3D;384了。例如对于背景图片，显然需要在任何设备上都占满屏幕，所以给它设置尺寸直接就是设备独立像素的值，也就是Dimension.get(“window”)得到的值。有的时候我们不希望随着屏幕变，例如那张图片仍然设置宽度为180，那么它在pad上宽度只占了23.4%。所以我们可以得知，给图片设置尺寸时，只决定于它在不同的独立像素屏幕上，需要显示成什么效果。最简单的方案是两种，要么设为固定值，要么跟屏幕独立像素成比例。否则就根据不同的屏幕来细分了。</p>
+<p>那么这个像素密度拿来做什么用呢？</p>
+<p>仍然说那两个设备，它们独立像素都是360*640，A设备像素密度为1，B设备像素密度为3，很容易得知A设备物理像素为360*640，而B设备物理像素为1080*1920。我有一张图片，美术给的尺寸是360*360,现在我给它设的尺寸宽度为180*180，根据上面所说，在这两个设备上图片都占屏幕一半宽，但A设备屏幕一半的物理像素是180，对于图片物理像素宽度360来说，缩小了一半。B设备屏幕一半的物理像素是540，对于图片物理像素宽度360来说，放大了1.5倍。不论放大还是缩小，都会导致图片显示模糊。如果要达到最好的显示效果，就应该给A设备提供180*180尺寸的图片，给B设备提供540*540尺寸的图片，这就是像素密度的作用。</p>
+<p>是否要根据不同屏幕提供多套素材资源，取决于项目要求。我们在实际项目中可以使用pixelRation接口来实现物理像素和独立像素之间数值的转换，只要记住物理像素&#x3D;独立像素*像素密度这个公式即可。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

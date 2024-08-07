@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之ref赋值应使用成员函数 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之ref赋值应使用成员函数</div>
+  <div class="post-meta">
+    <div class="date">2017 August 2nd</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在线上项目收集的js error里，发现有一个问题，有的ref成员变量可能变为null,然后就出了问题。先看下面的代码。</p>
+<pre><code>class Test extends Component&#123;
+    constructor(props) &#123;
+        super(props);
+        this._ref = null;
+    &#125;
+
+    render()&#123;
+        return (&lt;View&gt;
+        &lt;MyComponent ref=&#123;component=&gt;this._ref=component&#125;/&gt;
+        &lt;Button onPress=&#123;this._onPress.bind(this)&#125;/&gt;
+        &lt;/View&gt;	
+        )
+    &#125;
+
+    _onPress()&#123;
+        this.setState(&#123;&#125;);
+        this._ref.test();
+    &#125;
+&#125;
+</code></pre>
+<p>当_onPress被调用时，this._ref就可能变为null。</p>
+<p>在facebook的<a target="_blank" rel="noopener" href="https://facebook.github.io/react/docs/refs-and-the-dom.html">官方文档</a>里，最后一段是一个警告信息</p>
+<blockquote>
+<p>If the ref callback is defined as an inline function, it will get called twice during updates, first with null and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. You can avoid this by defining the ref callback as a bound method on the class, but note that it shouldn’t matter in most cases.</p>
+</blockquote>
+<p>可以很清楚的看到，如果ref函数每次都是一个新函数，就可能导致当render函数被执行时，ref被赋值两次，第一次被赋值为null，第二次才被赋值为需要指定的component。上面例子里我们在_onPress函数里调用setState导致页面被重新渲染，然后_ref被重新赋值，有比较小的几率_ref会变为null，如果此时我们使用了_ref变量，就出现问题了。</p>
+<p>解决的办法很简单，我们不应该让ref赋值函数每次都是新的函数，而不管是箭头函数，还是bind方法，每次都是生成一个新函数。所以我们在constructor函数里先绑定好一个成员函数来，然后使用它就可以了。这里就不写代码了，相信对js熟练的同学肯定很快就能写出来。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

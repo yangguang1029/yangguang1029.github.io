@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    javaScript之let和var在闭包内的区别 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">javaScript之let和var在闭包内的区别</div>
+  <div class="post-meta">
+    <div class="date">2018 March 7th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>今天在解决一个bug时碰到的问题，经过层层抽象后，最终通过demo来测试，代码如下</p>
+<pre><code>var functions = [];
+let str = `
+    var a = [1,2,3];
+    functions.push(()=&gt;&#123;
+        console.log(JSON.stringify(a))
+    &#125;)
+`;
+eval(str);
+let str1 = `
+    var a = [4,5,6];
+    functions.push(()=&gt;&#123;
+        console.log(JSON.stringify(a))
+    &#125;)
+`;
+eval(str1);
+
+for(var func of functions)&#123;
+    func();
+&#125;
+</code></pre>
+<p>因为原来碰到的问题是加载两个不同的bundle，所以对应的只能通过两次eval来模拟了。对于上面的代码，我预测的结果是输出两个[4,5,6]数组，因为第二次eval的时候，a被赋予了新值，当闭包执行时，它通过对外部变量a的引用，获取的是a的最新值，实际上的输出也确实是如此。但如果这样的话，就不应该产生bug才对，左思右想之下，突然发现源代码里不是var a，而是const a。于是赶紧改成const试一下，这次输出就是[1,2,3]和[4,5,6]了，const和let是一样的，换成let试一下，也是输出[1,2,3]和[4,5,6]</p>
+<p>通过这个表现，很容易推测到什么原理。在js中，是不允许对同一个变量名使用两次let的，但显然通过eval不受这个限制。当使用var时，两次eval执行后，仍然只有一个变量a。但当使用let和const时，再次eval，虽然变量名一样，但实际上不是同一个变量了，否则就会运行报错了，既然不是同一个变量，那么理所当然两个闭包持有的是各自对应的那个外部变量，所以就产生了不同的结果。</p>
+<p>我们在实际项目中虽然尽量避免使用eval，但解释器多次加载和执行代码是经常出现的，此时就要小心这种情况了。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

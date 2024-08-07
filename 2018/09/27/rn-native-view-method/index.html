@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之原生UI导出方法 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之原生UI导出方法</div>
+  <div class="post-meta">
+    <div class="date">2018 September 27th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在官方文档的原生UI模块章节: (<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/native-components-ios/">IOS</a> <a target="_blank" rel="noopener" href="https://reactnative.cn/docs/native-components-android/">Android</a>)，我们可以学会如何导出原生UI组件，如何导出prop，如何设置事件回调等等，但是缺少一个内容，那就是如何导出方法。举个例子，我们在使用ScrollView组件时，如果想让它滚动，需要先获取到它的ref，然后调用它的scrollTo方法，这就是一个原生UI导出的方法。通过阅读源代码，我找到了如何实现的方案，这里介绍一下。</p>
+<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><p>iOS端直接在继承自RCTViewManager的类中提供接口。照着下面的模板写就可以了，将获取到的view转换成实际的View然后调用方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;React/RCTUIManager.h&gt;</span><br><span class="line"></span><br><span class="line">RCT_EXPORT_METHOD(scrollToIndexWithOffset:(nonnull NSNumber *)reactTag</span><br><span class="line">                  index:(NSInteger)index</span><br><span class="line">                  offset:(CGFloat)offset</span><br><span class="line">                  animated:(BOOL)animated)</span><br><span class="line">&#123;</span><br><span class="line">    [self.bridge.uiManager addUIBlock:</span><br><span class="line">     ^(__unused RCTUIManager *uiManager, NSDictionary&lt;NSNumber *, UIView *&gt; *viewRegistry)&#123;</span><br><span class="line">         UIView *view = viewRegistry[reactTag];</span><br><span class="line">         if([view class] == MyTableView.class) &#123;</span><br><span class="line">             MyTableView* table = (MyTableView*)view;</span><br><span class="line">             [table scrollToIndex:index offset:offset animated:animated];</span><br><span class="line">         &#125;else &#123;</span><br><span class="line">             RCTLogError(@&quot;tried to call scrollToIndexWithOffset on %@ &quot;</span><br><span class="line">                         &quot;with tag #%@&quot;, view, reactTag);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>android端处理方式不一样，我们在继承SimpleViewManager或者ViewGroupManager的类中需要重写getCommandsMap方法，提供暴露到js层的command命令。然后重写receiveCommand方法，通过commandId判断js层是想要调用什么方法，然后把参数转换好之后进行调用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">    public @javax.annotation.Nullable</span><br><span class="line">    Map&lt;String, Integer&gt; getCommandsMap() &#123;</span><br><span class="line">        return MapBuilder.of(</span><br><span class="line">                &quot;scrollToIndexWithOffset&quot;,</span><br><span class="line">                COMMAND_SCROLL_TO);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">    public void receiveCommand(</span><br><span class="line">            MyView scrollView,</span><br><span class="line">            int commandId,</span><br><span class="line">            @javax.annotation.Nullable ReadableArray args) &#123;</span><br><span class="line">        if(commandId == COMMAND_SCROLL_TO) &#123;</span><br><span class="line">            int index = Math.round(PixelUtil.toPixelFromDIP(args.getInt(0)));</span><br><span class="line">            float offset = Math.round(PixelUtil.toPixelFromDIP(args.getDouble(1)));</span><br><span class="line">            boolean animated = args.getBoolean(2);</span><br><span class="line">            scrollView.scrollTo(index, offset, animated);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="javaScript"><a href="#javaScript" class="headerlink" title="javaScript"></a>javaScript</h3><p>在js层调用的代码为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scrollToIndexWithOffset (index, offset, animated) &#123;</span><br><span class="line">  UIManager.dispatchViewManagerCommand(</span><br><span class="line">    ReactNative.findNodeHandle(this.tableRef),</span><br><span class="line">    UIManager.MyTableView.Commands.scrollToIndexWithOffset,</span><br><span class="line">    [index, offset, animated]</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的tableRef就是原生组件在js层使用ref获取到的。scrollToIndexWithOffset对应着原生暴露的方法名(iOS为RCT_EXPORT_METHOD之后的方法名，Android为getCommandsMap暴露的方法名)，后面三个参数数组一次是原生方法接受的参数。</p>
+<p>这就是原生组件封装方法到js层的全部流程了，这是基本的操作，实际开发中再注意下例如参数类型转换等小问题即可。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

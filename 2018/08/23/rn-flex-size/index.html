@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之组件自适应尺寸 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之组件自适应尺寸</div>
+  <div class="post-meta">
+    <div class="date">2018 August 23rd</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>组件如果不设定尺寸的话，会按照一定的规则，随着父组件和子组件的尺寸自适应。首先我们确定一个前提，父组件和子组件都是有尺寸的。除非明确设定尺寸为0，否则一个组件肯定是有尺寸的，对于根组件，它的父组件实际上是整个屏幕大小flexDirection为column的一个组件。</p>
+<p>首先是适应父组件的规则，当一个组件不设置尺寸且没有子组件，它的尺寸取决于父组件的尺寸和flexDirection。如果flexDirection为row，那么它的宽度为0，高度为父组件的高度。如果flexDirection为column，那么高度为0，宽度为父组件的宽度。因为宽或者高为0，所以不会显示。</p>
+<p>然后是适应子组件的规则，当一个组件不设置尺寸且有子组件，那么它会适应子组件的宽高。例如父组件flexDirection为row，那么它的宽度为子组件的宽度，高度为父组件的高度。如果flexDirection为column，那么高度为子组件的高度，宽度为父组件的宽度。</p>
+<p>当给组件设置了尺寸，但只有宽或者高，那么缺少的那个会按照上面的规则来自适应，例如父组件flexDirection为row，那么给它设置高度，就会按此高度显示，否则就按父组件高度显示，如果设置宽度，则按此宽度显示，否则由子组件宽度决定。</p>
+<p>以上三条规则，可以自己写个简单demo验证测试。熟悉了这些规则，在实际开发中，对于尺寸不固定的组件，布局起来就不容易出问题了。</p>
+<p>顺便提一下，原生组件在原生层设置尺寸是不会生效的，组件大小完全取决于js层设置style。在iOS平台，RN给UIView加了一个category  UIView (React)，里面有一个reactSetFrame方法，我们可以给原生组件view实现这个方法来监听它的尺寸，验证上面的规则。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

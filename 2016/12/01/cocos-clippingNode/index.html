@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos使用clippingNode实现擦除效果 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos使用clippingNode实现擦除效果</div>
+  <div class="post-meta">
+    <div class="date">2016 December 1st</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>先直接上模拟器上运行效果图<br><img src="/cocos-clippingNode/3F578633-F7F8-40B3-A5E1-A009FCB6D110.png" alt="img"></p>
+<p>代码也不复杂，只要知道怎么用clippingNode即可，先放上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">bool HelloWorld::init() &#123;</span><br><span class="line">   if ( !Layer::init()) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    auto winsize = Director::getInstance()-&gt;getWinSize();</span><br><span class="line">    auto width = winsize.width;</span><br><span class="line">    auto height = winsize.height;</span><br><span class="line"></span><br><span class="line">    auto stencil = mDrawNode = DrawNode::create();</span><br><span class="line">    </span><br><span class="line">    auto cnode = ClippingNode::create(stencil);</span><br><span class="line">    cnode-&gt;setContentSize(winsize);</span><br><span class="line">    cnode-&gt;setInverted(true);</span><br><span class="line">    auto s = Sprite::create(&quot;HelloWorld.png&quot;);</span><br><span class="line">    s-&gt;setPosition(width * 0.5,height * 0.5);</span><br><span class="line">    cnode-&gt;addChild(s);</span><br><span class="line">    </span><br><span class="line">    this-&gt;addChild(cnode);</span><br><span class="line">    </span><br><span class="line">    auto listener = EventListenerTouchOneByOne::create();</span><br><span class="line">    listener-&gt;onTouchBegan = std::bind(&amp;HelloWorld::onTouchBegan, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    listener-&gt;onTouchMoved = std::bind(&amp;HelloWorld::onTouchMoved, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    </span><br><span class="line">    EventDispatcher* ed = Director::getInstance()-&gt;getEventDispatcher();</span><br><span class="line">    ed-&gt;addEventListenerWithSceneGraphPriority(listener, this);</span><br><span class="line">    </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) &#123;</span><br><span class="line">    mTouchBeganPos = touch-&gt;getLocation();</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event) &#123;</span><br><span class="line">    Vec2 pos = touch-&gt;getLocation();</span><br><span class="line">    std::vector&lt;cocos2d::Vec2&gt; vec(2);</span><br><span class="line">    vec[0] = mTouchBeganPos;</span><br><span class="line">    vec[1] = pos;</span><br><span class="line">    mPoints.push_back(vec);</span><br><span class="line">    mTouchBeganPos = pos;</span><br><span class="line">    refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::refresh() &#123;</span><br><span class="line">    mDrawNode-&gt;clear();</span><br><span class="line">    mDrawNode-&gt;setLineWidth(10);</span><br><span class="line">    for(std::vector&lt;std::vector&lt;cocos2d::Vec2&gt;&gt;::iterator iter = mPoints.begin(); iter != mPoints.end(); iter++) &#123;</span><br><span class="line">        std::vector&lt;cocos2d::Vec2&gt; vec = *iter;</span><br><span class="line">        mDrawNode-&gt;drawLine(vec[0], vec[1], Color4F::RED);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>简单介绍一下clippingNode。它有一个stencil(可以是任何Node)用来决定切割区域，clippingNode的children都会被stencil切割，代码里我们的stencil是一个drawNode，需要擦除的图片HelloWorld.png添加为clippingNode的子节点。本来除了drawNode渲染的区域外都会被切割，我们通过setInverted接口设置后变成了相反，drawNode渲染的区域将被切割，被切割后我们就看到了图片下面的黑色背景，于是就呈现出擦除的效果。</p>
+<p>使用setAlphaThreshold接口可以设置alpha阈值，当stencil中像素的alpha值大于这个阈值时，才会被绘制</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

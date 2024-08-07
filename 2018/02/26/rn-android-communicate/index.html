@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之js与native通信流程（Android篇） 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之js与native通信流程（Android篇）</div>
+  <div class="post-meta">
+    <div class="date">2018 February 26th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>这篇文章简要介绍一下android平台，js和java互相调用时，经过的流程。</p>
+<h3 id="js调用java"><a href="#js调用java" class="headerlink" title="js调用java"></a>js调用java</h3><p>要从js端调用java代码，需要把java端能被调用的接口，在js代码中进行注册。这个实现在react-native&#x2F;Libraries&#x2F;BatchedBridge&#x2F;NativeModules.js文件中。</p>
+<p>看NativeModules.js内的代码里有：</p>
+<pre><code>let NativeModules : &#123;[moduleName: string]: Object&#125; = &#123;&#125;;
+if (global.nativeModuleProxy) &#123;
+    NativeModules = global.nativeModuleProxy;
+&#125; else &#123;
+    const info = genModule(config, moduleID);
+    NativeModules[info.name] = info.module;
+&#125;
+</code></pre>
+<p>这里把代码简化了一下，这段代码其实是说明了两种情况，当加载离线bundle时，genModule是从ReactCommon&#x2F;cxxreact&#x2F;JSCNativeModules.cpp里调进来的，否则是从ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;ProxyExecutor.cpp里把__fbBatchedBridgeConfig传进来然后解析的。具体的细节不用深究。总之java端有哪些接口可供调用，模块名函数名等信息传到js层，然后经过一层封装，实际调用了MessageQueue里的enqueueNativeCall方法。</p>
+<p>在enqueueNativeCall方法里我们可以看到一个细节，就是js对原生的调用是被存储在队列里的，每5毫秒把这些请求集中交给原生处理并清空一次队列。从js开始进入原生代码的入口是</p>
+<pre><code>global.nativeFlushQueueImmediate(queue);
+</code></pre>
+<p>这个方法定义在ReactCommon&#x2F;cxxreact&#x2F;JSCExecutor.cpp中。它的实现是</p>
+<pre><code>m_delegate-&gt;callNativeModules(*this, folly::parseJson(queueStr), false);
+</code></pre>
+<p>这个m_delegate如果一路跟踪的话，就会发现是一个JsToNativeBridge类实例，这个类定义在ReactCommon&#x2F;cxxreact&#x2F;NativeToJsBridge.cpp中。JsToNativeBridge的callNativeModules方法实现为</p>
+<pre><code>m_registry-&gt;callNativeMethod(call.moduleId, call.methodId, std::move(call.arguments), call.callId);
+</code></pre>
+<p>进入ModuleRegistry类的callNativeMethod方法中，发现执行的是NativeModule类的invoke方法，而继承自NativeModule类的有两个：一个是ReactCommon&#x2F;cxxreact&#x2F;CxxNativeModule.h，我们用它实现了js与C++的直接通信，这个以后有空再写。另一个是ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;JavaModuleWrapper.h里的JavaNativeModule。JavaNativeModule的invoke方法通过JNI调用了java方法。</p>
+<pre><code>static auto invokeMethod = wrapper_-&gt;getClass()-&gt;getMethod&lt;void(jint, ReadableNativeArray::javaobject)&gt;(&quot;invoke&quot;);
+</code></pre>
+<p>然后我们去寻找JavaNativeModule类在java层对应的什么类。回到前面跟踪的路线，JsToNativeBridge的实例来自于NativeToJsBridge类的构造函数，而NativeToJsBridge的实例来自于Instance.cpp的initializeBridge方法，然后跟踪到CatalystInstanceImpl.cpp里的initializeBridge方法，这是个JNI方法，java层传过来的javaModules就是在这个函数里，被封装成了JavaNativeModule类。我们找到ReactAndroid&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;facebook&#x2F;react&#x2F;bridge&#x2F;CatalystInstanceImpl.java里的initializeBridge方法，就知道C++中的JavaNativeModule对应了java中的JavaModuleWrapper类，这样最终我们就调用了JavaModuleWrapper类里的invoke方法。</p>
+<h3 id="java调用js"><a href="#java调用js" class="headerlink" title="java调用js"></a>java调用js</h3><p>源代码中有一个很好的从java调用js的例子，就是ReactRootView里的代码</p>
+<pre><code>String jsAppModuleName = getJSModuleName();
+catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, appParams);
+</code></pre>
+<p>从CatalystInstanceImpl.java的getJSModule方法里我们能看出，所有java能调用的js接口，都是继承自JavaScriptModule类，我们可以在项目中搜一下，就能默认有哪些类可以调用了，例如我们最常用的DeviceEventManagerModule。在JavaScriptModuleRegistry类中通过动态代理创建JavaScriptModule，这块我不太了解，所以只能跳过去了。实际我们调用的是JavaScriptModuleInvocationHandler类的invoke方法，它调用了CatalystInstanceImpl.java内的callFunction方法。然后通过PendingJSCall类的call方法，调用了</p>
+<pre><code>catalystInstance.jniCallJSFunction(mModule, mMethod, arguments);
+</code></pre>
+<p>这是一个JNI方法，于是进入到了ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;CatalystInstanceImpl.cpp内，然后来到ReactCommon&#x2F;cxxreact&#x2F;Instance.cpp的callJSFunction方法，然后是NativeToJsBridge的callFunction方法，再来到JSCExecutor的callFunction方法，在这里找到MessageQueue.js里的callFunctionReturnFlushedQueue方法调用。看messageQueue.js的__callFunction方法里，实现是</p>
+<pre><code>const moduleMethods = this.getCallableModule(module);
+</code></pre>
+<p>哪些模块能够被调用，来自于MessageQueue类的registerLazyCallableModule，在Libraries文件夹内搜一下，就能找到Libraries&#x2F;Core&#x2F;InitializeCore.js。到这里就顿时清楚了，这些类在Java层中以继承自JavaScriptModule的interface形式记录下来，在js层中具体实现，然后按照上述流程最终执行js代码。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

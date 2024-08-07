@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos之定时器scheduler 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos之定时器scheduler</div>
+  <div class="post-meta">
+    <div class="date">2017 March 21st</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Scheduler::schedule(SEL_SCHEDULE selector, Ref *target, float interval, unsigned int repeat, float delay, bool paused)</span><br></pre></td></tr></table></figure>
+
+<p>此外还有一个接口</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void scheduleUpdate(T *target, int priority, bool paused)</span><br></pre></td></tr></table></figure>
+<p>它可以设定优先级priority，优先级越低，越早被调用。注册的对象target的update方法会被调用。</p>
+<p>在CCNode里预先封装了一个函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::scheduleUpdate()</span><br></pre></td></tr></table></figure>
+<p>它就是通过上面scheduleUpdate实现的，其priority为0。如果我们调用它,则Node内的update方法会每帧被调用一次。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>定时器scheduler的实现原理很简单，它的update方法每帧都会被调用，此时查看所有注册了的定时器，如果满足触发条件，则触发一次，然后触发次数加1，触发次数达到注册时的次数，则结束并销毁这个定时器。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
+<li>schedule方法，定时器的回调次数比参数repeat多1，也就是说如果希望只回调一次，repeat应该设为0.以此内推</li>
+<li>通过schedule方法，同一个类注册的定时器，先注册者先回调</li>
+<li>通过schedule方法，不同类注册的定时器，每个类的定时器会按上一条规则全部执行完，然后再执行下一个类的全部回调。不同类之间按照注册时先后顺序来，先注册的类先回调</li>
+<li>通过scheduleUpdate注册的定时器，根据priority排序，priority越小越先被调用</li>
+<li>定时器的回调都有一个参数float t，它表示当前与上一次回调的时间间隔，引擎无法确保两次回调的间隔一定是我们在schedule时设定的间隔，或者我们预计的每帧间隔。</li>
+<li>如果需要将定时器加速或者减速，可以使用Scheduler::setTimeScale方法。设一个小于1的值，回调频率将会变慢，设一个大于1的值，回调频率会变快，但需要注意回调时参数t不会改变</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    javaScript中的无符号右移运算符 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">javaScript中的无符号右移运算符</div>
+  <div class="post-meta">
+    <div class="date">2016 August 15th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>今天刷leetcode上的题目<a target="_blank" rel="noopener" href="https://leetcode.com/problems/reverse-bits/">revert bits</a>的时候，用到了js里的位移操作，然后就出现了问题。题目里给出的数字是32位无符号整数，但是js里默认的整数是32位有符号整数，所以在执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var a = 1 &lt;&lt; 31</span><br></pre></td></tr></table></figure>
+
+<p>时, a的值是-2147483648，而不是期望中的2147483648</p>
+<p>如果要得到正确的值，就需要用到另一个位操作符：无符号右移运算符 &gt;&gt;&gt;</p>
+<p>它与普通的右移运算符的区别只是在右移补位时只补0，而普通的右移操作符对有符号整数进行操作，当符号位为1时补1，符号位为0时补0</p>
+<p>当需要将一个有符号数转成无符号数时，使用 &gt;&gt;&gt; 0即可，将一个无符号数转成有符号数，使用&lt;&lt; 0即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a = 1 &lt;&lt; 31;	//a = -2147483648</span><br><span class="line">var b = a &gt;&gt;&gt; 0;	//b = 2147483648</span><br><span class="line">var c = b &lt;&lt; 0;		//c = -2147483648</span><br></pre></td></tr></table></figure>
+
+<p>知道了&gt;&gt;&gt;操作符之后，这个leetcode问题就很好解决了，顺便把我的答案附上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var reverseBits = function(n) &#123;</span><br><span class="line">    var m = 0;</span><br><span class="line">    var index = 31;</span><br><span class="line">    while(n) &#123;</span><br><span class="line">        var tmp = n &amp; 1;</span><br><span class="line">        if(tmp) &#123;</span><br><span class="line">            m = m | (tmp &lt;&lt; index);</span><br><span class="line">        &#125;</span><br><span class="line">        index -= 1;</span><br><span class="line">        n = n &gt;&gt;&gt; 1;	//注意，使用无符号右移</span><br><span class="line">    &#125;</span><br><span class="line">    return m&gt;&gt;&gt;0;	//m默认是有符号数，强制转换成无符号数</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

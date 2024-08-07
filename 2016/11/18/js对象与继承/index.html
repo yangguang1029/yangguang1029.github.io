@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    js对象与继承(一) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">js对象与继承(一)</div>
+  <div class="post-meta">
+    <div class="date">2016 November 18th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>大家都知道在js中创建一个对象的一种很基本的方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function f()&#123;</span><br><span class="line">	this.a = 1;</span><br><span class="line">&#125;</span><br><span class="line">var test = new f();</span><br></pre></td></tr></table></figure>
+
+<p>当执行new的时候，系统实际做的事情分了几步</p>
+<ol>
+<li>var obj &#x3D; Object.create(f.prototype)</li>
+<li>var result &#x3D; f.call(obj)</li>
+<li>result &amp;&amp; typeof result &#x3D;&#x3D;&#x3D; ‘object’ ? return result : return obj</li>
+</ol>
+<p>用语言描述就是，首先用f.prototype构造一个Object，这里命名为obj，然后将obj作为参数this去调用构造函数f，返回值为result，如果result是一个对象，则返回它，也就意味着test &#x3D; result，否则 test &#x3D; obj。</p>
+<p>然后再看prototype是什么东西吧，举个例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var p = &#123;&quot;a&quot;:1, &quot;b&quot;:&#123;&quot;c&quot;:2&#125;&#125;</span><br><span class="line">var f = function()&#123;this.d = 3&#125;</span><br><span class="line">f.prototype = p</span><br><span class="line">var t = new f()</span><br><span class="line">console.log(t.d)</span><br><span class="line">console.log(t.a)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里p是一个对象，f是一个构造函数，将f的prototype设为p，当使用f构造出一个对象t出来时，t会有一个属性__proto__,它就指向了p</p>
+<p>当我们获取t.d时，t是有d属性的，这个没问题<br>当我们获取t.a时，t没有a属性，此时会沿着它的原型链往上查找，也就是查找它的__proto__，也就是p，p是有a属性的，所以将a的值返回。我们可以使用Object类上的一个方法hasOwnProperty来判断一个属性或方法是对象本身的，还是原型链上的。例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(t.hasOwnProperty(&quot;a&quot;))	//false</span><br><span class="line">console.log(t.hasOwnProperty(&quot;d&quot;))	//true</span><br></pre></td></tr></table></figure>
+<p>上面说的是取值，赋值的时候就稍微复杂些，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.a = 11;</span><br><span class="line">t.b.c = 12</span><br></pre></td></tr></table></figure>
+<p>执行第一句话，也就是对于基础数据类型，在chrome控制台上可以看到t的属性列表里出现了a并且值为11，而p的a仍然是1不变。也就是对原型上的基础数据类型赋值，不会影响原型，而是自身多了一个这样的属性。但使用hasOwnProperty看，仍然为false，这应该是js的一些不完善的地方吧。</p>
+<p>执行第二句话，可以看到p的b变成了{“c”:12}，也就是修改原型链上的非基础数据类型，会改变原型链本身。这也是javascript中使用类继承比使用原型继承更好的原因之一。下篇再分别讲这两种继承方式</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

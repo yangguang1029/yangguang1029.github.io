@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    c++11之lambda简单使用 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">c++11之lambda简单使用</div>
+  <div class="post-meta">
+    <div class="date">2017 March 10th</div>
+    <div class="tags">
+      
+      <div class="tag-item">c++</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>lambda是C++11新增的功能，因为不是很熟，碰到需要回调的时候，我都是使用std::bind来绑定函数指针，但lambda有它使用方便的地方，尤其是闭包可以调用函数内的局部变量的特性，非常灵活，所以用简单的笔记记录下怎么使用，详细可以参考<a target="_blank" rel="noopener" href="http://zh.cppreference.com/w/cpp/language/lambda">官方文档</a></p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[ capture-list ] ( params ) mutable(可选) constexpr(可选)(C++17) exception attribute -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) -&gt; ret &#123; body &#125;</span><br><span class="line">[ capture-list ] ( params ) &#123; body &#125;</span><br><span class="line">[ capture-list ] &#123; body &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>mutable的作用是允许body修改按复制捕获的参数，及调用其非const成员函数，但修改只在lambda内起作用，不会真正改变外面的值。</li>
+<li>可以省略-&gt; ret指定返回值类型，返回类型为void。但有一个例外，若body只由单条带表达式return语句组成，而不含其它内容，则返回类型是被返回表达式的类型（在左值到右值、数组到指针，或函数到指针隐式转换后）</li>
+<li>省略参数列表，等同于参数列表为()</li>
+<li>参数列表和普通函数的写法一样，但C++14之前不允许使用默认参数和auto类型。</li>
+<li>若隐式或显式地以引用捕获一个实体，且在该实体的生存期结束后调用闭包对象的函数调用运算符，则发生未定义行为。C++闭包不会延长被捕获引用的生存期。同样的规则应用于被捕获的this指针所指向对象的生存期</li>
+<li>lambda表达式是一个纯右值表达式，它可以被赋值给std::function类型的变量</li>
+</ol>
+<h3 id="捕获列表规则"><a href="#捕获列表规则" class="headerlink" title="捕获列表规则"></a>捕获列表规则</h3><ul>
+<li>[a,&amp;b] 其中a以值捕获而b以引用捕获。</li>
+<li>[this] 以值捕获this指针</li>
+<li>[&amp;] 以引用捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
+<li>[&#x3D;] 以值捕获所有lambda体内的odr使用的自动变量，及以引用捕获当前对象(*this)，若它存在</li>
+<li>[] 无捕获</li>
+</ul>
+<p>随便写个简单的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::for_each(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        cout &lt;&lt; item &lt;&lt; endl;</span><br><span class="line">    &#125;);</span><br><span class="line">std::find_if(arr.begin(), arr.end(), [](int item)&#123;</span><br><span class="line">        return item %2 == 0;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

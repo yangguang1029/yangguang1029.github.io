@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos之获取gzip压缩的http文本 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos之获取gzip压缩的http文本</div>
+  <div class="post-meta">
+    <div class="date">2016 December 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>当使用http请求文本内容时，如果使用gzip压缩，可以大大减少字符串长度，提高传输效率。要实现此功能，客户端需要写一些代码：</p>
+<p>首先是请求时候，设定好http头</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;std::string&gt; headers;</span><br><span class="line">headers.push_back(&quot;Accept-Encoding: gzip,deflate&quot;)</span><br><span class="line">request-&gt;setHeaders(headers);</span><br></pre></td></tr></table></figure>
+
+<p>然后在处理收到的消息时解压缩一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();</span><br><span class="line">std::ostringstream outBuff;</span><br><span class="line">for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)&#123;</span><br><span class="line">    outBuff &lt;&lt; (*buffer)[i];</span><br><span class="line">&#125;</span><br><span class="line">outBuff.flush();</span><br><span class="line">std::string outstr = outBuff.str();</span><br><span class="line">const unsigned char* tmp = (const unsigned char*)outstr.c_str();</span><br><span class="line">size_t len = outstr.length();</span><br><span class="line">unsigned char* outtmp = (unsigned char*)malloc(len);</span><br><span class="line">ssize_t outlen = ZipUtils::inflateMemory((unsigned char*)tmp, len, &amp;outtmp);</span><br><span class="line">if(outlen &gt; 0)&#123;</span><br><span class="line">    outstr = std::string((const char*)outtmp);</span><br><span class="line">    free(outtmp);</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    CCLOG(&quot;inflate gzip content failed....&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ZipUtils是cocos基于zlib的封装，还有一些别的接口，需要的时候可以去看看</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

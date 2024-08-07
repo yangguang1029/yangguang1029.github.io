@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之setState的同异步 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之setState的同异步</div>
+  <div class="post-meta">
+    <div class="date">2017 December 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在<a target="_blank" rel="noopener" href="https://reactjs.org/docs/react-component.html#setstate">官方文档</a>中关于setState有一段说明</p>
+<blockquote>
+<p>Think of setState() as a request rather than an immediate command to update the component. For better perceived performance, React may delay it, and then update several components in a single pass. React does not guarantee that the state changes are applied immediately.</p>
+<p>setState() does not always immediately update the component. It may batch or defer the update until later. This makes reading this.state right after calling setState() a potential pitfall. Instead, use componentDidUpdate or a setState callback (setState(updater, callback)), either of which are guaranteed to fire after the update has been applied. </p>
+</blockquote>
+<p>可以明确地看到，setState只是发起一个请求，要求改变state，并<strong>不一定</strong>会立即执行。如果在setState后立即获取state，<strong>有可能</strong>得到的还是赋值前的旧值。这里需要特别注意的是“不一定”和“有可能”，也就意味着有的情况下是异步执行的，有的情况下是同步。我们需要搞明白分别什么情况下会是同异步。看下面的例子</p>
+<pre><code>constructor(props)&#123;
+    super(props);
+    this.state=&#123;
+        text:&quot;123&quot;
+    &#125;
+&#125;
+
+componentWillUpdate()&#123;
+    console.log(&quot;guangy componentWillUpdate&quot;)
+&#125;
+
+_onClick()&#123;
+    console.log(&quot;guangy before set state,now value &quot; + this.state.text);
+    let num = Math.floor(Math.random()*100);
+    this.setState(&#123;text: &quot;&quot;+num &#125;);
+    console.log(&quot;guangy after set state,now value &quot; + this.state.text);
+&#125;
+
+render()&#123;
+    console.log(&quot;guangy render.....&quot;)
+    return(&lt;View&gt;
+        &lt;Text&gt;&#123;this.state.text&#125;&lt;/Text&gt;
+        &lt;Button title=&quot;A&quot; onPress=&#123;
+            ()=&gt;&#123;
+                this._onClick();
+            &#125;
+        &#125;/&gt;
+        &lt;Button title=&quot;B&quot; onPress=&#123;
+            ()=&gt;&#123;
+                   setTimeout(()=&gt;&#123;
+                    this._onClick();
+                   &#125;, 10);
+            &#125;
+        &#125;/&gt;
+    &lt;/View&gt;);
+&#125;
+</code></pre>
+<p>当点击A按钮时，输出log为</p>
+<pre><code>guangy before set state,now value 123
+guangy after set state,now value 123
+guangy componentWillUpdate
+guangy render.....
+</code></pre>
+<p>可以看到这里setState是异步执行了。</p>
+<p>当点击B按钮时，输出log为</p>
+<pre><code>guangy before set state,now value 123
+guangy componentWillUpdate
+guangy render.....
+guangy after set state,now value 80
+</code></pre>
+<p>很明显，这里setState是同步执行了。</p>
+<p>除了setTimeout外，在DeviceEventEmitter的回调函数里，也是同步执行。这跟js的事件循环机制有关，render函数,setTimeout和DeviceEventEmitter的回调都是在事件循环结束时调用，所以此时调用setState触发render会是同步的，其余时候调用setState则是异步的。</p>
+<p>在setState为异步时，要注意如果在一次事件循环中多次setState，后面的会覆盖掉前面的，因为这一次循环里所有的setState会集中到一次来处理。 然后就是注意不要在setState后立即获取state，如果想要获取新的state，应该在setState传入回调函数作为第二个参数，在这个回调函数里获取。</p>
+<p>setState还有一种形式就是接受function作为第一个参数，形式为</p>
+<pre><code>this.setState((prevState, props)=&gt;&#123;
+    return &#123;xxx&#125;;
+&#125;)
+</code></pre>
+<p>这样可以明确知道当前state是什么状态，然后返回新的state。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

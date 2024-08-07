@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之props.children 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之props.children</div>
+  <div class="post-meta">
+    <div class="date">2018 February 28th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在github上看<a target="_blank" rel="noopener" href="https://github.com/shichongrui/react-native-on-layout">react-native-on-layout</a>的实现代码时，发现它把this.props.children当成一个函数使用，当时就奇怪了，我一直把this.props.children当做是一个object。然后去查了下<a target="_blank" rel="noopener" href="https://reactjs.org/docs/jsx-in-depth.html">官方文档</a>，找到了相关的介绍，于是大概翻译过来。</p>
+<p>一般来说this.props.children会是以下几种类型</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>这是对于特定类型的component才有效，例如Text，写法也很简单</p>
+<pre><code>&lt;Text&gt;i&#39;m props.children&lt;/Text&gt;
+</code></pre>
+<p>JSX语法中<code>In JSX expressions that contain both an opening tag and a closing tag, the content between those tags is passed as a special prop: props.children</code>，所以这个字符串其实就是props.children，只是我们一直没注意到而已。在这种情况下，字符串的首末空格会被忽略，空行会被忽略，换行符会被替换成空格。</p>
+<h2 id="JSX-Children"><a href="#JSX-Children" class="headerlink" title="JSX Children"></a>JSX Children</h2><p>使用Component作为children，这是最常用的包含子节点的方法。例如</p>
+<pre><code>&lt;MyContainer&gt;
+    &lt;MyFirstComponent /&gt;
+    &lt;MySecondComponent /&gt;
+&lt;/MyContainer&gt;
+</code></pre>
+<p>当然对于可以使用字符串作为children的特殊组件，是可以混合使用的，例如</p>
+<pre><code>&lt;Text&gt;123&lt;Text&gt;456&lt;/Text&gt;&lt;/Text&gt;
+</code></pre>
+<p>原文中在这一段提到，一个component可以直接写成组件数组的形式，而不用封装在容器里，例如</p>
+<pre><code>render()&#123;
+    return [&lt;Text&gt;1&lt;/Text&gt;,&lt;Text&gt;2&lt;/Text&gt;];
+&#125;
+</code></pre>
+<p>这个真的是有些震惊了，如果我们return一个非component对象，实际上会直接报错。这里不同于我们平时写的使用{}包起来的数组，后面会说到，那是使用代码块作为children。这里我猜测是JSX做了特殊处理而已，如果返回数组，则把每个元素解析成一个组件，我们在实际开发中还是应该避免写成这样。</p>
+<h2 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h2><p>这也是我们经常使用的一种方式，用{}把表达式包围起来，例如</p>
+<pre><code>&lt;Text&gt;123&lt;/Text&gt;
+&lt;Text&gt;&#123;&quot;123&quot;&#125;&lt;/Text&gt;
+</code></pre>
+<p>是一样的，所以如果想要Text显示带换行符的字符串，就可以这样</p>
+<pre><code>&lt;Text&gt;&#123;`123
+456`&#125;&lt;/Text&gt;
+</code></pre>
+<p>然后就是我们最常用的方式，实现组件数组，或者条件判断显示组件了，例如</p>
+<pre><code>&lt;View&gt;
+&#123;
+    [1,2,3].map((item)=&gt;&lt;Text&gt;&#123;item&#125;&lt;/Text&gt;)
+&#125;
+&#123;
+    Math.random() &gt; 0.5 ? &lt;Text&gt;123&lt;/Text&gt; : &lt;Text&gt;456&lt;/Text&gt;
+&#125;
+&lt;/View&gt;
+</code></pre>
+<p>它可以和其他几种类型混用，所以可以这么写</p>
+<pre><code>&lt;Text&gt;
+    123
+    &lt;Text&gt;456&lt;/Text&gt;
+    &#123;[&lt;Text&gt;789&lt;/Text&gt;,&lt;Text&gt;10&lt;/Text&gt;]&#125;
+&lt;/Text&gt;
+</code></pre>
+<p>当然实际开发中我们会尽量把代码结构写的工整一些。</p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>实际上props.children可以是任意类型，只是一般来说我们会以上面三种形式来使用它，但我们可以把它当做一个函数来使用，只要最后能形成一个合法的可渲染的组件，例如我们实现一个自定义组件</p>
+<pre><code>class MyComponent&#123;
+    render()&#123;
+        let num = this.props.children(1);
+        return &lt;Text&gt;&#123;num&#125;&lt;/Text&gt;
+    &#125;
+&#125;
+export default class Test extends Component&#123;
+    render()&#123;
+        return &lt;MyComponent&gt;
+        &#123;
+            (num)=&gt;num+1
+        &#125;
+        &lt;/MyComponent&gt;
+    &#125;
+&#125;
+</code></pre>
+<p>这里我们在使用MyComponent时，包含在里面的是一个函数，所以在MyComponent的实现中通过this.props.children来调用这个函数，react-native-on-layout这个库就是这样实现的。</p>
+<h2 id="Booleans-Null-Undefined"><a href="#Booleans-Null-Undefined" class="headerlink" title="Booleans, Null, Undefined"></a>Booleans, Null, Undefined</h2><p>true,false,null,undefined都是合法的，只是不渲染任何东西。我们经常用这种方式来控制一个组件是否显示，用的比较多的是null。 需要注意有的值虽然会被当做false，但不是bool值，所以会被渲染，例如数字0。然后就是如果想要渲染这些值，应该转换成字符串。对下面的例子：</p>
+<pre><code>&lt;Text&gt;&#123;false&#125;&lt;/Text&gt;
+&lt;Text&gt;false&lt;/Text&gt;
+&lt;Text&gt;&#123;&quot;false&quot;&#125;&lt;/Text&gt;
+</code></pre>
+<p>第一种情况没有显示，后两者情况是一样的</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

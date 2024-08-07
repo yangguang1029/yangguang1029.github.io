@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ES6中合并import 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ES6中合并import</div>
+  <div class="post-meta">
+    <div class="date">2017 June 15th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>最近打算优化一下ReactNative项目的代码，项目中有个公共模块文件夹utils，里面有不少文件，使用的也很频繁，这就导致了在很多js文件里都有这么一大段代码</p>
+<pre><code>import * as A from &quot;./utils/a&quot; 
+import * as B from &quot;./utils/b&quot; 
+...
+import * as G from &quot;./utils/g&quot; 
+import * as H from &quot;./utils/h&quot; 
+</code></pre>
+<p>于是我就打算把整个utils内的文件做个汇总，具体实现方案是，在utils文件夹内添加一个index.js，其内容为</p>
+<pre><code>import * as A from &quot;./utils/a&quot; 
+import * as B from &quot;./utils/b&quot; 
+...
+import * as G from &quot;./utils/g&quot; 
+import * as H from &quot;./utils/h&quot;
+export &#123;A, B, ... G, H&#125;
+</code></pre>
+<p>然后原来每个import utils内文件的地方，就改成了</p>
+<pre><code>import &#123;A, B, ... G, H&#125; from &quot;./utils/index&quot;
+</code></pre>
+<p>我总结一下这样改的优劣。</p>
+<p>好处是</p>
+<ol>
+<li>暴露一个唯一的接口，可以保持一致。原来在不同的文件里import同一个接口，可能取不同的名字，在这个文件里是<code>import * as A from &#39;./utils/a&#39;</code>，另一个文件里就可能是<code>import * as B from &#39;./utils/a&#39;</code>了，文件多了容易导致混乱，但我们统一成一个接口，除非特意使用as重命名，否则每个文件里都是一致的</li>
+<li>可以看出来用新的方法减少了一定的代码量，看起来舒服一些。RN本身也是这种风格，例如<code>import &#123;Text, Button&#125; from &#39;react-native&#39;</code>。这样汇总尤其适合用于对外暴露接口。</li>
+</ol>
+<p>当然也有一些不好的地方</p>
+<ol>
+<li>多维护了一个文件，当utils内新加文件时，需要到这个index.js内添加。</li>
+<li>被汇总的文件，要么只export default一个接口，要么以import *的方式被汇总。否则如果从这个文件里import若干个，再从另一个文件里import几个进来，然后汇总出去，就显得比较乱了，会分不清哪个接口是哪个文件的。</li>
+</ol>
+<h3 id="2017-12-15新加："><a href="#2017-12-15新加：" class="headerlink" title="2017&#x2F;12&#x2F;15新加："></a>2017&#x2F;12&#x2F;15新加：</h3><p>最近重构项目，把utils内一些文件挪到别的文件夹，这时才感受到汇总import再export最大的好处了，如果使用汇总的方案，那只需要改index.js一个文件，其余所有的都不用动。 但如果不进行汇总，那有多少个地方import了就需要改多少个地方，漏一个都报错。这应该是使用汇总方案最大的好处吧。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <div class="post-list">
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/02/25/rn-reconciliation/">ReactNative之VirtualDomTree的diff原理</a>
+    <div class="post-item-summary">
+      以前在解决一次flatlist没有局部刷新的问题时，写了一篇博客里面提到了官方的一篇文档叫做reconciliation。前阵子有人问我react的virtualDomTree的diff算法是怎么实现的，有没做什么优化点。我知道是这篇文章里的内容，但当时却说不清楚，这让我觉得我对这篇文章其实理解的并不够，所以把它再看一遍，然后把自己的理解记录下来，但这并不是翻译，完全是按照我自己的理解来写的，并不会非常严谨，但应该不会有误，如果有不同看法欢迎讨论。
+正常来说，Dom树的d
+      <a class="read-more" href="/2018/02/25/rn-reconciliation/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.02.25</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/02/06/rn-split-bundle-ios/">ReactNative之ios平台bundle拆分实现</a>
+    <div class="post-item-summary">
+      今天把放在github上的bundle拆分demo实现了ios版本，运行没问题后代码提交了上去，demo地址。因为之前没接触过ReactNative的ios端源代码，所以实现的过程其实就是把ios端的运行流程大概看了一遍。
+如果不追究太多细节的话，整个流程就是AppDelegate.m里创建RCTRootView，在RCTRootView的init函数里，创建RCTBridge，然后在RCTCxxBridge的start方法里加载bundle并执行，加载完后回到RCTRoot
+      <a class="read-more" href="/2018/02/06/rn-split-bundle-ios/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.02.06</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/01/12/rn-mix-navigation/">ReactNative之混合Navigation跳转问题</a>
+    <div class="post-item-summary">
+      首先把界面列出来
+class Tab1 extends Component&#123;
+    render()&#123;
+        return &lt;View&gt;&lt;Text&gt;tab1&lt;/Text&gt;
+                &lt;Button title=&quot;totab2&quot; onPress=&#123;
+                    ()=&gt;&#123;this.props.navigatio
+      <a class="read-more" href="/2018/01/12/rn-mix-navigation/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.01.12</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2018/01/06/rn-flatlist-keyExtractor/">ReactNative之一次FlatList无法局部刷新的bug修复</a>
+    <div class="post-item-summary">
+      今天发现项目中一个奇怪的问题，在使用FlatList时，每个单元行Component明明实现了shouldComponentUpdate,但是当增加一行时，还是所有的单元行都重新render了，最后找到了原因。代码中FlatList实现的keyExtractor非常简单，因为每个单元行数据的key要求是唯一的，所以直接使用了index返回
+  _keyExtractor(item, index)&#123;
+    return &quot;&quot;+index;
+&#1
+      <a class="read-more" href="/2018/01/06/rn-flatlist-keyExtractor/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2018.01.06</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/12/27/rn-ts/">ReactNative之在项目中使用TypeScript</a>
+    <div class="post-item-summary">
+      最近在网上找到个开源的控件，但是源代码是用TypeScript实现的，放到项目里无法直接使用，于是google了一下怎么在ReactNative项目内使用TypeScript，然后找到了一个很简单的解决方案，试了一下没有问题。
+首先安装react-native-typescript-transformer模块
+yarn add --dev react-native-typescript-transformer typescript
+
+然后在项目的根目录下创建一个文件 rn-c
+      <a class="read-more" href="/2017/12/27/rn-ts/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.12.27</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/12/26/rn-improve-listview/">ReactNative之listView优化方案</a>
+    <div class="post-item-summary">
+      ReactNative的ListView一直都因为性能问题饱受诟病，从源代码可以看到，它的主要问题是没有单元行重用机制，而且屏幕外的单元行不会被销毁，所以当ListView内容越来越多时，就会占用越来越多的内存，也越来越卡。针对这个问题，目前有几种解决方案。
+ListViewListView使用时可以有一些优化方案的。首先通过initialListSize和scrollRenderAheadDistance属性指定初始时单元格数量，可以加快初始化的速度。其次通过dataSou
+      <a class="read-more" href="/2017/12/26/rn-improve-listview/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.12.26</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/12/21/rn-pureComponent/">ReactNative之PureComponent</a>
+    <div class="post-item-summary">
+      首先把官方文档对于PureComponent的介绍搬过来，如果看明白了，就可以直接结束本文了：）
+
+React.PureComponent is similar to React.Component. The difference between them is that React.Component doesn’t implement shouldComponentUpdate(), but React.PureComponent implements it with a
+      <a class="read-more" href="/2017/12/21/rn-pureComponent/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.12.21</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/12/19/rn-navigation/">ReactNative之react-navigation使用</a>
+    <div class="post-item-summary">
+      react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看官方文档
+一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。
+初始化let Nav = StackNavigator(RouterConfigs, StackNavigatorConfig)
+
+
+      <a class="read-more" href="/2017/12/19/rn-navigation/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.12.19</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/12/16/rn-layoutanimation/">ReactNative之使用LayoutAnimation创建动画</a>
+    <div class="post-item-summary">
+      LayoutAnimation是官方提供的一个实现动画的API，但官方文档比较简单，结合查看源代码和demo试验，总结了一下如何使用。
+最开始重点强调一下，android平台要使用的话，必须加上这段代码才行，否则像我一样用android设备调试，写了半天发现都不起作用。
+var UIManager = require(&#39;UIManager&#39;);
+UIManager.setLayoutAnimationEnabledExperimental &amp;&amp;
+      <a class="read-more" href="/2017/12/16/rn-layoutanimation/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.12.16</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/12/15/js-mix-import/">js之import与export复合</a>
+    <div class="post-item-summary">
+      在重构项目时有时会有这种需求，从一个文件内import进来然后export出去。这里总结一下一些写法，在ECMAScript6 入门里有一段相关内容可做参考。内容很简单，基本就是语法规范而已。
+首先是导出文件a.js
+//a.js
+let a = &#123;&quot;a&quot;:1&#125;
+export &#123;a&#125;
+
+b.js需要导入a.js再导出，有一种比较简单的写法
+//b.js
+export &#123;a&#125; from &quot;
+      <a class="read-more" href="/2017/12/15/js-mix-import/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.12.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+</div>
+
+
+<div class="paginator">
+  <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
+</div>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

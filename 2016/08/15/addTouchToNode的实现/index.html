@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    addTouchToNode的实现 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">addTouchToNode的实现</div>
+  <div class="post-meta">
+    <div class="date">2016 August 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>直接上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">function addTouchToNode(node, touchEndCall, target, params) &#123; //给node添加触摸事件</span><br><span class="line">	var bTouchCanceled = false;</span><br><span class="line">	var s = node.getContentSize();</span><br><span class="line">	var rect = cc.rect(0, 0, s.width, s.height);</span><br><span class="line">	var listener = node._tyTouchListener = cc.EventListener.create(&#123;</span><br><span class="line">		event: cc.EventListener.TOUCH_ONE_BY_ONE,</span><br><span class="line">		swallowTouches: true,</span><br><span class="line">		onTouchBegan: function(touch, event) &#123;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode)) &#123;</span><br><span class="line">				bTouchCanceled = false;</span><br><span class="line">				return true;</span><br><span class="line">			&#125;</span><br><span class="line">			return false;</span><br><span class="line">		&#125;,</span><br><span class="line">		onTouchEnded: function(touch, event) &#123;</span><br><span class="line">			if (bTouchCanceled) &#123;</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode)) &#123;</span><br><span class="line">				if (touchEndCall) &#123;</span><br><span class="line">					touchEndCall.call(target, locationInNode, params);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		onTouchCancelled: function() &#123;</span><br><span class="line">			bTouchCanceled = true;</span><br><span class="line">		&#125;,</span><br><span class="line"></span><br><span class="line">		onTouchMoved: function(touch, event) &#123;</span><br><span class="line">			var locationInNode = node.convertToNodeSpace(touch.getLocation());</span><br><span class="line">			if (cc.rectContainsPoint(rect, locationInNode) == false) &#123;</span><br><span class="line">				bTouchCanceled = true;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">	cc.eventManager.addListener(listener, node);</span><br><span class="line">	node.onEnter = function()&#123;</span><br><span class="line">		node.__proto__.onEnter.call(this);</span><br><span class="line">		var listener = this._tyTouchListener;</span><br><span class="line">		if(listener._isRegistered() === false) &#123;</span><br><span class="line">			cc.eventManager.addListener(listener, this);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法经过了几次陆续的改进</p>
+<p>1 .刚开始只实现了onTouchBegan和onTouchEnded，而且在onTouchEnded的时候，没有判断坐标是否在区域内，产生的bug是在区域内点击后，移动到区域外松手，也产生了点击。于是增加了onTouchEnded内的区域判断<br>2. 增加了onTouchCancelled和onTouchMoved接口，当触摸移动出区域时，取消掉触摸事件，如果模拟按钮，此时应该将图片缩小回初始大小<br>3. 重写onEnter方法，在onEnter内重新添加事件。为了解决当它自身或者父容器被移除后，重新添加时触摸事件失效的问题</p>
+<p>经过这些完善后，基本上可以代替cc.MenuItemSprite来使用了，再稍微加上放大缩小的效果，就能当cc.ControlButton来使用。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

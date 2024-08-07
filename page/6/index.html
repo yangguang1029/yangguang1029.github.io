@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <div class="post-list">
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/10/16/rn-reducer-pure/">ReactNative中的reducer函数中的浅拷贝和深拷贝</a>
+    <div class="post-item-summary">
+      我们都知道reducer函数必须是纯函数，不能修改传入的state参数。先看一段示例代码
+export function updateData(state=[], action) &#123;
+    switch(action.type)&#123;
+        case Actions.ADD:
+            return state.concat(action.data);
+        case Actions.UPDATE:
+            
+      <a class="read-more" href="/2017/10/16/rn-reducer-pure/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.10.16</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/10/11/git-work-flow/">一个比较好的git分支管理方案</a>
+    <div class="post-item-summary">
+      假如当前处于开发分支develop上，接到一个任务时，使用git的话，应该优先考虑开一个分支来做这件事情，假设我们开了一个分支b1，这个任务未必是可以一次开发完，可能中间去做了别的事情，导致写了一半的代码暂时提交上去，这样到这个任务完成时，这个分支有了commit1, commit2…..一系列的提交。但假设这是一件完整的单独的功能，我们需要让人review代码并作为一次完整的提交的时候，我们可以这么做：
+在b1分支上先git reset –soft回到开分支的节点去，这样我
+      <a class="read-more" href="/2017/10/11/git-work-flow/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.10.11</div>
+      <div class="tags">
+        
+        <div class="tag-item">git</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/10/11/rn_listview/">ReactNative中的listView使用介绍</a>
+    <div class="post-item-summary">
+      今天下午稍微把listView的js代码看了一遍，大致总结一下它的接口和使用，官方文档上的介绍太过简单。listView的js源代码位于node_modules\react-native\Libraries文件夹内。
+一个最简单的listView，代码如下
+&lt;ListView
+      dataSource=&#123;this.state.dataSource&#125;
+      renderRow=&#123;(rowData) =&gt; &lt;Text&
+      <a class="read-more" href="/2017/10/11/rn_listview/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.10.11</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/09/19/rn-image/">ReactNative之Image控件从js到java的追踪流程</a>
+    <div class="post-item-summary">
+      我们以image控件为例，简单的介绍下一个系统控件的实现，方便进行自定义，以及了解它的内部实现。
+我们要使用Image的话，第一步就是
+import &#123;Image&#125; from &quot;react-native&quot;
+
+我们需要找到源文件export出Image的地方，它位于node_modules&#x2F;react-native&#x2F;Libraries&#x2F;Image目录下。基本上RN的js源代码都在这个Libraries目录下。
+      <a class="read-more" href="/2017/09/19/rn-image/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.09.19</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/08/07/rn-new-saga/">创建一个redux saga项目的简要流程</a>
+    <div class="post-item-summary">
+      我们先新建一个RN项目
+react-native init testrn
+
+然后安装redux
+cd testrn
+npm install --save redux
+
+在动手之前确保自己已经理解了redux的概念 redux官方中文文档。
+现在开始写代码了，第一步我们需要设计好state的结构，我们写一个很简单的demo，页面有两个text和两个Button，点第一个button修改第一个text的文字内容，点第二个button修改第二个text的文字内容。我们将state设
+      <a class="read-more" href="/2017/08/07/rn-new-saga/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.08.07</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/08/02/rn-ref/">ReactNative之ref赋值应使用成员函数</a>
+    <div class="post-item-summary">
+      在线上项目收集的js error里，发现有一个问题，有的ref成员变量可能变为null,然后就出了问题。先看下面的代码。
+class Test extends Component&#123;
+    constructor(props) &#123;
+        super(props);
+        this._ref = null;
+    &#125;
+
+    render()&#123;
+        return (&lt;View&gt;
+      
+      <a class="read-more" href="/2017/08/02/rn-ref/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.08.02</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/07/26/rn-pixelRatio/">ReactNative中的pixelRatio</a>
+    <div class="post-item-summary">
+      关于pixelRatio，官方文档有相关内容。通过
+PixelRatio.get()
+
+接口可以获取到设备的像素密度，但有的同学不清楚这个像素密度做什么用的，比如我发现在项目里，给图片设置尺寸时，都乘以了这个像素密度值，实际上这是不对的。
+手机屏幕像素是大家都知道的，比如1080*1920，他们指的是物理像素。除此之外还有一个参数叫做设备独立像素，在这里可以看到部分移动设备的相关参数。这个设备独立像素，我们用Dimensions API可以获取到
+import &#123;D
+      <a class="read-more" href="/2017/07/26/rn-pixelRatio/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.07.26</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/07/03/rn-split-bundle/">ReactNative拆分bundle实践</a>
+    <div class="post-item-summary">
+      实践了一下最简单的ReactNative bundle拆分方案。将项目bundle拆分成RN源代码和业务代码，这样在热更新时不用每次都更新整个bundle。
+首先新建一个项目testrn，将index.android.js内代码注释掉，只保留两行import
+import React, &#123; Component &#125; from &#39;react&#39;;
+import &#123;
+    AppRegistry,
+    StyleSheet,
+   
+      <a class="read-more" href="/2017/07/03/rn-split-bundle/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.07.03</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/06/16/rn-connect/">Redux中的Provider和connect</a>
+    <div class="post-item-summary">
+      redux里有不少概念，一时半会看不明白，这里讲下我理解的provider和connect。我们知道使用Reudx，数据作为state被存储在一个单独的store中。我们在渲染时从state获取数据，需要修改数据时，dispatch一个action即可。provider和connect的作用，是为了更方便的存取state数据。
+如果不使用provider和connect，也是完全没问题的，这样的话我们需要把store传入到Component中以便使用，例如需要这么写：
+ind
+      <a class="read-more" href="/2017/06/16/rn-connect/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.06.16</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/06/15/es6-import/">ES6中合并import</a>
+    <div class="post-item-summary">
+      最近打算优化一下ReactNative项目的代码，项目中有个公共模块文件夹utils，里面有不少文件，使用的也很频繁，这就导致了在很多js文件里都有这么一大段代码
+import * as A from &quot;./utils/a&quot; 
+import * as B from &quot;./utils/b&quot; 
+...
+import * as G from &quot;./utils/g&quot; 
+import * as H from &quot;./u
+      <a class="read-more" href="/2017/06/15/es6-import/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.06.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+</div>
+
+
+<div class="paginator">
+  <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+</div>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

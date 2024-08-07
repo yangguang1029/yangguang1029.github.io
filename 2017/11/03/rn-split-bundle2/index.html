@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative拆分bundle方案 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative拆分bundle方案</div>
+  <div class="post-meta">
+    <div class="date">2017 November 3rd</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="为什么要拆分bundle？"><a href="#为什么要拆分bundle？" class="headerlink" title="为什么要拆分bundle？"></a>为什么要拆分bundle？</h3><p>我们知道RN项目中的js代码会被打成一整个bundle来加载执行，这个Bundle包含了我们自己写的业务代码和RN源代码。如果不进行拆分，我们在做热更新时，哪怕业务代码只更改了一行，也需要更新一整个bundle，其中RN源代码至少占用500k以上，如果使用了第三方库如redux等还会更多，这是很大的浪费。其次是可能一个项目中包含多个RN业务，这样加载它们各自的bundle都带有RN源代码以及第三方库，也就意味着这些公共代码被重复加载了很多次。</p>
+<h3 id="bundle内容"><a href="#bundle内容" class="headerlink" title="bundle内容"></a>bundle内容</h3><p>我们使用命令来打一个bundle进行观察，看bundle内都有什么</p>
+<pre><code>react-native bundle --entry-file index.android.js --platform android --dev false --bundle-output android/app/src/main/assets --assets-dest android/app/src/main/res
+</code></pre>
+<p>这里我们生成的是release版本的bundle，比较容易看出来三个部分。如果需要阅读代码，则把–dev设为true生成debug版本的bundle即可</p>
+<p>第一个部分在release版本的bundle内大概占11行，他们是为js解释器注入了一些关键字和功能</p>
+<pre><code>global.require=_require
+global.__d = define
+var ErrorUtils = ...
+Object.assign = ...
+function guardedLoadModule(moduleId, module)&#123;	...
+</code></pre>
+<p>第二个部分占了整个bundle的绝大部分内容，它们都是以__d开头，我们以一个最短的举例</p>
+<pre><code>__d(function(t,n,c,i)&#123;&quot;use strict&quot;;function o(t,n,c,i,o)&#123;&#125;c.exports=o&#125;,22);
+</code></pre>
+<p>第三个部分是模块的调用，第二个部分是进行了模块的注册，如果想要代码执行，就必须调用模块，这是bundle内的最后两行</p>
+<pre><code>;require(65);
+;require(0);
+</code></pre>
+<p>这个数字65根据不同的项目是不一样的。</p>
+<h3 id="如何拆分"><a href="#如何拆分" class="headerlink" title="如何拆分"></a>如何拆分</h3><p>bundle需要被拆分为RN源代码和业务代码。我们知道js代码的入口在index.android.js(或者index.ios.js)，从这个入口文件起根据依赖关系，最后所有引用到的js文件被合并成了一整个bundle，我们给它命名total.bundle。然后我们把index.android.js里的代码注释掉，只保留对RN源代码的引用，例如</p>
+<pre><code>import &quot;react&quot;
+import &quot;react-native&quot;
+</code></pre>
+<p>当然如果我们把一些第三方库例如redux也算入RN代码的话，也可以加上。这样生成的bundle我们命名为common.bundle。</p>
+<p>我们观察一下common.bundle里第二部分定义的最后一个模块数字id为多少，在total.bundle内，从这个id以后的内容我们就可以拆分出来，生成新文件business.bundle，这就是我们的业务代码了。</p>
+<p>然后我们处理一下common.bundle，我们找到它第二部分里定义模块0的那行代码和最后一行也就是require(0)去掉，这是入口文件，我们common bundle只需要引擎。而且我们的业务代码中入口文件也被定义为模块0，如果有两个模块0，则在分步加载时会有问题。</p>
+<p>这样我们就把原来的total.bundle拆分成了common.bundle和business.bundle，之后就是如何使用了</p>
+<h3 id="合并加载"><a href="#合并加载" class="headerlink" title="合并加载"></a>合并加载</h3><p>最简单的方案就是在加载bundle的时候，将这两个bundle一起读成字符串，然后合并成一个字符串，再进行加载。</p>
+<p>我们可以在node_modules&#x2F;react-native&#x2F;ReactCommon&#x2F;Instance.cpp里找到加载bundle的方法：loadScriptFromFile，在这里进行拼接即可。</p>
+<p>这种方案可以减少热更新时bundle的大小，但不能优化加载bundle时的内存使用。</p>
+<h3 id="分步加载"><a href="#分步加载" class="headerlink" title="分步加载"></a>分步加载</h3><p>这种方案需要对RN加载bundle的流程比较熟悉。我们在加载common.bundle时，不需要进入RN界面，也就是不需要启动一个ReactNativeActivity，而在源代码中，是在ReactNativeActivity的onCreate函数里加载js bundle并创建context的，所以我们将这些操作提出来。然后当需要加载业务代码business.bundle时，也不能简单的使用一个ReactNativeActivity，因为我们需要使用之前创建好的context，而不能重新创建。</p>
+<p>具体操作是：我们使用一个Application implements ReactApplication，它会持有一个ReactNativeHost对象，这个对象host对象又会持有ReactInstanceManager对象，我们调用这个manager对象的createContextInBackground方法来加载common.bundle，创建了js context。</p>
+<p>当我们需要加载business.bundle并进去RN界面时，我们使用一个普通的Activity，在它的onCreate函数里，构造一个ReactRootView,并设为contentView, 然后我们通过Application获取到host再获取到ReactInstanceManager，通过反射或者修改源代码，将manager绑定给这个ReactRootView，通过给它设置jsModuleName, 最后通过ReactInstanceManager获取CatalystInstance类，调用其loadScriptFromAssets或者loadScriptFromFile接口加载business.bundle即可。</p>
+<p>这种方案将原来一整个Bundle加载分成了两步，在加载business.bundle时能够减少内存使用，提高加载性能。</p>
+<h3 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h3><p>我在github上放了一个<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/ReactNativeSplit.git">demo</a>。做到让这个demo运行的程度并不意味着就万事大吉了，多个bundle之间模块的冲突，全局变量和方法冲突，图片路径问题，sourcemap解析等还有很多需要处理的问题，我们解决了不少，且目前已经在线上使用了。欢迎讨论交流。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

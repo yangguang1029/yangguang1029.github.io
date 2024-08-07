@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos屏幕适配策略 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos屏幕适配策略</div>
+  <div class="post-meta">
+    <div class="date">2016 November 16th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>cocos的屏幕适配包括两个方面，一个涉及到屏幕的宽高比，一个涉及到缩放因子。</p>
+<h3 id="宽高比"><a href="#宽高比" class="headerlink" title="宽高比"></a>宽高比</h3><p>我打算尽量用通俗的语言来说这件事情，cocos处理不同宽高比的适配，使用了设计分辨率这么个东西，就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void GLView::setDesignResolutionSize(float width, float height, ResolutionPolicy resolutionPolicy)</span><br></pre></td></tr></table></figure>
+<p>resolutionPolicy有好几种选择，但我们通常只使用FIXED_HEIGHT和FIXED_WIDTH。</p>
+<p>设计分辨率的意义就是：你不用管实际上屏幕是什么样，你通过代码或者工具给一个node设定尺寸和坐标时，都只想象它是放在设计分辨率的屏幕里，然后给他设计尺寸和坐标，最后显示在实际屏幕上时，引擎会进行适当的比例缩放。</p>
+<p>我们一般在项目中使用的ResolutionPolicy是FIXED_HEIGHT和FIXED_WIDTH，前者一般用于手机横屏，后者用于手机竖屏。我们拿FIXED_WIDTH举例，使用这个模式，意味着采用宽度的缩放比例，那么UI节点的x坐标和width就不用担心了，系统会帮你完美适配好来，y坐标和height则必须使用屏幕高度的百分比来进行设置，只要在需要适配的宽高比最大（通俗说就是最“扁”）的屏幕上不会发生冲突即可。FIXED_HEIGHT也是类似的道理，因为使用了高度的缩放比例，那么x坐标和width必须使用屏幕宽度的百分比来进行设置，保证在需要适配的宽高比最小的屏幕上不发生冲突即可。当然实际中我们对不管xy坐标还是width,height都习惯性采用百分比坐标。这两种方案的适用情况不能靠死记硬背，只要明白了原理，其实很容易理解。</p>
+<h3 id="缩放因子"><a href="#缩放因子" class="headerlink" title="缩放因子"></a>缩放因子</h3><p>缩放因子可以理解为图片资源尺寸与设计分辨率的比值。一般我们的资源都是配合设计分辨率而出的，但如果不是，就需要设置缩放因子了，比如一种情况就是，同样是1024*768的设计分辨率，我们有一套1024*768的资源，这套资源在2048*1536的屏幕上会被拉伸两倍显示，可能效果就不好了，那我们再准备一套2048*1536的资源，因为设计分辨率还是1024*768，所以就需要将缩放因子设为2了。</p>
+<p>设置缩放因子的接口是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Director::setContentScaleFactor(float scaleFactor)</span><br></pre></td></tr></table></figure></main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

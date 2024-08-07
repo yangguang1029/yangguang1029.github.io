@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之Redux源码阅读(applyMiddleware,compose) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之Redux源码阅读(applyMiddleware,compose)</div>
+  <div class="post-meta">
+    <div class="date">2019 July 29th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。</p>
+<h3 id="applyMiddleware"><a href="#applyMiddleware" class="headerlink" title="applyMiddleware"></a>applyMiddleware</h3><p>在<a href="http://yangguang1029.github.io/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>里提到了enhancer函数，applyMiddleware就是redux内置的一个enhancer。enhencer函数都接受createStore函数作为参数，然后返回新的createStore函数。</p>
+<p>老样子，先看一下代码注释，然后看具体的代码实现，applyMiddleware接受的参数是middlewares数组，在它返回的createStore函数里，先调用createStore得到store，然后拿middlewares加工store.dispatch方法，最后返回store和加工后的dispatch函数。</p>
+<pre><code>const middlewareAPI = &#123;
+  getState: store.getState,
+  dispatch: (...args) =&gt; dispatch(...args)
+&#125;
+const chain = middlewares.map(middleware =&gt; middleware(middlewareAPI))
+dispatch = compose(...chain)(store.dispatch)
+</code></pre>
+<p>从这里可以看到，每个middleware函数接受middlewareAPI参数，其中包含getState和dispatch两个属性，并返回一个函数，返回的函数通过compose组合起来（详见<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux/blob/master/src/compose.js">compose.js</a>内的代码注释），所以这个返回函数接受的参数是上一个middleware函数的返回值(也是dispatch函数)，并返回dispatch函数（会成为下一个middleware的参数）。也就是middleware函数的定义是</p>
+<pre><code>function myMiddleware(&#123;getState, dispatch&#125;) &#123;
+    return function(next) &#123;
+        return function(action) &#123;
+            return next(action);
+        &#125;
+    &#125;
+&#125;
+// 箭头函数写法
+const myMiddleware = (&#123;getState, dispatch&#125;) =&gt; next =&gt; action =&gt; next(action)
+</code></pre>
+<p>建议看一下<a target="_blank" rel="noopener" href="https://github.com/reduxjs/redux-thunk/blob/master/src/index.js">redux-thunk的代码实现</a>加深一下理解。</p>
+<p>整个redux的源码到这里就结束了，到这里就会发现真的没太多内容，接下来再看一下React-redux的代码，因为一般redux都会配合React-redux来使用，而且它的代码也不复杂。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

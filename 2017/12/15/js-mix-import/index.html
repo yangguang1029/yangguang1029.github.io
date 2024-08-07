@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    js之import与export复合 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">js之import与export复合</div>
+  <div class="post-meta">
+    <div class="date">2017 December 15th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在重构项目时有时会有这种需求，从一个文件内import进来然后export出去。这里总结一下一些写法，在<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/module">ECMAScript6 入门</a>里有一段相关内容可做参考。内容很简单，基本就是语法规范而已。</p>
+<p>首先是导出文件a.js</p>
+<pre><code>//a.js
+let a = &#123;&quot;a&quot;:1&#125;
+export &#123;a&#125;
+</code></pre>
+<p>b.js需要导入a.js再导出，有一种比较简单的写法</p>
+<pre><code>//b.js
+export &#123;a&#125; from &quot;./a&quot;
+</code></pre>
+<p>在使用的时候</p>
+<pre><code>//index.js
+import &#123;a&#125; from &quot;./b&quot;
+</code></pre>
+<p>跟从b.js内正常export出来的一样对待。</p>
+<p>还有一种写法效果一样，但有一点区别。就是</p>
+<pre><code>//b.js
+import &#123;a&#125; from &quot;./a&quot;
+export &#123;a&#125;
+</code></pre>
+<p>这种写法的作用是<strong>在b.js内可以使用变量a</strong>，而前一种写法不能。</p>
+<p>如果a.js导出的比较多，一般会使用import * 来引用，也可以使用export * 来导出，例如</p>
+<pre><code>//b.js
+export * from &#39;./a&#39;
+export let b = &#123;&quot;b&quot;:2&#125;
+//index.js
+import * as B from &quot;./b&quot;
+console.log(B.a); 
+</code></pre>
+<p>然后看一下export default的情况</p>
+<pre><code>//a.js
+export default a = &#123;&quot;a&quot;:1&#125;
+//b.js
+export a from &quot;./a&quot;					//（1）
+
+export &#123;default as a&#125; from &quot;./a&quot;	//(2)
+
+import a from &quot;./a&quot;					//(3)
+export &#123;a&#125;
+//index.js
+import &#123;a&#125; from &quot;./b&quot;
+</code></pre>
+<p>第一种写法是错误的，第二种和第三种写法没问题，而且这两种写法在b.js内都可以正常使用变量a</p>
+<p>也可以把一个普通的export转换为export default，例如</p>
+<pre><code>//b.js
+export &#123;a1 as default&#125; from &quot;./a&quot;
+//index.js
+import a1 from &quot;./b&quot;
+</code></pre>
+<p>但这种方法在b.js内不能使用变量名a1，如果要使用的话，下面这样写就可以了</p>
+<pre><code>//b.js
+import &#123;a1&#125; from &quot;./a&quot;
+export default a1
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

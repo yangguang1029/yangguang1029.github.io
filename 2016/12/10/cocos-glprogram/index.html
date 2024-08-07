@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos源代码之GLProgram 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos源代码之GLProgram</div>
+  <div class="post-meta">
+    <div class="date">2016 December 10th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="GLProgram和GLProgramState"><a href="#GLProgram和GLProgramState" class="headerlink" title="GLProgram和GLProgramState"></a>GLProgram和GLProgramState</h3><p>在cocos内操作shader，基本就是使用GLProgram和GLProgramState这两个类，他们的关系，在官方注释里写着</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GLProgramState holds the &#x27;state&#x27; (uniforms and attributes) of the GLProgram.</span><br><span class="line"> A GLProgram can be used by thousands of Nodes, but if different uniform values are going to be used, then each node will need its own GLProgramState</span><br></pre></td></tr></table></figure>
+<p>GLProgram是着色器的实现，GLProgramState是在Node上使用GLProgram的封装，所以我们在Node上应该操作GLProgramState，而不是GLProgram，例如设置uniform的值</p>
+<h3 id="GLProgram的创建"><a href="#GLProgram的创建" class="headerlink" title="GLProgram的创建"></a>GLProgram的创建</h3><p>第一步是init,主要是完成顶点着色器和片段着色器编译</p>
+<p>第二步是link</p>
+<ul>
+<li>调用bindPredefinedVertexAttribs，绑定一些默认的attribute，包括</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const char* GLProgram::ATTRIBUTE_NAME_COLOR = &quot;a_color&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_POSITION = &quot;a_position&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD = &quot;a_texCoord&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD1 = &quot;a_texCoord1&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD2 = &quot;a_texCoord2&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_TEX_COORD3 = &quot;a_texCoord3&quot;;</span><br><span class="line">const char* GLProgram::ATTRIBUTE_NAME_NORMAL = &quot;a_normal&quot;;</span><br></pre></td></tr></table></figure>
+<p>这样我们在顶点着色器内，就可以直接声明和使用这些变量名了，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">attribute vec4 a_position;</span><br><span class="line">attribute vec2 a_texCoord;</span><br></pre></td></tr></table></figure>
+<p>使用attribute修饰的变量，只能在顶点着色器中使用，且只能在顶点着色器中读取，不能赋值。</p>
+<ul>
+<li>调用glLinkProgram进行链接，如果链接成功，调用parseVertexAttribs保存实际用到了的attributes，以及parseUniforms保存自定义的uniforms</li>
+<li>updateUniforms 将系统内置uniforms的使用情况存起来并更新</li>
+</ul>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

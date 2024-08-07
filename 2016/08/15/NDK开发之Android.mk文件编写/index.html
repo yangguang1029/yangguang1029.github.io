@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    NDK开发之Android.mk文件编写 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">NDK开发之Android.mk文件编写</div>
+  <div class="post-meta">
+    <div class="date">2016 August 15th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ndk</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>现在我们把android稍微写复杂些。在项目根目录下创建一个lib1文件夹</p>
+<p>结构如图：</p>
+<p><img src="/../images/CB15E4FA-DF13-428F-A62B-B7C483DE4277.png" alt="img"></p>
+<p>test10.h和test11.h很简单，就是声明了两个方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int test10();</span><br><span class="line">int test11();</span><br></pre></td></tr></table></figure>
+
+<p>我们先看这个lib1文件夹内的Android.mk文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := test1</span><br><span class="line">LOCAL_MODULE_FILENAME := libtest1</span><br><span class="line"></span><br><span class="line">LOCAL_SRC_FILES := test1.cpp</span><br><span class="line">LOCAL_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line">LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line"></span><br><span class="line">include $(BUILD_STATIC_LIBRARY)</span><br></pre></td></tr></table></figure>
+
+<p>这里LOCAL_MODULE是外面引用这个库时候需要用到的名字，LOCAL_MODULE_FILENAME不写也可以，默认就是在LOCAL_MODULE前面加上lib</p>
+<p>LOCAL_SRC_FILES和LOCAL_C_INCLUDES分别表示需要编译的源文件，以及头文件路径，像这里只使用了当前目录为头文件查找目录，所以test1.cpp里写法就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;test10.h&gt;</span><br><span class="line">#include &lt;test1/test11.h&gt;</span><br><span class="line"></span><br><span class="line">int test10()&#123;</span><br><span class="line">	return 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int test11()&#123;</span><br><span class="line">	return 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>LOCAL_EXPORT_C_INCLUDES是对外提供的头文件搜索路径，他决定了外面在引用这个头文件时的搜索相对路径。它跟LOCAL_C_INCLUDES完全可以不一样。</p>
+<p>知道LOCAL_C_INCLUDES和LOCAL_EXPORT_C_INCLUDES的作用，编译时出现No such file or directory错误就完全不用害怕了，哪个文件找不到，去看一下这两个路径是否对就可以了。</p>
+<p>再来看看jni目录下Android.mk</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := learnNDK</span><br><span class="line"></span><br><span class="line">LOCAL_SRC_FILES := learnNDK.cpp</span><br><span class="line">LOCAL_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line"></span><br><span class="line">LOCAL_STATIC_LIBRARIES := test1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br><span class="line"></span><br><span class="line">$(call import-module, lib1)</span><br></pre></td></tr></table></figure>
+
+<p>比原来就多了两行，LOCAL_STATIC_LIBRARIES :&#x3D; test1 表示引用名字为test1的库，这个名字就是上个文件里的LOCAL_MODULE，$(call import-module, lib1)这里指定了搜索引用库的Android.mk的路径，它是相对于NDK_MODULE_PATH，我们可以在ndk-build命令中指定这个参数，多个路径间使用:分隔</p>
+<p>之后我们增加一个库lib2，它依赖于lib1，<br>它的cpp文件为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;test20.h&gt;</span><br><span class="line">#include &lt;test11.h&gt;</span><br><span class="line"></span><br><span class="line">int test20()&#123;</span><br><span class="line">	return test11() + 2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它的Android.mk如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line"></span><br><span class="line">LOCAL_MODULE := test2</span><br><span class="line"></span><br><span class="line">LOCAL_SRC_FILES := test2.cpp</span><br><span class="line">LOCAL_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line">LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)</span><br><span class="line"></span><br><span class="line">LOCAL_STATIC_LIBRARIES := test1</span><br><span class="line"></span><br><span class="line">include $(BUILD_STATIC_LIBRARY)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$(call import-module, lib1)</span><br></pre></td></tr></table></figure>
+
+<p>加上对lib1的引用即可。</p>
+<p>jni目录下的Android.mk加上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(call import-module, lib2)</span><br></pre></td></tr></table></figure>
+
+<p>同时修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_STATIC_LIBRARIES := test2 test1</span><br></pre></td></tr></table></figure>
+
+<p>这里记住<strong>依赖顺序为从左到右，被依赖的基础库必须往后放</strong></p>
+<p>最后是执行的ndk-build命令，正确指定NDK_MODULE_PATH即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ndk-build NDK_MODULE_PATH=/Users/imac-0003/Documents/workspace/learnNDK</span><br></pre></td></tr></table></figure></main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

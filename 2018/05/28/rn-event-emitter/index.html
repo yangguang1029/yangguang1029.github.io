@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之EventEmitter 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之EventEmitter</div>
+  <div class="post-meta">
+    <div class="date">2018 May 28th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>官方文档推荐的原生往js层传递消息的方式，<a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/native-modules-ios.html#%E7%BB%99javascript%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6">iOS端</a>是继承RCTEventEmitter，然后调用sendEventWithName方法</p>
+<pre><code>[self sendEventWithName:@&quot;EventReminder&quot; body:nil];
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://reactnative.cn/docs/0.51/native-modules-android.html#%E5%8F%91%E9%80%81%E4%BA%8B%E4%BB%B6%E5%88%B0javascript">Android端</a>是</p>
+<pre><code>getReactApplicationContext()
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(&quot;EventReminder&quot;, null);
+</code></pre>
+<p>Android端一眼就能看出来是通过RCTDeviceEventEmitter模块来交流的，所以在js层直接使用RCTDeviceEventEmitter来注册监听。例如</p>
+<pre><code>var emitter = require(&quot;RCTDeviceEventEmitter&quot;)
+emitter.addListener(&quot;EventReminder&quot;,(e)=&gt;&#123;
+  console.log(&quot;guangy get event in RCTDeviceEventEmitter&quot;)
+&#125;)
+</code></pre>
+<p>或者</p>
+<pre><code>import &#123;DeviceEventEmitter&#125; from &quot;react-native&quot;
+DeviceEventEmitter.addListener(&quot;EventReminder&quot;,(e)=&gt;&#123;
+  console.log(&quot;guangy get event in DeviceEventEmitter&quot;)
+&#125;)
+</code></pre>
+<p>但是在iOS端就会发现这两个回调都不管用了。实际上去RCTEventEmitter类里面看一下它的sendEventWithName方法，发送事件的代码是</p>
+<pre><code>if (_listenerCount &gt; 0) &#123;
+    [_bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
+                method:@&quot;emit&quot;
+                  args:body ? @[eventName, body] : @[eventName]
+            completion:NULL];
+&#125;
+</code></pre>
+<p>其实也是通过RCTDeviceEventEmitter发送的消息。但这里有个if判断，_listenerCount的初始值为0，下个断点就很快发现，没有进到if里去。使用NativeEventEmitter来注册监听，就可以收到了</p>
+<pre><code>const Test = NativeModules.TestNative;
+const testEmitter = new NativeEventEmitter(Test);
+const subscription = testEmitter.addListener(&#39;EventReminder&#39;,
+    ()=&gt;&#123;
+        console.log(&quot;guangy get event in NativeEventEmitter&quot;);
+    &#125;
+);
+</code></pre>
+<p>看一下NativeEventEmitter的代码很快就能找到原因，在它的addListener方法里，有</p>
+<pre><code>if (this._nativeModule != null) &#123;
+  this._nativeModule.addListener(eventType);
+&#125;
+</code></pre>
+<p>这是调了原生模块的addListener方法，在RCTEventEmitter类中它的实现就是让_listenerCount加1。所以在iOS端，因为原生代码中通过继承RCTEventEmitter类来发送消息，js层就必须使用NativeEventEmitter来注册监听，否则的话，原生层连消息都不会发出去。但是在Android端，因为底层实现就是直接给RCTDeviceEventEmitter发消息，不像iOS端有RCTEventEmitter类的那一套逻辑，所以三种注册监听的方式都一样，构造NativeEventEmitter实例时，也可以不传递NativeModule参数。</p>
+<p>如果iOS的原生层不使用RCTEventEmitter，那么就和Android端一样可以直接使用RCTDeviceEventEmitter监听，例如</p>
+<pre><code>[self.bridge.eventDispatcher sendDeviceEventWithName:@&quot;EventReminder&quot; body:nil];
+</code></pre>
+<p>但这个接口已经被废弃了，所以不建议使用。要么直接套用sendEventWithName的if里面的实现</p>
+<pre><code>[self.bridge enqueueJSCall:@&quot;RCTDeviceEventEmitter&quot;
+              method:@&quot;emit&quot;
+                args:@[@&quot;EventReminder&quot;]
+          completion:NULL];
+</code></pre>
+<p>这样也可以直接使用RCTDeviceEventEmitter来监听。</p>
+<p>到这里结论就清楚了，<strong>我们在js层应该使用NativeEventEmitter，这是双端统一的事件传递接口</strong>。</p>
+<p>我们再看一下NativeEventEmitter.js里的实现，它的构造函数里有一句</p>
+<pre><code>super(RCTDeviceEventEmitter.sharedSubscriber);
+</code></pre>
+<p>这就很明显了，虽然我们在js层可以给每个模块都new一个NativeEventEmitter，但实际上它们都是交给了RCTDeviceEventEmitter来处理，这也跟原生代码中是通过调用RCTDeviceEventEmitter模块的emit来发送消息是一致的。js层所有的注册都在EventSubscriptionVendor.js中进行管理，实现也很简单，就是通过字典存储事件名和回调函数列表。</p>
+<p>在js层还有一个类RCTNativeAppEventEmitter，不过已经被声明废弃了，所以忽略掉。</p>
+<p>最后我稍微想了一下，如果不使用NativeEventEmitter的话，其实代码更简单，不用考虑remove取消监听，双端也是统一的。但为什么iOS平台废弃掉直接发送事件的接口，然后统一使用NativeEventEmitter呢？我能想到的优点就是原生层可以通过startObserving和stopObserving来监听某个事件的监听状况，然后虽然本质上事件仍然都是扔到了RCTDeviceEventEmitter来处理，但至少从代码上进行了隔离，将事件和模块绑定起来，避免了混杂。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    svn忽略文件 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">svn忽略文件</div>
+  <div class="post-meta">
+    <div class="date">2016 November 17th</div>
+    <div class="tags">
+      
+      <div class="tag-item">svn</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在svn项目中，对于不需要加入版本管理的文件，可以使用svn propedit svn:ignore来进行设置</p>
+<p>在执行这句之前，需要先设置好SVN_EDITOR环境变量，例如在~&#x2F;.bash_profile内添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export SVN_EDITOR=emacs</span><br></pre></td></tr></table></figure>
+
+<p>然后执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn propedit svn:ignore .</span><br></pre></td></tr></table></figure>
+<p>这里的.表示对当前目录进行设置，此时会打开你指定的编辑器界面，在里面写上你需要忽略的文件名或者正则表达式即可.<br>但这句命令，只会影响你指定的路径的子文件及文件夹，而不会递归影响到更深层次。例如在编辑界面填上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dir1</span><br><span class="line">dir2/dir21/dir211</span><br></pre></td></tr></table></figure>
+<p>这里dir1会被忽略，而dir211不会，如果需要忽略dir211，要么在当前目录下执行svn propedit svn:ignore dir2&#x2F;dir21 要么切换到dir2&#x2F;dir21目录下执行svn propedit svn:ignore . 然后填写的内容都是dir211</p>
+<p>在网上看到一个解释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Each and every directory in Subversion can be thought of its own</span><br><span class="line">module, so there&#x27;s no real way for Subversion to know that</span><br><span class="line">foo/bar/barfoo is a directory in module /foo/bar, or a another</span><br><span class="line">separate module module.</span><br><span class="line"></span><br><span class="line">That means there&#x27;s no way for Subversion to know how to handle</span><br><span class="line">properties that can affect an entire directory tree. Plus, it would be</span><br><span class="line">difficult to know exactly what parent directory is affecting a child</span><br><span class="line">directory.</span><br></pre></td></tr></table></figure>
+
+<p>最后提醒一下，只有还没有被加入版本管理的文件会被忽略，如果文件已经加入了版本管理，那设置了忽略也没用。其次，设置了忽略的文件，仍然可以被添加进版本管理中。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

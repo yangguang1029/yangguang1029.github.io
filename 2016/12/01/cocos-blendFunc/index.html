@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos使用blendFunc实现擦除效果 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos使用blendFunc实现擦除效果</div>
+  <div class="post-meta">
+    <div class="date">2016 December 1st</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>效果图跟用clippingNode实现的那次差不多</p>
+<p><img src="/cocos-blendFunc/6DA8FA29-187A-4ED3-BF65-F97CD8F2755D.png" alt="img"></p>
+<p>直接上代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">bool HelloWorld::init() &#123;</span><br><span class="line">   if ( !Layer::init()) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    auto winsize = Director::getInstance()-&gt;getWinSize();</span><br><span class="line">    auto width = winsize.width;</span><br><span class="line">    auto height = winsize.height;</span><br><span class="line"> </span><br><span class="line">    auto s = Sprite::create(&quot;HelloWorld.png&quot;);</span><br><span class="line">    s-&gt;setPosition(width * 0.5, height * 0.5);</span><br><span class="line">    this-&gt;addChild(s);</span><br><span class="line">    </span><br><span class="line">    mDrawNode = DrawNode::create();</span><br><span class="line">    this-&gt;addChild(mDrawNode);</span><br><span class="line"></span><br><span class="line">    auto listener = EventListenerTouchOneByOne::create();</span><br><span class="line">    listener-&gt;onTouchBegan = std::bind(&amp;HelloWorld::onTouchBegan, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    listener-&gt;onTouchMoved = std::bind(&amp;HelloWorld::onTouchMoved, this, std::placeholders::_1, std::placeholders::_2);</span><br><span class="line">    </span><br><span class="line">    EventDispatcher* ed = Director::getInstance()-&gt;getEventDispatcher();</span><br><span class="line">    ed-&gt;addEventListenerWithSceneGraphPriority(listener, this);</span><br><span class="line">    </span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool HelloWorld::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) &#123;</span><br><span class="line">    mTouchBeganPos = touch-&gt;getLocation();</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event) &#123;</span><br><span class="line">    Vec2 pos = touch-&gt;getLocation();</span><br><span class="line">    std::vector&lt;cocos2d::Vec2&gt; vec(2);</span><br><span class="line">    vec[0] = mTouchBeganPos;</span><br><span class="line">    vec[1] = pos;</span><br><span class="line">    mPoints.push_back(vec);</span><br><span class="line">    mTouchBeganPos = pos;</span><br><span class="line">    refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void HelloWorld::refresh() &#123;</span><br><span class="line">    mDrawNode-&gt;setBlendFunc(BlendFunc::DISABLE);</span><br><span class="line">    mDrawNode-&gt;clear();</span><br><span class="line">    mDrawNode-&gt;setLineWidth(10);</span><br><span class="line">    for(std::vector&lt;std::vector&lt;cocos2d::Vec2&gt;&gt;::iterator iter = mPoints.begin(); iter != mPoints.end(); iter++) &#123;</span><br><span class="line">        std::vector&lt;cocos2d::Vec2&gt; vec = *iter;</span><br><span class="line">        mDrawNode-&gt;drawLine(vec[0], vec[1], Color4F(0,0,0,0));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;Render-&gt;end();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次代码比上次的要简单一些，我们先加上背景图，然后再加上一个DrawNode来实现擦除，这个DrawNode设置BlendFunc为BlendFunc::DISABLE，也就是在它与背景混合的地方，只显示自己不显示背景，而他自己又是把运动轨迹绘制成透明的线段，所以就产生了背景图被擦除的效果。如果我们需要限制在局部范围内，只要处理好触摸区域或者添加到容器内即可</p>
+<p>然后解释下blendFunc，它是用来处理颜色混合的，我们要将一个图片渲染到屏幕上时，需要将它的颜色（RGBA）与屏幕上已有的颜色混合，我们将要被渲染上去的称为源（src），屏幕上已有的称为目标(dst)，最终颜色显示是它们和各自的因子相乘。如下所示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">源颜色 Rs Gs Bs As</span><br><span class="line">目标颜色 Rd Gd Bd Ad</span><br><span class="line">源因子 Sr Sg Sb Sa</span><br><span class="line">目标因子 Dr Dg Db Da</span><br><span class="line">最终颜色 Rs * Sr + Rd * Dr Gs * Sg + Gd * Dg Bs * Sb + Bd * Db As * Sa + Ad * Da</span><br></pre></td></tr></table></figure>
+
+<p>cocos内置了一些值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GL_ZERO					//全部不用 (0,0,0,0)                           </span><br><span class="line">GL_ONE                 //全部使用 (1,1,1,1)</span><br><span class="line">GL_SRC_COLOR           //使用源颜色(Rs, Gs, Bs, As)           </span><br><span class="line">GL_ONE_MINUS_SRC_COLOR //使用反源色(1-Rs, 1-Gs, 1-Bs, 1-As)</span><br><span class="line">GL_SRC_ALPHA           //使用源透明度 (As, As, As, As)</span><br><span class="line">GL_ONE_MINUS_SRC_ALPHA //使用反源透明度 (1-As, 1-As, 1-As, 1-As)</span><br><span class="line">GL_DST_ALPHA           //使用目标透明度(Ad, Ad, Ad, Ad) </span><br><span class="line">GL_ONE_MINUS_DST_ALPHA //使用反目标透明度(1-Ad, 1-Ad, 1-Ad, 1-Ad) </span><br><span class="line"></span><br><span class="line">const BlendFunc BlendFunc::DISABLE = &#123;GL_ONE, GL_ZERO&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_PREMULTIPLIED = &#123;GL_ONE, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ALPHA_NON_PREMULTIPLIED = &#123;GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA&#125;;</span><br><span class="line">const BlendFunc BlendFunc::ADDITIVE = &#123;GL_SRC_ALPHA, GL_ONE&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样就不难理解本例中我们使用的BlendFunc::DISABLE了，它意味着混合的时候，不取目标颜色，只显示源颜色。想一下sprite默认应该使用哪种呢？这取决于图片是否已经预乘了alpha，如果是则使用ALPHA_PREMULTIPLIED，否则使用ALPHA_NON_PREMULTIPLIED，很好理解。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

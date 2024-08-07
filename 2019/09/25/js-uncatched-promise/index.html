@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    JavaScript之unhandled promise rejection 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">JavaScript之unhandled promise rejection</div>
+  <div class="post-meta">
+    <div class="date">2019 September 25th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在JavaScript中，unhandled promise rejection问题有两种场景，一个是promise没有写catch，但是又变成了rejected状态，另一种是promise写了catch，但是catch中又抛出了异常，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 场景一</span><br><span class="line">Promise.reject().then()</span><br><span class="line">// 场景二</span><br><span class="line">Promise.reject().catch(err =&gt; &#123;</span><br><span class="line">  throw new Error()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在<a target="_blank" rel="noopener" href="https://javascript.info/promise-error-handling#unhandled-rejections">这篇文档</a>里提到：如果在promise内发生异常，而这个promise又没有catch，那么这个promise会变成rejected状态，然后系统会抛出一个全局异常，原文是</p>
+<blockquote>
+<p>JavaScript engine tracks such rejections and generates a global error</p>
+</blockquote>
+<p>但经过google和实际观察，我发现这并不准确。这篇文章里一直在拿“普通异常未做catch”和“unhandled promise rejection”做类比，但我感觉这二者其实没很多共通的地方，也许作者只是为了便于读者理解吧。</p>
+<p>那么实际上会发生什么呢？目前来看，发生unhandled promise rejection不会抛出异常，也就不会导致JavaScript运行中断（写个demo验证下就知道了）。在浏览器中，我们可以在控制台看到有个红色的Uncaught (in promise)报错，同时系统会抛出一个unhandledrejection事件，我们使用window.addEventListener来监听到，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">window.addEventListener(&#x27;unhandledrejection&#x27;, function(event) &#123;</span><br><span class="line">  // the event object has two special properties:</span><br><span class="line">  console.log(event.promise); // [object Promise] - the promise that generated the error</span><br><span class="line">  console.log(event.reason); // Error: Whoops! - the unhandled error object</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在nodejs环境中，可以看到一个UnhandledPromiseRejectionWarning警告，同时系统也会抛出一个unhandledRejection事件，使用process.on(‘unhandledRejection’）来统一监听。在未来的版本中可能会抛出异常，总之完全取决于JavaScript解释器如何处理。</p>
+<p>我们在实际代码中，显然不能依赖于监听unhandledrejection事件来统一处理的方式，更靠谱的办法是养成好的编码习惯，首先是使用promise时都配备catch函数，即使给个空函数都可以，其次是在最终的catch函数里，最好使用try-catch包装，避免继续抛出异常。当然，使用监听unhandledrejection来做兜底方案也是很有必要的。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

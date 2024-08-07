@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <div class="post-list">
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/04/06/js-promise/">ES6之Promise</a>
+    <div class="post-item-summary">
+      Promise是对异步操作做的封装，它解决的是回调嵌套的问题，它的实现仍然是注册和调用回调函数。
+构造和使用使用Promise很简单，例如
+12345678910111213141516var p = new Promise(function(resolve, reject)&#123;	//do some asynchronous thing	if(xxx) &#123;		console.log(&quot;resolve ...&quot;)		resolve();	&
+      <a class="read-more" href="/2017/04/06/js-promise/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.04.06</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/03/23/js-this/">javaScript之this</a>
+    <div class="post-item-summary">
+      js中的this，很容易让刚接触的人摸不着头脑，但其实主要明白了怎么回事，也不会很复杂。函数里的this指向什么，跟它的当前执行环境有关。
+我们从简单到复杂，通过一些例子来说明
+1234var A = function()&#123;	console.log(this);&#125;var a = new A();
+这个很简单，因为A是作为一个构造函数来使用的，所以这时的this指向的是a
+1234var A = function()&#123;	console.log(th
+      <a class="read-more" href="/2017/03/23/js-this/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.03.23</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/03/21/cocos-scheduler/">cocos之定时器scheduler</a>
+    <div class="post-item-summary">
+      游戏中经常需要用到定时器，定时循环执行某个任务n次，或者延迟一段时间后执行某个任务，此时需要用到的类是Scheduler。它的原理和使用并不复杂，本文记录一些细节问题。
+使用使用起来非常简单，首先通过Director获取Scheduler对象，然后调用它的schedule方法，参数依次为回调函数，回调函数对象，回调周期，回调次数，第一次回调延迟，是否暂停等待。
+1Scheduler::schedule(SEL_SCHEDULE selector, Ref *target, f
+      <a class="read-more" href="/2017/03/21/cocos-scheduler/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.03.21</div>
+      <div class="tags">
+        
+        <div class="tag-item">cocos</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/03/10/cpp-function-obj/">c++之函数对象</a>
+    <div class="post-item-summary">
+      std::function是一个类模板，定义于头文件&lt;functional&gt;。我们主要关注下它的几种生成方式。
+
+直接指向函数。例如
+
+123456bool func(int item) &#123;	return item % 2 == 0;&#125;std::function&lt;bool(int)&gt; f = func;
+
+
+使用lambda表达式。例如
+
+1234int t = 3;std::function&lt;bool(int)&gt; f1
+      <a class="read-more" href="/2017/03/10/cpp-function-obj/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.03.10</div>
+      <div class="tags">
+        
+        <div class="tag-item">c++</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/03/10/cpp-lambda/">c++11之lambda简单使用</a>
+    <div class="post-item-summary">
+      lambda是C++11新增的功能，因为不是很熟，碰到需要回调的时候，我都是使用std::bind来绑定函数指针，但lambda有它使用方便的地方，尤其是闭包可以调用函数内的局部变量的特性，非常灵活，所以用简单的笔记记录下怎么使用，详细可以参考官方文档
+语法1234[ capture-list ] ( params ) mutable(可选) constexpr(可选)(C++17) exception attribute -&gt; ret &#123; body &#12
+      <a class="read-more" href="/2017/03/10/cpp-lambda/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.03.10</div>
+      <div class="tags">
+        
+        <div class="tag-item">c++</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/03/03/leet-kmp/">leetcode之kmp算法</a>
+    <div class="post-item-summary">
+      kmp算法用于查找子字符串，阮老师有一篇介绍的很细致的博客基本上一遍就能看懂
+整个流程可以概括为两步
+
+生成子字符串的部分匹配表，它是一个数组，对应子字符串上每个位置上的部分匹配值。 “部分匹配值”就是”前缀”和”后缀”的最长的共有元素的长度。”前缀”指除了最后一个字符以外，一个字符串的全部头部组合；”后缀”指除了第一个字符以外，一个字符串的全部尾部组合。
+匹配子字符串，如果子字符串匹配完，则查找成功，否则需要将匹配位置后移，后移的步数就是当前已匹配字符数量，减去最后一个匹配
+      <a class="read-more" href="/2017/03/03/leet-kmp/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.03.03</div>
+      <div class="tags">
+        
+        <div class="tag-item">leetcode</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/02/19/dp-in-project/">开发中使用到的设计模式</a>
+    <div class="post-item-summary">
+      单例模式 SINGLETON单例在实际中使用很多，它保证一个类只有一个实例，并提供一个它的全局访问点。不论在cocos引擎还是自己的项目代码中，都有大量单例类的存在，但一般用于工厂类或者管理类，例如FileUtils, TextureCache等。保存一个全局变量并确保运行中只有一个实例，也可以看做是单例模式，比如在棋牌游戏中只会存在一个牌桌对象。
+简单工厂模式 FACTORY它在《设计模式》中叫做参数化工厂方法，它定义一个用于创建对象的接口，以一个参数作为标识符，来实例化对
+      <a class="read-more" href="/2017/02/19/dp-in-project/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.02.19</div>
+      <div class="tags">
+        
+        <div class="tag-item">设计模式</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/02/18/js-arguments/">javaScript中的arguments</a>
+    <div class="post-item-summary">
+      argumentsjs中的每一个函数，都有一个默认的局部变量arguments，通过它可以获取到传给函数的所有实参，直接用序号获取即可，例如
+1234567function test()&#123;	console.log(arguments.length);	//2	console.log(arguments[0]);	//1	console.log(arguments[1]);	//haha	console.log(arguments[2]);	//undefined&#
+      <a class="read-more" href="/2017/02/18/js-arguments/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.02.18</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/02/13/cocos-assetsManager/">cocos之使用AssetsManager实现热更新</a>
+    <div class="post-item-summary">
+      cocos提供了AssetsManager类进行热更新。这里大概介绍下它的使用方法和内部原理，引擎使用的是v3.13。首先是一段简单的代码
+1234567891011121314151617string url = &quot;https://.....test.zip&quot;;string vurl = &quot;https://.../version&quot;;string root = CCFileUtils::getInstance()-&gt;getWrit
+      <a class="read-more" href="/2017/02/13/cocos-assetsManager/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.02.13</div>
+      <div class="tags">
+        
+        <div class="tag-item">cocos</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2017/02/04/cocos-transitionScene/">cocos之Scene的切换</a>
+    <div class="post-item-summary">
+      场景切换，牵涉到的是老scene善后处理和新scene的初始化，如果对各个函数调用的先后顺序不明的话，可能就会出问题(例如注册监听和取消监听，一般都写在onEnter和onExit方法内)
+涉及到scene切换的方法，都在director内,常用的为
+12void Director::runWithScene(Scene *scene)void Director::replaceScene(Scene *scene)
+Director内通过_scenesStack， _run
+      <a class="read-more" href="/2017/02/04/cocos-transitionScene/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2017.02.04</div>
+      <div class="tags">
+        
+        <div class="tag-item">cocos</div>
+        
+      </div>
+    </div>
+  </section>
+  
+</div>
+
+
+<div class="paginator">
+  <a class="extend prev" rel="prev" href="/page/6/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">下一页</a>
+</div>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

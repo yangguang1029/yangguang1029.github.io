@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之原生模块重名的问题 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之原生模块重名的问题</div>
+  <div class="post-meta">
+    <div class="date">2018 September 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在ReactNative开发中，封装原生模块几乎是必定要做的事情。原生模块分为两种：NativeModule和NativeComponent。对应的实现是</p>
+<ul>
+<li>iOS端NativeModule为实现RCTBridgeModule接口，NativeComponent为继承RCTViewManager类</li>
+<li>Android端NativeModule为继承ReactContextBaseJavaModule类，NativeComponent为继承SimpleViewManager或者ViewGroupManager类。</li>
+</ul>
+<p>iOS端使用RCT_EXPORT_MODULE宏来指定模块名，这个名字是禁止重复的，如果重复在运行时会红屏报错。报错信息为</p>
+<blockquote>
+<p>Attempted to register RCTBridgeModule class XXX for the name “xxx”, but name was already resgitered by class XXX</p>
+</blockquote>
+<p>这段错误提示位于RCTCxxBridge.mm的registerModulesForClasses方法内。所以iOS端就不用担心什么了，一旦有模块名重复，运行会直接报错。</p>
+<p>Android端通过重写getName方法来指定模块或者组件名，NativeModule是允许重名的，在BaseJavaModule类中有一个接口</p>
+<pre><code>@Override
+public boolean canOverrideExistingModule() &#123;
+  // TODO(t11394819): Make this final and use annotation
+  return false;
+&#125;
+</code></pre>
+<p>如果后注册的重名模块重写了这个接口返回true，那么模块名允许重复，后添加的模块会覆盖掉先添加的模块。如果不重写或者这个接口返回false，则不允许重名，一旦重名会报错，报错信息位于NativeModuleRegistryBuilder.java内，在这里做了检测。</p>
+<p>对于NativeComponent，虽然ViewManager也是继承自BaseJavaModule，但是它因为不走NativeModuleRegistryBuilder的流程，所以不会检测。不论是否重写canOverrideExistingModule接口，都允许重名，后添加的NativeComponent覆盖掉先添加的，这就是需要小心的地方，如果无意中写了两个重名的NativeComponent，先添加的就会被悄悄的覆盖了。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

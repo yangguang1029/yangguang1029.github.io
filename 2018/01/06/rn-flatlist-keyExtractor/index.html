@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之一次FlatList无法局部刷新的bug修复 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之一次FlatList无法局部刷新的bug修复</div>
+  <div class="post-meta">
+    <div class="date">2018 January 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>今天发现项目中一个奇怪的问题，在使用FlatList时，每个单元行Component明明实现了shouldComponentUpdate,但是当增加一行时，还是所有的单元行都重新render了，最后找到了原因。代码中FlatList实现的keyExtractor非常简单，因为每个单元行数据的key要求是唯一的，所以直接使用了index返回</p>
+<pre><code>  _keyExtractor(item, index)&#123;
+    return &quot;&quot;+index;
+&#125;
+</code></pre>
+<p>然后在增加数据时，又是把数据插到了数组的最前面</p>
+<pre><code>let data = this.state.data;
+this.setState(&#123;data:[&#123;num:key,key&#125;].concat(data)&#125;)
+</code></pre>
+<p>这样就出问题了，对FlatList内的每个单元行组件CellRenderer来说，它的props包括keyExtractor给出的key和data给出的数据，假设原来数据是[0,1,2,3]，那么FlatList内的组件就包括</p>
+<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=0 /&gt;
+&lt;CellRenderer key=&quot;1&quot;, num=1 /&gt;
+&lt;CellRenderer key=&quot;2&quot;, num=2 /&gt;
+&lt;CellRenderer key=&quot;3&quot;, num=3 /&gt;
+</code></pre>
+<p>在数组最前面加上一个数据101后，FlatList内的组件就变成了</p>
+<pre><code>&lt;CellRenderer key=&quot;0&quot;, num=101 /&gt;
+&lt;CellRenderer key=&quot;1&quot;, num=0 /&gt;
+&lt;CellRenderer key=&quot;2&quot;, num=1 /&gt;
+&lt;CellRenderer key=&quot;3&quot;, num=2 /&gt;
+&lt;CellRenderer key=&quot;4&quot;, num=3 /&gt;
+</code></pre>
+<p>我们在单元行组件里的shouldComponentUpdate实现是：</p>
+<pre><code>shouldComponentUpdate(nextProps)&#123;
+    return this.props.num !== nextProps.num;
+&#125;
+</code></pre>
+<p>所以很显然已有的4个CellRenderer因为num变化，就全部刷新了。</p>
+<p>找到原因后，要解决就很简单了</p>
+<pre><code>_keyExtractor(item, index)&#123;
+    return item.num;;
+&#125;
+</code></pre>
+<p>所以结论就是：<strong>keyExtractor应该根据实际情况根据item数据来设置，不要贪图简单直接使用index</strong></p>
+<p>最后做了下验证，keyExtractor使用index时，将数据加在数组最后，而不是插在最前，那么没问题，不会全部刷新，因为前面CellRenderer的props都没有变化。但实际项目中不要贪图省事，之所以FlatList提供这个接口让开发者去实现，就肯定有这个需要，随便返回一个index可能就把自己给坑了。</p>
+<p>关于re-render的原理，官方有一篇文章叫<a target="_blank" rel="noopener" href="https://reactjs.org/docs/reconciliation.html">reconciliation</a>讲的很清楚，看完就更容易理解这个问题的本质了。
+    </p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

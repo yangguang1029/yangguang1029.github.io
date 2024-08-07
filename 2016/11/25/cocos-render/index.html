@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos3.x 渲染机制简述 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos3.x 渲染机制简述</div>
+  <div class="post-meta">
+    <div class="date">2016 November 25th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>cocos2dx-3.x对绘制部分进行了重构，将绘制从UI树的遍历中分离了出来。首先进行UI树的遍历给每个元素生成一个绘制命令。等遍历完之后，render开始执行栈中所有renderCommand。</p>
+<h3 id="遍历UI树"><a href="#遍历UI树" class="headerlink" title="遍历UI树"></a>遍历UI树</h3><p>遍历UI树很简单，就是调用每个Node的visit函数，这是个虚函数，除了部分类做了重写(目前源代码里只有三个类重写了，分别是CCAttachNode, CCBillBoard, CCSprite3D)，其余就沿用了Node的实现。通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void Node::visit(Renderer* renderer, const Mat4 &amp;parentTransform, uint32_t parentFlags)</span><br></pre></td></tr></table></figure>
+<p>我们可以看到</p>
+<ol>
+<li>如果一个Node是不可见(_visible为false)，则不会生成渲染命令，因此隐藏的节点不会增加渲染负担，只会占用内存消耗。</li>
+<li>在遍历时，会对所有子节点以localZorder从小到大进行排序，如果localZorder相同，则以_orderOfArrival从小到大排序，这个子节点被添加的先后顺序。排序后先执行所有localZorder小于0的子节点的visit，再执行自己的draw，再执行所有localZorder大于0的子节点的visit。</li>
+</ol>
+<p>draw函数为虚函数，且Node内的实现为空，具体实现在各个子类中，它的作用就是生成RenderCommand</p>
+<h3 id="RenderCommand"><a href="#RenderCommand" class="headerlink" title="RenderCommand"></a>RenderCommand</h3><p>RenderCommand有以下类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">enum class Type</span><br><span class="line">    &#123;</span><br><span class="line">        /** Reserved type.*/</span><br><span class="line">        UNKNOWN_COMMAND,</span><br><span class="line">        /** Quad command, used for draw quad.*/</span><br><span class="line">        QUAD_COMMAND,</span><br><span class="line">        /**Custom command, used for calling callback for rendering.*/</span><br><span class="line">        CUSTOM_COMMAND,</span><br><span class="line">        /**Batch command, used for draw batches in texture atlas.*/</span><br><span class="line">        BATCH_COMMAND,</span><br><span class="line">        /**Group command, which can group command in a tree hierarchy.*/</span><br><span class="line">        GROUP_COMMAND,</span><br><span class="line">        /**Mesh command, used to draw 3D meshes.*/</span><br><span class="line">        MESH_COMMAND,</span><br><span class="line">        /**Primitive command, used to draw primitives such as lines, points and triangles.*/</span><br><span class="line">        PRIMITIVE_COMMAND,</span><br><span class="line">        /**Triangles command, used to draw triangles.*/</span><br><span class="line">        TRIANGLES_COMMAND</span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+<p>在CCRender.cpp的processRenderCommand函数里，有各个类型command的具体处理。例如 CUSTOM_COMMAND就是执行设定的回调函数</p>
+<p>通过这里可以了解cocos2dx-3.x的autoBatch机制，Sprite使用的是TrianglesCommand，在处理时，会先统一放在队列里，在遍历队列时，比较每个Command的materialID,如果相同则统一处理。决定materialID的有glProgram， _textureID，_blendType。此外不同globalZorder的精灵因为不在一批处理，所以不会自动autoBatch，不同父节点，不同localZOrder则不会影响，会自动autoBatch</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

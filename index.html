@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <div class="post-list">
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
+    <div class="post-item-summary">
+      前言在网上看到一个介绍ReactNative新架构的一个博客，看起来很不错，所以就直接翻译过来，还省去了自己去整理的功夫。因为不打算拿去投稿，所以翻译就随意一点，不追求和原文完全一致，大概意思到了就行了，如果发现有错误的地方，还请随时指正~
+ReactNative官方最初是在2018年宣布要对架构进行重大调整，目的是为了解决自身长久以来存在的诸多问题。在这个系列中，我们会历数这次重构中的主要内容。我们避免使用代码演示，尽可能让解释通俗易懂，并分享我们对这些新技术方案的激动心情
+      <a class="read-more" href="/2019/12/17/rn-new-architecture1/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.12.17</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/12/02/rn-improve-performance1/">ReactNative性能优化系列（一）包体积优化</a>
+    <div class="post-item-summary">
+      前言一直以来都想写一篇ReactNative性能优化的博客，原因很简单，技术知识要落地才有价值，而性能优化是业务开发中的一个非常重要的点，但想了一年多了都还没写，是因为这个选题太大了，在google上一搜，讲RN性能优化的文章有不少，但都没有讲的很全面，有的又偏细节，没有提炼出底层的原理，比如props不要用局部变量和立即执行函数，只是代码层面的执行策略，底层真正的原因实际上重复渲染机制。
+今天突然想到，与其寄希望于一口气写出一篇集ReactNative性能优化之大成的文章来
+      <a class="read-more" href="/2019/12/02/rn-improve-performance1/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.12.02</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
+    <div class="post-item-summary">
+      首先抛出一个问题，这也是这篇博客产生的背景，在这个demo里，有两个render函数，他们的效果是一样的，就是初始渲染Com1和Com2组件，5秒后变成只渲染Com2组件，但实现代码不一样，我看到一篇文章里说第二种写法性能更高，因为第一种写法会有组件的销毁和重新创建，第二种写法没有。读者不妨停下来自己想一想是否认同这个观点，然后再继续看下去。
+我看到这个观点时，首先想到的是：这两种情况下最终渲染结果是一模一样的，所以我推断它们生成的virtual dom也是一样的，而组件（实
+      <a class="read-more" href="/2019/10/09/rn-reconciliation-discussion/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.10.09</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
+    <div class="post-item-summary">
+      这篇文章是翻译的medium上的React Native Performance: Do and Don’t，本来是想拿来做内部技术周刊的投稿，但没有被选中，既然花费了时间和精力去翻译，就不想浪费掉，所以放到博客中来。原文的发表时间是2019年5月31日，所以还算比较新，也有4300个赞，所以质量还算可以，但这篇文章和很多技术博客（尤其是我的……哈哈）一样有个问题，讲了一些偏细节的点，但没有提炼出本质。当然，如果说到RN性能的本质，我觉得只有一个：避免重复渲染。这是后话，以后
+      <a class="read-more" href="/2019/10/08/rn-performance-do-and-dont/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.10.08</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
+    <div class="post-item-summary">
+      在JavaScript中，unhandled promise rejection问题有两种场景，一个是promise没有写catch，但是又变成了rejected状态，另一种是promise写了catch，但是catch中又抛出了异常，例如：
+123456// 场景一Promise.reject().then()// 场景二Promise.reject().catch(err =&gt; &#123;  throw new Error()&#125;)
+
+在这篇文档里提到：如
+      <a class="read-more" href="/2019/09/25/js-uncatched-promise/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.09.25</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/07/29/rn-redux-source-code2/">ReactNative之Redux源码阅读(applyMiddleware,compose)</a>
+    <div class="post-item-summary">
+      去掉utils目录和compose这些辅助类，applyMiddleware是最后一个暴露的接口源码了，果然redux代码还是很好看懂的。当然这主要是因为代码质量很高，而且注释很完善，这是我们自己写sdk时值得学习的榜样，接下来就看下applyMiddleware的代码。
+applyMiddleware在ReactNative之Redux源码阅读(createStore)里提到了enhancer函数，applyMiddleware就是redux内置的一个enhancer。en
+      <a class="read-more" href="/2019/07/29/rn-redux-source-code2/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.07.29</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/07/28/rn-redux-source-code1/">ReactNative之Redux源码阅读(combineReducers&amp;bindActionCreators)</a>
+    <div class="post-item-summary">
+      闲话少叙，直接开始看另外两个文件
+combineReducers照例，我们最好先把源码开头的注释仔细看一遍。combineReducers在实际中用的很多，它的作用是可以将多个reducer函数聚合起来，避免写一个太过庞大复杂的reducer函数。
+直接看源码，它接受的参数是一个object，其每个value都是一个reducer函数，而每个key就会用来作为state的key（这里对redux有了解的同学应该不难理解，每个reducer函数都会返回一个state，这些sta
+      <a class="read-more" href="/2019/07/28/rn-redux-source-code1/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.07.28</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/07/24/rn-redux-source-code/">ReactNative之Redux源码阅读(createStore)</a>
+    <div class="post-item-summary">
+      很久没写点啥了，一来是最近半年事情很多，二来是自己也迷茫了挺长时间，现在有点缓过来，应该要恢复记点东西了。言归正传，前几天看到说redux源码总共只有600来行，很容易看懂，于是去看了一眼，发现确实是，大概用了两个小时就全部看完了，也确实很容易看明白，想到不少同学对redux有一种犯怵和抵触的心理，顿时觉得很没必要，不信也去看一看源码吧。
+这个Redux源码阅读系列会把整个Redux的源码都过一遍，适合对redux已经有足够了解的同学，如果不是很了解，建议仔细把官方文档再看一
+      <a class="read-more" href="/2019/07/24/rn-redux-source-code/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.07.24</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/03/09/other-tinygame-architecture/">一个小游戏的通用架构</a>
+    <div class="post-item-summary">
+      最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构
+功能系统消息分发系统它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。
+监听者模式是代码解耦的一大神
+      <a class="read-more" href="/2019/03/09/other-tinygame-architecture/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.03.09</div>
+      <div class="tags">
+        
+        <div class="tag-item">其它</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2019/01/16/rn-add-perf/">ReactNative之一个监控组件刷新次数的实现方案</a>
+    <div class="post-item-summary">
+      在做RN开发中，检测是否有多余的重复渲染是做性能监控的重要手段，在React16.0之前，官方有一个工具叫做perf，对应的在RN中，也可以使用Libraries&#x2F;Performance&#x2F;RCTRenderingPerf中提供的PerfMonitor类，它们提供了监控组件渲染次数的功能，借此发现是否有不必要的渲染。可惜这个工具在React16.0和ReactNative0.45以后就不再提供了，官方仓库有个issue提到了这个问题，然后就没有然后了……
+官
+      <a class="read-more" href="/2019/01/16/rn-add-perf/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2019.01.16</div>
+      <div class="tags">
+        
+        <div class="tag-item">ReactNative</div>
+        
+      </div>
+    </div>
+  </section>
+  
+</div>
+
+
+<div class="paginator">
+  <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+</div>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之react-navigation使用 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之react-navigation使用</div>
+  <div class="post-meta">
+    <div class="date">2017 December 19th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>react-navigation是官方推荐的导航功能库，这里稍微总结一下如何使用它进行界面切换，以及一些细节问题。详情可以查看<a target="_blank" rel="noopener" href="https://reactnavigation.org/">官方文档</a></p>
+<p>一般使用系统自带的空间StackNavigator来进行界面切换。从名字也可以很直观的看出，这个导航的类就像一个stack，push一个新的界面上来，或者pop一个界面出去，当然也可以跳转，一次pop多个界面。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><pre><code>let Nav = StackNavigator(RouterConfigs, StackNavigatorConfig)
+</code></pre>
+<p><strong>RouteConfigs</strong>是一个Object，用于注册所有可以跳转的界面。如果需要跳转的界面比较多，可以写一个脚本来生成，每个key-value形式为</p>
+<pre><code>screen1: &#123;
+    screen:MyComponent,
+    path:xxx,
+    navigationOptions:(&#123;navigation&#125;)=&gt;(&#123;
+        title:xxx
+    &#125;)
+&#125;
+</code></pre>
+<p>screen对应Component类的名称，navigationOptions是一个回调函数，它会在每次界面被push时调用。它的参数是</p>
+<pre><code>&#123;navigation:xxx, navigationOptions:xxx, screenProps:xxx&#125;
+</code></pre>
+<p>我们可以从这个参数中解构出navigation，获取很多有用的信息，比如传入的参数navigation.state.params等等。然后返回一个Object，这个返回的Object被称为Screen Navigation Options，它用来设置一些UI属性，比如当前界面标题文字，标题栏样式等。</p>
+<p><strong>StackNavigatorConfig</strong>是一个Object,它可以指定初始显示哪个界面，可以指定整个StackNavigator通用的样式等。例如我们希望所有的界面都不需要显示标题栏，那么在这里设置headerMode为none即可。</p>
+<h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><p>每个在RouteConfigs里注册了的screen都是一个Component类，它的props都会自动多了一个navigation属性，也就是</p>
+<pre><code>this.props.navigation
+</code></pre>
+<p>通过它可以进行界面跳转，回跳，获取参数等操作。</p>
+<ul>
+<li>navigate 这是一个function，通过它来进行界面跳转。 形式为 navigate(routeName, params, action)，也就是push一个在RouteConfigs里key为routeName的界面，传递参数为params。 每次navigate一个界面都是新生成界面然后push，不会重用stack里已有界面。</li>
+<li>state 这是一个object, 它的内容为{routeName:xxx, key:xxx, params:{xxx}} 这里routeName就是当前界面在RouteConfigs里注册时的用的key（也就是示例中的screen1）, key则是系统自动生成的一个属性，这个key在使用goBack()函数指定跳回到某个界面时需要用到。params则是跳转时传入的参数，所以我们使用this.props.navigation.state.params来获取传入的参数。</li>
+<li>setParams 这是一个function，使用它改变传入的参数</li>
+<li>goBack 这是一个function，通过它返回到之前的界面，如果不带参数，则默认为退出当前界面回到上一层，如果参数为null，官方文档说<code>go back anywhere, without specifying what is getting closed</code>,看起来有点奇怪，不明白go back anywhere是不是任意跳转，但通过demo测试发现和不带参数表现是一样的。如果传入参数，则表示从传入参数代表的界面网上跳转一层，**注意这个参数不是RouteConfigs里的key（即screen1），而是上面state里的那个key(即this.props.navigation.state.key)**，因为只能获取当前界面的this.props.navigation.state.key，所以在A界面回跳需要B界面的key时，需要把B界面的key存起来或者传递给A。</li>
+<li>dispatch 这是一个function，用来发布一个action，这个接口用的不多，属于比较深入的用法，具体查看官方文档。</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>上面代码里生成的Nav本身是一个Component，所以不要把它想复杂了，就当做一个普通的Component来使用就可以了。</p>
+<p>如果把Nav传给AppRegistry.registerComponent来作为起始Component。那很简单，在RouteConfigs里注册的各个界面里使用this.props.navigation进行操作就可以了。</p>
+<p>如果作为一个普通Component使用，它的父容器内其它component想要进行navigator跳转，则通过它的ref来进行操作。例如</p>
+<pre><code>render()&#123;
+    return &lt;View&gt;
+        &lt;Button onPress=&#123;()=&gt;&#123;
+            this._ref &amp;&amp; this._ref.dispatch(
+                  NavigationActions.navigate(&#123; routeName: someRouteName &#125;)
+            );
+        &#125;&#125;/&gt;
+        &lt;Nav ref=&#123;(c)=&gt;this._ref=c&#125;/&gt;
+    &lt;/View&gt;
+&#125;
+</code></pre>
+<p>其它例如TabNavigator，DrawerNavigator的使用，大体和StackNavigator类似。其它高端的操作例如自定义Navigator,自定义Route等都参考官方文档。</p>
+<h3 id="回跳多个界面的解决方案"><a href="#回跳多个界面的解决方案" class="headerlink" title="回跳多个界面的解决方案"></a>回跳多个界面的解决方案</h3><p>老版本的navigator可以通过routes列表获取当前的界面栈，也有popToRoute(),popToTop()这样的接口可以直接跳转。而react-navigation则没有界面栈的信息，只能通过goBack()传入一个key来指定跳转，这个key还只能获取到当前所在界面的，没法获取其他界面的key。如果要回跳多个界面，一个解决方案就是在需要回跳的目标界面获取key，通过props一路传递下来，然后在跳转界面使用。例如</p>
+<pre><code>//A.js
+toB()&#123;
+    let key = this.props.navigation.state.key;
+    this.props.navigation.navigate(&quot;B&quot;, &#123;returnKey:key&#125;);	
+&#125;
+//B.js
+toC()&#123;
+    this.props.navigation.navigate(&quot;C&quot;, 
+    &#123;returnKey：this.props.navigation.state.params.returnKey&#125;);
+&#125;
+//C.js
+back()&#123;
+    this.props.navigation.goBack(this.props.navigation.state.params.returnKey)
+&#125;
+</code></pre>
+<p>这里从A传入key，在C界面跳转，注意并不是跳转到A界面，而是从A界面离开，调到A之前的一个界面。如果不通过传递的话，也可以把key存成全局变量，这样可以比较简单的实现回跳多个界面。还有一种hack的手段，就是获取navigation的ref，然后操作它的私有成员属性或者方法，来获取到调用栈信息进行跳转，最好还是避免使用这种方法吧。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

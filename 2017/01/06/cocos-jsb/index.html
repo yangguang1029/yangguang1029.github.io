@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos之jsbinding 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos之jsbinding</div>
+  <div class="post-meta">
+    <div class="date">2017 January 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>jsbinding是cocos通过引擎内置的spiderMonkey实现javaScript和C++交互的方案。当我们需要自己实现c++和js的互相调用时，基本上可以拷贝cocos引擎内的代码，cocos基于spiderMonkey的API进行了一些封装，使用起来比较方便。这篇博客只涉及我对代码的一些理解，如果想了解spiderMonkey的更多细节可以查看<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/JSAPI_User_Guide">官网</a>。</p>
+<p>如果能尽量看明白jsbinding的相关代码，在碰到问题时可以更快的解决，比如很常见的invalid native object报错，通过看代码可以知道它是找不到与js对象绑定的c++对象，比如js代码报错说某个方法是undefined时，我们可以去jsbinding的实现代码里查看一下这个方法是否封装进去了，比如一些类或者方法和属性在c++层和js层的名称不一样等等。</p>
+<h4 id="js调用C-代码"><a href="#js调用C-代码" class="headerlink" title="js调用C++代码"></a>js调用C++代码</h4><p>我们在AppDelegate.cpp里可以看到很多cocos的注册函数，通过这些函数，将c++类注册到js的环境中，然后就可以在js代码里构造这个类的实例，调用它的方法。我们基本上照抄就可以实现一个，代码就不贴了</p>
+<ul>
+<li>jsb_myclass_class-&gt;name 这个name就是在js代码中用来执行new时候的类名称</li>
+<li>JS_SetProperty(cx, proto, “__is_ref”, JS::FalseHandleValue); 根据C++类是否继承自Ref，设为True或者False</li>
+<li>注册属性(静态属性和成员属性)和方法(静态方法和成员方法)，按照类似的格式去实现即可</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">static JSPropertySpec properties[] = &#123;</span><br><span class="line">       JS_PSGS(&quot;myProp&quot;, _js_get_myProp, _js_set_myProp, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_PS_END</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br><span class="line">   static JSFunctionSpec funcs[] = &#123;</span><br><span class="line">       JS_FN(&quot;func&quot;, js_MyClass_func, 0, JSPROP_PERMANENT | JSPROP_ENUMERATE),</span><br><span class="line">       JS_FS_END</span><br><span class="line">   &#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们在js代码中执行new MyClass时，就会调用C++层的 js_MyClass_constructor函数，在这里会新建一个c++对象，并新建一个js对象，然后建立映射关系，之后在互相调用的时候，才可以找得到彼此</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_constructor(JSContext *cx, uint32_t argc, jsval *vp)</span><br><span class="line">&#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    bool ok = true;</span><br><span class="line">    MyClass* cobj = new (std::nothrow) MyClass();</span><br><span class="line">    </span><br><span class="line">    js_type_class_t *typeClass = js_get_type_from_native&lt;MyClass&gt;(cobj);  //从_js_global_type_map里获取，是在下面jsb_register_class的时候存进去的</span><br><span class="line">    </span><br><span class="line">    // link the native object with the javascript object</span><br><span class="line">    </span><br><span class="line">    JS::RootedObject proto(cx, typeClass-&gt;proto.ref());</span><br><span class="line">    JS::RootedObject parent(cx, typeClass-&gt;parentProto.ref());</span><br><span class="line">    JS::RootedObject jsObj(cx, JS_NewObject(cx, typeClass-&gt;jsclass, proto, parent));</span><br><span class="line">    js_proxy_t* newproxy = jsb_new_proxy(cobj, jsObj);</span><br><span class="line">    JS::AddNamedObjectRoot(cx, &amp;newproxy-&gt;obj, &quot;MyClass&quot;);</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    args.rval().set(OBJECT_TO_JSVAL(jsObj));</span><br><span class="line">    if (JS_HasProperty(cx, jsObj, &quot;_ctor&quot;, &amp;ok) &amp;&amp; ok)</span><br><span class="line">        ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jsObj), &quot;_ctor&quot;, args);</span><br><span class="line">   //如果js层实现了_ctor方法，则调用它</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>然后看一个简单的绑定C++函数到js中的实现。在这里我们看到了很眼熟的”invalid native object”。我们首先获取到js中的this，然后通过映射找到c++中的对象，然后调用方法即可。如果绑定静态方法，因为不需要实例，所以非常简单，直接执行即可。获取当前的js对象，并以此获取绑定的c++对象，这些代码能看懂并使用就足够了。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">bool js_MyClass_func(JSContext *cx, uint32_t argc, jsval *vp) &#123;</span><br><span class="line">    JS::CallArgs args = JS::CallArgsFromVp(argc, vp);</span><br><span class="line">    JS::RootedObject jsobj(cx, args.thisv().toObjectOrNull());</span><br><span class="line">    js_proxy_t *proxy = jsb_get_js_proxy(jsobj);</span><br><span class="line">    MyClass* cobj = (MyClass *)(proxy ? proxy-&gt;ptr : NULL);</span><br><span class="line">    JSB_PRECONDITION2( cobj, cx, false, &quot;Invalid Native Object&quot;);</span><br><span class="line">    </span><br><span class="line">    if (cobj) &#123;</span><br><span class="line">        cobj-&gt;func();</span><br><span class="line">        return true;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        JS_ReportError(cx, &quot;Error: SocketIO instance is invalid.&quot;);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="C-调用js"><a href="#C-调用js" class="headerlink" title="C++调用js"></a>C++调用js</h4><p>前面代码能差不多明白的话，c++调用js的其实也很好写，这里贴一段例子代码，它就不再是从cocos引擎内拷贝的，而是我自己写的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void MyClass::calljs() &#123;</span><br><span class="line">    JSContext *cx = ScriptingCore::getInstance()-&gt;getGlobalContext();</span><br><span class="line">    </span><br><span class="line">    js_proxy_t *proxy = jsb_get_native_proxy(this);</span><br><span class="line">    JSObject* jso = proxy-&gt;_jsobj;</span><br><span class="line">    </span><br><span class="line">    std::string param = &quot;test111&quot;;</span><br><span class="line">    jsval jsparam = std_string_to_jsval(cx, param);</span><br><span class="line">    JS::RootedValue retval(cx);</span><br><span class="line">    std::string ret = &quot;&quot;;</span><br><span class="line">    std::string funcName = &quot;calljs&quot;;</span><br><span class="line">    </span><br><span class="line">    bool success = ScriptingCore::getInstance()-&gt;executeFunctionWithOwner(OBJECT_TO_JSVAL(jso), funcName.c_str(), 1, &amp;jsparam, &amp;retval);</span><br><span class="line">    if(success) &#123;</span><br><span class="line">        if(retval.isString()) &#123;</span><br><span class="line">           jsval_to_std_string(cx, retval, &amp;ret);</span><br><span class="line">            CCLOG(&quot;return....%s &quot; , ret.c_str());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else &#123;</span><br><span class="line">        CCLOG(&quot;excute failed ...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在C++代码中调用这个函数，它会调用绑定的对象在js中的calljs函数，并可以传递参数和接受返回值。</p>
+<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><p>cocos封装了很多辅助函数，例如类型转换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jsval_to_std_string</span><br><span class="line">std_string_to_jsval</span><br><span class="line">OBJECT_TO_JSVAL</span><br><span class="line">ccpoint_to_jsval</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p>一般来说是够用了，需要的时候，多去引擎内部找找就可以了</p>
+<p>另外，除了关注js-binding相关的代码外，cocos引擎在js层也有很多封装代码，位于js-bindings&#x2F;bindings&#x2F;script文件夹内。例如我们看tableView的jsbinding，它的构造方法是接受0个参数，但实际上我们可以这么写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var tableView = new cc.TableView(this, tsize);</span><br></pre></td></tr></table></figure>
+<p>原因就是在jsb_ext_create_apis.js内有这么一段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cc.TableView.prototype._ctor = function(dataSouurce, size, container) &#123;</span><br><span class="line">    container == undefined ? this._init(dataSouurce, size) : this._init(dataSouurce, size, container);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>它在js层实现了_ctor方法，而我们前面说到，在jsbinding的constructor函数里，如果发现js对象有_ctor方法，则会调用它，所以这个方法被调用，它执行了_init方法。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

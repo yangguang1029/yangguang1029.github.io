@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之给bundle命令增加参数 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之给bundle命令增加参数</div>
+  <div class="post-meta">
+    <div class="date">2017 November 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>因为拆分bundle的需要，在使用react-native bundle命令打业务bundle时，需要不同bundle的module id不一样，如果直接打，它们的id都是从0开始递增的。为了解决这个问题，通过修改源代码，给react-native bundle命令增加了两个参数，指定打bundle时生成ModuleID的行为。</p>
+<p>首先我们跟踪下react-native bundle命令运行的轨迹</p>
+<p>cli功能的源代码位于node_modules&#x2F;react-native&#x2F;local-cli文件夹内，cliEntry.js的111行</p>
+<pre><code>return command.func(argv, config, passedOptions);
+</code></pre>
+<p>是执行命令行的入口，react-native bundle命令就是从这里进入了local-cli&#x2F;bundle&#x2F;bundle.js内的bundle方法，然后进入buildBundle.js内的buildBundle方法。</p>
+<p>之后是node_modules&#x2F;react-native&#x2F;packager&#x2F;react-packager&#x2F;src&#x2F;Server&#x2F;index.js。从它的buildBundle方法，可以再跟踪到packager&#x2F;react-packager&#x2F;src&#x2F;Bundler文件夹，这里的index.js内有一个方法createModuleIdFactory就是给每个模块生成一个module id的地方，我们把这个函数改一下就可以了。</p>
+<p>因为参数传递比较复杂，我采用了一种比较很简单而且不会修改太多源代码的方法，就是在local-cli&#x2F;bundle&#x2F;bundle.js的bundle方法内读取我们增加的参数，存成全局变量，在需要用的地方读取即可。</p>
+<pre><code>function bundle(argv, config, args, packagerInstance) &#123;
+      let cid = args.cid;	//modified by guangy cid为common module的最大数字 add为需要加的数字
+      let add = args.add;
+      setCidAndAdd(cid, add);
+
+      return bundleWithOutput(argv, config, args, undefined, packagerInstance);
+&#125;
+</code></pre>
+<p>存储和读取cid和add参数的代码为</p>
+<pre><code>let cid = 10000;
+let add = 0;
+
+export function setCidAndAdd(_cid, _add) &#123;
+    cid = parseInt(_cid);
+    add = parseInt(_add);
+&#125;
+
+export function getCidAndAdd()&#123;
+    return &#123;cid, add&#125;
+&#125;
+</code></pre>
+<p>最后在createModuleIdFactory方法里，通过调用getCidAndAdd获取cid和add的值来使用就可以了。</p>
+<p>可以看到cli功能是用nodejs实现的，对于react-native bundle命令，从命令行读取什么参数，是否必带，是否有默认值等等在local-cli&#x2F;bundle&#x2F;bundleCommandLineArgs.js里进行配置，我们这次需要增加两个参数，只需要照已有的增加就行了。command里使用&lt;&gt;表示强制要求必须带这个参数。</p>
+<pre><code>&#123; //modified by guangy 增加两个参数 add和cid
+command: &#39;--cid &lt;cid&gt;&#39;,
+description: &#39;common的最大Module id
+  &#125;,&#123;
+command: &#39;--add &lt;add&gt;&#39;,
+description: &#39;需要加的数字，比如10000，20000&#39;,
+  &#125;,
+</code></pre>
+<p>然后还需要修改下node_modules&#x2F;react-native&#x2F;packager&#x2F;react-packager&#x2F;src&#x2F;Server&#x2F;index.js文件里的const bundleOpts &#x3D; declareOpts({…})<br>增加</p>
+<pre><code>cid: &#123;  //modified by guangy 增加两个参数
+    type: &#39;string&#39;,
+    required: true,
+  &#125;,
+  add: &#123;
+    type: &#39;string&#39;,
+    required: true,
+  &#125;,
+</code></pre>
+<p>即可。</p>
+<p>如果要修改其他命令，也可以照着这个思路，先把流程捋顺了，不用每行代码都看明白，大概找到需要改动的地方就行了</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

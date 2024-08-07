@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ES6中循环引用的坑 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ES6中循环引用的坑</div>
+  <div class="post-meta">
+    <div class="date">2017 November 13th</div>
+    <div class="tags">
+      
+      <div class="tag-item">javascript</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>今天碰到一个很诡异的问题，在import一个模块后直接使用，结果就报红屏错误 undefined is not a function，当时很奇怪，明明那个模块export了很多东西，而且别的地方import又是正常的，为什么在这里import就出问题呢？用console打印出来，发现import进来的结果是个{}。代码大概就是</p>
+<pre><code>import Test from &quot;./test&quot;
+Test.test();	//这里报错，说test是个undefined，所以不能当做方法调用
+</code></pre>
+<p>后来突然想到，可能是产生循环引用了，一查果然是这个原因。因为项目比较庞大，不小心还是很容易间接产生循环import。</p>
+<p>查阅<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/module-loader">阮老师的ES6教程</a>里有ES6关于循环import的说明。写一个简单的例子</p>
+<pre><code>//a.js
+console.log(&quot;before import b&quot;)
+import &#123;b&#125; from &quot;./b&quot;
+console.log(&quot;b is &quot; + b)
+export let a = b+1;
+
+//b.js
+console.log(&quot;before import a&quot;)
+import &#123;a&#125; from &quot;./a&quot;
+console.log(&quot;a is &quot; + a)
+export let b = a+1;
+</code></pre>
+<p>结果是</p>
+<pre><code>before import a
+a is undefined
+before import b
+b is NAN
+</code></pre>
+<p>这里有一个有趣的现象就是第一句输出并不是before import b，也就是虽然import语句在后面，但确会更早执行，当执行import b时，加载并运行b.js，从而第一句输出是before import a。</p>
+<p>然后就是当运行b.js时，发现又需要import a.js，此时不会再去加载a.js了，而是认为整个a.js模块是{}，所以a的值就是undefined了。可以通过以下代码验证</p>
+<pre><code>//b.js
+import * as A from &quot;./a&quot;
+console.dir(A)	//输出为&#123;&#125;
+</code></pre>
+<p>因为循环import一旦出现查找起来比较麻烦，经过了好多个中转，每个文件又都import了很多，很难找到是怎么导致循环的。一个避免出问题的方法就是少写立即执行的代码，尽量使用函数封装起来，需要的时候调用函数，就不会出错了。</p>
+<p>对于像constants, enum, global等一些需要立即执行的模块，则手动确保不要产生循环即可。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

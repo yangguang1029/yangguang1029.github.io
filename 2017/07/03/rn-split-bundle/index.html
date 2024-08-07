@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative拆分bundle实践 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative拆分bundle实践</div>
+  <div class="post-meta">
+    <div class="date">2017 July 3rd</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>实践了一下最简单的ReactNative bundle拆分方案。将项目bundle拆分成RN源代码和业务代码，这样在热更新时不用每次都更新整个bundle。</p>
+<p>首先新建一个项目testrn，将index.android.js内代码注释掉，只保留两行import</p>
+<pre><code>import React, &#123; Component &#125; from &#39;react&#39;;
+import &#123;
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View
+&#125; from &#39;react-native&#39;;
+</code></pre>
+<p>然后使用bundle命令打包成common.bundle，这就是RN源代码部分</p>
+<pre><code>react-native bundle --entry-file ./index.android.js --platform android --dev false --bundle-output ./output/common.bundle
+</code></pre>
+<p>这里dev可以选择true或者false，如果为了试验建议先设成true，正式使用时使用false</p>
+<p>然后我们将index.android.js内注释代码打开，再使用bundle命令打包成total.bundle</p>
+<p>我们在total.bundle内搜索项目名testrn，很容易找到这么一段代码:(或者使用软件例如compareBeyond对比)</p>
+<pre><code>__d(/* testrn/index.android.js */function(global, require, module, exports) &#123;Object.defineProperty(exports, &quot;__esModule&quot;, &#123;
+    value: true&#125;);
+    var _jsxFileName = &#39;F:\\test\\testrn\\index.android.js&#39;;
+
+    //中间代码省略...
+
+    _reactNative.AppRegistry.registerComponent(&#39;testrn&#39;, function () &#123;
+    return testrn;
+    &#125;);
+&#125;, 0, null, &quot;testrn/index.android.js&quot;);
+</code></pre>
+<p>其实这是整个的一句，从当前的__d到下个__d</p>
+<p>我们把这一段放到一个新建文件叫bussiness.bundle内，同时把common.bundle的最后两行剪切到bussiness.bundle的最后</p>
+<pre><code>;require(120);
+;require(0);
+</code></pre>
+<p>然后我们修改一下C++代码，加载bundle时改成读取common.bundle和bussiness.bundle并连接起来，就可以了。我的修改代码如下，已经测试运行正常：</p>
+<pre><code>//node_modules\react-native\ReactAndroid\src\main\jni\xreact\jni\CatalystInstanceImpl.cpp
+void CatalystInstanceImpl::jniLoadScriptFromAssets(
+    jni::alias_ref&lt;JAssetManager::javaobject&gt; assetManager, const std::string&amp; assetURL) &#123;
+    const int kAssetsLength = 9;  // strlen(&quot;assets://&quot;);
+    auto sourceURL = assetURL.substr(kAssetsLength);
+
+    auto manager = extractAssetManager(assetManager);
+    // auto script = loadScriptFromAssets(manager, &quot;index.android.bundle&quot;);
+    auto script1 = loadScriptFromAssets(manager, &quot;common.bundle&quot;);
+    auto script2 = loadScriptFromAssets(manager, &quot;diff.js&quot;);
+
+    auto script = folly::make_unique&lt;JSBigBufferString&gt;(script1-&gt;size()+script2-&gt;size());
+    memcpy(script-&gt;data(), script1-&gt;c_str(), script1-&gt;size());
+    memcpy(script-&gt;data() + script1-&gt;size(), script2-&gt;c_str(), script2-&gt;size());
+
+    if (JniJSModulesUnbundle::isUnbundle(manager, sourceURL)) &#123;instance_-&gt;loadUnbundle(
+        folly::make_unique&lt;JniJSModulesUnbundle&gt;(manager, sourceURL),
+        std::move(script),
+        sourceURL);
+        return;
+    &#125; else &#123;
+        instance_-&gt;loadScriptFromString(std::move(script), sourceURL);
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    svn之使用命令行做分支管理 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">svn之使用命令行做分支管理</div>
+  <div class="post-meta">
+    <div class="date">2016 November 30th</div>
+    <div class="tags">
+      
+      <div class="tag-item">svn</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>使用svn不论是做分支(branch)还是标签(tag)都是使用svn cp命令，他们本质上没有区别，但用途上可能不同，这完全取决于开发者，例如一般trunk是作为开发目录，branch是为了作并行开发，而tag是作为milestone管理。</p>
+<p>新建一个分支使用命令svn cp，他会增加一次提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn cp trunk-url tag-url -m &quot;testtag&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以把这个分支co下来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn checkout tag-url</span><br></pre></td></tr></table></figure>
+
+<p>svn使用的是全局版本号，分支之间是共享版本号的。例如我们在trunk下做一次修改并提交后版本是1063，此时我们到tag目录下执行svn up，会显示版本号也到了1063，但并不会把更新拉取下来。要将trunk下的更新拉取过来，需要使用svn merge命令</p>
+<p>进入tag目录执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn merge trunk-url</span><br></pre></td></tr></table></figure>
+<p>就把trunk上的改动合并过来了，也可以使用-r参数指定将某两次提交之间的diff合并过来</p>
+<p>从trunk上提交，然后到tag下去merge也是一样。</p>
+<p>删除分支，使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn rm tag-url -m &quot;remove tag&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最后稍微解释下svn cp和svn merge两个命令</p>
+<h3 id="svn-cp"><a href="#svn-cp" class="headerlink" title="svn cp"></a>svn cp</h3><p>它的基本格式是：svn copy SRC DST,其中SRC和DST都可以是WC(working copy)或者URL</p>
+<ul>
+<li>WC-&gt;WC 这个只是对本地文件的拷贝后执行了svn add</li>
+<li>WC-&gt;URL 这个是拷贝后立即提交到了URL上，所以需要提供commit message</li>
+<li>URL-&gt;WC 这个将URL上拷贝到本地后执行了svn add，可以用这个命令带上-r版本号来找回被删除的文件</li>
+<li>URL-&gt;URL 这就是上面提到了创建分支了</li>
+</ul>
+<h3 id="svn-merge"><a href="#svn-merge" class="headerlink" title="svn merge"></a>svn merge</h3><p>作用是应用两组源文件的差别到工作副本路径，基本格式为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">svn merge sourceURL1[@N] sourceURL2[@M] [WCPATH]</span><br><span class="line"></span><br><span class="line">svn merge sourceWCPATH1@N sourceWCPATH2@M [WCPATH]</span><br><span class="line"></span><br><span class="line">svn merge [[-c M]... | [-r N:M]...] [SOURCE[@REV] [WCPATH]]</span><br></pre></td></tr></table></figure>
+<p>例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">svn merge http://xxxx/a.json -r 1063:1064</span><br><span class="line">svn merge ../config/ -r 1063:1064</span><br></pre></td></tr></table></figure>
+<p>如果不指定初始和结束版本号，则默认为仓库起始和当前（HEAD）</p>
+<p>最近刚刚发现一个问题，初始仓库trunk，使用svn cp生成release仓库，然后在trunk上增加一行代码，svn merge到release上去，在release上删除，然后svn merge到trunk上去。此时这行代码处不会提示有冲突，而是默认添加上了这行。我不太确定是否我的用法不对，所以暂时先记录下这个情况。在分支间来回merge时，要小心合并，尽量避免频繁merge吧，毕竟每次merge会有很多冲突</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

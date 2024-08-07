@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos图片资源加密 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos图片资源加密</div>
+  <div class="post-meta">
+    <div class="date">2016 November 24th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>无意中看到<a target="_blank" rel="noopener" href="http://blog.csdn.net/liuhannan111/article/details/52472012">hnliu’sblog</a>上的方案，看完思路后，自己也照着写了一个，虽然不复杂，但是也花了将近两个小时。</p>
+<p>python代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">import random</span><br><span class="line"></span><br><span class="line">ENCRYPTBYTE = random.randint(1,255)	#不能随机到0，否则等于没加密</span><br><span class="line">FIRSTBYTE = 0x12</span><br><span class="line">SECONDBYTE = 0X34</span><br><span class="line">THIRDBYTE = 0x56</span><br><span class="line"></span><br><span class="line">print(&quot;encrypt key is &quot; + str(ENCRYPTBYTE))</span><br><span class="line"></span><br><span class="line">def getNewFileName(path):</span><br><span class="line">	arr = os.path.split(path)</span><br><span class="line">	dirname = arr[0]</span><br><span class="line">	filename = arr[1]</span><br><span class="line">	nameArr = filename.split(&quot;.&quot;)</span><br><span class="line">	return os.path.join(dirname, nameArr[0]+&quot;-en.&quot; + nameArr[1])</span><br><span class="line"></span><br><span class="line">def encrypt(path):</span><br><span class="line">	rf = open(path, &quot;r&quot;)</span><br><span class="line">	newpath = getNewFileName(path)</span><br><span class="line"></span><br><span class="line">	wf = open(newpath, &quot;w&quot;)</span><br><span class="line"></span><br><span class="line">	bytes = bytearray(rf.read())</span><br><span class="line">	if bytes[0] == FIRSTBYTE and bytes[1] == SECONDBYTE and bytes[2] == THIRDBYTE:</span><br><span class="line">		print &quot;encrypted already, return&quot;</span><br><span class="line">	else:</span><br><span class="line">		index = 4</span><br><span class="line">		newarr = bytearray(len(bytes) + 4)</span><br><span class="line">		newarr[0]= FIRSTBYTE</span><br><span class="line">		newarr[1]= SECONDBYTE</span><br><span class="line">		newarr[2]= THIRDBYTE</span><br><span class="line">		newarr[3]= ENCRYPTBYTE</span><br><span class="line">		for byte in bytes:</span><br><span class="line">			newb = byte ^ ENCRYPTBYTE</span><br><span class="line">			newarr[index] = newb</span><br><span class="line">			index += 1</span><br><span class="line">		wf.write(newarr)</span><br><span class="line">		wf.close()</span><br><span class="line">	rf.close()</span><br><span class="line">	</span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">	encrypt(&quot;/Users/yangguang/project/test/test_cocosx/Resources/HelloWorld.png&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>cocos端解析代码为把原来的initWithImageData改名为initWithImageDataInternal，然后重写initWithImageData方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">bool Image::initWithImageData(const unsigned char *data, ssize_t dataLen) &#123;</span><br><span class="line">    char first = *data;</span><br><span class="line">    char second = *(data+1);</span><br><span class="line">    char third = *(data+2);</span><br><span class="line">    if(first == 0x12 &amp;&amp; second == 0x34 &amp;&amp; third == 0x56) &#123;</span><br><span class="line">        char key = *(data+3);</span><br><span class="line">        unsigned char newarr[dataLen - 4];</span><br><span class="line">        ssize_t pos = 4;</span><br><span class="line">        while(pos &lt; dataLen) &#123;</span><br><span class="line">            char old = *(data+pos);</span><br><span class="line">            newarr[pos - 4] = old ^ key;</span><br><span class="line">            pos += 1;</span><br><span class="line">        &#125;</span><br><span class="line">        return initWithImageDataInternal((const unsigned char*)(&amp;newarr) , dataLen - 4);</span><br><span class="line">    &#125;</span><br><span class="line">    return initWithImageDataInternal(data, dataLen);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>中间出了一个比较土的问题，就是python代码中newarr[index] &#x3D; newb这句，用了newarr.append()，因为newarr初始化了大小，导致newarr前面全是0，数据都被添加到后面去了</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

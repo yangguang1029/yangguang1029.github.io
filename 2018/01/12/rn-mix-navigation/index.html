@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之混合Navigation跳转问题 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之混合Navigation跳转问题</div>
+  <div class="post-meta">
+    <div class="date">2018 January 12th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>首先把界面列出来</p>
+<pre><code>class Tab1 extends Component&#123;
+    render()&#123;
+        return &lt;View&gt;&lt;Text&gt;tab1&lt;/Text&gt;
+                &lt;Button title=&quot;totab2&quot; onPress=&#123;
+                    ()=&gt;&#123;this.props.navigation.navigate(&quot;tab2&quot;)&#125;
+                &#125;/&gt;
+                &lt;Button title=&quot;toscene2&quot; onPress=&#123;
+                    ()=&gt;&#123;this.props.navigation.navigate(&quot;scene2&quot;)&#125;
+                &#125;/&gt;
+    &#125;
+&#125;
+class Tab2 extends Component&#123;
+    render()&#123;
+        return &lt;View&gt;&lt;Text&gt;tab2&lt;/Text&gt;
+                &lt;Button title=&quot;totab1&quot; onPress=&#123;
+                    ()=&gt;&#123;this.props.navigation.navigate(&quot;tab1&quot;)&#125;
+                &#125;/&gt;
+                &lt;Button title=&quot;toscene2&quot; onPress=&#123;
+                    ()=&gt;&#123;this.props.navigation.navigate(&quot;scene2&quot;)&#125;
+                &#125;/&gt;
+    &#125;
+&#125;
+const TabNav = TabNavigator(&#123;
+    tab1：&#123;screen:Tab1,&#125;
+    tab2：&#123;screen:Tab2,&#125;
+&#125;&#125;)
+class Scene2 extends Component&#123;
+    render()&#123;
+        return &lt;View&gt;&lt;Text&gt;scene2&lt;/Text&gt;
+                &lt;Button title=&quot;toscene1&quot; onPress=&#123;
+                    ()=&gt;&#123;this.props.navigation.navigate(&quot;scene1&quot;)&#125;
+                &#125;/&gt;
+    &#125;
+&#125;
+const StackNav=StackNavigator(&#123;
+    scene1:&#123;screen:TabNav&#125;,
+    scene2:&#123;screen:Scene2&#125;
+&#125;)
+</code></pre>
+<p>这是最简单的情况，一个StackNavigator内的界面是TabNavigator，在Tab1和Tab2里，不论是进行TabNavigator还是StackNavigator内的跳转，都直接使用this.props.navigation.navigate即可。在注册生成TabNavigator和StackNavigator时给每个界面都注册了一个唯一的key，根据这个key可以在任意界面间跳转，例如在scene2界面，除了可以跳回scene1外，也可以指定跳回tab1或者tab2。</p>
+<p>如果TabNavigator被包装在一个普通Component内，情况就稍微复杂一些，例如</p>
+<pre><code>class TabContainer extends Component&#123;
+    render()&#123;
+        return &lt;View style=&#123;&#123;flex:1&#125;&#125;&gt;
+            &lt;Text style=&#123;&#123;margin:20&#125;&#125;&gt;tabContainer&lt;/Text&gt;
+            &lt;TabNav /&gt;
+        &lt;/View&gt;
+    &#125;
+&#125;
+const StackNav=StackNavigator(&#123;
+    scene1:&#123;screen:TabContainer&#125;,
+    scene2:&#123;screen:Scene2&#125;
+&#125;)
+</code></pre>
+<p>直接运行的话就会发现,在Tab1和Tab2界面之间的跳转没问题，但没法跳转到scene2了，解决方案是将&lt;TabNav &#x2F;&gt;替换成</p>
+<pre><code>&lt;TabNav navigation=&#123;this.props.navigation&#125;/&gt;
+</code></pre>
+<p>然后添加一行</p>
+<pre><code>TabContainer.router = TabNav.router;
+</code></pre>
+<p>就和上面行为一样了，可以在各个界面自由跳转。上面这句话通过给TabContainer增加一个router属性，将一个普通Component变成一个navigator，所以就能跳转了。</p>
+<p>还有一种办法是通过给TabNav设置screenProps的办法把this.props.navigation传到Tab1和Tab2里面去，代码就是</p>
+<pre><code>&lt;TabNav screenProps=&#123;&#123;navigation:this.props.navigation&#125;&#125;/&gt;
+</code></pre>
+<p>在Tab1和Tab2里跳转到Scene2就可以</p>
+<pre><code>this.props.screenProps.navigation.navigate(&quot;scene2&quot;)
+</code></pre>
+<p>使用这个方案，在Scene2界面只能往StackNavigator的界面跳，不能像第一种方案一样直接跳到tab1或者tab2，所以不够灵活，推荐使用前一种方案。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

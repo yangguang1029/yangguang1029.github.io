@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之辅助库选择 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之辅助库选择</div>
+  <div class="post-meta">
+    <div class="date">2018 August 29th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>很多刚入门RN开发的同学面对着老鸟侃侃而谈什么redux,immutable,saga这些库是一脸懵逼的状态，拿不准自己开发的时候是否该用，这里我列举一下我自己的意见。为了篇幅和容易理解，不会说的太详细和深入，像服务器渲染这种就不提了（其实是因为我也不是很懂……）</p>
+<h3 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h3><p><strong>收益</strong></p>
+<ol>
+<li>单向数据流的方式有利于管理，不用到处传递prop了</li>
+<li>有利于解耦，使用redux的话天然就将model从view中解耦了出来</li>
+<li>有利于state跟踪和现场还原</li>
+</ol>
+<p><strong>代价</strong></p>
+<ol>
+<li>学习成本。action,reducer,store,middleware等概念，dispatch, connect等API接口</li>
+<li>增加代码量和操作复杂度，一个state要伴随着actionType, createAction, reducer, connect等等，涉及到至少三四个文件</li>
+</ol>
+<p><strong>是否会影响性能</strong></p>
+<p>有人担心使用redux会影响性能，不可否认，增加了这么多概念和接口，使用不当肯定会造成性能影响。但关键就是看你怎么用。有一篇文章<a target="_blank" rel="noopener" href="https://itnext.io/redux-ruins-you-react-app-performance-you-are-doing-something-wrong-82e28ec96cf5">redux-ruins-you-react-app-performance-you-are-doing-something-wrong</a>可以仔细看一下，举个例子，使用react-redux可以给组件绑定特定的一些state，只有这些state发生了变化才会re-render，相比使用传递prop的方案是有利于性能提高的，因为prop传递经过的中间组件可能产生了不必要的re-render，但如果mapStateToProp写的不好，里面有大量复杂的计算，就会导致性能产生问题，因为每个mapStateToProp函数在state发生了变化都会被调用，这时就需要使用reselect库来进行优化，或者在connect时使用areStatesEqual选项。总的来说，redux作为一个使用如此广泛的库，只要正确使用，肯定不用担心会影响性能。</p>
+<p><strong>state如何管理</strong></p>
+<p>网上有过一些争论，是否应该把所有的state都集中到store中管理。<a target="_blank" rel="noopener" href="https://redux.js.org/faq/organizingstate">官方文档</a>的说法是：没有对错，你自己看着办。把所有的state都集中到store中管理，这其实是一种比较理想的状态，所有的组件都是无状态组件，但这也导致state的规模变得臃肿和难维护。在实际开发中也没必要追求达到这种境界，一个state是否放到store里去，根据一些原则判断即可：</p>
+<ol>
+<li>是否需要持久存储</li>
+<li>是否需要公共使用</li>
+<li>是否需要场景还原</li>
+</ol>
+<p><strong>是否使用</strong></p>
+<p>redux的<a target="_blank" rel="noopener" href="https://cn.redux.js.org/">官方文档</a>推荐一篇文章<a target="_blank" rel="noopener" href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367">you-might-not-need-redux</a>，大概就是说redux本身只是一个辅助工具，用或者不用取决于你自己衡量得失，最重要的是理解它的思想。例如对于简单一些的项目，不使用redux也可以自己按照其思路写出redux风格的代码，我曾经就有过这样的想法：<a href="http://yangguang1029.github.io/2018/02/27/rn-manual-redux/">ReactNative之手动实现一个Redux</a></p>
+<h3 id="Immutable"><a href="#Immutable" class="headerlink" title="Immutable"></a>Immutable</h3><p>redux的三原则之一就是state不可变原则，使用immutable就是借助工具来保障，如果不使用，则需要靠开发人员自己保证，比如使用Object.assign</p>
+<p><strong>收益</strong></p>
+<ol>
+<li>不可变保障：其对外提供的API可以保证必然是生成新对象</li>
+<li>效率更高：对于深层次的局部更新，immutable库的内部实现效率更高</li>
+</ol>
+<p><strong>代价</strong></p>
+<ol>
+<li>新的API的学习和使用成本。如果不使用，直接操作的是js的原生API，使用immutable，只能使用库提供的API来操作array, object等</li>
+<li>immutable代码会扩散到整个项目。从state获取到的数据是immutable对象，所以immutable的API会扩散在整个项目中</li>
+</ol>
+<p><strong>是否使用</strong></p>
+<p>如果state结构比较扁平，那可以人为保障不可变性。如果state纵深结构比较复杂而且reducer拆分不够细，那最好还是使用，否则的话各种该刷新却不刷新，不该刷新却刷新的小问题就层出不穷了。如果使用的话一般会选择<a target="_blank" rel="noopener" href="https://github.com/rtfeldman/seamless-immutable">seamless-immutable</a></p>
+<h3 id="Redux-saga"><a href="#Redux-saga" class="headerlink" title="Redux-saga"></a>Redux-saga</h3><p>异步action的处理，有redux-thunk和redux-saga，redux-promise，redux-observable等多种方案，因为熟悉程度，所以本文只比较前两者。</p>
+<p><strong>收益</strong></p>
+<ol>
+<li>相比redux-thunk来说，saga使用的async,await语法可以让异步操作代码流畅易懂，避免promise地狱</li>
+<li>使用saga方便做单元测试</li>
+<li>redux提供throttle, 取消任务，监听未来action等多种高级功能，适合复杂场景</li>
+</ol>
+<p><strong>代价</strong></p>
+<ol>
+<li>学习成本。async和await本身就没那么普及，还多出来各种effect。</li>
+<li>redux-saga库压缩前59k，压缩后24k。要么通过拆分bundle方案放到基础bundle中，否则每个业务bundle中都有一份显然增加bundle体积。</li>
+</ol>
+<p><strong>是否使用</strong></p>
+<p>取决于异步操作流程的复杂度，例如一个向服务器获取数据的异步操作，需要先向原生层获取若干个数据，然后向服务器获取配置信息，然后才去请求数据，之后还要通过原生层做本地存储等等，一个流程有一系列的异步操作，那么使用saga绝对是值得的，代码看起来神清气爽。如果异步操作不多而且流程不是很复杂，一两个promise就结束了，那就别多费事了，毕竟码农主业是搬砖，不是炫技。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

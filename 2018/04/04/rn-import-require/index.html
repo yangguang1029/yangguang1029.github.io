@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之两种模块管理方式 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之两种模块管理方式</div>
+  <div class="post-meta">
+    <div class="date">2018 April 4th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>在RN项目的js代码中，是可以使用两种模块管理方式的，分别是ES6风格和CommonJS风格，代码示例如</p>
+<pre><code>//ES6风格
+//a.js
+export let a = 1;
+export function adda()&#123;
+    a += 1;
+&#125;
+//index.js
+import &#123;a, adda&#125; from &quot;./a.js&quot;
+console.log(&quot;a is &quot; + a)
+adda();
+console.log(&quot;after add a is &quot; + a)
+
+//CommonJS风格
+//b.js
+let b = 1;
+function addb()&#123;
+    b += 1;
+&#125;
+module.exports = &#123;b, addb&#125;
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b is &quot; + B.b)
+B.addb();
+console.log(&quot;after add b is &quot; + B.b)
+</code></pre>
+<p>这两者模块管理风格有什么区别，在阮一峰老师的《ECMAScript6 入门》书中，有<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/module-loader">相关的章节</a>。例如ES6是静态导入，所以import必须位于顶层代码，任何位于非顶层代码的import都会报错，而require则可以位于任何位置。ES6风格因为是静态导入，import时模块名不能是动态的，而require可以是动态的。在导出时，ES6的导出是引用，而CommonJS的导出是拷贝，所以上面代码里，a会输出1和2，而b会输出两个1。</p>
+<p>回到项目中来，我们在RN项目中的js代码，都会经过babel编译成ES5标准，在ES5中是没有模块管理的，所以RN自己实现了模块管理的功能，</p>
+<p>先看导入，相关的源代码位于node_modules&#x2F;metro&#x2F;src&#x2F;lib&#x2F;polyfills&#x2F;require.js内。我们在代码里不论是写import还是写require，最终都会被翻译成这个require.js里的require方法。通过这个方法可以看到，不论我们执行多少次导入，模块本身只会被加载执行一次。对同一个模块，我们使用ES6和CommonJS两种方式来引用，得到的行为是一样的。对上面的a.js，结果都是1和2，对b.js，结果都是两个1。然后不论使用哪种风格，文件之间的依赖顺序在编译成bundle时都必须确定下来，使用require因为可以写在代码块里，不像import必须写在顶层代码中，所以一定程度上可以延迟模块被执行的时间，个人觉得这个区别还是很微小的，不会造成性能上的区别。</p>
+<p>然后是导出，前面说过这两种风格的导出结果，一个是拷贝，一个是引用。对上面的a.js和b.js，我们看一下他们在bundle内的代码就明白了</p>
+<pre><code>__d(function (global, _require, module, exports, _dependencyMap) &#123;
+    Object.defineProperty(exports, &quot;__esModule&quot;, &#123;
+        value: true
+    &#125;);
+    exports.adda = adda;
+    var a = exports.a = 1;
+    function adda() &#123;
+        exports.a = a += 1;
+    &#125;
+&#125;,337,[],&quot;js/testImport/a.js&quot;);
+__d(function (global, _require, module, exports, _dependencyMap) &#123;
+    var b = 1;
+    function addb() &#123;
+        b += 1;
+    &#125;
+    module.exports = &#123;
+        b: b,
+        addb: addb
+    &#125;;
+&#125;,338,[],&quot;js/testImport/b.js&quot;);
+</code></pre>
+<p>对于ES6风格的a.js，导出的属性直接加在了exports上，这个exports就是我们导入时获得的Object，所以它是直接持有了变量的引用。而对于CommonJS风格的b.js，导出的是一个新建的Object，它拷贝了变量b的值，既然是拷贝，就有浅拷贝和深拷贝之分，这里也完全取决于我们怎么实现，会有不同的行为，例如可以跑一下下面的代码试一下</p>
+<pre><code>//b.js
+let b = &#123;value:1&#125;
+function addb()&#123;
+    b.value += 1;
+&#125;
+module.exports = &#123;b1:b, addb, b2:&#123;value:b.value&#125;&#125;
+//index.js
+let B = require(&quot;./b.js&quot;);
+console.log(&quot;b1 is &quot; + B.b1.value)
+console.log(&quot;b2 is &quot; + B.b2.value)
+B.addb();
+console.log(&quot;after add b1 is &quot; + B.b1.value)
+console.log(&quot;after add b2 is &quot; + B.b2.value)
+</code></pre>
+<p>到这里基本上都明白了代码里的import, require, export, module.exports都有什么行为了。需要注意一下的就是，当import和require混合使用时，import一定会早于require被执行，这可能导致依赖顺序上发生问题，所以还是尽量避免混用。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

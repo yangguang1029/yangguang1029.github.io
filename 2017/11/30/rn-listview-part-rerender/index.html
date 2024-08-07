@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之ListView局部刷新 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之ListView局部刷新</div>
+  <div class="post-meta">
+    <div class="date">2017 November 30th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>我们直接来看一个很简单的demo，一个listView和一个button，点击按钮后，随机一行的数字加100。通过观察log可以看到，每次点击按钮后，_renderRow会被重新调用25次，每个MyComponent的render函数都被重新调用了一次。我们在dataSource的rowHasChanged回调里打了log，却发现没有被调用。所以虽然只改变了一行数据，却刷新了整个listView。这样肯定对性能会造成影响。这篇文章记录了修复这个bug的流程，如果不想看的话可以直接跳到最后看解决方案。demo代码如下</p>
+<pre><code>class MyComponent extends Component&#123;
+    render()&#123;
+        console.log(&quot;guangy call render with tag &quot; + this.props.tag);
+        return &lt;Text&gt;&#123;this.props.text&#125;&lt;/Text&gt;
+    &#125;
+&#125;
+export default class TestList extends Component&#123;
+    constructor(props)&#123;
+        super(props);
+        this.state = &#123;
+            dataSource: new ListView.DataSource(&#123;
+                rowHasChanged: (rowData1, rowData2) =&gt; &#123;
+                    console.log(&quot;guangy rowHasChanged&quot;)
+                    return rowData1 !== rowData2;
+                    &#125;,
+            &#125;),
+            data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
+        &#125;
+    &#125;
+
+    _renderRow(rowData, sid, rid)&#123;
+        console.log(&quot;guangy _renderRow&quot;);
+        return (&lt;View style=&#123;&#123;width:360,height:40,alignItems:"center",justifyContent:"center"&#125;&#125;&gt;
+            &lt;MyComponent tag=&#123;rid&#125; text=&#123;rowData&#125;/&gt;
+            &lt;/View&gt;);
+    &#125;
+
+    render()&#123;
+        return &lt;View&gt;&lt;ListView
+            style=&#123;&#123;
+                	width:360,
+                	height:600
+            	&#125;&#125;
+            dataSource=&#123;this.state.dataSource.cloneWithRows(this.state.data)&#125;
+            renderRow=&#123;this._renderRow.bind(this)&#125;
+            enableEmptySections=&#123;true&#125;
+        /&gt;
+        &lt;Button title=&quot;click&quot; onPress=&#123;()=&gt;&#123;
+            let arr = this.state.data;
+            let len = arr.length;
+            let index = Math.floor(Math.random() * len);
+            arr[index] += 100;
+            this.setState(&#123;data:arr&#125;);
+        &#125;&#125;/&gt;
+        &lt;/View&gt;
+    &#125;
+&#125;
+</code></pre>
+<p>既然是rowHasChanged不被调用，我们去源代码里找一下在哪里被用，然后就查到了ListViewDataSource的_calculateDirtyArrays方法，从方法名就能看出来，这是在计算哪些单元行变dirty了需要re-render。</p>
+<pre><code>dirty =
+      !prevSectionsHash[sectionID] ||
+      !prevRowsHash[sectionID][rowID] ||
+      this._rowHasChanged(
+        this._getRowData(prevDataBlob, sectionID, rowID),
+        this._getRowData(this._dataBlob, sectionID, rowID),
+      );
+</code></pre>
+<p>所以一旦prevSectionsHash[sectionID]为false或者prevRowsHash[sectionID][rowID]为false，_rowHasChanged回调就没机会被调用了。通过log也可以看到_calculateDirtyArrays函数传进来的实参prevSectionIDs和prevRowIDs是[]</p>
+<p>调用这个函数的地方是ListViewDataSource的cloneWithRowsAndSections方法</p>
+<pre><code>newSource._calculateDirtyArrays(
+  this._dataBlob,
+  this.sectionIdentities,
+  this.rowIdentities,
+);
+</code></pre>
+<p>这里是创建了一个newSource,用来计算dirtyArrays的是原来的sectionIdentities和rowIdentities。看到这里就明白整个逻辑了，每次调用cloneWithRowsAndSections函数（调用cloneWithRows实质上也是一样），返回一个新的dataSource，然后计算需要re-render的单元行。</p>
+<p>所以结论就是：要实现listView的局部刷新，关键是需要调用cloneWithRows或者cloneWithRowsAndSections来生成一个新的dataSource。将代码稍微改一下，测试就没问题了。</p>
+<pre><code>//this.setState(&#123;data:arr&#125;);
+this.setState(&#123;dataSource:this.state.dataSource.cloneWithRows(arr)&#125;);
+</code></pre>
+<p>然后需要注意的是rowHasChanged回调函数，这个demo里使用的数据是简单数据类型，如果是复杂数据类型，简单的使用&#x3D;&#x3D;&#x3D;就会有问题了，有可能实际数据内容没变化但引用变化了，导致不应该re-render但却触发了。或者实际数据内容变化了但是引用没变，导致应该re-render却没触发。简而言之就是复杂数据类型应该比较实际数据内容。</p>
+<p>另外一个实现局部刷新的方案是将renderRow返回的Component进行封装，实现其shouldComponentUpdate接口。这个方法比较绕，所以最好还是使用ListView本身提供好的接口rowHasChanged。</p>
+<p>这个例子很简单，所以一眼就能看出来问题。但如果项目使用了redux，问题就很隐蔽了。使用redux时，数据数组存储在store里，dataSource在页面里才创建，当数据发生变化时，redux触发setState修改的就是数组，而不是dataSource，导致整个listView都刷新了。这个情况下要局部刷新，首先在store里储存dataSource，reducer内数据更新时也更新dataSource，其次需要rowHasChanged函数不能简单的使用row1!&#x3D;&#x3D;row2，而是要比较实际内容，因为redux基于imutable原则，即使内容不变，row1和row2也不是同一个对象了。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos tips之jsbinding热加载 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos tips之jsbinding热加载</div>
+  <div class="post-meta">
+    <div class="date">2016 November 14th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>所谓热加载，就是运行时，不用重启模拟器而重新加载js文件，提高开发效率。要实现热加载，首先要找到ocos是怎么加载js代码的，入口就是<br>ScriptingCore::runScript方法，包括在js代码内require，最终也是执行的这个方法。</p>
+<p>在ScriptingCore::compileScript这个方法里，有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (getScript(path)) &#123;    </span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这么一段代码，它读取了已加载文件的缓存，所以这几句必须注释掉，否则读取缓存的话，就没办法热加载了。</p>
+<p>做了这步以后，在开启模拟器调试时，修改js代码后，不重启模拟器，只需要重新require一下文件，就实现了热加载了（比如做一个按钮，点击后重新require）。</p>
+<p>然后如果你这么做，肯定会发现没有生效，原因是什么呢？那是因为我们在执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">require(&quot;a.js&quot;)</span><br></pre></td></tr></table></figure>
+<p>这句代码时，在模拟器上运行的时候，它实际加载的是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/yangguang/Library/Developer/CoreSimulator/Devices/A25124E2-3204-43C7-A9F9-638FDF466587/data/Containers/Bundle/Application/69FC175C-06EB-4868-85D4-89F008164167/xxx.app/a.js</span><br></pre></td></tr></table></figure>
+<p>这样的路径，而我们修改的是项目中的代码，除非把修改后的代码拷贝到这个文件夹去，否则重新require的也是老代码，那要怎么解决这个问题呢？我们仍然看源代码，在读取js代码时，会获取这个文件的全路径，相关代码为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">std::string FileUtils::fullPathForFilename(const std::string &amp;filename)</span><br><span class="line">&#123;</span><br><span class="line">    if (filename.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    if (isAbsolutePath(filename))</span><br><span class="line">    &#123;</span><br><span class="line">        return filename;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，如果文件路径写的是全路径，就不会再拼成模拟器应用所在路径了，所以解决的办法就出来了，我们将需要require的js文件的路径，在debug状态下设为开发目录下的全路径即可，在release状态下则为相对路径。</p>
+<p>对于其他资源，也可以采用类似的思路，只要去掉资源缓存，以及使用全路径加载，就可以很容易实现资源热加载，从而避免调试时频繁的启动模拟器</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

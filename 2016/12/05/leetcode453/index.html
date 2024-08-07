@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    【leetcode】Minimum Moves to Equal Array Elements 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">【leetcode】Minimum Moves to Equal Array Elements</div>
+  <div class="post-meta">
+    <div class="date">2016 December 5th</div>
+    <div class="tags">
+      
+      <div class="tag-item">leetcode</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/minimum-moves-to-equal-array-elements/">题目链接</a></p>
+<p>看完题目之后，稍微想了下，觉得不能用递归或者动态规划，于是老老实实的按题目意思写，每次进行排序，除了最大的数字外都加1，直到所有数字相等。提交之后，直接在测试用例[1, 2147483647]超时挂了，于是开始思考怎么解决，因为这是个easy难度的题目，所以思路倒是很快就有了。</p>
+<p>将数组排序后，要让所有数字都相同，第一步很容易想到，就是把除了最大的数字每次加1，直到最大的数字有两个，它需要的步数就是最大数字和第二大数字的差。然后顺着这个思路，再通过累加，把最大的数字变成有三个，这需要的步数如果一时无法总结出公式，可以写个例子很容易看出来，是最大数字和第二大数字之差的两倍，以此类推即可。代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;number[]&#125; nums</span><br><span class="line"> * @return &#123;number&#125;</span><br><span class="line"> */</span><br><span class="line">var minMoves = function(nums) &#123;</span><br><span class="line">    var mul= 1;</span><br><span class="line">    nums.sort(function(left,right) &#123;return left - right&#125;)</span><br><span class="line">    var len = nums.length;</span><br><span class="line">    if(len === 1) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    var re = 0;</span><br><span class="line">    for(var i = len -1; i &gt; 0; i--) &#123;</span><br><span class="line">        re += (nums[i] - nums[i - 1]) * mul;</span><br><span class="line">        mul += 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return re;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

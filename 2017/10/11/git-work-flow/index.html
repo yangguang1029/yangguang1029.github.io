@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    一个比较好的git分支管理方案 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">一个比较好的git分支管理方案</div>
+  <div class="post-meta">
+    <div class="date">2017 October 11th</div>
+    <div class="tags">
+      
+      <div class="tag-item">git</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>假如当前处于开发分支develop上，接到一个任务时，使用git的话，应该优先考虑开一个分支来做这件事情，假设我们开了一个分支b1，这个任务未必是可以一次开发完，可能中间去做了别的事情，导致写了一半的代码暂时提交上去，这样到这个任务完成时，这个分支有了commit1, commit2…..一系列的提交。但假设这是一件完整的单独的功能，我们需要让人review代码并作为一次完整的提交的时候，我们可以这么做：</p>
+<p>在b1分支上先git reset –soft回到开分支的节点去，这样我们在这个分支上所有的改动，都变成了待commit的状态，然后我们找人review并提交。之后回到develop分支上，用git cherry-pick把刚才那个提交搬到develop分支上来，在develop分支上就只会看到一个干干净净的提交节点了。然后我们删除本地分支b1就可以了。</p>
+<p>相比其它做法，比如在develop分支上使用merge来合并，它的缺点是查看develop分支的log时，会看到b1分支跟它交错，如果我们有很多个分支b1,b2….那develop分支的log看起来就会像蜘蛛网一样乱了。</p>
+<p>当然我们可以用git merge –no-ff或者git rebase来保持develop分支的干净，但这样也有缺陷，我们在b1分支上有很多临时提交节点，也全部在develop分支上显示了，明明只是一个单独的任务，却有很多个commit节点，在查看log的时候，也会比较麻烦。</p>
+<p>有的人不想临时提交，所以要做别的事情时，使用stash来暂存工作区，再次回到分支来时，使用stash pop恢复工作区，这是非常不可取的，一旦分支多了，在某个分支上stash，另一个分支上pop，就容易乱套了。所以还是尽量commit，但如果又不想让commit节点太多太乱的话，就可以用reset的办法来合并成一次提交，就干净了。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

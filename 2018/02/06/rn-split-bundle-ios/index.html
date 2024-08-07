@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之ios平台bundle拆分实现 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之ios平台bundle拆分实现</div>
+  <div class="post-meta">
+    <div class="date">2018 February 6th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>今天把放在github上的bundle拆分demo实现了ios版本，运行没问题后代码提交了上去，<a target="_blank" rel="noopener" href="https://github.com/yangguang1029/ReactNativeSplit">demo地址</a>。因为之前没接触过ReactNative的ios端源代码，所以实现的过程其实就是把ios端的运行流程大概看了一遍。</p>
+<p>如果不追究太多细节的话，整个流程就是AppDelegate.m里创建RCTRootView，在RCTRootView的init函数里，创建RCTBridge，然后在RCTCxxBridge的start方法里加载bundle并执行，加载完后回到RCTRootView的runApplication回调函数里，调用js方法AppRegistry.runApplication进入了js代码的入口。</p>
+<p>android和ios端的bundle拆分和分步加载方案原理是一样的，原来的实现是创建一个View，然后加载bundle，加载好了展示界面。我们把步骤稍微改一下，先加载common.bundle创建好js context并存起来，然后当需要展示界面时，创建view，并用已有的js context来加载业务bundle。为了能自由指定Bundle加载的时机，我们需要把加载bundle的接口抽离暴露出来。</p>
+<p>ios和android端流程上基本一样，只是类名字不同。android平台创建js context的类是ReactInstanceManager，而ios平台是RCTBridge，android平台的view是ReactRootView，而ios平台是RCTRootView等等。从代码量上看，android端稍微复杂一些。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

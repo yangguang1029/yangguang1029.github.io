@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <div class="post-list">
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/11/14/autorelease/">cocos tips 之autorelease</a>
+    <div class="post-item-summary">
+      首先autorelease是个怎么回事呢？引用计数的原理就不用说了，凡是继承自Ref的类new出得对象，都使用引用计数来进行内存管理。对象被new出来时，初始引用计数为1，每次被retain时，引用计数+1，被release时，引用计数-1。当引用计数降为0时，则执行析构函数，内存被回收。所以retain必须和release成对出现，才能避免内存泄漏(例如被加到父容器和从父容器移除时，就分别执行了retain和release)，而且最初的new也必须对应一次release，例
+      <a class="read-more" href="/2016/11/14/autorelease/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.11.14</div>
+      <div class="tags">
+        
+        <div class="tag-item">cocos</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/11/14/jsbinding%E7%83%AD%E5%8A%A0%E8%BD%BD/">cocos tips之jsbinding热加载</a>
+    <div class="post-item-summary">
+      所谓热加载，就是运行时，不用重启模拟器而重新加载js文件，提高开发效率。要实现热加载，首先要找到ocos是怎么加载js代码的，入口就是ScriptingCore::runScript方法，包括在js代码内require，最终也是执行的这个方法。
+在ScriptingCore::compileScript这个方法里，有
+123if (getScript(path)) &#123;            return;    &#125;
+这么一段代码，它读取了已加载文件的缓存，
+      <a class="read-more" href="/2016/11/14/jsbinding%E7%83%AD%E5%8A%A0%E8%BD%BD/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.11.14</div>
+      <div class="tags">
+        
+        <div class="tag-item">cocos</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/javaScript%E4%B8%AD%E7%9A%84%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6/">javaScript中的无符号右移运算符</a>
+    <div class="post-item-summary">
+      今天刷leetcode上的题目revert bits的时候，用到了js里的位移操作，然后就出现了问题。题目里给出的数字是32位无符号整数，但是js里默认的整数是32位有符号整数，所以在执行
+1var a = 1 &lt;&lt; 31
+
+时, a的值是-2147483648，而不是期望中的2147483648
+如果要得到正确的值，就需要用到另一个位操作符：无符号右移运算符 &gt;&gt;&gt;
+它与普通的右移运算符的区别只是在右移补位时只补0，而普通的右移操作符对有符号整
+      <a class="read-more" href="/2016/08/15/javaScript%E4%B8%AD%E7%9A%84%E6%97%A0%E7%AC%A6%E5%8F%B7%E5%8F%B3%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/googleClosureCompiler%E4%BD%BF%E7%94%A8/">googleClosureCompiler使用</a>
+    <div class="post-item-summary">
+      官方文档在此
+最简单的使用命令如下
+1java -jar compiler.jar --js hello.js --js_output_file hello-compiled.js
+
+使用
+1java -jar compiler.jar -help
+
+可以显示帮助，通过它可以查询有哪些可配置参数，及它们的可选值，默认值
+这里再介绍一下其他的一些常用参数，像–charset这种不是很常用到的参数就不一一举例了，用help查看即可，需要注意的是，随着compiler.jar的版本
+      <a class="read-more" href="/2016/08/15/googleClosureCompiler%E4%BD%BF%E7%94%A8/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">google-closure-compiler</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/addTouchToNode%E7%9A%84%E5%AE%9E%E7%8E%B0/">addTouchToNode的实现</a>
+    <div class="post-item-summary">
+      直接上代码
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546function addTouchToNode(node, touchEndCall, target, params) &#123; //给node添加触摸事件	var bTouchCanceled = false;	var s = node.getContentSize();	var rect = 
+      <a class="read-more" href="/2016/08/15/addTouchToNode%E7%9A%84%E5%AE%9E%E7%8E%B0/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/%E9%87%8D%E7%94%A8ccnode%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/">重用ccnode需要注意的触摸事件处理</a>
+    <div class="post-item-summary">
+      在使用cocos开发过程中，对node的重用非常常见，例如TableViewCell就是重用的，这些被重用的node会频繁的被添加到父节点以及从父节点中移除，当被移除时会调用
+1removeFromParent(cleanup)
+
+这个cleanup参数很关键，如果为true，会导致其cleanup方法被调用。如果不带此参数，则默认为true。
+123456cleanup: function () &#123;    this.stopAllActions();    thi
+      <a class="read-more" href="/2016/08/15/%E9%87%8D%E7%94%A8ccnode%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">cocos</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/js%E4%B8%AD%E7%9A%84string%E5%92%8Cunicode/">js中的string和unicode</a>
+    <div class="post-item-summary">
+      javaScript中的String是UTF-16字符集合，但是要注意，因为js中并没有一种类型叫“字符”，所以charAt() 方法返回的是一个字符串。而charCodeAt()方法，则返回的是0-65535之间的一个整数。fromCharCode()方法是把一个unicode编码转换成String对象，这里是例如
+1234&#x27;大&#x27;.charCodeAt(0)  -&gt;  22823&quot;🐄&quot;.charCodeAt(1)  -&gt;
+      <a class="read-more" href="/2016/08/15/js%E4%B8%AD%E7%9A%84string%E5%92%8Cunicode/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">javascript</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8BAndroid.mk%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/">NDK开发之Android.mk文件编写</a>
+    <div class="post-item-summary">
+      现在我们把android稍微写复杂些。在项目根目录下创建一个lib1文件夹
+结构如图：
+
+test10.h和test11.h很简单，就是声明了两个方法
+12int test10();int test11();
+
+我们先看这个lib1文件夹内的Android.mk文件
+123456789101112LOCAL_PATH := $(call my-dir)include $(CLEAR_VARS)LOCAL_MODULE := test1LOCAL_MODULE_FILENAME
+      <a class="read-more" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8BAndroid.mk%E6%96%87%E4%BB%B6%E7%BC%96%E5%86%99/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">ndk</div>
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/">NDK开发之java调用C++</a>
+    <div class="post-item-summary">
+      首先创建一个空的android项目，默认生成的MainActivity，修改如下
+12345678910111213141516171819202122232425public class MainActivity extends Activity &#123;	static &#123;        System.loadLibrary(&quot;learnNDK&quot;);    &#125;		@Override	protected void onCreate(
+      <a class="read-more" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+      </div>
+    </div>
+  </section>
+  
+  <section class="post-item">
+    <a class="post-item-title" href="/2016/08/15/%E4%BD%BF%E7%94%A8closureCompiler%E6%B7%B1%E5%BA%A6%E6%B7%B7%E6%B7%86%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">使用closureCompiler深度混淆的一个坑</a>
+    <div class="post-item-summary">
+      混淆命令为:
+1java -jar compiler.jar --compilation_level ADVANCED_OPTIMIZATIONS --js a.js --js_output_file b.js
+
+混淆前代码
+12345678910111213141516171819function test(result)&#123;	console.log(result.fuck.text);	console.log(result.text.fuck);	console.
+      <a class="read-more" href="/2016/08/15/%E4%BD%BF%E7%94%A8closureCompiler%E6%B7%B1%E5%BA%A6%E6%B7%B7%E6%B7%86%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/"> ... </a>
+    </div>
+    <div class="post-item-extra">
+      <div class="date">2016.08.15</div>
+      <div class="tags">
+        
+        <div class="tag-item">google-closure-compiler</div>
+        
+      </div>
+    </div>
+  </section>
+  
+</div>
+
+
+<div class="paginator">
+  <a class="extend prev" rel="prev" href="/page/9/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">下一页</a>
+</div>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

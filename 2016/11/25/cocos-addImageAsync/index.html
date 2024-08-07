@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos-addImageAsync解析 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos-addImageAsync解析</div>
+  <div class="post-meta">
+    <div class="date">2016 November 25th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>当我们在cocos内需要做一些比较耗性能的事情时，我们可以一些很巧妙地方案，例如开启多线程，以及将任务分解到每一帧完成一部分。在TextureCache的addImageAsync方法里，就同时用到了这两种办法，把这部分源码看明白，对自己实现能有很大的帮助</p>
+<p>类TextureCache维护一个队列_asyncStructQueue，它存放需要执行的任务，这些任务将在异步线程执行，加载生成Image类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::queue&lt;AsyncStruct*&gt;* _asyncStructQueue;</span><br></pre></td></tr></table></figure>
+<p>一个双向队列_imageInfoQueue,他存放加载好的Image，这些加载好的图片资源就会每帧从队列中获取一个，用来生成纹理Texture2D，生成好的纹理就可以在游戏内直接使用了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::deque&lt;ImageInfo*&gt;* _imageInfoQueue;</span><br></pre></td></tr></table></figure>
+<p>这两个队列都是先进先出的操作，我也不是很明白为什么要用deque，有知道的可以告诉我一下。然后这两个队列因为都需要在异步线程操作，所以操作时需要用锁锁住。</p>
+<p>使用一个_asyncRefCount来记录当前任务的数量，当往_asyncStructQueue添加一个任务asyncStruct时，计数+1，当一个纹理生成完成，销毁该任务asyncStruct，计数-1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int _asyncRefCount;</span><br></pre></td></tr></table></figure>
+
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><p>需要异步加载一个图片时，首先调用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::addImageAsync(const std::string &amp;path, const std::function&lt;void(Texture2D*)&gt;&amp; callback)</span><br></pre></td></tr></table></figure>
+<p>首先判断一下这个path对应的texture是否已经在缓存里，如果在，则直接返回。否则如果_asyncStructQueue还未初始化，则执行初始化，然后生成一个AsyncStruct加入队列_asyncStructQueue中。</p>
+<h3 id="异步线程"><a href="#异步线程" class="headerlink" title="异步线程"></a>异步线程</h3><p>类TextureCache维护一个异步线程，这个线程在_asyncStructQueue初始化时开启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">std::thread* _loadingThread;</span><br></pre></td></tr></table></figure>
+<p>在这个线程执行的函数是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void TextureCache::loadImage()</span><br></pre></td></tr></table></figure>
+<p>这个线程通过std::condition_variable _sleepCondition来唤醒和休眠，当有任务加入任务队列_asyncStructQueue时，唤醒线程执行loadImage函数，在这个函数里发现_asyncStructQueue被清空时，休眠这个线程。</p>
+<p>在执行loadImage时，会先看一下需要加载的图片是否已经在处理队列_imageInfoQueue中了。如果不在，则生成一个新的Image，执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">image-&gt;initWithImageFileThreadSafe(filename)</span><br></pre></td></tr></table></figure>
+<p>如果initWithImageFileThreadSafe返回true，则表示这张图片资源加载成功了，用这个image生成一个imageInfo放到_imageInfoQueue里。</p>
+<h3 id="定时回调"><a href="#定时回调" class="headerlink" title="定时回调"></a>定时回调</h3><p>这个定时回调每帧都会被调用一次，它将上一步生成的image变成Texture2D。当_asyncRefCount从0变为1时，表示开始有任务需要完成，开启这个定时器，当_asyncRefCount变为0时表示任务全部完成，这个定时器会被关闭。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Director::getInstance()-&gt;getScheduler()-&gt;schedule(CC_SCHEDULE_SELECTOR(TextureCache::addImageAsyncCallBack), this, 0, false);</span><br></pre></td></tr></table></figure>
+<p>定时执行的函数就是addImageAsyncCallBack了，在这个函数里，通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">texture-&gt;initWithImage(image);</span><br></pre></td></tr></table></figure>
+<p>生成Texture2d，并存在缓存里，每次通过TextureCache加载纹理的时候，都会先看看是否已经存在缓存里了。<br>到这里，这个任务就完成了，执行下回调函数，然后把_asyncRefCount减一，搞定了</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

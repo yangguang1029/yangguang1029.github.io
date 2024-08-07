@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    ReactNative之在项目中使用TypeScript 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">ReactNative之在项目中使用TypeScript</div>
+  <div class="post-meta">
+    <div class="date">2017 December 27th</div>
+    <div class="tags">
+      
+      <div class="tag-item">ReactNative</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>最近在网上找到个开源的控件，但是源代码是用TypeScript实现的，放到项目里无法直接使用，于是google了一下怎么在ReactNative项目内使用TypeScript，然后找到了一个很简单的解决方案，试了一下没有问题。</p>
+<p>首先安装react-native-typescript-transformer模块</p>
+<pre><code>yarn add --dev react-native-typescript-transformer typescript
+</code></pre>
+<p>然后在项目的根目录下创建一个文件 rn-cli.config.js</p>
+<pre><code>module.exports = &#123;  
+      getTransformModulePath() &#123;
+        return require.resolve(&#39;react-native-typescript-transformer&#39;)
+      &#125;,
+      getSourceExts() &#123;
+        return [&#39;ts&#39;, &#39;tsx&#39;];
+      &#125;
+&#125;
+</code></pre>
+<p>在项目根目录下创建一个文件tsconfig.json</p>
+<pre><code>&#123;
+      &quot;compilerOptions&quot;: &#123;
+        &quot;target&quot;: &quot;es2015&quot;,
+        &quot;module&quot;: &quot;es2015&quot;,
+        &quot;jsx&quot;: &quot;react-native&quot;,
+        &quot;moduleResolution&quot;: &quot;node&quot;,
+        &quot;allowSyntheticDefaultImports&quot;: true
+      &#125;
+&#125;
+</code></pre>
+<p>然后就可以放心在项目里写TypeScript代码了，例如项目中ts目录下有test.ts文件，我们在import这个文件时，就像import一个js文件就可以了</p>
+<pre><code>import &#39;./ts/test&#39;
+</code></pre>
+<p>这些以ts,tsx为后缀的TypeScript代码文件会被转换成js文件，我们实际import的是转换后的js文件。
+    </p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

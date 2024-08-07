@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    tableViewCell上的触摸事件 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">tableViewCell上的触摸事件</div>
+  <div class="post-meta">
+    <div class="date">2016 August 15th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="1-tableCellTouched"><a href="#1-tableCellTouched" class="headerlink" title="1.tableCellTouched"></a>1.tableCellTouched</h3><p>这是最简单的处理tableViewCell上触摸事件的方法了，接口为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tableCellTouched:function (table, cell)&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它是基于对整个tableView的触摸，所以优先级会低于tableViewCell上的事件。</p>
+<h3 id="2-对tableViewCell添加事件"><a href="#2-对tableViewCell添加事件" class="headerlink" title="2.对tableViewCell添加事件"></a>2.对tableViewCell添加事件</h3><p>这个就是比较坑的了，我们知道tableView在滚动中，会把屏幕外的tableViewCell从container中移除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.getContainer().removeChild(cell, true);</span><br></pre></td></tr></table></figure>
+
+<p>这里cleanup参数为true，也就意味着对这个cell绑定的所有事件都会被移除，所以如果直接对tableViewCell进行绑定事件，当这个cell被重用时，它的绑定事件已经无影无踪，不会再有响应了。如果只是触摸事件，那么直接用tableCellTouched接口即可，如果确实需要绑定特殊事件例如CustomEventListener，那需要将listener存起来，在tableCellAtIndex接口中每次都进行绑定，当然也可以重写tableCellView的onEnter方法，在里面添加。</p>
+<h3 id="3-tableCellView内子控件添加事件"><a href="#3-tableCellView内子控件添加事件" class="headerlink" title="3.tableCellView内子控件添加事件"></a>3.tableCellView内子控件添加事件</h3><p>例如往tableCellView内添加controlButton，这时候即使cell被重用，触摸事件仍然会响应，因为cleanup并不会递归对子节点调用，所以事件会被保留。(这里理解错误，cleanup会对所有子孙结点递归调用，移除其触摸事件。之所以controlbutton事件被保留了，是因为它在onEnter方法里重新添加了)不过在添加触摸事件时要小心，例如这段代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tableCellAtIndex: function(table, index) &#123;</span><br><span class="line">    var cell = table.dequeueCell();</span><br><span class="line">    if (!cell) &#123;</span><br><span class="line">          var cell = new cc.TableViewCell();</span><br><span class="line">          var button =  new cc.ControlButton(new cc.LabelTTF(&quot;test&quot;, &quot;Arial&quot;, 16), back)</span><br><span class="line">          cell.addChild(button);</span><br><span class="line">          button.addTargetWithActionForControlEvents(this, function(sender, event) &#123;</span><br><span class="line">            console.log(index);</span><br><span class="line">          &#125;, cc.CONTROL_EVENT_TOUCH_UP_INSIDE)</span><br><span class="line">    &#125; </span><br><span class="line">    return cell;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里点击按钮后显示的index肯定与期望的不一致，原因就是addTargetWithActionForControlEvents时传递的闭包内使用的index是tableViewCell构造时的index，当这个Cell被重用时，当前的index和构造时候的index很可能就不一致了。尤其是如果tableView方向是TABLEVIEW_FILL_TOPDOWN的话，tableView在构造时就发生了一次cell重用。如果希望显示正确的结果，必须使用cell当前的index来获取数据，也就是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">button.addTargetWithActionForControlEvents(this, function(sender, e)&#123;</span><br><span class="line">      var idx = cell.getIdx();</span><br><span class="line">      console.log(idx);</span><br><span class="line">  &#125;, cc.CONTROL_EVENT_TOUCH_UP_INSIDE)</span><br></pre></td></tr></table></figure>
+
+<p>不使用controlButton，而是自己给子控件添加事件处理，也是一样的方法。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

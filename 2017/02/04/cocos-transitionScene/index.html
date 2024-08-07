@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    cocos之Scene的切换 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">杨光的日记本</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">cocos之Scene的切换</div>
+  <div class="post-meta">
+    <div class="date">2017 February 4th</div>
+    <div class="tags">
+      
+      <div class="tag-item">cocos</div>
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>场景切换，牵涉到的是老scene善后处理和新scene的初始化，如果对各个函数调用的先后顺序不明的话，可能就会出问题(例如注册监听和取消监听，一般都写在onEnter和onExit方法内)</p>
+<p>涉及到scene切换的方法，都在director内,常用的为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void Director::runWithScene(Scene *scene)</span><br><span class="line">void Director::replaceScene(Scene *scene)</span><br></pre></td></tr></table></figure>
+<p>Director内通过_scenesStack， _runningScene，_nextScene进行管理。每帧都会调用drawScene方法，这个方法里，有一段代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/* to avoid flickr, nextScene MUST be here: after tick and before draw.</span><br><span class="line">    */</span><br><span class="line">   if (_nextScene)</span><br><span class="line">   &#123;</span><br><span class="line">       setNextScene();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这里还有一些注释，说明了切换scene的操作，在老scene的事件都处理完了之后，渲染新scene之前。这里setNextScene就是执行了切换scene的逻辑。</p>
+<p>scene的切换分为有渐变和没有渐变两种情况</p>
+<ul>
+<li>没有渐变的时候，切换的回调会直接调用,具体可以看源代码。顺序为</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_runningScene-&gt;onExitTransitionDidStart();</span><br><span class="line">_runningScene-&gt;onExit();</span><br><span class="line">//此时_runningScene已经指向了新scene</span><br><span class="line">_runningScene-&gt;onEnter();</span><br><span class="line">_runningScene-&gt;onEnterTransitionDidFinish();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>有渐变的情况其实也简单，渐变的效果是通过TransitionScene类来实现的，它将新scene存为_inScene, 需要被替换掉的老scene存为_outScene，然后它的draw函数会同时渲染这两个scene。为了将逻辑与视觉效果相符，新旧scene的执行回调也发生了变化，老scene的onExit延迟到新scene进场完毕后才调用</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_outScene-&gt;onExitTransitionDidStart();</span><br><span class="line">_inScene-&gt;onEnter();</span><br><span class="line"></span><br><span class="line">_outScene-&gt;onExit();</span><br><span class="line">_inScene-&gt;onEnterTransitionDidFinish();</span><br></pre></td></tr></table></figure>
+<p>关于TransitionScene的一些细节:</p>
+<ul>
+<li>TransitionScene的各个子类,都只是实现了进场动画，并没有哪个实现有离场动画</li>
+<li>TransitionScene的finish回调中会执行director-&gt;replaceScene(_inScene);设置真正的新scene。Director::setNextScene方法里，runningIsTransition只有在这时候才可能为true,否则如果老scene是个TransitionScene，意味着进场动画还没有结束，node的_running为true,此时不运行进行切换的,强制切换会触发assert。</li>
+<li>不要妄想使用连环Transition，原因和上面一样，进场动画还没执行完就切换scene，例如</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TransitionFade* fade = TransitionFade::create(2, scene, Color3B::GREEN);</span><br><span class="line">TransitionFade* fade1 = TransitionFade::create(2, fade, Color3B::GREEN);</span><br><span class="line">TransitionFade* fade2 = TransitionFade::create(2, fade1, Color3B::GREEN);</span><br><span class="line">Director::getInstance()-&gt;replaceScene(fade2);</span><br></pre></td></tr></table></figure>
+
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

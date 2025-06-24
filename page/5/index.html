@@ -46,11 +46,11 @@
     <div id="header-inner" class="inner">
       <nav id="main-nav">
         
-          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+          <a class="main-nav-link" href="/."><i class="fa en-home"></i> Start</a>
         
-          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+          <a class="main-nav-link" href="/archives/"><i class="fa en-archive"></i> Archiv</a>
         
-          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+          <a class="main-nav-link" href="/about/"><i class="fa en-user"></i> Über</a>
         
       </nav>
     </div>
@@ -77,6 +77,128 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-js-mix-import" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/12/15/js-mix-import/">js之import与export复合</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2017-12-15T08:33:43.000Z" itemprop="datePublished">2017年12月15日</time>
+</span>
+      
+      
+      
+<a href="/2017/12/15/js-mix-import/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在重构项目时有时会有这种需求，从一个文件内import进来然后export出去。这里总结一下一些写法，在<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/module">ECMAScript6 入门</a>里有一段相关内容可做参考。内容很简单，基本就是语法规范而已。</p>
+<p>首先是导出文件a.js</p>
+<pre><code>//a.js
+let a = &#123;&quot;a&quot;:1&#125;
+export &#123;a&#125;
+</code></pre>
+<p>b.js需要导入a.js再导出，有一种比较简单的写法</p>
+<pre><code>//b.js
+export &#123;a&#125; from &quot;./a&quot;
+</code></pre>
+<p>在使用的时候</p>
+<pre><code>//index.js
+import &#123;a&#125; from &quot;./b&quot;
+</code></pre>
+<p>跟从b.js内正常export出来的一样对待。</p>
+<p>还有一种写法效果一样，但有一点区别。就是</p>
+<pre><code>//b.js
+import &#123;a&#125; from &quot;./a&quot;
+export &#123;a&#125;
+</code></pre>
+<p>这种写法的作用是<strong>在b.js内可以使用变量a</strong>，而前一种写法不能。</p>
+<p>如果a.js导出的比较多，一般会使用import * 来引用，也可以使用export * 来导出，例如</p>
+<pre><code>//b.js
+export * from &#39;./a&#39;
+export let b = &#123;&quot;b&quot;:2&#125;
+//index.js
+import * as B from &quot;./b&quot;
+console.log(B.a); 
+</code></pre>
+<p>然后看一下export default的情况</p>
+<pre><code>//a.js
+export default a = &#123;&quot;a&quot;:1&#125;
+//b.js
+export a from &quot;./a&quot;					//（1）
+
+export &#123;default as a&#125; from &quot;./a&quot;	//(2)
+
+import a from &quot;./a&quot;					//(3)
+export &#123;a&#125;
+//index.js
+import &#123;a&#125; from &quot;./b&quot;
+</code></pre>
+<p>第一种写法是错误的，第二种和第三种写法没问题，而且这两种写法在b.js内都可以正常使用变量a</p>
+<p>也可以把一个普通的export转换为export default，例如</p>
+<pre><code>//b.js
+export &#123;a1 as default&#125; from &quot;./a&quot;
+//index.js
+import a1 from &quot;./b&quot;
+</code></pre>
+<p>但这种方法在b.js内不能使用变量名a1，如果要使用的话，下面这样写就可以了</p>
+<pre><code>//b.js
+import &#123;a1&#125; from &quot;./a&quot;
+export default a1
+</code></pre>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/5/index.html">http://yangguang1029.github.io/page/5/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-other-programmer-ability" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1049,129 +1171,6 @@ import &quot;react-native&quot;
 </article>
 
 
-  <article id="post-rn-component-liftcycle" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/10/21/rn-component-liftcycle/">ReactNative中的Component的生命周期</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2017-10-21T11:15:36.000Z" itemprop="datePublished">2017年10月21日</time>
-</span>
-      
-      
-      
-<a href="/2017/10/21/rn-component-liftcycle/#comments" class="article-comment-link">
-  
-  <i class="fa fa-commt"></i>
-  Gästebuch
-</a>
-
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>本文介绍一下Component生命周期相关的一些函数，主要参考自<a target="_blank" rel="noopener" href="https://reactjs.org/docs/react-component.html">官方文档</a> </p>
-<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>render函数是必须实现的，它用来渲染界面。一般会由this.props和this.state来控制如何显示。在这个函数里不能调用setState，否则会导致死循环，因为setState会导致render被调用。<br>render函数返回true,false,null,undefined都是合法的jsx语法，但它们都不会产生渲染。render函数应该避免太复杂耗时的操作。另外注意一下<Text></Text>组件里如果想显示bool值,null,undefined时也需要显示转换成字符串才行。</p>
-<h2 id="mount"><a href="#mount" class="headerlink" title="mount"></a>mount</h2><h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><p>构造函数是最早被调用的，构造函数的第一句应该是super(props)。 state的初始化应该放在构造函数里。当然还有声明类的成员变量。</p>
-<h3 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h3><p>当Component将要被加载时被调用，它在render之前被调用。在这个函数里执行setState的话，不会触发componentWillUpdate和render。因为render还没被调用，所以在这个函数里想通过ref获取子控件是不行的。componentWillMount为第一次render提供了准备数据的机会，我们可以放心的操作props和state。</p>
-<p>componentWillMount也适合用来注册事件监听，假如有的事件在渲染时触发，那么在render前就注册显然更合适。componentWillMount的父节点会早于子节点被调用。</p>
-<h3 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h3><p>当component已经被加载后调用，它在render之后被调用。所以在这个函数里执行setState会触发componentWillUpdate和render。对于同级节点，先渲染的componentDidMount会先被调用，对于父子节点，子节点的componentDidMount会比父节点先调用。前面说到render不应该调用setState来触发re-render，而componentWillMount调用setState又不会触发re-render，显然componentDidMount则完全没问题了，比如我们有一个component的尺寸未知，取决于另一个component的已知尺寸，就可以在componentDidMount里获取数据，计算好后setState来重新render。</p>
-<h3 id="constructor，componentWillMount和componentDidMount分别适合做什么事情"><a href="#constructor，componentWillMount和componentDidMount分别适合做什么事情" class="headerlink" title="constructor，componentWillMount和componentDidMount分别适合做什么事情"></a>constructor，componentWillMount和componentDidMount分别适合做什么事情</h3><p>constructor显然适合做初始化，比如初始化state,成员变量，绑定成员函数等。而componentWillMount和componentDidMount的主要区别就是一个在render前，一个在render后。如果需要处理原始props和state，就应该放到componentWillMount中，比如使用props给state赋值，此外注册监听适合放在componentWillMount内。除此之外，大多数情况下的操作应该放到componentDidMount里，比如发起异步请求，开启计时器等等。</p>
-<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><h3 id="componentWillReceiveProps-nextProps"><a href="#componentWillReceiveProps-nextProps" class="headerlink" title="componentWillReceiveProps(nextProps)"></a>componentWillReceiveProps(nextProps)</h3><p>当component的props被更新时被调用，但需要注意的是，update流程的所有回调触发的前提都是有update，也就是我们在父控件代码中改变子控件props但不触发update的话，这个回调也不会被调用的。例子很简单，比如</p>
-<pre><code>render()&#123;
-    return (&lt;View&gt;
-        &lt;TestComponent num=this._num&gt;
-        &lt;Button onPress=&#123;()=&gt;&#123;this._num=999&#125;&#125;&gt;
-    &lt;/View&gt;)
-&#125;
-</code></pre>
-<p>点击按钮改变了this._num，而this._num又作为TestComponent的props传递进去了，但因为并没有触发update，所以TestComponent的任何update回调都不会被触发。</p>
-<p>另外需要注意，该回调被调用时，不一定props发生了变化，这里的没有发生变化有两种情形，一种是父控件没有改变子控件的props，例如父组件代码内调用setState刷新界面，此时子控件的componentWillReceiveProps也会被调用，但props没有发生变化。还有就是父控件传递过去的props是一个复杂数据类型，所以实际上是个引用，即使props发生了变化，this.props和nextProps也是相同的。</p>
-<p>什么时候会用到这个回调呢？就是如果我们的state受props影响时，当传入的props发生了变化，我们在这里去修改state。在这里可以放心去执行setState</p>
-<h3 id="shouldComponentUpdate-nextProps-nextState"><a href="#shouldComponentUpdate-nextProps-nextState" class="headerlink" title="shouldComponentUpdate(nextProps, nextState)"></a>shouldComponentUpdate(nextProps, nextState)</h3><p>通过这个回调函数返回true还是false来决定是否re-render。如果不重写的话会使用源代码的默认实现。默认实现可以参考源代码，它使用了fbjs&#x2F;lib&#x2F;shallowEqual.js内的shallowEqual方法来比较新旧props和state，只要props和state有一个改变了，就会触发re-render。 从shallowEqual代码看，首先是&#x3D;&#x3D;&#x3D;强等判断，所以如果是同一个引用，那么不管内容怎么变，都认为是不变。例如</p>
-<pre><code>let old = this.state;
-old.num=999;
-this.setState(old);
-</code></pre>
-<p>这样不会触发re-render。然后是比较key-value，value的比较也是&#x3D;&#x3D;&#x3D;强等。举个例子</p>
-<pre><code>this.state = &#123;num:1&#125;;
-...
-this.setState(&#123;num:1&#125;);
-</code></pre>
-<p>这里虽然setState时将state变成了一个新的对象，但因为key-value完全一致，所以也不会导致re-render。如果value是复杂数据类型同理，例如</p>
-<pre><code>this.state = &#123;obj:&#123;num:1&#125;&#125;
-...
-let old = this.state.obj;
-old.num = 999;
-this.setState(&#123;obj:old&#125;)
-</code></pre>
-<p>这里虽然num变了，但并不会触发re-render。</p>
-<p>以上是源代码中的默认实现，如果需要的话就重写通过限制一些re-render的触发条件，可以起到优化性能的作用。</p>
-<h3 id="componentWillUpdate-nextProps-nextState"><a href="#componentWillUpdate-nextProps-nextState" class="headerlink" title="componentWillUpdate(nextProps, nextState)"></a>componentWillUpdate(nextProps, nextState)</h3><p>这个方法在每次re-render之前都会被调用，因为是在render之前，所以有点类似于componentWillMount，我们在这个回调里为下次render做好准备，通过this.props和this.state可以获取到当前的props和state，通过传进来的nextProps和nextState参数可以获得新的props和state。与componentWillMount不一样的是，在这里我们是可以操作UI的，但并不建议这么做，因为此时操作的是上次渲染的UI，它们有可能在下次render时就失效了。我们也不应该在这里调用setState，因为setState又会触发componentWillUpdate,这就造成了死循环，当然如果通过对nextProps或者nextState做判断是可以杜绝进入死循环的，但最好还是避免这样操作。</p>
-<h3 id="componentDidUpdate-prevProps-prevState"><a href="#componentDidUpdate-prevProps-prevState" class="headerlink" title="componentDidUpdate(prevProps, prevState)"></a>componentDidUpdate(prevProps, prevState)</h3><p>正如前面说的componentWillUpdate对应componentWillMount，这里componentDidUpdate就对应着componentDidMount。它在render之后被调用，在这里就可以放心的获取和操作UI了。它的参数prevProps和prevState对应着componentWillUpdate里的this.props和this.state，而这个函数里的this.props和this.state就是当前的props和state，也就是componentWillUpdate里的nextProps和nextState。子节点的回调先于父节点被调用。在这里调用setState也需要非常小心，很可能会造成无限循环，如果确实需要的话，应该配合shouldComponentUpdate加以限制。如果我们需要对UI进行交互，比如获取某个UI的尺寸位置，这里是最合适的位置。</p>
-<h2 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h2><p>当一个component不再被渲染时会被调用。例如</p>
-<pre><code>constructor(props)&#123;
-    super(props);
-    this.state=&#123;bVisible:true&#125;;
-&#125;
-
-render()&#123;
-    return (&lt;View&gt;
-        &#123;this.state.bVisible ? &lt;MyComponent /&gt; : null&#125; 
-        &lt;Button onPress=&#123;()=&gt;&#123;
-            this.setState(&#123;bVisible:false&#125;)
-        &#125;&#125;&gt;
-    &lt;/View&gt;)
-&#125;
-</code></pre>
-<p>这个demo起始时MyComponent显示，点击按钮后不显示。不要误以为MyComponent只是被隐藏了，实际上它被销毁了，它所占用的内存都会被回收，此时它的componentWillUnmount会被调用。我们在componentWillMount或者componentDidMount里如果注册了一些监听，就需要在这里注销掉。与componentDidMount相反，父控件的componentWillUnmount会比子控件的先被调用。</p>
-
-        
-        
-          <blockquote id="copyright">
-              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/5/index.html">http://yangguang1029.github.io/page/5/index.html</a></p>
-              <p>Copyright-Erklärung: 转载请注明出处.</p>
-          </blockquote>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
-
-          
-    <div class="social-share">
-      <span>Aktie:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1190,6 +1189,10 @@ render()&#123;
       <ul>
         
           <li>
+            <a href="/2025/06/24/restart/">不忘初心，重新开始</a>
+          </li>
+        
+          <li>
             <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
           </li>
         
@@ -1205,10 +1208,6 @@ render()&#123;
             <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
           </li>
         
-          <li>
-            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1219,7 +1218,7 @@ render()&#123;
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12px;">c++</a> <a href="/tags/cocos/" style="font-size: 18px;">cocos</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 14px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -1231,7 +1230,7 @@ render()&#123;
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025年</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
     </div>
   </div>
 
@@ -1241,7 +1240,7 @@ render()&#123;
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1262,7 +1261,7 @@ render()&#123;
       </p>
       
       <p>
-        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Copyright &copy; 2025 yangguang1029.</span>
         <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
         <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
       </p>

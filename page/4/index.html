@@ -46,11 +46,11 @@
     <div id="header-inner" class="inner">
       <nav id="main-nav">
         
-          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
+          <a class="main-nav-link" href="/."><i class="fa en-home"></i> Start</a>
         
-          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
+          <a class="main-nav-link" href="/archives/"><i class="fa en-archive"></i> Archiv</a>
         
-          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
+          <a class="main-nav-link" href="/about/"><i class="fa en-user"></i> Über</a>
         
       </nav>
     </div>
@@ -77,6 +77,110 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-rn-android-communicate" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/26/rn-android-communicate/">ReactNative之js与native通信流程（Android篇）</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2018-02-26T12:18:36.000Z" itemprop="datePublished">2018年02月26日</time>
+</span>
+      
+      
+      
+<a href="/2018/02/26/rn-android-communicate/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇文章简要介绍一下android平台，js和java互相调用时，经过的流程。</p>
+<h3 id="js调用java"><a href="#js调用java" class="headerlink" title="js调用java"></a>js调用java</h3><p>要从js端调用java代码，需要把java端能被调用的接口，在js代码中进行注册。这个实现在react-native&#x2F;Libraries&#x2F;BatchedBridge&#x2F;NativeModules.js文件中。</p>
+<p>看NativeModules.js内的代码里有：</p>
+<pre><code>let NativeModules : &#123;[moduleName: string]: Object&#125; = &#123;&#125;;
+if (global.nativeModuleProxy) &#123;
+    NativeModules = global.nativeModuleProxy;
+&#125; else &#123;
+    const info = genModule(config, moduleID);
+    NativeModules[info.name] = info.module;
+&#125;
+</code></pre>
+<p>这里把代码简化了一下，这段代码其实是说明了两种情况，当加载离线bundle时，genModule是从ReactCommon&#x2F;cxxreact&#x2F;JSCNativeModules.cpp里调进来的，否则是从ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;ProxyExecutor.cpp里把__fbBatchedBridgeConfig传进来然后解析的。具体的细节不用深究。总之java端有哪些接口可供调用，模块名函数名等信息传到js层，然后经过一层封装，实际调用了MessageQueue里的enqueueNativeCall方法。</p>
+<p>在enqueueNativeCall方法里我们可以看到一个细节，就是js对原生的调用是被存储在队列里的，每5毫秒把这些请求集中交给原生处理并清空一次队列。从js开始进入原生代码的入口是</p>
+<pre><code>global.nativeFlushQueueImmediate(queue);
+</code></pre>
+<p>这个方法定义在ReactCommon&#x2F;cxxreact&#x2F;JSCExecutor.cpp中。它的实现是</p>
+<pre><code>m_delegate-&gt;callNativeModules(*this, folly::parseJson(queueStr), false);
+</code></pre>
+<p>这个m_delegate如果一路跟踪的话，就会发现是一个JsToNativeBridge类实例，这个类定义在ReactCommon&#x2F;cxxreact&#x2F;NativeToJsBridge.cpp中。JsToNativeBridge的callNativeModules方法实现为</p>
+<pre><code>m_registry-&gt;callNativeMethod(call.moduleId, call.methodId, std::move(call.arguments), call.callId);
+</code></pre>
+<p>进入ModuleRegistry类的callNativeMethod方法中，发现执行的是NativeModule类的invoke方法，而继承自NativeModule类的有两个：一个是ReactCommon&#x2F;cxxreact&#x2F;CxxNativeModule.h，我们用它实现了js与C++的直接通信，这个以后有空再写。另一个是ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;JavaModuleWrapper.h里的JavaNativeModule。JavaNativeModule的invoke方法通过JNI调用了java方法。</p>
+<pre><code>static auto invokeMethod = wrapper_-&gt;getClass()-&gt;getMethod&lt;void(jint, ReadableNativeArray::javaobject)&gt;(&quot;invoke&quot;);
+</code></pre>
+<p>然后我们去寻找JavaNativeModule类在java层对应的什么类。回到前面跟踪的路线，JsToNativeBridge的实例来自于NativeToJsBridge类的构造函数，而NativeToJsBridge的实例来自于Instance.cpp的initializeBridge方法，然后跟踪到CatalystInstanceImpl.cpp里的initializeBridge方法，这是个JNI方法，java层传过来的javaModules就是在这个函数里，被封装成了JavaNativeModule类。我们找到ReactAndroid&#x2F;src&#x2F;main&#x2F;java&#x2F;com&#x2F;facebook&#x2F;react&#x2F;bridge&#x2F;CatalystInstanceImpl.java里的initializeBridge方法，就知道C++中的JavaNativeModule对应了java中的JavaModuleWrapper类，这样最终我们就调用了JavaModuleWrapper类里的invoke方法。</p>
+<h3 id="java调用js"><a href="#java调用js" class="headerlink" title="java调用js"></a>java调用js</h3><p>源代码中有一个很好的从java调用js的例子，就是ReactRootView里的代码</p>
+<pre><code>String jsAppModuleName = getJSModuleName();
+catalystInstance.getJSModule(AppRegistry.class).runApplication(jsAppModuleName, appParams);
+</code></pre>
+<p>从CatalystInstanceImpl.java的getJSModule方法里我们能看出，所有java能调用的js接口，都是继承自JavaScriptModule类，我们可以在项目中搜一下，就能默认有哪些类可以调用了，例如我们最常用的DeviceEventManagerModule。在JavaScriptModuleRegistry类中通过动态代理创建JavaScriptModule，这块我不太了解，所以只能跳过去了。实际我们调用的是JavaScriptModuleInvocationHandler类的invoke方法，它调用了CatalystInstanceImpl.java内的callFunction方法。然后通过PendingJSCall类的call方法，调用了</p>
+<pre><code>catalystInstance.jniCallJSFunction(mModule, mMethod, arguments);
+</code></pre>
+<p>这是一个JNI方法，于是进入到了ReactAndroid&#x2F;src&#x2F;main&#x2F;jni&#x2F;react&#x2F;jni&#x2F;CatalystInstanceImpl.cpp内，然后来到ReactCommon&#x2F;cxxreact&#x2F;Instance.cpp的callJSFunction方法，然后是NativeToJsBridge的callFunction方法，再来到JSCExecutor的callFunction方法，在这里找到MessageQueue.js里的callFunctionReturnFlushedQueue方法调用。看messageQueue.js的__callFunction方法里，实现是</p>
+<pre><code>const moduleMethods = this.getCallableModule(module);
+</code></pre>
+<p>哪些模块能够被调用，来自于MessageQueue类的registerLazyCallableModule，在Libraries文件夹内搜一下，就能找到Libraries&#x2F;Core&#x2F;InitializeCore.js。到这里就顿时清楚了，这些类在Java层中以继承自JavaScriptModule的interface形式记录下来，在js层中具体实现，然后按照上述流程最终执行js代码。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/4/index.html">http://yangguang1029.github.io/page/4/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-rn-reconciliation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1062,128 +1166,6 @@ LayoutAnimation.spring();
 </article>
 
 
-  <article id="post-js-mix-import" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/12/15/js-mix-import/">js之import与export复合</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2017-12-15T08:33:43.000Z" itemprop="datePublished">2017年12月15日</time>
-</span>
-      
-      
-      
-<a href="/2017/12/15/js-mix-import/#comments" class="article-comment-link">
-  
-  <i class="fa fa-commt"></i>
-  Gästebuch
-</a>
-
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在重构项目时有时会有这种需求，从一个文件内import进来然后export出去。这里总结一下一些写法，在<a target="_blank" rel="noopener" href="http://es6.ruanyifeng.com/#docs/module">ECMAScript6 入门</a>里有一段相关内容可做参考。内容很简单，基本就是语法规范而已。</p>
-<p>首先是导出文件a.js</p>
-<pre><code>//a.js
-let a = &#123;&quot;a&quot;:1&#125;
-export &#123;a&#125;
-</code></pre>
-<p>b.js需要导入a.js再导出，有一种比较简单的写法</p>
-<pre><code>//b.js
-export &#123;a&#125; from &quot;./a&quot;
-</code></pre>
-<p>在使用的时候</p>
-<pre><code>//index.js
-import &#123;a&#125; from &quot;./b&quot;
-</code></pre>
-<p>跟从b.js内正常export出来的一样对待。</p>
-<p>还有一种写法效果一样，但有一点区别。就是</p>
-<pre><code>//b.js
-import &#123;a&#125; from &quot;./a&quot;
-export &#123;a&#125;
-</code></pre>
-<p>这种写法的作用是<strong>在b.js内可以使用变量a</strong>，而前一种写法不能。</p>
-<p>如果a.js导出的比较多，一般会使用import * 来引用，也可以使用export * 来导出，例如</p>
-<pre><code>//b.js
-export * from &#39;./a&#39;
-export let b = &#123;&quot;b&quot;:2&#125;
-//index.js
-import * as B from &quot;./b&quot;
-console.log(B.a); 
-</code></pre>
-<p>然后看一下export default的情况</p>
-<pre><code>//a.js
-export default a = &#123;&quot;a&quot;:1&#125;
-//b.js
-export a from &quot;./a&quot;					//（1）
-
-export &#123;default as a&#125; from &quot;./a&quot;	//(2)
-
-import a from &quot;./a&quot;					//(3)
-export &#123;a&#125;
-//index.js
-import &#123;a&#125; from &quot;./b&quot;
-</code></pre>
-<p>第一种写法是错误的，第二种和第三种写法没问题，而且这两种写法在b.js内都可以正常使用变量a</p>
-<p>也可以把一个普通的export转换为export default，例如</p>
-<pre><code>//b.js
-export &#123;a1 as default&#125; from &quot;./a&quot;
-//index.js
-import a1 from &quot;./b&quot;
-</code></pre>
-<p>但这种方法在b.js内不能使用变量名a1，如果要使用的话，下面这样写就可以了</p>
-<pre><code>//b.js
-import &#123;a1&#125; from &quot;./a&quot;
-export default a1
-</code></pre>
-
-        
-        
-          <blockquote id="copyright">
-              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/4/index.html">http://yangguang1029.github.io/page/4/index.html</a></p>
-              <p>Copyright-Erklärung: 转载请注明出处.</p>
-          </blockquote>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
-
-          
-    <div class="social-share">
-      <span>Aktie:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1202,6 +1184,10 @@ export default a1
       <ul>
         
           <li>
+            <a href="/2025/06/24/restart/">不忘初心，重新开始</a>
+          </li>
+        
+          <li>
             <a href="/2019/12/17/rn-new-architecture1/">ReactNative新架构简介之一（React and Codegen）</a>
           </li>
         
@@ -1217,10 +1203,6 @@ export default a1
             <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
           </li>
         
-          <li>
-            <a href="/2019/09/25/js-uncatched-promise/">JavaScript之unhandled promise rejection</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1231,7 +1213,7 @@ export default a1
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12.5px;">c++</a> <a href="/tags/cocos/" style="font-size: 17.5px;">cocos</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12.5px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 15px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12.5px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12.5px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 12.5px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12px;">c++</a> <a href="/tags/cocos/" style="font-size: 18px;">cocos</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 14px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -1243,7 +1225,7 @@ export default a1
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025年</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
     </div>
   </div>
 
@@ -1253,7 +1235,7 @@ export default a1
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1274,7 +1256,7 @@ export default a1
       </p>
       
       <p>
-        <span>Copyright &copy; 2024 yangguang1029.</span>
+        <span>Copyright &copy; 2025 yangguang1029.</span>
         <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
         <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
       </p>

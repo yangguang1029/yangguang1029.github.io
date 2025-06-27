@@ -46,11 +46,11 @@
     <div id="header-inner" class="inner">
       <nav id="main-nav">
         
-          <a class="main-nav-link" href="/."><i class="fa en-home"></i> Start</a>
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
         
-          <a class="main-nav-link" href="/archives/"><i class="fa en-archive"></i> Archiv</a>
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
         
-          <a class="main-nav-link" href="/about/"><i class="fa en-user"></i> Über</a>
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
         
       </nav>
     </div>
@@ -77,6 +77,89 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-other-tinygame-architecture" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/09/other-tinygame-architecture/">一个小游戏的通用架构</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2019-03-09T07:50:39.000Z" itemprop="datePublished">2019年03月09日</time>
+</span>
+      
+      
+      
+<a href="/2019/03/09/other-tinygame-architecture/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>最近被组织安排去支援了一个基于cocos-js开发的h5小游戏项目，于是稍微整理了下像这样的一个小型游戏项目的架构</p>
+<h2 id="功能系统"><a href="#功能系统" class="headerlink" title="功能系统"></a>功能系统</h2><h3 id="消息分发系统"><a href="#消息分发系统" class="headerlink" title="消息分发系统"></a>消息分发系统</h3><p>它就是一个监听者模式的管理类，一般包含register, unregister, trigger三个接口。它适用于两个场景，一个是接收到服务器消息时，需要更新各个UI界面，让各个页面注册自己感兴趣的消息，当收到后端消息时进行分发。另一个是页面之间的互相影响，为了避免持有引用，一方进行注册监听，另一方进行事件分发。</p>
+<p>监听者模式是代码解耦的一大神器，应用也非常普遍，所以第一个想到的就是它，当然它的缺点就是不利于流程的跟踪。</p>
+<h3 id="UI管理系统"><a href="#UI管理系统" class="headerlink" title="UI管理系统"></a>UI管理系统</h3><p>游戏中一般场景scene并不多，大多数都是在scene上面分布着各种弹窗界面，例如弹出提示框，获得奖励框，各种二级界面等等。如果没有一个管理系统，很容易混乱，要么zorder设置起来累的要死，要么弹窗覆盖导致界面丑陋不堪。</p>
+<p>UI管理系统一般提供的接口就是弹出界面和关闭界面，默认会自动设置zorder，并且关闭的界面一般不做销毁，而是从父节点移除后留作下次备用，以提高性能。如果实现的简单，就直接弹出窗口，设置最高zorder即可，复杂些的话可以进行分类管理，哪些节点可被覆盖，哪些不可以，支持什么弹出动画等等。</p>
+<h3 id="数据管理系统"><a href="#数据管理系统" class="headerlink" title="数据管理系统"></a>数据管理系统</h3><p>前端页面如何展示，依赖于后端传递的数据，这些数据最好使用一个管理系统来全局存储，而不是存在UI类中，这样更有利于解耦。</p>
+<p>后端传回的数据现在经常是json格式，可以直接拿来使用，但最好还是解析为model，这样做的一个好处是即使没有协议文档，也很容易明白协议格式，而且可以在model层封装一些特定的接口比如getDataByType等。另外还有一个好处，就是前端代码最终很可能会被深度混淆，如果直接使用json，处处要小心使用[‘xxx’]而不是.xxx的格式，但解析为model后就不用担心了。</p>
+<h2 id="具体代码模块"><a href="#具体代码模块" class="headerlink" title="具体代码模块"></a>具体代码模块</h2><h3 id="Model模块"><a href="#Model模块" class="headerlink" title="Model模块"></a>Model模块</h3><p>前面提到过，后端获得的数据转为model来使用，本地的配置信息等也可以，取决于实际需求</p>
+<h3 id="UI模块"><a href="#UI模块" class="headerlink" title="UI模块"></a>UI模块</h3><p>包括两部分，一部分是和各个UI界面的实现（在cocos creator上则是绑定在各个界面的脚本），作用是控制UI界面的各个组件显示，实现一些交互逻辑。按层级可以分为scene和window, component等级别。<br>另一部分是做组件封装，例如给按钮增加防快速点击的功能，给弹窗增加吞触摸事件的背景等等</p>
+<p>看到model和UI，就知道项目其实还是MVC这个万金油结构，这里提到了model和view,上面提到的数据管理系统就可以当做controller了。</p>
+<h3 id="网络模块"><a href="#网络模块" class="headerlink" title="网络模块"></a>网络模块</h3><p>实现网络通信功能，一般都需要保持长连接，在浏览器中使用websock，或者在原生端封装tcp。一般就是实现open, onConnect, onDisconnect, onMessage, send这几个接口。</p>
+<p>这里需要提到的就是最好在网络模块中实现一个比较完善的mock系统，它可以和真正的网络模块无缝切换，接口完全一致，唯一的区别就是在send函数里，对需要mock的接口使用mock的数据回调onMessage，其它接口走真正的网络请求。这样非常灵活，使用方便，功能比单纯在代码中mock一下数据要强大很多。</p>
+<h3 id="Utils模块"><a href="#Utils模块" class="headerlink" title="Utils模块"></a>Utils模块</h3><p>只要比较独立的代码，都往里面扔就是了，一般Constants,Global,Enums三大巨头就够用了，要继续细分也可以，比如EventName啥的</p>
+<h3 id="manager模块"><a href="#manager模块" class="headerlink" title="manager模块"></a>manager模块</h3><p>就是上面提到的消息监听，数据管理，ui管理三大功能系统的实现，它们可以适用于任何项目，实现一套后要么直接搬来用，要么封装成公共sdk都可以</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一般的小游戏，有这样的框架，绝对够应付的来了，在这个框架的基础上可以继续细分，但跑不掉还是这些。不论是新建一个项目，还是重构已有项目，都可以按这个结构来。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a></li></ul>
+
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-rn-add-perf" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1003,79 +1086,6 @@ public boolean canOverrideExistingModule() &#123;
 </article>
 
 
-  <article id="post-js-class-function" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/08/29/js-class-function/">javaScript之类的成员函数和箭头函数</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2018-08-29T03:44:45.000Z" itemprop="datePublished">2018年08月29日</time>
-</span>
-      
-      
-      
-<a href="/2018/08/29/js-class-function/#comments" class="article-comment-link">
-  
-  <i class="fa fa-commt"></i>
-  Gästebuch
-</a>
-
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>最近发现有的地方在使用ES6的class时，使用箭头函数来声明方法，例如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Test &#123;</span><br><span class="line">  func1(num)&#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">  func2 = (num) =&gt; &#123;</span><br><span class="line">    this.num = num</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">var t = new Test()</span><br></pre></td></tr></table></figure>
-<p>这两种方案是有区别的，区别就是func1是protoType上的属性，而func2是实例上的属性，我们用console.dir(t)在chrome dev tool上一看就知道了。根据prototype的原理，func1对于所有的实例只有一份，func2对每个实例都有一份。</p>
-<p>所以对于需要bind的函数，例如要用在闭包里，那使用箭头函数或者bind没有区别，bind也会生成一个新的函数对象赋给this。但如果是不需要bind的函数，写成箭头函数就会造成内存浪费了，应该避免。</p>
-<p>对于属性property，在constructor内声明还是在类中声明则没有区别，两者都是实例属性。</p>
-
-        
-        
-          <blockquote id="copyright">
-              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/2/index.html">http://yangguang1029.github.io/page/2/index.html</a></p>
-              <p>Copyright-Erklärung: 转载请注明出处.</p>
-          </blockquote>
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
-
-          
-    <div class="social-share">
-      <span>Aktie:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1094,6 +1104,10 @@ public boolean canOverrideExistingModule() &#123;
       <ul>
         
           <li>
+            <a href="/2025/06/27/new-react-project/">手动新建一个React项目</a>
+          </li>
+        
+          <li>
             <a href="/2025/06/24/restart/">不忘初心，重新开始</a>
           </li>
         
@@ -1109,10 +1123,6 @@ public boolean canOverrideExistingModule() &#123;
             <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
           </li>
         
-          <li>
-            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1123,7 +1133,7 @@ public boolean canOverrideExistingModule() &#123;
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12px;">c++</a> <a href="/tags/cocos/" style="font-size: 18px;">cocos</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 14px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12px;">c++</a> <a href="/tags/cocos/" style="font-size: 18px;">cocos</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 14px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -1135,7 +1145,7 @@ public boolean canOverrideExistingModule() &#123;
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025年</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
     </div>
   </div>
 
@@ -1145,7 +1155,7 @@ public boolean canOverrideExistingModule() &#123;
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 

@@ -46,11 +46,11 @@
     <div id="header-inner" class="inner">
       <nav id="main-nav">
         
-          <a class="main-nav-link" href="/."><i class="fa en-home"></i> Start</a>
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> Start</a>
         
-          <a class="main-nav-link" href="/archives/"><i class="fa en-archive"></i> Archiv</a>
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> Archiv</a>
         
-          <a class="main-nav-link" href="/about/"><i class="fa en-user"></i> Über</a>
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> Über</a>
         
       </nav>
     </div>
@@ -77,6 +77,94 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-NDK开发之java调用C++" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/">NDK开发之java调用C++</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2016-08-15T12:27:43.000Z" itemprop="datePublished">2016年08月15日</time>
+</span>
+      
+      
+      
+<a href="/2016/08/15/NDK%E5%BC%80%E5%8F%91%E4%B9%8Bjava%E8%B0%83%E7%94%A8C++/#comments" class="article-comment-link">
+  
+  <i class="fa fa-commt"></i>
+  Gästebuch
+</a>
+
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>首先创建一个空的android项目，默认生成的MainActivity，修改如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class MainActivity extends Activity &#123;</span><br><span class="line"></span><br><span class="line">	static &#123;</span><br><span class="line">        System.loadLibrary(&quot;learnNDK&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">		super.onCreate(savedInstanceState);</span><br><span class="line">		setContentView(R.layout.activity_main);</span><br><span class="line">		</span><br><span class="line">		TextView t = (TextView)this.findViewById(R.id.textview);</span><br><span class="line">		t.setText(&quot;&quot; + hello(1));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public boolean onCreateOptionsMenu(Menu menu) &#123;</span><br><span class="line">		// Inflate the menu; this adds items to the action bar if it is present.</span><br><span class="line">		getMenuInflater().inflate(R.menu.main, menu);</span><br><span class="line">		return true;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static native int hello(int num);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里通过System.loadLibrary(“learnNDK”);来加载咱们等下要生成的动态库leanNDK</p>
+<p>通过public static native int hello(int num);来声明一个C++层可以供我们调用的方法，返回值为int，函数名hello，接受一个形参int num</p>
+<p>在项目根目录创建一个jni文件夹，执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javah -d jni -classpath bin/classes/ com.example.learnndk.MainActivity</span><br></pre></td></tr></table></figure>
+
+<p>关于javah的详细参数介绍请参考<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/technotes/tools/windows/javah.html">javah</a></p>
+<p>这里简单介绍一下，-d 表示输出的头文件目录，-classpath表示class文件的路径</p>
+<p>然后就可以在jni目录下看到生成的文件com_example_learnndk_MainActivity.h</p>
+<p>我们新建一个cpp文件来实现这个hello方法，新建一个learnNDK.cpp内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;com_example_learnndk_MainActivity.h&gt;</span><br><span class="line"></span><br><span class="line">JNIEXPORT jint JNICALL Java_com_example_learnndk_MainActivity_hello</span><br><span class="line">  (JNIEnv *, jclass, jint) &#123;</span><br><span class="line">  		return 99;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在jni目录下，我们新建个Android.mk文件，内容如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LOCAL_PATH := $(call my-dir)</span><br><span class="line"></span><br><span class="line">include $(CLEAR_VARS)</span><br><span class="line">LOCAL_MODULE := learnNDK</span><br><span class="line">LOCAL_SRC_FILES := learnNDK.cpp</span><br><span class="line"></span><br><span class="line">include $(BUILD_SHARED_LIBRARY)</span><br></pre></td></tr></table></figure>
+
+<p>然后使用ndk编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ndk-build clean</span><br><span class="line">ndk-build</span><br></pre></td></tr></table></figure>
+
+<p>成功之后，运行这个android程序，就可以看到结果了。</p>
+<p>实际中Android.mk可以编写很复杂，也可能需要在jni目录下通过Application.mk来设定一些参数，如果不正确设定可能导致编译出错。</p>
+
+        
+        
+          <blockquote id="copyright">
+              <p>Ursprünglicher Link: <a href="http://yangguang1029.github.io/page/11/index.html">http://yangguang1029.github.io/page/11/index.html</a></p>
+              <p>Copyright-Erklärung: 转载请注明出处.</p>
+          </blockquote>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>Aktie:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-使用closureCompiler深度混淆的一个坑" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -419,6 +507,10 @@
       <ul>
         
           <li>
+            <a href="/2025/06/27/new-react-project/">手动新建一个React项目</a>
+          </li>
+        
+          <li>
             <a href="/2025/06/24/restart/">不忘初心，重新开始</a>
           </li>
         
@@ -434,10 +526,6 @@
             <a href="/2019/10/09/rn-reconciliation-discussion/">ReactNative之一次Reconciliation讨论</a>
           </li>
         
-          <li>
-            <a href="/2019/10/08/rn-performance-do-and-dont/">ReactNative性能优化实践</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -448,7 +536,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12px;">c++</a> <a href="/tags/cocos/" style="font-size: 18px;">cocos</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 14px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/ObjectiveC/" style="font-size: 10px;">ObjectiveC</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/ReactNative/" style="font-size: 20px;">ReactNative</a> <a href="/tags/c/" style="font-size: 12px;">c++</a> <a href="/tags/cocos/" style="font-size: 18px;">cocos</a> <a href="/tags/git/" style="font-size: 12px;">git</a> <a href="/tags/google-closure-compiler/" style="font-size: 12px;">google-closure-compiler</a> <a href="/tags/javascript/" style="font-size: 16px;">javascript</a> <a href="/tags/leetcode/" style="font-size: 12px;">leetcode</a> <a href="/tags/ndk/" style="font-size: 10px;">ndk</a> <a href="/tags/svn/" style="font-size: 12px;">svn</a> <a href="/tags/%E5%85%B6%E5%AE%83/" style="font-size: 14px;">其它</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -460,7 +548,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025年</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025年</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019年</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018年</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017年</a><span class="archive-list-count">39</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/">2016年</a><span class="archive-list-count">30</span></li></ul>
     </div>
   </div>
 
@@ -470,7 +558,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-tag"></i> Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ObjectiveC/" rel="tag">ObjectiveC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactNative/" rel="tag">ReactNative</a><span class="tag-list-count">49</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocos/" rel="tag">cocos</a><span class="tag-list-count">22</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-closure-compiler/" rel="tag">google-closure-compiler</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/" rel="tag">javascript</a><span class="tag-list-count">15</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/leetcode/" rel="tag">leetcode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ndk/" rel="tag">ndk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/" rel="tag">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B6%E5%AE%83/" rel="tag">其它</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
